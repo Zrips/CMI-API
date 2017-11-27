@@ -1,0 +1,224 @@
+name: CMI
+main: com.Zrips.CMI.CMI
+version: 7.1.3.0
+website: https://www.spigotmc.org/resources/content-management-interface.3742/
+author: Zrips
+description: Powerfull server management tool
+softdepend: [Essentials, ProtocolLib, LWC, Vault, mcMMO, PlayerVaults, PermissionsEx, bPermissions, GroupManagerX, zPermissions, LuckPerms, PlaceholderAPI, Multiverse-Core]
+commands:
+  cmi:
+      description: basic command
+permissions:
+  cmi.*:
+    description: Grants access to all cmi commands
+    default: op
+    children:
+      cmi.admin: true
+      cmi.buttonteleport: true
+  cmi.admin:
+    description: Grants permissions as an admin
+    default: false
+    children:
+      cmi.command.*: true
+  cmi.command.*:
+    description: Grants player access to all commands
+    default: false
+    children:
+      cmi.command.silentchest: true
+      cmi.command.ender: true
+      cmi.command.inv: true
+      cmi.command.tp: true
+      cmi.command.tppos: true
+      cmi.command.settp: true
+      cmi.command.maxhp: true
+      cmi.command.resethp: true
+      cmi.command.fly: true
+      cmi.command.god: true
+      cmi.command.tgod: true
+      cmi.command.compass: true
+      cmi.command.hunger: true
+      cmi.command.heal: true
+      cmi.command.walkspeed: true
+      cmi.command.gm: true
+      cmi.command.exp: true
+      cmi.command.info: true
+      cmi.command.invsave: true
+      cmi.command.invload: true
+      cmi.command.invcheck: true
+      cmi.command.invlist: true
+      cmi.command.back: true
+      cmi.command.hat: true
+      cmi.command.head: true
+      cmi.command.reload: true
+      cmi.command.tpall: true
+      cmi.command.search: true
+      cmi.command.scan: true
+      cmi.command.silent: true
+  cmi.command.silentchest:
+    description: Grants access to the silentchest command
+    default: op
+  cmi.command.afk.auto:
+    description: Grants access to the auto afk feature
+    default: true    
+  cmi.command.ender:
+    description: Grants access to the ender command
+    default: op
+  cmi.command.inv:
+    description: Grants access to the inv command
+    default: op
+  cmi.command.tp:
+    description: Grants access to the tp command
+    default: op
+  cmi.command.tppos:
+    description: Grants access to the tppos command
+    default: op
+  cmi.command.settp:
+    description: Grants access to the settp command
+    default: op
+  cmi.command.maxhp:
+    description: Grants access to the maxhp command
+    default: op
+  cmi.command.fly:
+    description: Grants access to the fly command
+    default: op
+  cmi.command.god:
+    description: Grants access to the god command
+    default: op
+  cmi.command.tgod:
+    description: Grants access to the tgod command
+    default: op
+  cmi.command.compass:
+    description: Grants access to the compass command
+    default: op
+  cmi.command.hunger:
+    description: Grants access to the hunger command
+    default: op
+  cmi.command.heal:
+    description: Grants access to the heal command
+    default: op
+  cmi.command.flyspeed:
+    description: Grants access to the flyspeed command
+    default: op
+  cmi.command.walkspeed:
+    description: Grants access to the walkspeed command
+    default: op
+  cmi.command.gm:
+    description: Grants access to the gm command
+    default: op
+  cmi.command.exp:
+    description: Grants access to the exp command
+    default: op
+  cmi.command.info:
+    description: Grants access to the info command
+    default: op
+  cmi.command.info.ip:
+    description: Grants access to the players ip addres
+    default: op
+  cmi.command.saveall:
+    description: Grants access to the saveall command
+    default: op
+  cmi.command.invsave:
+    description: Grants access to the save command
+    default: op
+  cmi.command.invload:
+    description: Grants access to the load command
+    default: op
+  cmi.command.invcheck:
+    description: Grants access to the check command
+    default: op
+  cmi.command.invlist:
+    description: Grants access to the list command
+    default: op
+  cmi.command.back:
+    description: Grants access to the back command
+    default: op
+  cmi.command.hat:
+    description: Grants access to the hat command
+    default: op
+  cmi.command.head:
+    description: Grants access to the head command
+    default: op
+  cmi.command.reload:
+    description: Grants access to the reload command
+    default: op
+  cmi.command.tpall:
+    description: Grants access to the tpall command
+    default: op
+  cmi.command.search:
+    description: Grants access to the search command
+    default: op
+  cmi.command.scan:
+    description: Grants access to the scan command
+    default: op
+  cmi.command.scan.speed:
+    description: Grants access to change scan speed
+    default: op
+  cmi.buttonteleport:
+    description: Grants access to the teleport button
+    default: op
+  cmi.invedit:
+    description: Grants option to edit inventory
+    default: op
+  cmi.enderedit:
+    description: Grants option to edit ender chest
+    default: op
+  cmi.gm.others:
+    description: Grants option to change another player game mode
+    default: op    
+  cmi.command.hat.others:
+    description: Grants option to give hat for another player
+    default: op
+  cmi.command.tp.others:
+    description: Grants option to teleport another player
+    default: op
+  cmi.command.maxhp.others:
+    description: Grants option to set maxhp for another player
+    default: op
+  cmi.command.resethp.others:
+    description: Grants option to reset maxhp for another player
+    default: op
+  cmi.command.fly.others:
+    description: Grants option to set fly for another player
+    default: op
+  cmi.command.god.others:
+    description: Grants option to set god for another player
+    default: op
+  cmi.command.tgod.others:
+    description: Grants option to set tgod for another player
+    default: op
+  cmi.command.hunger.others:
+    description: Grants option to set hunger for another player
+    default: op
+  cmi.command.heal.others:
+    description: Grants option to heal another player
+    default: op
+  cmi.command.flyspeed.others:
+    description: Grants option to set flyspeed for another player
+    default: op
+  cmi.command.walkspeed.others:
+    description: Grants option to set walkspeed for another player
+    default: op
+  cmi.command.gm.others:
+    description: Grants option to set gm for another player
+    default: op
+  cmi.command.exp.others:
+    description: Grants option to set exp for another player
+    default: op
+  cmi.command.head.others:
+    description: Grants option to set head for another player
+    default: op
+  cmi.command.kit:
+    description: Grants option to use kits
+    default: true
+  cmi.command.silent:
+    description: Grants option to perform commands silently
+    default: op
+  cmi.elytra:
+    description: Grants access to elytra usage
+    default: true
+  cmi.chorusteleport:
+    description: Grants access to chorus fruit teleport usage
+    default: true
+  cmi.command.ctext:
+    description: Grants access to ctext command
+    default: true
