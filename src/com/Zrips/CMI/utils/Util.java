@@ -2,6 +2,7 @@ package com.Zrips.CMI.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +44,7 @@ import com.Zrips.CMI.Containers.itemInfo;
 import com.Zrips.CMI.Locale.LC;
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
 import com.Zrips.CMI.commands.list.colorlimits.CMIColorTypes;
+import com.Zrips.CMI.utils.Util.CMIChatColor;
 import com.Zrips.CMI.utils.VersionChecker.Version;
 
 public class Util {
@@ -257,4 +259,127 @@ public class Util {
 
 	return null;
     }
+
+    public enum CMIChatColor {
+	BLACK('0'),
+	DARK_BLUE('1'),
+	DARK_GREEN('2'),
+	DARK_AQUA('3'),
+	DARK_RED('4'),
+	DARK_PURPLE('5'),
+	GOLD('6'),
+	GRAY('7'),
+	DARK_GRAY('8'),
+	BLUE('9'),
+	GREEN('a'),
+	AQUA('b'),
+	RED('c'),
+	LIGHT_PURPLE('d'),
+	YELLOW('e'),
+	WHITE('f'),
+	MAGIC('k', false),
+	BOLD('l', false),
+	STRIKETHROUGH('m', false),
+	UNDERLINE('n', false),
+	ITALIC('o', false),
+	RESET('r', null);
+
+	private char c;
+	private Boolean color = null;
+
+	CMIChatColor(char c) {
+	    this.c = c;
+	    this.color = true;
+	}
+
+	CMIChatColor(char c, Boolean color) {
+	    this.c = c;
+	    this.color = color;
+	}
+
+	public static String translateAlternateColorCodes(String text) {
+	    return ChatColor.translateAlternateColorCodes('&', text);
+	}
+
+	public static String colorize(String text) {
+	    if (text == null)
+		return null;
+	    return ChatColor.translateAlternateColorCodes('&', text);
+	}
+
+	public static String deColorize(String text) {
+	    if (text == null)
+		return null;
+	    return text.replace("§", "&");
+	}
+
+	public static String stripColor(String text) {
+	    if (text == null)
+		return null;
+	    text = ChatColor.translateAlternateColorCodes('&', text);
+	    return ChatColor.stripColor(text);
+	}
+
+	public static String getLastColors(String text) {
+	    if (text == null)
+		return null;
+	    text = CMIChatColor.translateAlternateColorCodes(text);
+	    return ChatColor.getLastColors(text);
+	}
+
+	public String getColorCode() {
+	    return "&" + c;
+	}
+
+	public String getBukkitColorCode() {
+	    return "§" + c;
+	}
+
+	public char getChar() {
+	    return c;
+	}
+
+	public void setChar(char c) {
+	    this.c = c;
+	}
+
+	public Boolean isColor() {
+	    return color != null && color;
+	}
+
+	public Boolean isFormat() {
+	    return color != null && !color;
+	}
+
+	public Boolean isReset() {
+	    return color == null;
+	}
+
+	public static CMIChatColor getColor(String text) {
+
+	    text = CMIChatColor.deColorize(text).replace("&", "");
+
+	    if (text.length() > 1)
+		text = text.substring(text.length() - 1, text.length());
+
+	    for (CMIChatColor one : CMIChatColor.values()) {
+		if (String.valueOf(one.getChar()).equalsIgnoreCase(text))
+		    return one;
+	    }
+
+	    return null;
+	}
+
+	public static CMIChatColor getRandomColor() {
+	    List<CMIChatColor> ls = new ArrayList<CMIChatColor>();
+	    for (CMIChatColor one : CMIChatColor.values()) {
+		if (!one.isColor())
+		    continue;
+		ls.add(one);
+	    }
+	    Collections.shuffle(ls);
+	    return ls.get(0);
+	}
+    }
+
 }

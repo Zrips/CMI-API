@@ -34,12 +34,14 @@ import com.Zrips.CMI.Modules.CustomText.CText;
 import com.Zrips.CMI.Modules.CustomText.CTextManager;
 import com.Zrips.CMI.Modules.DataBase.DBClassLoader;
 import com.Zrips.CMI.Modules.DataBase.DBManager;
+import com.Zrips.CMI.Modules.DynamicSigns.SignManager;
 import com.Zrips.CMI.Modules.Economy.EconomyManager;
 import com.Zrips.CMI.Modules.Enchants.EnchantManager;
 import com.Zrips.CMI.Modules.EventActions.EventActionManager;
 import com.Zrips.CMI.Modules.FindBiome.FindBiomeManager;
 import com.Zrips.CMI.Modules.FlightCharge.FlightChargeManager;
 import com.Zrips.CMI.Modules.GUI.GUIManager;
+import com.Zrips.CMI.Modules.Holograms.HologramManager;
 import com.Zrips.CMI.Modules.Homes.HomeManager;
 import com.Zrips.CMI.Modules.InteractiveCommand.InteractiveBlockManager;
 import com.Zrips.CMI.Modules.InvEndEditor.EnderChestListener;
@@ -145,6 +147,8 @@ public class CMI extends JavaPlugin {
     protected VanishManager VanishManager;
     protected BossBarManager BossBarManager;
     protected InteractiveBlockManager InteractiveCommandManager;
+    protected SignManager signManager;
+    protected HologramManager HologramManager;
 
     protected EnderChestManager EnderChestManager;
     protected RegChestManager RegChestManager;
@@ -263,6 +267,14 @@ public class CMI extends JavaPlugin {
     }
 
     public scUtil getScUtil() {
+	return null;
+    }
+
+    public SignManager getSignManager() {
+	return null;
+    }
+
+    public HologramManager getHologramManager() {
 	return null;
     }
 
