@@ -11,7 +11,8 @@ public class ScanResultLocations {
 
     Location TPloc;
     Location loc;
-    ScanFindPlace place;
+    ScanFindPlace place = ScanFindPlace.UNKNOWN;
+    private String type = "";
 
     ItemStack[] contents = new ItemStack[64];
 
@@ -93,6 +94,16 @@ public class ScanResultLocations {
     }
 
     public ScanFindPlace getScanPlace() {
+	if (this.place == null)
+	    return ScanFindPlace.UNKNOWN;
 	return this.place;
+    }
+
+    public String getType() {
+	return type;
+    }
+
+    public void setType(String type) {
+	this.type = type;
     }
 }

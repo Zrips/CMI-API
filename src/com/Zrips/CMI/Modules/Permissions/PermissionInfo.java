@@ -1,12 +1,18 @@
 package com.Zrips.CMI.Modules.Permissions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class PermissionInfo {
 
     private String permission;
+    private boolean enabled = false;
     private Long delay = 1000L;
     private Long lastChecked = null;
     private Double maxValue = null;
     private Double minValue = null;
+    
+    private Set<String> values = new HashSet<String>();
 
     public PermissionInfo(String permission, Long delay) {
 	this.permission = permission;
@@ -36,6 +42,8 @@ public class PermissionInfo {
     }
 
     public Long getLastChecked() {
+	if (lastChecked == null)
+	    lastChecked = System.currentTimeMillis();
 	return lastChecked;
     }
 
@@ -65,6 +73,22 @@ public class PermissionInfo {
 
     public void setMinValue(Double minValue) {
 	this.minValue = minValue;
+    }
+
+    public boolean isEnabled() {
+	return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+	this.enabled = enabled;
+    }
+
+    public Set<String> getValues() {
+	return values;
+    }
+
+    public void addValue(String value) {	    
+	this.values.add(value);
     }
 
 }

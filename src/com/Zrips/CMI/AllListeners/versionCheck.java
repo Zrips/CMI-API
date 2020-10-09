@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class versionCheck implements Listener {
     private CMI plugin;

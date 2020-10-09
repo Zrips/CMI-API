@@ -1,15 +1,11 @@
 package com.Zrips.CMI.Modules.ChatFormat;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class ChatFormatListener implements Listener {
     private CMI plugin;
@@ -19,15 +15,21 @@ public class ChatFormatListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+    public void AsyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
 
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void AsyncPlayerChatEventMute(AsyncPlayerChatEvent event) {
+
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void AsyncPlayerChatEventShadowMute(AsyncPlayerChatEvent event) {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void AsyncPlayerChatEventPersonalMute(AsyncPlayerChatEvent event) {
     }
+
 }

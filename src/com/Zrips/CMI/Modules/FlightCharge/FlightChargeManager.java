@@ -1,14 +1,10 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
-import org.bukkit.Location;
-import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIChatColor;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Containers.ConfigReader;
-import com.Zrips.CMI.Modules.BossBar.BossBarInfo;
 
 public class FlightChargeManager {
 
@@ -18,61 +14,63 @@ public class FlightChargeManager {
 	this.plugin = plugin;
     }
 
-    private boolean Enabled = false;
-    private int ExpRechargeRate = 0;
-    private int MoneyRechargeRate = 0;
+//    private boolean Enabled = false;
+    private boolean FlightChargeEnabledByDefault = true;
+    private boolean FlightChargeAutoSwitch = true;
+    private double ExpRechargeCost = 0;
+    private double MoneyRechargeCost = 0D;
     private int MaxChargeLevel = 0;
     private int DeductOnFallMulti = 0;
-    private int DeductOnIdling = 0;
+    private double DeductOnIdling = 0;
+    private double DeductOnlyForTime = 0;
     private boolean DamageOnFall = true;
     private boolean DamageOnToggle = true;
     private boolean KillOnFall = true;
+    private CMIChatColor GlowColor = null;
+
+    private double autoRechargeFrom = 0;
+    private double autoRechargeAmount = 0;
 
     public void load() {
-	
 
     }
 
     public void process(Player player, Integer take) {
-	
+
     }
 
     public void process(traveledDistance dinfo, Integer take) {
-	
+
+    }
+
+    private void autorecharge(CMIUser user) {
+
     }
 
     public static final String flightChargeBossBar = "CMIFlightChargeBossBar";
 
     public void updateBossBar(CMIUser user) {
-	
+
     }
 
     private void updateBossBar(traveledDistance dinfo) {
-	
+
     }
 
-    public boolean isEnabled() {
-	return Enabled;
+    public double getExpRechargeCost() {
+	return ExpRechargeCost;
     }
 
-    public void setEnabled(boolean enabled) {
-	Enabled = enabled;
+    public void setExpRechargeCost(double expRechargeCost) {
+	ExpRechargeCost = expRechargeCost;
     }
 
-    public int getExpRechargeRate() {
-	return ExpRechargeRate;
+    public double getMoneyRechargeCost() {
+	return MoneyRechargeCost;
     }
 
-    public void setExpRechargeRate(int expRechargeRate) {
-	ExpRechargeRate = expRechargeRate;
-    }
-
-    public int getMoneyRechargeRate() {
-	return MoneyRechargeRate;
-    }
-
-    public void setMoneyRechargeRate(int moneyRechargeRate) {
-	MoneyRechargeRate = moneyRechargeRate;
+    public void setMoneyRechargeCost(double moneyRechargeCost) {
+	MoneyRechargeCost = moneyRechargeCost;
     }
 
     public int getMaxChargeLevel() {
@@ -115,11 +113,40 @@ public class FlightChargeManager {
 	KillOnFall = killOnFall;
     }
 
-    public int getDeductOnIdling() {
+    public double getDeductOnIdling() {
 	return DeductOnIdling;
     }
 
     public void setDeductOnIdling(int deductOnIdling) {
 	DeductOnIdling = deductOnIdling;
     }
+
+    public boolean isFlightChargeEnabledByDefault() {
+	return FlightChargeEnabledByDefault;
+    }
+
+    public void setFlightChargeEnabledByDefault(boolean flightChargeEnabledByDefault) {
+	FlightChargeEnabledByDefault = flightChargeEnabledByDefault;
+    }
+
+    public boolean isFlightChargeAutoSwitch() {
+	return FlightChargeAutoSwitch;
+    }
+
+    public CMIChatColor getGlowColor() {
+	return GlowColor;
+    }
+
+    public void setGlowColor(CMIChatColor glowColor) {
+	GlowColor = glowColor;
+    }
+
+    public double getAutoRechargeFrom() {
+	return autoRechargeFrom;
+    }
+
+    public double getAutoRechargeAmount() {
+	return autoRechargeAmount;
+    }
+
 }

@@ -42,6 +42,7 @@ public final class CMIChunkChangeEvent extends Event implements Cancellable {
     }
 
     @Override
+    @EventAnnotation(info = "Fired when player changes chunk")
     public HandlerList getHandlers() {
 	return handlers;
     }

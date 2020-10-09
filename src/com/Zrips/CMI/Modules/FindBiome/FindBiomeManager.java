@@ -8,8 +8,9 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Region.SCord;
+import com.Zrips.CMI.Modules.Region.CMIRegion;
 import com.Zrips.CMI.Modules.Region.WorldInfo;
+import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
 
 public class FindBiomeManager {
 

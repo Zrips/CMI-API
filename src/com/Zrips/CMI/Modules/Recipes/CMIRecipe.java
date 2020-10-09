@@ -55,7 +55,7 @@ public class CMIRecipe {
     }
 
     public HashMap<Integer, ItemStack> getIngridients() {
-
+	
 	return null;
     }
 

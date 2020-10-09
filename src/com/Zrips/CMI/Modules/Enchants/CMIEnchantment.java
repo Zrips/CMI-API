@@ -8,18 +8,13 @@ import java.util.Map.Entry;
 import org.bukkit.enchantments.Enchantment;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Logs.CMIDebug;
 
 public class CMIEnchantment {
 
-    private static final Map<Integer, Enchantment> byId = new HashMap<Integer, Enchantment>();
     private static final Map<String, Enchantment> byName = new HashMap<String, Enchantment>();
 
-    @SuppressWarnings("deprecation")
     public static void saveEnchants() {
-    }
-
-    public static Enchantment getById(int id) {
-	return byId.get(id);
     }
 
     public static Enchantment get(String nameId) {
@@ -27,7 +22,6 @@ public class CMIEnchantment {
     }
 
     public static Enchantment getByName(String name) {
-
 	return null;
     }
 
@@ -36,11 +30,14 @@ public class CMIEnchantment {
     }
 
     public static Enchantment[] values() {
-	return null;
+	return byName.values().toArray(new Enchantment[byName.size()]);
     }
 
     public static String getName(Enchantment enchant) {
 	return null;
     }
 
+    public static String getTranslatedName(Enchantment enchant) {
+	return null;
+    }
 }

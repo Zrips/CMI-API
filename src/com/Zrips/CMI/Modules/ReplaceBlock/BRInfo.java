@@ -28,8 +28,6 @@ public class BRInfo {
 
     private boolean running = false;
 
-//    private int wId = 0;
-//    private short wData = -1;
     private int y = -1;
 
     private long replaced = 0L;
@@ -53,21 +51,6 @@ public class BRInfo {
 	return this.y;
     }
 
-//    public void setWData(short Data) {
-//	this.wData = Data;
-//    }
-//
-//    public short getWData() {
-//	return this.wData;
-//    }
-//
-//    public void setWId(int wId) {
-//	this.wId = wId;
-//    }
-//
-//    public int getWId() {
-//	return this.wId;
-//    }
 
     public void addReplaced() {
 	this.replaced++;
@@ -146,10 +129,7 @@ public class BRInfo {
     }
 
     public Player getPlayer() {
-	    Player p = Bukkit.getPlayer(this.player.getUniqueId());
-	    if (p != null)
-		this.player = p;
-	return this.player;
+	return null;
     }
 
     public void setPlayer(Player Player) {

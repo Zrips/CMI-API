@@ -10,64 +10,72 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class teleportAll {
 
-	private String targetFolder = null;
-	private String targetWorld = null;
-	private Location destination = null;
-	private BukkitTask id = null;
-	private List<String> names = new ArrayList<String>();
-	private Player player;
+    private String targetFolder = null;
+    private String targetWorld = null;
+    private Location destination = null;
+    private BukkitTask id = null;
+    private int teleported = 0;
+    private List<String> names = new ArrayList<String>();
+    private Player player;
 
-	public teleportAll() {
+    public teleportAll() {
+    }
 
-	}
+    public void setTargetFolder(String targetFolder) {
+	this.targetFolder = targetFolder;
+    }
 
-	public void settargetFolder(String targetFolder) {
-		this.targetFolder = targetFolder;
-	}
+    public String getTargetFolder() {
+	if (this.targetFolder == null)
+	    return Bukkit.getWorlds().get(0).getName();
+	return this.targetFolder;
+    }
 
-	public String gettargetFolder() {
-		if (this.targetFolder == null)
-			return Bukkit.getWorlds().get(0).getName();
-		return this.targetFolder;
-	}
+    public void setTargetWorld(String targetWorld) {
+	this.targetWorld = targetWorld;
+    }
 
-	public void settargetWorld(String targetWorld) {
-		this.targetWorld = targetWorld;
-	}
+    public String getTargetWorld() {
+	return this.targetWorld;
+    }
 
-	public String gettargetWorld() {
-		return this.targetWorld;
-	}
+    public void setDestination(Location destination) {
+	this.destination = destination;
+    }
 
-	public void setdestination(Location destination) {
-		this.destination = destination;
-	}
+    public Location getDestination() {
+	return this.destination;
+    }
 
-	public Location getdestination() {
-		return this.destination;
-	}
+    public void setTask(BukkitTask id) {
+	this.id = id;
+    }
 
-	public void setid(BukkitTask id) {
-		this.id = id;
-	}
+    public Player getPlayer() {
+	return this.player;
+    }
 
-	public Player getPlayer() {
-		return this.player;
-	}
+    public void setPlayer(Player Player) {
+	this.player = Player;
+    }
 
-	public void setPlayer(Player Player) {
-		this.player = Player;
-	}
+    public BukkitTask getTask() {
+	return this.id;
+    }
 
-	public BukkitTask getid() {
-		return this.id;
-	}
+    public void addName(String name) {
+	this.names.add(name);
+    }
 
-	public void addName(String name) {
-		this.names.add(name);
-	}
+    public List<String> getNames() {
+	return this.names;
+    }
 
-	public List<String> getNames() {
-		return this.names;
-	}
+    public int getTeleportedCount() {
+	return teleported;
+    }
+
+    public void addTeleported() {
+	this.teleported++;
+    }
 }

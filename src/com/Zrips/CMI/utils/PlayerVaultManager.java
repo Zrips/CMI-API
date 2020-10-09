@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.inventory.Inventory;
 
 import com.Zrips.CMI.CMI;
-import com.drtshock.playervaults.vaultmanagement.UUIDVaultManager;
 
 public class PlayerVaultManager {
 
@@ -19,19 +18,17 @@ public class PlayerVaultManager {
     static Class<?> c = null;
 
     private static void setVaultExistsMeth() {
-
     }
 
     private static void setLoadOtherVaultMeth() {
-
     }
 
     private static void setClass() {
-
     }
 
     public static boolean vaultExists(UUID uuid, int id) {
-	return false;
+
+	return true;
     }
 
     public static Inventory loadOtherVault(UUID uuid, int i, int y) {

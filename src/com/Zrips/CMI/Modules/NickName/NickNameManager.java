@@ -12,7 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.ConfigReader;
+import com.Zrips.CMI.FileHandler.ConfigReader;
+import com.Zrips.CMI.Containers.CMIChatColor;
 
 public class NickNameManager {
 
@@ -26,11 +27,11 @@ public class NickNameManager {
     }
 
     public void removeNickName(String nick) {
-	NickMap.remove(ChatColor.stripColor(nick).toLowerCase());
+	NickMap.remove(CMIChatColor.stripColor(nick).toLowerCase());
     }
 
     public void addNewNickName(String nick, UUID uuid) {
-	NickMap.put(ChatColor.stripColor(nick).toLowerCase(), uuid);
+	NickMap.put(CMIChatColor.stripColor(nick).toLowerCase(), uuid);
     }
 
     public void addNewName(String nick, UUID uuid) {
@@ -38,10 +39,7 @@ public class NickNameManager {
     }
 
     public UUID whoUsesName(String nick) {
-	UUID uuid = NickMap.get(nick.toLowerCase());
-	if (uuid == null)
-	    uuid = NameMap.get(nick.toLowerCase());
-	return uuid;
+	return null;
     }
 
     public List<String> getNickNamesStartingWith(Player player, String nick) {
@@ -49,11 +47,18 @@ public class NickNameManager {
     }
 
     private String NickNameFormat;
+    private boolean DisplayNameChange;
+    private String ValidNickNameRegex;
     private List<String> NickNameBlackList;
-    private int NickNameLenght;
+    private int NickNameLengthMax;
+    private int NickNameLengthMin;
+    private String NickNamePrefix;
+    private Boolean PrefixWhenDifferent;
+    private Boolean IncludeInTabComplete;
     private Boolean ColorsNickName;
 
     public void load() {
+
     }
 
     public String getNickNameFormat() {
@@ -64,11 +69,43 @@ public class NickNameManager {
 	return NickNameBlackList;
     }
 
-    public int getNickNameLenght() {
-	return NickNameLenght;
+    public int getNickNameLengthMax() {
+	return NickNameLengthMax;
+    }
+
+    public int getNickNameLengthMin() {
+	return NickNameLengthMin;
     }
 
     public Boolean isColorsNickName() {
 	return ColorsNickName;
+    }
+
+    public String getNickNamePrefix() {
+	return NickNamePrefix;
+    }
+
+    public void setNickNamePrefix(String nickNamePrefix) {
+	NickNamePrefix = nickNamePrefix;
+    }
+
+    public Boolean isPrefixWhenDifferent() {
+	return PrefixWhenDifferent;
+    }
+
+    public void setPrefixWhenDifferent(Boolean prefixWhenDifferent) {
+	PrefixWhenDifferent = prefixWhenDifferent;
+    }
+
+    public String getValidNickNameRegex() {
+	return ValidNickNameRegex;
+    }
+
+    public boolean isDisplayNameChange() {
+	return DisplayNameChange;
+    }
+
+    public boolean isIncludeNickNameInTabComplete() {
+	return IncludeInTabComplete;
     }
 }

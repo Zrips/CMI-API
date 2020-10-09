@@ -1,48 +1,68 @@
 package com.Zrips.CMI.Modules.BossBar;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIChatColor;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.Snd;
+import com.Zrips.CMI.Modules.Logs.CMIDebug;
 
 public class BossBarInfo {
-    CMIUser user;
-    private double percentage;
-    private Integer keepFor = 3;
+    private CMIUser user;
+    private Double percentage = null;
+    private Double adjustPerc = null;
+    private Integer keepFor = 60;
+    private Integer auto = null;
     private BossBar bar;
     private BarColor startingColor = null;
-    int id = -1;
+    private BarStyle style = null;
+    private Integer autoId = null;
+    private Integer id = null;
     private String nameOfBar;
     private String titleOfBar = "Title";
+    private boolean withPlaceholder = false;
+    private List<String> cmds = null;
+    private boolean global = false;
+    private boolean makeVisible = false;
+    private long started = 0L;
+
+    public BossBarInfo clone(CMIUser user) {
+	return null;
+    }
+
+    public BossBarInfo(String nameOfBar) {
+	this(null, nameOfBar, null);
+    }
 
     public BossBarInfo(CMIUser user, String nameOfBar) {
-	this.user = user;
-	this.nameOfBar = nameOfBar;
+	this(user, nameOfBar, null);
     }
 
     public BossBarInfo(CMIUser user, String nameOfBar, BossBar bar) {
-	this.user = user;
-	this.nameOfBar = nameOfBar;
-	this.bar = bar;
     }
 
-    public void setId(int id) {
-	cancelHideScheduler();
+    public void setHideId(Integer id) {
+//	cancelHideScheduler();
 	this.id = id;
     }
 
-    public void cancelHideScheduler() {
-	if (id != -1)
-	    Bukkit.getScheduler().cancelTask(this.id);
+    public synchronized void cancelAutoScheduler() {
+    }
+
+    public synchronized void cancelHideScheduler() {
     }
 
     public void remove() {
-	cancelHideScheduler();
-	if (bar != null)	    
-	    bar.setVisible(false);
-	user.removeBossBar(this);
     }
 
     public CMIUser getUser() {
@@ -53,24 +73,19 @@ public class BossBarInfo {
 	return this.bar;
     }
 
-    public double getPercentage() {
-	return percentage;
+    public Double getPercentage() {
+	return null;
     }
-    
-    public void setPercentage(Double max, Double current) {	
-	current = current * 100 / max / 100D;
-	setPercentage(current);
+
+    public void setPercentage(Double max, Double current) {
     }
-    
-    public void setPercentage(double percentage) {
-	if (percentage < 0)
-	    percentage = 0D;
-	if (percentage > 1)
-	    percentage = 1D;
-	this.percentage = percentage;
+
+    public void setPercentage(Double percentage) {
     }
 
     public String getNameOfBar() {
+	if (nameOfBar == null)
+	    nameOfBar = "CmiBossbar" + (new Random().nextInt(Integer.MAX_VALUE));
 	return nameOfBar;
     }
 
@@ -79,30 +94,131 @@ public class BossBarInfo {
     }
 
     public Integer getKeepFor() {
-	return keepFor;
+	return keepFor == null ? 30 : keepFor;
     }
 
     public void setKeepForTicks(Integer keepFor) {
-	this.keepFor = keepFor;
+	if (keepFor != null)
+	    this.keepFor = keepFor;
+    }
+
+    public String getTitleOfBarClean() {
+	return titleOfBar == null ? "" : titleOfBar;
     }
 
     public String getTitleOfBar() {
-	return titleOfBar;
+	return null;
+    }
+
+    public String getTitleOfBar(Player player) {
+	return null;
+    }
+
+    public long getLeftDuration() {
+	return 0l;
     }
 
     public void setTitleOfBar(String titleOfBar) {
-	this.titleOfBar = ChatColor.translateAlternateColorCodes('&', titleOfBar);
     }
 
     public void setBar(BossBar bar) {
 	this.bar = bar;
     }
 
-    public BarColor getStartingColor() {
+    public BarColor getColor() {
 	return startingColor;
     }
 
-    public void setStartingColor(BarColor startingColor) {
+    public void setColor(BarColor startingColor) {
+//	if (startingColor == null)
+//	    startingColor = BarColor.GREEN;
 	this.startingColor = startingColor;
+    }
+
+    public Double getAdjustPerc() {
+	return adjustPerc;
+    }
+
+    public void setAdjustPerc(Double adjustPerc) {
+	this.adjustPerc = adjustPerc;
+    }
+
+    public BarStyle getStyle() {
+	return style;
+    }
+
+    public void setStyle(BarStyle style) {
+	this.style = style;
+    }
+
+    public void setUser(CMIUser user) {
+	this.user = user;
+    }
+
+    public Integer getHideId() {
+	return id;
+    }
+
+    public Integer getAuto() {
+	return auto == null ? 20 : auto;
+    }
+
+    public void setAuto(Integer auto) {
+	this.auto = auto;
+    }
+
+    public Integer getAutoId() {
+	return autoId;
+    }
+
+    public void setAutoId(Integer autoId) {
+	this.autoId = autoId;
+    }
+
+    public List<String> getCommands() {
+	return cmds;
+    }
+
+    public List<String> getCommands(Player player) {
+	return null;
+    }
+
+    public void setCmds(List<String> cmds) {
+	this.cmds = cmds;
+    }
+
+    public boolean stillRunning() {
+	return false;
+    }
+
+    public boolean isGlobal() {
+	return global;
+    }
+
+    public void setGlobal(boolean global) {
+	this.global = global;
+    }
+
+    public boolean isMakeVisible() {
+	return makeVisible;
+    }
+
+    public void setMakeVisible(boolean makeVisible) {
+	this.makeVisible = makeVisible;
+    }
+
+    public long getStarted() {
+	return started;
+    }
+
+    public void setStarted(long started) {
+	this.started = started;
+    }
+
+    public void setSeconds(int time) {
+    }
+
+    public boolean isWithPlaceholder() {
+	return withPlaceholder;
     }
 }

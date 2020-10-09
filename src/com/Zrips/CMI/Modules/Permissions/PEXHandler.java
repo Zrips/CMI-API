@@ -1,43 +1,46 @@
 package com.Zrips.CMI.Modules.Permissions;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PEXHandler implements PermissionInterface {
 
-    private PermissionManager perms;
-
     public PEXHandler() {
-	perms = PermissionsEx.getPermissionManager();
     }
 
     @Override
     public String getMainGroup(Player player) {
-	PermissionUser user = perms.getUser(player);
-	if (user == null)
-	    return null;
-
-	String[] groups = user.getGroupNames();
-	if (groups == null || groups.length == 0)
-	    return null;
-	return groups[0];
+	return null;
     }
 
     @Override
     public String getPrefix(Player player) {
-	PermissionUser user = perms.getUser(player);
-	if (user == null)
-	    return null;
-	return user.getPrefix();
+	return null;
     }
 
     @Override
     public String getSufix(Player player) {
-	PermissionUser user = perms.getUser(player);
-	if (user == null)
-	    return null;
-	return user.getSuffix();
+	return null;
+    }
+
+    @Override
+    public String getMainGroup(String world, UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getPrefix(UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getSufix(UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getNameColor(Player player) {
+	return null;
     }
 }

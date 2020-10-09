@@ -6,7 +6,9 @@ public class AfkInfo {
 
     private Long afkFrom = null;
     private int kicksPerformed = 0;
-    private AfkType type = AfkType.auto;
+    private AfkType type;
+    private String reason;
+    private Long playtimeAtAfkStart;
 
     public AfkInfo() {
     }
@@ -32,11 +34,27 @@ public class AfkInfo {
     }
 
     public AfkType getType() {
-	return type;
+	return type == null ? AfkType.auto : type;
     }
 
     public void setType(AfkType type) {
 	this.type = type;
+    }
+
+    public String getReason() {
+	return reason;
+    }
+
+    public void setReason(String reason) {
+	this.reason = reason;
+    }
+
+    public Long getPlaytimeAtAfkStart() {
+	return playtimeAtAfkStart == null ? 0L : playtimeAtAfkStart;
+    }
+
+    public void setPlaytimeAtAfkStart(Long playtimeAtAfkStart) {
+	this.playtimeAtAfkStart = playtimeAtAfkStart;
     }
 
 }

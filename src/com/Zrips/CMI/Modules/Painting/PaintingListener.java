@@ -42,6 +42,7 @@ public class PaintingListener implements Listener {
 
     @EventHandler
     public void onSignInteractShift(PlayerInteractEvent event) {
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

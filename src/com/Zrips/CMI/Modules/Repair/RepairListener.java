@@ -11,7 +11,9 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CustomNBT.CustomNBTManager.CustomNBTType;
+import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTManager.CustomNBTType;
+import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.events.*;
 
 public class RepairListener implements Listener {
@@ -27,17 +29,17 @@ public class RepairListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerItemHeldEvent(PlayerPickupItemEvent event) {
-	
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerItemHeldEvent(PlayerItemHeldEvent event) {
-	
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void CMIArmorChangeEvent(CMIArmorChangeEvent event) {
-	
+
     }
 
 }

@@ -11,7 +11,16 @@ public class RegionFiles {
 
     public RegionFiles(File path) {
 	offsets = new int[SECTOR_INTS];
-
+	try {
+	    file = new RandomAccessFile(path, "r");
+	    file.seek(0);
+	    for (int i = 0; i < SECTOR_INTS; ++i) {
+		int offset = file.readInt();
+		offsets[i] = offset;
+	    }
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     private int getOffset(int x, int z) {

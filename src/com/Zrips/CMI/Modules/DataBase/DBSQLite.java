@@ -11,31 +11,13 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.DataBase.DBManager.DataBaseType;
 
 public class DBSQLite extends DBDAO {
+//    private CMI plugin;
 
-    public void initialize() {
-	try {
-	    this.setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+    public void initialize() { 
     }
 
     DBSQLite(CMI plugin, File file) {
 	super(plugin, "org.sqlite.JDBC", "jdbc:sqlite:" + new File(file, "cmi.sqlite.db").getPath(), null, null, "");
-    }
-
-    @Override
-    protected synchronized void setupConfig() throws SQLException {
-
-    }
-
-    @Override
-    protected synchronized void checkUpdate() throws SQLException {
-
-    }
-
-    private boolean createDefaultUsersBase() {
-	return true;
     }
 
     @Override
@@ -74,5 +56,15 @@ public class DBSQLite extends DBDAO {
     public boolean truncate(String table) {
 	return false;
 
+    }
+
+    @Override
+    public String getTableCharSet(DBTables table) {
+	return null;
+    }
+
+    @Override
+    public boolean convertTableToUTF8(DBTables table) {
+	return true;
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
@@ -40,7 +41,7 @@ public class ScanInfo {
 
     private String name = null;
     private String lore = null;
-    private String enchant = null;
+    private Enchantment enchant = null;
     private int enchantLvl = -1;
 
     HashMap<Integer, ArrayList<ScanResultLocations>> multimap = new HashMap<Integer, ArrayList<ScanResultLocations>>();
@@ -147,11 +148,11 @@ public class ScanInfo {
 	return this.name;
     }
 
-    public void setEnchant(String enchant) {
-	this.enchant = enchant.toLowerCase();
+    public void setEnchant(Enchantment enchant) {
+	this.enchant = enchant;
     }
 
-    public String getEnchant() {
+    public Enchantment getEnchant() {
 	return this.enchant;
     }
 

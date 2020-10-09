@@ -21,8 +21,7 @@ public class CMIPotionEffect {
     }
 
     public static PotionEffectType get(String nameId) {
-	PotionEffectType enchant = getByName(nameId);
-	return enchant;
+	return null;
     }
 
     public static PotionEffectType getByName(String name) {
@@ -34,10 +33,9 @@ public class CMIPotionEffect {
     }
 
     public static String getName(PotionEffectType enchant) {
-	return enchant.getName();
+	return null;
     }
 
     public static void loadLocale() {
-	
     }
 }

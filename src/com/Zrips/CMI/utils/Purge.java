@@ -33,9 +33,17 @@ public class Purge {
     }
 
     private void fillZero() {
+	map.clear();
+	for (PurgeType one : PurgeType.values()) {
+	    map.put(one, 0);
+	}
     }
 
-    public void StartingPurge(final OfflinePlayer[] offPlayers, final int x, final int count) {
+    private static OfflinePlayer[] offPlayers;
+    private static int x = 0;
+    private static int count = 0;
+
+    public void StartingPurge() {
 
     }
 
@@ -48,7 +56,6 @@ public class Purge {
     }
 
     public boolean purgePlayerAdvancementsFiles(UUID uuid, boolean chekcIfEnabled) {
-
 	return true;
     }
 
@@ -63,6 +70,7 @@ public class Purge {
     }
 
     public void purgeEssentialsFiles(UUID uuid) {
+
     }
 
     public void purgeLWC(UUID uuid) {

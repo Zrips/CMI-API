@@ -18,7 +18,6 @@ public class AnvilLstener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onitemRename(InventoryClickEvent event) {
 	
-
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

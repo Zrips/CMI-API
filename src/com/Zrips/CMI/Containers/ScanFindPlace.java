@@ -10,10 +10,13 @@ public enum ScanFindPlace {
     HOPPER("Hopper"),
     BREWING_STAND("Brewing stand"),
     HORSE("Horse"),
+    ENTITY("Entity"),
     MINECART_CHEST("Minecart chest"),
     MINECART_HOPPER("Minecart hopper"),
     ARMOR_STAND("Armor stand"),
-    SHULKER_BOX("Shulker box");
+    SHULKER_BOX("Shulker box"),
+    SHULKER_INCEPTION("Shulker box inside [type]"),
+    UNKNOWN("Unknown");
     
     private String name;
     private ScanFindPlace(String name) {

@@ -33,7 +33,7 @@ public class EnderChestManager {
     }
 
     public boolean openEnderChest(Player player, Player target) {
-	return isWatching(player);
+	return false;
     }
 
     public boolean updateTargetEnderChest(Player player) {

@@ -18,12 +18,13 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.Economy.EconomyManager.CMIMoneyLogType;
 import com.Zrips.CMI.events.CMIUserBalanceChangeEvent;
 
 public class VaultHandler extends AbstractEconomy {
     public CMI cmi;
     Plugin plugin;
-    private final String name = "CMI Economy";
+    private final String name = "CMIEconomy";
 
     public VaultHandler(CMI plugin) {
 
@@ -36,6 +37,17 @@ public class VaultHandler extends AbstractEconomy {
     }
 
     public VaultHandler(Plugin plugin) {
+	this.plugin = plugin;
+	Bukkit.getServer().getPluginManager().registerEvents(new EconomyServerListener(this), plugin);
+
+	// Load Plugin in case it was loaded before
+	if (cmi == null) {
+	    Plugin cm = plugin.getServer().getPluginManager().getPlugin("CMI");
+	    if (cm != null && cm.isEnabled()) {
+		cmi = (CMI) cm;
+		CMI.getInstance().consoleMessage(String.format("[%s][Economy] %s hooked.", plugin.getDescription().getName(), name));
+	    }
+	}
     }
 
     public void setCMI(CMI cmi) {
@@ -53,10 +65,8 @@ public class VaultHandler extends AbstractEconomy {
     }
 
     public String TrA(double amount) {
-	String pattern = cmi.getConfigManager().getMoneyFormat();
-	DecimalFormat decimalFormat = new DecimalFormat(pattern);
-	String format = decimalFormat.format(amount);
-	return format;
+	DecimalFormat decimalFormat = CMI.getInstance().getEconomyManager().getMoneyFormat();
+	return decimalFormat.format(amount);
     }
 
     @Override
@@ -76,7 +86,7 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public double getBalance(String playerName) {
-	CMIUser user = cmi.getPlayerManager().getUser(playerName);
+	CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
 	return getAccountBalance(user);
     }
 
@@ -94,7 +104,7 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-	CMIUser user = cmi.getPlayerManager().getUser(playerName);
+	CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
 	return withdraw(user, amount);
     }
 
@@ -105,22 +115,45 @@ public class VaultHandler extends AbstractEconomy {
     }
 
     private static EconomyResponse withdraw(CMIUser user, double amount) {
-	return null;
+	if (user == null) {
+	    return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.FAILURE, "Account doesn't exist");
+	}
+	if (amount < 0.0D) {
+	    return new EconomyResponse(0.0D, user.getBalance(), EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
+	}
+	if (user.hasMoney(amount)) {
+	    Double before = user.getBalance();
+	    user.withdraw(amount);
+	    fireEvent(user, before, user.getBalance(), "Withdraw");
+	    return new EconomyResponse(amount, user.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+	}
+	return new EconomyResponse(0.0D, user.getBalance(), EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-	CMIUser user = cmi.getPlayerManager().getUser(playerName);
+	CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
 	return deposit(user, amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
-	return null;
+	CMIUser user = cmi.getPlayerManager().getUser(offlinePlayer);
+	return deposit(user, amount);
     }
 
     private static EconomyResponse deposit(CMIUser user, double amount) {
-	return null;
+	if (user == null) {
+	    return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.FAILURE, "Account doesn't exist");
+	}
+	if (amount < 0.0D) {
+	    return new EconomyResponse(0.0D, user.getBalance(), EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
+	}
+
+	Double before = user.getBalance();
+	user.deposit(amount);
+	fireEvent(user, before, user.getBalance(), "Deposit");
+	return new EconomyResponse(amount, user.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
@@ -200,21 +233,25 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public boolean hasAccount(String playerName) {
-	return true;
+	return CMI.getInstance().getPlayerManager().getUser(playerName) != null;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-	return true;
+	return CMI.getInstance().getPlayerManager().getUser(offlinePlayer) != null;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-	return cmi.getPlayerManager().getUser(playerName) != null;
+	if (hasAccount(playerName))
+	    return true;
+	return cmi.getPlayerManager().getUser(playerName, true, false, true, true) != null;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
+	if (hasAccount(offlinePlayer))
+	    return true;
 	return cmi.getPlayerManager().getUser(offlinePlayer) != null;
     }
 
@@ -302,7 +339,8 @@ public class VaultHandler extends AbstractEconomy {
 			CMI.getInstance().consoleMessage("&2" + String.format("[%s][Economy] %s hooked.", plugin.getDescription().getName(), economy.name));
 		    } else {
 			plugin.getServer().getServicesManager().unregister(Economy.class, economy);
-			CMI.getInstance().getEconomyManager().setupVault();
+			if (CMI.getInstance().getEconomyManager().getVaultManager() != null)
+			    CMI.getInstance().getEconomyManager().getVaultManager().setupVault();
 		    }
 		}
 	    }
@@ -312,20 +350,29 @@ public class VaultHandler extends AbstractEconomy {
 	public void onPluginDisable(PluginDisableEvent event) {
 	    if (economy.cmi != null) {
 		if (event.getPlugin().getDescription().getName().equals("CMI")) {
-		    plugin.getServer().getServicesManager().unregister(Economy.class, economy);
+		    try {
+			plugin.getServer().getServicesManager().unregister(Economy.class, economy);
+		    } catch (Exception e) {
+		    }
 		    economy.cmi = null;
-		    CMI.getInstance().consoleMessage("&2" + String.format("[%s][Economy] %s unhooked.", plugin.getDescription().getName(), economy.name));
+		    try {
+			CMI.getInstance().consoleMessage("&2" + String.format("[%s][Economy] %s unhooked.", plugin.getDescription().getName(), economy.name));
+		    } catch (Exception e) {
+		    }
 		}
 	    }
 	}
     }
 
-    private static void fireEvent(final CMIUser user, final Double from, final Double to) {
+    private static void fireEvent(final CMIUser user, final Double from, final Double to, String type) {
+	if (!CMI.getInstance().isFullyLoaded())
+	    return;
 	Bukkit.getScheduler().runTaskAsynchronously(CMI.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
-		CMIUserBalanceChangeEvent e = new CMIUserBalanceChangeEvent(user, from, to);
+		CMIUserBalanceChangeEvent e = new CMIUserBalanceChangeEvent(user, from, to, type);
 		Bukkit.getServer().getPluginManager().callEvent(e);
+		CMI.getInstance().getEconomyManager().moneyLog(user, null, to - from, CMIMoneyLogType.Unknown, type);
 		return;
 	    }
 	});

@@ -1,33 +1,27 @@
 package com.Zrips.CMI.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 public class DateFormat {
-	public static String MiliToDate(long currentTime) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(currentTime);
-		return formatter.format(calendar.getTime());
-	}
+    public static String MiliToDate(long currentTime) {
+	return null;
+    }
 
-	public static int[] splitToComponentDate(Long biggys) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(biggys);
-		int mYear = calendar.get(Calendar.YEAR);
-		int mMonth = calendar.get(Calendar.MONTH);
-		int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-		int[] ints = { mYear, mMonth, mDay };
-		return ints;
-	}
+    public static String MiliToDate(long currentTime, String format) {
+	return null;
+    }
 
-	public static int[] splitToComponentTimes(Long biggys) {
-		int biggy = (int) (System.currentTimeMillis() - biggys) / 1000;
-		int hours = biggy / 3600;
-		int mins = (biggy % 3600) / 60;
-		int secs = biggy % 60;
+    public static String MiliToDateShort(long currentTime) {
+	return null;
+    }
 
-		int[] ints = { hours, mins, secs };
-		return ints;
-	}
+    public static String MiliToHours(long currentTime) {
+	return null;
+    }
+
+    public static int[] splitToComponentDate(Long biggys) {
+	return null;
+    }
+
+    public static int[] splitToComponentTimes(Long biggys) {
+	return null;
+    }
 }

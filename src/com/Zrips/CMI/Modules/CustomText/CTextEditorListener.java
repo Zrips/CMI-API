@@ -10,6 +10,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.Snd;
+import com.Zrips.CMI.utils.ListEditor;
 
 public class CTextEditorListener implements Listener {
     private CMI plugin;
@@ -18,11 +20,13 @@ public class CTextEditorListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void AsyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onShadowCommand(PlayerCommandPreprocessEvent event) {
+	
     }
+    
 }

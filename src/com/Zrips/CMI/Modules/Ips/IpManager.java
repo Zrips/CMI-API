@@ -35,6 +35,6 @@ public class IpManager {
     }
 
     public Set<CMIUser> getUsers(String ip) {
-	return null;
+	return ips.get(ip);
     }
 }

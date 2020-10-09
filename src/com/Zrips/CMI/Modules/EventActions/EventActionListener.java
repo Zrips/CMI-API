@@ -7,26 +7,35 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.EventActions.EventActionManager.eventAction;
+import com.Zrips.CMI.events.CMIPvPEndEventAsync;
+import com.Zrips.CMI.events.CMIPvPStartEventAsync;
 
 public class EventActionListener implements Listener {
     private CMI plugin;
 
     public EventActionListener(CMI plugin) {
 	this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void CMIPvPEndEventAsync(CMIPvPEndEventAsync event) {
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void CMIPvPStartEventAsync(CMIPvPStartEventAsync event) {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -43,10 +52,12 @@ public class EventActionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void PlayerRespawnEvent(PlayerRespawnEvent event) {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void PlayerQuitEvent(PlayerQuitEvent event) {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -65,6 +76,7 @@ public class EventActionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void PlayerVoidFallEvent(PlayerMoveEvent event) {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -73,6 +85,7 @@ public class EventActionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void PlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -81,5 +94,6 @@ public class EventActionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void PlayerLevelChangeEvent(PlayerLevelChangeEvent event) {
+
     }
 }

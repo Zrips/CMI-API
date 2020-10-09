@@ -1,23 +1,20 @@
 package com.Zrips.CMI.Modules.Economy;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.events.CMIUserBalanceChangeEvent;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class Economy {
 
     static public CMI plugin;
-    private final String name = "CMI Economy";
+//    private final String name = "CMI Economy";
+    private static final String ecoName = "CMIEconomy";
 
     public Economy(CMI pl) {
 	plugin = pl;
@@ -28,7 +25,7 @@ public class Economy {
     }
 
     public static String getName() {
-	return "CMIEconomy";
+	return ecoName;
     }
 
     private static String TrA(double amount) {
@@ -48,10 +45,7 @@ public class Economy {
     }
 
     public static double getBalance(String playerName) {
-	if (plugin == null)
-	    return 0D;
-	CMIUser user = plugin.getPlayerManager().getUser(playerName);
-	return getAccountBalance(user);
+	return 0;
     }
 
     public static double getBalance(OfflinePlayer offlinePlayer) {
@@ -152,22 +146,20 @@ public class Economy {
     }
 
     public static boolean hasAccount(String playerName) {
-	return true;
-    }
-
-    public static boolean hasAccount(OfflinePlayer offlinePlayer) {
-	return true;
-    }
-
-    public static boolean createPlayerAccount(String playerName) {
-
-	if (plugin == null)
-	    return false;
 	return plugin.getPlayerManager().getUser(playerName) != null;
     }
 
-    public static boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
+    public static boolean hasAccount(OfflinePlayer offlinePlayer) {
+	return plugin.getPlayerManager().getUser(offlinePlayer) != null;
+    }
 
+    @Deprecated
+    public static boolean createPlayerAccount(String playerName) {
+	return false;
+
+    }
+
+    public static boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
 	if (plugin == null)
 	    return false;
 	return plugin.getPlayerManager().getUser(offlinePlayer) != null;
@@ -225,14 +217,6 @@ public class Economy {
 	return createPlayerAccount(offlinePlayer);
     }
 
-    private static void fireEvent(final CMIUser user, final Double from, final Double to) {
-	Bukkit.getScheduler().runTaskAsynchronously(CMI.getInstance(), new Runnable() {
-	    @Override
-	    public void run() {
-		CMIUserBalanceChangeEvent e = new CMIUserBalanceChangeEvent(user, from, to);
-		Bukkit.getServer().getPluginManager().callEvent(e);
-		return;
-	    }
-	});
+    private static void fireEvent(final CMIUser user, final Double from, final Double to, String type) {
     }
 }

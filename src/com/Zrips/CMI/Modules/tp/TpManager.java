@@ -1,7 +1,5 @@
 package com.Zrips.CMI.Modules.tp;
 
-import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -50,8 +48,18 @@ public class TpManager {
 	return 0L;
     }
 
-    public void addTpRequest(Player whoOffers, Player whoAccepts, TpAction action) {
+    public boolean addTpRequest(Player whoOffers, Player whoAccepts, TpAction action) {
+	return addTpRequest(whoOffers, whoAccepts, action, true);
+    }
 
+    public boolean addTpRequest(Player whoOffers, Player whoAccepts, TpAction action, boolean currentLoc) {
+
+	return true;
+    }
+
+    public boolean removeTpRequest(Player whoOffers, Player whoAccepts) {
+
+	return false;
     }
 
     public boolean isAlreadyInRequest(Player whoOffers, Player whoAccepts, TpAction action) {

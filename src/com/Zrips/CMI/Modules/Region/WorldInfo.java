@@ -12,7 +12,7 @@ import com.Zrips.CMI.CMI;
 public class WorldInfo {
 
     private transient Map<String, List<Boolean>> regionChunks = Collections.synchronizedMap(new HashMap<String, List<Boolean>>());
-    private SCord center;
+    private CMIRegion center;
     private long totalChunks = 0;
     private long lastChecked = -1;
     private World world;
@@ -23,7 +23,7 @@ public class WorldInfo {
 	return null;
     }
     
-    public WorldInfo(World world, SCord center) {
+    public WorldInfo(World world, CMIRegion center) {
     }
     
     public void setRegion(Map<String, List<Boolean>> regionChunks) {
@@ -34,41 +34,41 @@ public class WorldInfo {
 	return regionChunks;
     }
 
-    private static String toString(SCord cord) {
+    private static String toString(CMIRegion cord) {
 	return cord.getX() + ":" + cord.getZ();
     }
 
-    public Boolean getRegionsChunk(SCord region, int place) {
+    public Boolean getRegionsChunk(CMIRegion region, int place) {
 	return null;
     }
 
-    public List<Boolean> getRegionPlaces(SCord region) {
+    public List<Boolean> getRegionPlaces(CMIRegion region) {
 	return null;
     }
 
-    public WorldInfo setRegionPlaces(SCord region, List<Boolean> places) {
+    public WorldInfo setRegionPlaces(CMIRegion region, List<Boolean> places) {
 	return null;
     }
 
-    public SCord getNextChunkLoc(boolean exist) {
-	return null;
+    public CMIRegion getNextChunkLoc(boolean exist) {
+	return CMI.getInstance().getRegionManager().getNextChunkLocation(this, exist);
     }
 
     public Chunk getNextChunk(boolean exist) {
-	return null;
+	return CMI.getInstance().getRegionManager().getNextChunk(this, exist);
     }
 
-    public void setRegionChunks(SCord scord, List<Boolean> list) {
+    public void setRegionChunks(CMIRegion scord, List<Boolean> list) {
 	this.regionChunks.put(toString(scord), list);
     }
 
-    public SCord getCenter() {
+    public CMIRegion getCenter() {
 	if (center == null)
-	    center = new SCord(0, 0);
+	    center = new CMIRegion(0, 0);
 	return center;
     }
 
-    public void setCenter(SCord center) {
+    public void setCenter(CMIRegion center) {
 	this.center = center;
     }
 

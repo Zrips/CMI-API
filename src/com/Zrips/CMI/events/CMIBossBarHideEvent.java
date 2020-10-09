@@ -16,6 +16,7 @@ public final class CMIBossBarHideEvent extends Event implements Cancellable {
     }
 
     @Override
+    @EventAnnotation(info = "Fired when CMI boss bar should be hidden. Can be canceled.")
     public HandlerList getHandlers() {
 	return handlers;
     }
@@ -23,7 +24,6 @@ public final class CMIBossBarHideEvent extends Event implements Cancellable {
     public static HandlerList getHandlerList() {
 	return handlers;
     }
-
     @Override
     public final void setCancelled(final boolean cancel) {
 	this.cancel = cancel;

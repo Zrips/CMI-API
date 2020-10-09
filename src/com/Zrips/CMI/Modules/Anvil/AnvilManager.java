@@ -1,14 +1,13 @@
 package com.Zrips.CMI.Modules.Anvil;
 
-import java.util.HashMap;
-
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmdWarmUp.CmdWarmUp;
 
 public class AnvilManager {
-    public HashMap<String, CmdWarmUp> cooldowns = new HashMap<String, CmdWarmUp>();
 
     CMI plugin;
 

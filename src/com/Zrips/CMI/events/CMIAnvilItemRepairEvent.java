@@ -26,6 +26,7 @@ public final class CMIAnvilItemRepairEvent extends PlayerEvent implements Cancel
     }
 
     @Override
+    @EventAnnotation(info = "Fired on item repair action with anvil")
     public final HandlerList getHandlers() {
 	return handlers;
     }

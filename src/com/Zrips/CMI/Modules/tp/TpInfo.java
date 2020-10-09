@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.tp;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
@@ -9,6 +10,7 @@ public class TpInfo {
     private Player whoOffers;
     private Player whoAccepts;
     private TpAction action;
+    private Location loc = null;
     private long when;
 
     public TpInfo(Player whoOffers, Player whoAccepts, TpAction action) {
@@ -48,6 +50,14 @@ public class TpInfo {
 
     public void setWhen(long when) {
 	this.when = when;
+    }
+
+    public Location getLoc() {
+	return loc;
+    }
+
+    public void setLoc(Location loc) {
+	this.loc = loc;
     }
 
 }

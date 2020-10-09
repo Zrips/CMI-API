@@ -1,24 +1,43 @@
 package com.Zrips.CMI.Modules.Permissions;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
-import de.bananaco.bpermissions.api.ApiLayer;
-import de.bananaco.bpermissions.api.CalculableType;
 
 public class BPermissionsHandler implements PermissionInterface {
 
     @Override
     public String getMainGroup(Player player) {
-	String[] groups = ApiLayer.getGroups(player.getWorld().getName(), CalculableType.USER, player.getName());
-	return groups[0];
+	return null;
     }
 
     @Override
     public String getPrefix(Player player) {
-	return ApiLayer.getValue(player.getWorld().getName(), CalculableType.USER, player.getName(), "prefix");
+	return null;
     }
 
     @Override
     public String getSufix(Player player) {
-	return ApiLayer.getValue(player.getWorld().getName(), CalculableType.USER, player.getName(), "suffix");
+	return null;
+    }
+
+    @Override
+    public String getMainGroup(String world, UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getPrefix(UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getSufix(UUID uuid) {
+	return null;
+    }
+
+    @Override
+    public String getNameColor(Player player) {
+	return null;
     }
 }

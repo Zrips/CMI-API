@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class PatrolManager {
 
@@ -18,7 +19,7 @@ public class PatrolManager {
 	this.plugin = plugin;
     }
 
-    public CMIUser getNextUser() {
+    public CMIUser getNextUser() {	
 	return null;
 
     }

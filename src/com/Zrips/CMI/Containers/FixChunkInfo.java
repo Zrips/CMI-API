@@ -3,10 +3,14 @@ package com.Zrips.CMI.Containers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
+
+import com.Zrips.CMI.CMI;
 
 public class FixChunkInfo {
 
@@ -30,7 +34,7 @@ public class FixChunkInfo {
     private boolean autoSpeed = true;
     private boolean messages = true;
 
-    private CommandSender sender;
+    private UUID sender;
     private double checked = 0;
     private World world;
 
@@ -235,10 +239,12 @@ public class FixChunkInfo {
     }
 
     public CommandSender getSender() {
-	return this.sender;
+	if (this.sender.equals(CMI.getInstance().getServerUUID()))
+	    return Bukkit.getConsoleSender();
+	return Bukkit.getPlayer(this.sender);
     }
 
-    public void setSender(CommandSender sender) {
+    public void setSender(UUID sender) {
 	this.sender = sender;
     }
 

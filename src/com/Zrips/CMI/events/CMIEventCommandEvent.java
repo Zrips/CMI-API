@@ -1,0 +1,66 @@
+package com.Zrips.CMI.events;
+
+import java.util.List;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+
+import com.Zrips.CMI.Modules.EventActions.EventActionManager.eventAction;
+
+public final class CMIEventCommandEvent extends PlayerEvent implements Cancellable {
+
+    private static final HandlerList handlers = new HandlerList();
+    private boolean cancel = false;
+    private final eventAction action;
+    private List<String> commands;
+    private Player source;
+
+    public CMIEventCommandEvent(final Player player, Player source, final eventAction action, List<String> commands) {
+	super(player);
+	this.source = source;
+	this.action = action;
+	this.commands = commands;
+    }
+
+    public final static HandlerList getHandlerList() {
+	return handlers;
+    }
+
+    @Override
+    @EventAnnotation(info = "Fired before event command is performed")
+    public final HandlerList getHandlers() {
+	return handlers;
+    }
+
+    @Override
+    public final void setCancelled(final boolean cancel) {
+	this.cancel = cancel;
+    }
+
+    @Override
+    public final boolean isCancelled() {
+	return cancel;
+    }
+
+    public eventAction getAction() {
+	return action;
+    }
+
+    public List<String> getCommands() {
+	return commands;
+    }
+
+    public void setCommands(List<String> commands) {
+	this.commands = commands;
+    }
+
+    public Player getSource() {
+	return source;
+    }
+
+    public void setSource(Player source) {
+	this.source = source;
+    }
+}

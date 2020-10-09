@@ -1,31 +1,33 @@
 package com.Zrips.CMI.Modules.Homes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Containers.ConfigReader;
-import com.Zrips.CMI.Modules.Permissions.PermissionInfo;
-import com.Zrips.CMI.Modules.Warps.CmiWarp;
 
 public class HomeManager {
 
     private CMI plugin;
     HashMap<String, Integer> homeGroups = new HashMap<String, Integer>();
 
+    private boolean checkBlockbreak = false;
+    private boolean pickRealBlock = false;
+    private String defaultHomeName = "Home";
+    private String defaultBedHomeName = "Home";
+    private String homeNameRegex = "/([\\p{L}-]+)/ug";
+    private int respawnImmortality = 0;
+
+    private boolean HomesGui = true;
     private boolean HomesBedInteraction = true;
+    private boolean onlyShiftBed = false;
+    private boolean RemoveBedLocationOnBedBreak = true;
     private HashMap<String, List<String>> ReSpawnPriorityOrder = new HashMap<String, List<String>>();
+    private HashMap<String, HashMap<CMIUser, CmiHome>> bedHomes = new HashMap<String, HashMap<CMIUser, CmiHome>>();
 
     public HomeManager(CMI plugin) {
 	this.plugin = plugin;
@@ -36,12 +38,9 @@ public class HomeManager {
     }
 
     public enum RespawnPriority {
-	spawn, bedLocation, homeLocation, worldSpawn;
+	anchor, bedLocation, spawn, homeLocation, worldSpawn;
+
 	public static RespawnPriority getByName(String name) {
-	    for (RespawnPriority one : RespawnPriority.values()) {
-		if (one.name().equalsIgnoreCase(name))
-		    return one;
-	    }
 	    return null;
 	}
 
@@ -55,6 +54,8 @@ public class HomeManager {
     }
 
     public int getMaxHomes(CommandSender sender) {
+	if (sender instanceof Player)
+	    return getMaxHomes((Player) sender);
 	return 999;
     }
 
@@ -74,5 +75,62 @@ public class HomeManager {
     public Location getReSpawnLocation(Player player) {
 
 	return null;
+    }
+
+    public boolean isCheckBlockbreak() {
+	return checkBlockbreak;
+    }
+
+    public String getDefaultHomeName() {
+	return defaultHomeName;
+    }
+
+    public String getDefaultBedHomeName() {
+	return defaultBedHomeName;
+    }
+
+    public HashMap<String, HashMap<CMIUser, CmiHome>> getBedHomes() {
+	return bedHomes;
+    }
+
+    public void addBedHome(CMIUser user, CmiHome bedHome) {
+    }
+
+    public boolean removeBedHome(Location loc) {
+	return false;
+
+    }
+
+    public boolean isRemoveBedLocationOnBedBreak() {
+	return RemoveBedLocationOnBedBreak;
+    }
+
+    public boolean openHomeGui(Player player, CMIUser user, int page) {
+	
+	return true;
+    }
+
+    public boolean isHomesGui() {
+	return HomesGui;
+    }
+
+    public int getRespawnImmortality() {
+	return respawnImmortality;
+    }
+
+    public String getHomeNameRegex() {
+	return homeNameRegex;
+    }
+
+    public void setHomeNameRegex(String homeNameRegex) {
+	this.homeNameRegex = homeNameRegex;
+    }
+
+    public boolean isPickRealBlock() {
+	return pickRealBlock;
+    }
+
+    public boolean isOnlyShiftBed() {
+	return onlyShiftBed;
     }
 }

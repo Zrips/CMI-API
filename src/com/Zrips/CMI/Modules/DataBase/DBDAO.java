@@ -5,11 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.UUID;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.DataBase.DBManager.DataBaseType;
+import com.Zrips.CMI.Modules.PlayTime.CMIPlayDay;
 
 public abstract class DBDAO {
 
@@ -20,13 +22,36 @@ public abstract class DBDAO {
     private static DataBaseType dbType = DataBaseType.SqLite;
 
     public enum TablesFieldsType {
-	decimal, number, longtext, text, stringList, stringLongMap, stringIntMap, stringDoubleMap, locationMap, state, location, longNumber;
+	decimal("double"),
+	number("int"),
+	longtext("longtext"),
+	text("text"),
+	stringList("text"),
+	stringLongMap("text"),
+	stringIntMap("text"),
+	stringDoubleMap("text"),
+	stringStringMap("text"),
+	locationMap("text"),
+	state("boolean"),
+	location("text"),
+	longNumber("bigint");
+
+	private String type;
+
+	TablesFieldsType(String type) {
+	    this.type = type;
+	}
+
 	public static TablesFieldsType getByname(String name) {
 	    for (TablesFieldsType one : TablesFieldsType.values()) {
 		if (one.name().equalsIgnoreCase(name))
 		    return one;
 	    }
 	    return null;
+	}
+
+	public String getType() {
+	    return type;
 	}
     }
 
@@ -54,7 +79,7 @@ public abstract class DBDAO {
 	pTime("bigint", TablesFieldsType.longNumber),
 	Kits("text", TablesFieldsType.stringLongMap),
 	Charges("text", TablesFieldsType.text),
-	Cooldowns("text", TablesFieldsType.stringList),
+	Cooldowns("longtext", TablesFieldsType.text),
 	Balance("double", TablesFieldsType.decimal),
 	Notes("text", TablesFieldsType.stringList),
 	Rank("text", TablesFieldsType.text),
@@ -70,7 +95,31 @@ public abstract class DBDAO {
 	Vanish("text", TablesFieldsType.text),
 	Economy("text", TablesFieldsType.stringDoubleMap),
 	Mail("text", TablesFieldsType.stringList),
-	FlightCharge("double", TablesFieldsType.decimal);
+	FlightCharge("double", TablesFieldsType.decimal),
+	UserMeta("text", TablesFieldsType.stringStringMap),
+	Flying("boolean", TablesFieldsType.state),
+	Votifier("int", TablesFieldsType.number),
+	Jail("text", TablesFieldsType.text),
+	JailedUntil("bigint", TablesFieldsType.longNumber),
+	FakeAccount("boolean", TablesFieldsType.state),
+	PlaytimeOptimized("bigint", TablesFieldsType.longNumber),
+	flightChargeEnabled("boolean", TablesFieldsType.state),
+	noPayToggled("boolean", TablesFieldsType.state),
+	JailReason("text", TablesFieldsType.text),
+	Skin("text", TablesFieldsType.text),
+	SignSpy("boolean", TablesFieldsType.state),
+	Collision("boolean", TablesFieldsType.state),
+	NamePrefix("text", TablesFieldsType.text),
+	NameSuffix("text", TablesFieldsType.text),
+	Warnings("text", TablesFieldsType.stringLongMap),
+	msgToggle("boolean", TablesFieldsType.state),
+	NameColor("text", TablesFieldsType.text),
+	Muted("text", TablesFieldsType.text),
+	ToggleBBCompassOff("boolean", TablesFieldsType.state),
+	AFRecharge("text", TablesFieldsType.text),
+	DisplayName("text", TablesFieldsType.text);
+
+	// Always add new collumns to the end
 
 	private String type;
 	private TablesFieldsType fieldType;
@@ -86,6 +135,91 @@ public abstract class DBDAO {
 
 	public String getType() {
 	    return type;
+	}
+
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum PlaytimeTablesFields {
+	player_id(TablesFieldsType.number),
+	date(TablesFieldsType.number),
+	h0(0, TablesFieldsType.longNumber),
+	h1(1, TablesFieldsType.longNumber),
+	h2(2, TablesFieldsType.longNumber),
+	h3(3, TablesFieldsType.longNumber),
+	h4(4, TablesFieldsType.longNumber),
+	h5(5, TablesFieldsType.longNumber),
+	h6(6, TablesFieldsType.longNumber),
+	h7(7, TablesFieldsType.longNumber),
+	h8(8, TablesFieldsType.longNumber),
+	h9(9, TablesFieldsType.longNumber),
+	h10(10, TablesFieldsType.longNumber),
+	h11(11, TablesFieldsType.longNumber),
+	h12(12, TablesFieldsType.longNumber),
+	h13(13, TablesFieldsType.longNumber),
+	h14(14, TablesFieldsType.longNumber),
+	h15(15, TablesFieldsType.longNumber),
+	h16(16, TablesFieldsType.longNumber),
+	h17(17, TablesFieldsType.longNumber),
+	h18(18, TablesFieldsType.longNumber),
+	h19(19, TablesFieldsType.longNumber),
+	h20(20, TablesFieldsType.longNumber),
+	h21(21, TablesFieldsType.longNumber),
+	h22(22, TablesFieldsType.longNumber),
+	h23(23, TablesFieldsType.longNumber);
+
+	private TablesFieldsType fieldType;
+	private int hour = 0;
+
+	PlaytimeTablesFields(TablesFieldsType fieldType) {
+	    this.fieldType = fieldType;
+	}
+
+	PlaytimeTablesFields(int hour, TablesFieldsType fieldType) {
+	    this.fieldType = fieldType;
+	    this.hour = hour;
+	}
+
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	public String getType() {
+	    return fieldType.getType();
+	}
+
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+
+	public boolean isTimeField() {
+	    return this.name().startsWith("h") && this.name().length() < 4;
+	}
+
+	public int getHour() {
+	    return hour;
+	}
+    }
+
+    public enum PlaytimeRewardTablesFields {
+	player_id(TablesFieldsType.number),
+	repeatable(TablesFieldsType.stringLongMap),
+	onetime(TablesFieldsType.stringList);
+
+	private TablesFieldsType fieldType;
+
+	PlaytimeRewardTablesFields(TablesFieldsType fieldType) {
+	    this.fieldType = fieldType;
+	}
+
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	public String getType() {
+	    return fieldType.getType();
 	}
 
 	public TablesFieldsType getFieldType() {
@@ -126,6 +260,12 @@ public abstract class DBDAO {
 	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
 	InvTable("inventories",
 	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
+	PlayTime("playtime",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
+	PlayTimeReward("playtimereward",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
 	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);");
 
 	private String mySQL;
@@ -136,111 +276,24 @@ public abstract class DBDAO {
 	    this.tableName = tableName;
 	    this.mySQL = MySQL;
 	    this.sQlite = SQlite;
-//	    this.mySQL = MySQL.replace("[tableName]", prefix + this.tableName);
-//	    this.sQlite = SQlite.replace("[tableName]", this.tableName);
 	}
 
 	private String getQR() {
-	    switch (dbType) {
-	    case MySQL:
-		return this.mySQL.replace("[tableName]", prefix + this.tableName);
-	    case SqLite:
-		return this.sQlite.replace("[tableName]", this.tableName);
-	    }
-	    return "";
+	    return null;
 	}
 
 	public String getQuery() {
-	    String rp = "";
-	    switch (this) {
-	    case InvTable:
-		for (InventoryTablesFields one : InventoryTablesFields.values()) {
-		    rp += ", " + "`" + one.getCollumn() + "` " + one.getType();
-		}
-		break;
-	    case UserTable:
-		for (UserTablesFields one : UserTablesFields.values()) {
-		    rp += ", " + "`" + one.getCollumn() + "` " + one.getType();
-		}
-		break;
-	    default:
-		break;
-
-	    }
-
-//	    switch (dbType) {
-//	    case MySQL:
-//		return this.mySQL.replace("[fields]", rp);
-//	    case SqLite:
-	    return getQR().replace("[fields]", rp);
-//	    }
-//
-//	    return mySQL;
+	    return null;
 	}
 
 	public String getUpdateQuery() {
-	    switch (this) {
-	    case InvTable:
-		String rp = "";
-		for (InventoryTablesFields one : InventoryTablesFields.values()) {
-		    if (one == InventoryTablesFields.player_id)
-			continue;
-		    if (!rp.isEmpty())
-			rp += ", ";
-		    rp += "`" + one.getCollumn() + "` = ?";
-		}
 
-		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `player_id` = ?;";
-		return rp;
-	    case UserTable:
-		rp = "";
-		for (UserTablesFields one : UserTablesFields.values()) {
-		    if (one == UserTablesFields.player_uuid)
-			continue;
-		    if (!rp.isEmpty())
-			rp += ", ";
-		    rp += "`" + one.getCollumn() + "` = ?";
-		}
-
-		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `id` = ?;";
-		return rp;
-	    default:
-		break;
-	    }
-	    return "";
+	    return null;
 	}
 
 	public String getInsertQuery() {
-	    String rp = "";
-	    String q = "";
-	    switch (this) {
-	    case UserTable:
-		for (UserTablesFields one : UserTablesFields.values()) {
-		    if (!rp.isEmpty())
-			rp += ", ";
-		    rp += "`" + one.getCollumn() + "`";
 
-		    if (!q.isEmpty())
-			q += ", ";
-		    q += "?";
-		}
-		break;
-	    case InvTable:
-		for (InventoryTablesFields one : InventoryTablesFields.values()) {
-		    if (!rp.isEmpty())
-			rp += ", ";
-		    rp += "`" + one.getCollumn() + "`";
-
-		    if (!q.isEmpty())
-			q += ", ";
-		    q += "?";
-		}
-		break;
-	    default:
-		break;
-	    }
-	    rp = "INSERT INTO `" + getTableName() + "` (" + rp + ") VALUES (" + q + ");";
-	    return rp;
+	    return null;
 	}
 
 	public String getTableName() {
@@ -248,39 +301,19 @@ public abstract class DBDAO {
 	}
     }
 
+    public enum mysqltypes {
+	old, MySQL, MariaDB;
+    }
+
+    public static mysqltypes Format = mysqltypes.MySQL;
+
     protected DBDAO(CMI plugin, String driverName, String url, String username, String password, String pr) {
-	this.plugin = plugin;
-	prefix = pr;
-	try {
-	    pool = new DBConnectionPool(driverName, url, username, password);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+	
     }
 
     public final synchronized void setUp() throws SQLException {
-	setupConfig();
-	int version = getSchemaVersion();
-	if (version == 0) {
-	    plugin.consoleMessage("&cCould not initialize database!  Could not determine schema version!");
-	    return;
-	}
-
-	try {
-//	    checkUpdate();
-	    version = 1;
-	    updateSchemaVersion(version);
-	    createDefaultTable(DBTables.UserTable);
-	    checkDefaultUserCollumns();
-	    createDefaultTable(DBTables.InvTable);
-	    checkDefaultInvCollumns();
-	} finally {
-	}
+	
     }
-
-    protected abstract void setupConfig() throws SQLException;
-
-    protected abstract void checkUpdate() throws SQLException;
 
     public abstract Statement prepareStatement(String query) throws SQLException;
 
@@ -294,20 +327,22 @@ public abstract class DBDAO {
 
     public abstract boolean addCollumn(String table, String collumn, String type);
 
+    public abstract boolean convertTableToUTF8(DBTables table);
+
+    public abstract String getTableCharSet(DBTables table);
+
     public String getPrefix() {
 	return prefix;
     }
 
-    /**
-     * Gets the current schema version
-     * @return schema version number
-     */
-    protected int getSchemaVersion() {
-	int schema = 0;
-	return schema;
+    // sync
+    public void updateUUID(int id, UUID uuid) {
+	
     }
 
-    private void updateSchemaVersion(int value) {
+    // sync
+    public void updateUserName(int id, String name) {
+	
     }
 
     /**
@@ -316,12 +351,13 @@ public abstract class DBDAO {
      * @throws SQLException
      */
     public void executeSQL(String sql) throws SQLException {
+	
     }
 
     public boolean isConnected() {
 	try {
-	    return pool.getConnection() != null;
-	} catch (SQLException e) {
+	    return pool.getConnection() != null && !pool.getConnection().isClosed();
+	} catch (Error | Exception e) {
 	    return false;
 	}
     }
@@ -348,62 +384,151 @@ public abstract class DBDAO {
     public void close(Statement stmt) {
     }
 
+    // async
     public void updatePlayer(CMIUser user) {
+	
     }
 
+    // async
+    public void updatePlayerPlayTime(CMIUser user) {
+	
+    }
 
+    // async
     public void updatePlayerInventory(CMIUser user, String string) {
 	
     }
 
+    // async
+    public void updatePlayerPlayTimeRewards(CMIUser user) {
+	
+    }
+
     private PreparedStatement updateBatch = null;
+    private boolean updateBatchExecuted = true;
     private PreparedStatement insertBatch = null;
+    private boolean insertBatchExecuted = true;
+
     private PreparedStatement inventoryUpdateBatch = null;
+    private boolean inventoryUpdateBatchExecuted = true;
     private PreparedStatement inventoryInsertBatch = null;
+    private boolean inventoryInsertBatchExecuted = true;
+
+    private PreparedStatement playtimerewardUpdateBatch = null;
+    private boolean playtimerewardUpdateBatchExecuted = true;
+    private PreparedStatement playtimerewardInsertBatch = null;
+    private boolean playtimerewardInsertBatchExecuted = true;
+
+    private PreparedStatement playtimeUpdateBatch = null;
+    private boolean playtimeUpdateBatchExecuted = true;
+    private PreparedStatement playtimeInsertBatch = null;
+    private boolean playtimeInsertBatchExecuted = true;
+
+    private boolean autoCommit = true;
+
+    private boolean locked = false;
 
     public void setAutoCommit(boolean state) {
-	
     }
 
-    public void commit() {
-	
-    }
+    boolean ignoredFirst = false;
 
-    public void executeTempBatch() {
-	
+    public boolean executeTempBatch() {	
+	return true;
     }
 
     public void prepareTempBatch() {
-	
     }
 
-    public void addPlayerToBatch2(CMIUser user, boolean force) {
-	
-    }
-
-
+    // async irelevant child method
     public int getInvId(int iid) {
-	int id = 0;
-	return id;
+	    return 0;
     }
 
+    // async irelevant child method
+    private int getPlayTimeId(CMIPlayDay playDay, CMIUser user) {
+	
+	return 0;
+    }
+
+    // async irelevant child method
+    private int getPlayTimeRewardId(CMIUser user) {
+	
+	return 0;
+    }
+
+    // async irelevant child method
+    private int getId(String uuid) {
+	
+	return 0;
+    }
+
+    // sync priority
     public String getInv(CMIUser user) {
+	
 	return null;
     }
 
+    // sync irelevant
+    public void loadUser(UUID uuid) {
+	
+    }
 
+    public void loadUser(int id) {
+	
+    }
+
+    // sync irelevant
     public void loadAllUsers() {
+	
+    }
+	
+
+    // sync irelevant
+    public void loadPlayTimes() {
+	
     }
 
+    // sync irelevant
+    public LinkedHashSet<CMIUser> getLastLogOffList(int from, int to) {
+	
+	return null;
+    }
+
+    // sync irelevant
+    public void loadPlayTimes(CMIUser user) {
+    }
+
+    // sync irelevant
+    public void loadPlayerPlayTimeRewards() {
+	
+    }
+
+    // async
     public void getUserIds(HashMap<String, CMIUser> users) {
+	
+    }
+	
+
+    // async
+    public void getUserPlayTimeIds(HashMap<CMIPlayDay, CMIUser> getPlayerPlayTimeId) {
+	
     }
 
+    // async
     public void getUserInvIds(HashMap<Integer, CMIUser> users) {
+	
     }
 
-    public boolean removeUser(UUID uuid) {
-	boolean done = false;
-	return done;
+    // async
+    public void getUserPlayTimeRewardIds(HashMap<Integer, CMIUser> users) {
+	
+    }
+
+    // sync no priority
+    public boolean removeUser(int id) {
+	
+	return false;
     }
 
     private boolean createDefaultTable(DBTables table) {
@@ -418,6 +543,14 @@ public abstract class DBDAO {
 	return true;
     }
 
+    private boolean checkDefaultPlayTimeCollumns() {
+	return true;
+    }
+
+    private boolean checkDefaultPlayTimeRewardCollumns() {
+	return true;
+    }
+
     public DataBaseType getDbType() {
 	return dbType;
     }
@@ -425,4 +558,9 @@ public abstract class DBDAO {
     public void setDbType(DataBaseType dabType) {
 	dbType = dabType;
     }
+
+    public boolean isLocked() {
+	return locked;
+    }
+
 }

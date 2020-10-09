@@ -9,20 +9,18 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.DataBase.DBManager.DataBaseType;
 
 public class DBMySQL extends DBDAO {
-    private String database;
     private CMI plugin;
 
-    DBMySQL(CMI plugin, String hostname, String database, String username, String password, String prefix, boolean autoReconnect, boolean certificate, boolean ssl) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=" + ssl + "&verifyServerCertificate=" + certificate, username,
+    public DBMySQL(CMI plugin, String hostname, String database, String username, String password, String prefix, boolean autoReconnect, boolean certificate, boolean ssl) {
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=" + ssl +
+	    "&verifyServerCertificate=" + certificate +
+	    "&useUnicode=true&characterEncoding=utf8mb4_unicode_ci", username,
 	    password, prefix);
+	this.plugin = plugin;
+	this.setDbType(DataBaseType.MySQL);
     }
 
     public void initialize() {
-	try {
-	    setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
     }
 
     public DBMySQL initialize(CMI plugin, String hostname, String database, String username, String password, String prefix, boolean autoReconnect, boolean certificate, boolean ssl) {
@@ -30,22 +28,7 @@ public class DBMySQL extends DBDAO {
     }
 
     @Override
-    protected synchronized void setupConfig() throws SQLException {
-
-    }
-
-    @Override
-    protected synchronized void checkUpdate() throws SQLException {
-
-    }
-
-    private boolean createDefaultUsersBase() {
-	return true;
-    }
-
-    @Override
     public Statement prepareStatement(String query) throws SQLException {
-
 	return null;
     }
 
@@ -59,21 +42,18 @@ public class DBMySQL extends DBDAO {
     @Override
     public boolean isTable(String table) {
 	return false;
-
     }
 
     @SuppressWarnings("resource")
     @Override
     public boolean isCollumn(String table, String collumn) {
 	return false;
-
     }
 
     @SuppressWarnings("resource")
     @Override
     public boolean addCollumn(String table, String collumn, String type) {
 	return false;
-
     }
 
     @SuppressWarnings("resource")
@@ -81,5 +61,15 @@ public class DBMySQL extends DBDAO {
     public boolean truncate(String table) {
 	return false;
 
+    }
+
+    @Override
+    public String getTableCharSet(DBTables table) {
+	return null;
+    }
+
+    @Override
+    public boolean convertTableToUTF8(DBTables table) {
+	return true;
     }
 }

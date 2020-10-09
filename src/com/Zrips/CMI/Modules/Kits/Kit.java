@@ -1,14 +1,14 @@
 package com.Zrips.CMI.Modules.Kits;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIChatColor;
+import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
 
 public class Kit {
 
@@ -16,45 +16,33 @@ public class Kit {
     private List<String> commands = new ArrayList<String>();
     private List<String> conditions = new ArrayList<String>();
     private List<String> Description = new ArrayList<String>();
-    private ItemStack helmet = null;
-    private ItemStack chest = null;
-    private ItemStack legs = null;
-    private ItemStack boots = null;
-    private ItemStack OffHand = null;
-    
+
+    private HashMap<CMIInventorySlot, ItemStack> extraItems = new HashMap<CMIInventorySlot, ItemStack>();
+
     private ItemStack Icon = null;
+    private ItemStack IconOff = null;
     private double cost = 0D;
     private int expCost = 0;
     private Long delay = -1L;
     private String name = null;
+    private String displayName = null;
     private String group = null;
     private boolean enabled = true;
     private int weight = 0;
     private String cmdName = null;
-    
+
     private Integer slot = null;
 
-//    @Override
-//    public Kit clone() {
-//	Kit kit = new Kit(this.name);	
-//	kit.setCommands(commands);
-//	kit.setConditions(conditions);
-//	kit.setCost(cost);
-//	kit.setDelay(delay);
-//	kit.setDescription(Description);
-//	kit.setExpCost(expCost);
-//	kit.setGroup(group);
-//	kit.setItem(item);	
-//	kit.setName(name);	
-//        return kit;
-//    }
+    private int maxUsages = -1;
+    private boolean showDespiteWeight = false;
+
+    private boolean dropItems = true;
 
     public Kit(String name) {
-	this.name = name;
-	reset();
     }
 
     public void reset() {
+	
     }
 
     public ItemStack getFirstNotNullItem() {
@@ -69,24 +57,22 @@ public class Kit {
 	return null;
     }
 
+    private ItemStack checkBook(ItemStack book) {
+	
+	return null;
+    }
+
     public void setItem(List<ItemStack> item) {
-	this.item = item;
     }
 
     public void setItem(int slot, ItemStack item) {
-	this.item.set(slot, item);
     }
 
     public void addItem(ItemStack item) {
-	this.item.add(item);
     }
 
     public List<String> getCommands(Player player) {
-	List<String> t = new ArrayList<String>();
-	for (String one : commands) {
-	    t.add(CMI.getInstance().getKitsManager().processText(one, player, this));
-	}
-	return t;
+	return null;
     }
 
     public List<String> getCommands() {
@@ -134,15 +120,11 @@ public class Kit {
     }
 
     public void setName(String name) {
-	this.name = name;
+	this.name = CMIChatColor.stripColor(name);
     }
 
     public List<String> getDescription(Player player) {
-	List<String> t = new ArrayList<String>();
-	for (String one : this.Description) {
-	    t.add(CMI.getInstance().getKitsManager().processText(one, player, this));
-	}
-	return t;
+	return null;
     }
 
     public List<String> getDescription() {
@@ -190,44 +172,73 @@ public class Kit {
 	this.cmdName = CommandName;
     }
 
+    public ItemStack getExtraItem(CMIInventorySlot slot) {
+
+	return extraItems.get(slot);
+    }
+
+    public ItemStack getExtraItem(Player player, CMIInventorySlot slot) {
+
+	return null;
+    }
+
+    public void setExtraItem(CMIInventorySlot slot, ItemStack item) {
+
+    }
+
+    @Deprecated
     public ItemStack getHelmet() {
-	return helmet;
+	return extraItems.get(CMIInventorySlot.Helmet);
     }
 
+    @Deprecated
     public void setHelmet(ItemStack helmet) {
-	this.helmet = helmet;
+	if (helmet != null)
+	    extraItems.put(CMIInventorySlot.Helmet, helmet.clone());
     }
 
+    @Deprecated
     public ItemStack getChest() {
-	return chest;
+	return extraItems.get(CMIInventorySlot.ChestPlate);
     }
 
+    @Deprecated
     public void setChest(ItemStack chest) {
-	this.chest = chest;
+	if (chest != null)
+	    extraItems.put(CMIInventorySlot.ChestPlate, chest.clone());
     }
 
+    @Deprecated
     public ItemStack getLegs() {
-	return legs;
+	return extraItems.get(CMIInventorySlot.Pants);
     }
 
+    @Deprecated
     public void setLegs(ItemStack legs) {
-	this.legs = legs;
+	if (legs != null)
+	    extraItems.put(CMIInventorySlot.Pants, legs.clone());
     }
 
+    @Deprecated
     public ItemStack getBoots() {
-	return boots;
+	return extraItems.get(CMIInventorySlot.Boots);
     }
 
+    @Deprecated
     public void setBoots(ItemStack boots) {
-	this.boots = boots;
+	if (boots != null)
+	    extraItems.put(CMIInventorySlot.Boots, boots.clone());
     }
 
+    @Deprecated
     public ItemStack getOffHand() {
-	return OffHand;
+	return extraItems.get(CMIInventorySlot.OffHand);
     }
 
+    @Deprecated
     public void setOffHand(ItemStack offHand) {
-	OffHand = offHand;
+	if (offHand != null)
+	    extraItems.put(CMIInventorySlot.OffHand, offHand.clone());
     }
 
     public Integer getSlot() {
@@ -238,6 +249,10 @@ public class Kit {
 	this.slot = slot;
     }
 
+    public ItemStack getSafeIcon() {
+	return null;
+    }
+
     public ItemStack getIcon() {
 	if (Icon != null)
 	    return Icon.clone();
@@ -246,6 +261,58 @@ public class Kit {
 
     public void setIcon(ItemStack icon) {
 	Icon = icon;
+    }
+
+    public ItemStack getSafeIconOff() {
+	if (IconOff != null)
+	    return IconOff.clone();
+	return getSafeIcon();
+    }
+
+    public ItemStack getIconOff() {
+	if (IconOff != null)
+	    return IconOff.clone();
+	return getIcon();
+    }
+
+    public void setIconOff(ItemStack iconOff) {
+	IconOff = iconOff;
+    }
+
+    public int getMaxUsages() {
+	return maxUsages;
+    }
+
+    public void setMaxUsages(int maxUsages) {
+	this.maxUsages = maxUsages;
+    }
+
+    public boolean isLimitedUse() {
+	return this.maxUsages > 0;
+    }
+
+    public boolean isShowDespiteWeight() {
+	return showDespiteWeight;
+    }
+
+    public void setShowDespiteWeight(boolean showDespiteWeight) {
+	this.showDespiteWeight = showDespiteWeight;
+    }
+
+    public boolean isDropItems() {
+	return dropItems;
+    }
+
+    public void setDropItems(boolean dropItems) {
+	this.dropItems = dropItems;
+    }
+
+    public String getDisplayName() {
+	return displayName == null ? getCommandName() : displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+	this.displayName = displayName;
     }
 
 }

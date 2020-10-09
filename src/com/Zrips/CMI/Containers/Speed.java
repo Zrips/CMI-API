@@ -1,9 +1,15 @@
 package com.Zrips.CMI.Containers;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import com.Zrips.CMI.Modules.BossBar.BossBarInfo;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class Speed {
+    private BossBarInfo bb;
     private Player player;
     private Location loc;
 
@@ -14,12 +20,14 @@ public class Speed {
     private Long time = 0L;
     private Long boost = 0L;
     private Long superBoost = 0L;
+    
+    private boolean free = false;
 
     public Speed(Player player) {
     }
 
     public double getSpeed() {	
-	return 0D;
+	return 0;
     }
 
     public Location getLoc() {
@@ -76,5 +84,21 @@ public class Speed {
 
     public boolean isSpeedometer() {
 	return speedometer;
+    }
+
+    public boolean isFree() {
+	return free;
+    }
+
+    public void setFree(boolean free) {
+	this.free = free;
+    }
+
+    public BossBarInfo getBb() {
+	return bb;
+    }
+
+    public void setBb(BossBarInfo bb) {
+	this.bb = bb;
     }
 }

@@ -5,8 +5,8 @@ import org.bukkit.command.CommandSender;
 
 public class Allias extends CommandReg {
 
-    public Allias(String command) {
-	super(command);
+    public Allias(String command, CommandAlias alias) {
+	super(command, alias);
     }
 
     @Override

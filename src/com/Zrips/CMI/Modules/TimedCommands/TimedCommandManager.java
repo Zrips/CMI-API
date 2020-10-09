@@ -1,13 +1,9 @@
 package com.Zrips.CMI.Modules.TimedCommands;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import org.bukkit.Bukkit;
+
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
@@ -55,7 +51,6 @@ public class TimedCommandManager {
     }
 
     private static Location getSafeLocation(Location loc) {
-
 	return null;
     }
 

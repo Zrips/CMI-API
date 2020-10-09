@@ -1,17 +1,10 @@
 package com.Zrips.CMI.Modules.Region;
 
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
@@ -45,30 +38,19 @@ public class WorldManager {
     public WorldManager(final CMI plugin) {
     }
 
-//    public void save() {
-//
-//	File destination = new File(plugin.getDataFolder(), "ChunkData.txt");
-//
-//	List<String> list = new ArrayList<String>();
-//
-//	for (Entry<String, WorldInfo> one : worldMap.entrySet()) {
-//	    list.add(one.getKey());
-//	    for (Chunk oneC : one.getValue().getWorld().getLoadedChunks()) {
-//		list.add(oneC.getX() + ":" + oneC.getZ());
-//	    }
-//	}
-//
-//	try {
-//	    Files.write(destination.toPath(), list, Charset.forName("UTF-8"));
-//	} catch (IOException e) {
-//	}
-//
-//    }
-
-    public void addChunk(Chunk chunk) {
+    public void removeWorldInfo(World world) {
+	worldMap.remove(world.getName());
     }
 
-    public WorldInfo getWorldInfoInRange(World world, SCord center, Integer range) {
+    public void loadWorldChunksInfo(final World world) {
+    }
+
+//    }
+    public void addChunk(Chunk chunk) {
+
+    }
+
+    public WorldInfo getWorldInfoInRange(World world, CMIRegion center, Integer range) {
 	return null;
     }
 
@@ -76,11 +58,11 @@ public class WorldManager {
 	return worldMap.get(world.getName());
     }
 
-    public SCord getNextInSpiral(long place) {
+    public CMIRegion getNextInSpiral(long place) {
 	return null;
     }
 
-    public SCord getNextChunkLocation(WorldInfo info, boolean existing) {
+    public CMIRegion getNextChunkLocation(WorldInfo info, boolean existing) {
 	return null;
     }
 
@@ -88,54 +70,52 @@ public class WorldManager {
 	return null;
     }
 
-    public WorldInfo getWorldInfo(World world, SCord center, Integer range) {
+    public WorldInfo getWorldInfo(World world, CMIRegion center, Integer range) {
 
 	return null;
     }
 
-    public WorldInfo fillEmpty(World world, SCord center, Integer range) {
+    public WorldInfo fillEmpty(World world, CMIRegion center, Integer range) {
+	return null;
+    }
+
+    public WorldInfo getWorldInfo(World world, CMIRegion center) {
 
 	return null;
     }
 
-    public WorldInfo getWorldInfo(World world, SCord center) {
+    private static boolean inRange(CMIRegion center, CMIRegion scord, Integer range) {
 
-	return null;
-    }
-
-    private static boolean inRange(SCord center, SCord scord, Integer range) {
 	return false;
     }
 
-    public HashMap<String, SCord> getRegionFiles(World world) {
+    public HashMap<String, CMIRegion> getRegionFiles(World world) {
 
 	return null;
     }
 
-    public HashMap<String, SCord> getRegionFiles(SCord center, Integer range) {
+    public HashMap<String, CMIRegion> getRegionFiles(CMIRegion center, Integer range) {
 
 	return null;
     }
 
-    private static SCord getRegionCord(SCord scord) {
+    private static CMIRegion getRegionCord(CMIRegion scord) {
 	return null;
     }
 
-    private static SCord getRegionCord(int x, int z) {
+    private static CMIRegion getRegionCord(int x, int z) {
 	return null;
     }
 
-    private static SCord getRealChunkFromPlace(SCord region, int place) {
+    private static CMIRegion getRealChunkFromPlace(CMIRegion region, int place) {
 	return null;
     }
 
-    private static SCord getCordFromPlace(int place) {
+    private static CMIRegion getCordFromPlace(int place) {
 	return null;
     }
-
 
     private static int CoordToChunkPlace(int x, int z) {
 	return x + (z * 32);
     }
-
 }

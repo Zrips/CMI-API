@@ -1,13 +1,14 @@
 package com.Zrips.CMI.AllListeners;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
 
 public class PlayerItemDamageListener implements Listener {
     private CMI plugin;
@@ -16,9 +17,13 @@ public class PlayerItemDamageListener implements Listener {
 	this.plugin = plugin;
     }
 
+    HashMap<UUID, Long> informed = new HashMap<UUID, Long>();
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void itemDurabilityLoss(PlayerItemDamageEvent event) {
-	
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void armorDurabilityLoss(PlayerItemDamageEvent event) {
+    }
 }

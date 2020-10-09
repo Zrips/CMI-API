@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.MemorySection;
@@ -27,9 +26,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.ConfigReader;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticleEffect;
+import com.Zrips.CMI.FileHandler.ConfigReader;
+import com.Zrips.CMI.Modules.Particl.CMIEffect;
+import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
+import com.Zrips.CMI.Modules.Worlds.CMIWorldListener;
+import com.Zrips.CMI.Modules.Worlds.UpdateOnWorldLoad;
 
 public class PortalManager {
 
@@ -49,18 +51,17 @@ public class PortalManager {
     private CMI plugin;
 
     public PortalManager(CMI plugin) {
+
     }
 
     private int sched = -1;
 
     public void stop() {
-	if (sched == -1)
-	    return;
-	Bukkit.getScheduler().cancelTask(sched);
-	sched = -1;
+
     }
 
     private void tasker() {
+
     }
 
     private static void showParticlesForPortal(CMIPortal portal) {
@@ -74,6 +75,7 @@ public class PortalManager {
     }
 
     public void recalculateChunks(CMIPortal portal) {
+
     }
 
     public CMIPortal getByName(String name) {
@@ -89,6 +91,13 @@ public class PortalManager {
     }
 
     public CMIPortal collidesWithPortal(CuboidArea newarea) {
+	Set<Entry<String, CMIPortal>> set = portals.entrySet();
+	for (Entry<String, CMIPortal> entry : set) {
+	    CMIPortal check = entry.getValue();
+	    if (check.checkCollision(newarea)) {
+		return entry.getValue();
+	    }
+	}
 	return null;
     }
 
@@ -102,39 +111,48 @@ public class PortalManager {
 
     Boolean performCmd = true;
 
-    public void loadConfig(ConfigReader cfg) {
+    public void loadConfig() {
+
     }
 
     public void load() {
-	
     }
 
-    public void loadMap(World world, Map<String, Object> root) throws Exception {
-	
+    public void loadMap(String world, Map<String, Object> root) throws Exception {
+
     }
 
     public void handlePortalVisualizerUpdates() {
-	
+	for (Player one : Bukkit.getOnlinePlayers()) {
+	    handlePortalVisualizerUpdates(one, null, one.getLocation());
+	}
     }
 
-    public void handlePortalVisualizerUpdates(Player player, Location locfrom, Location locto) {
-	
+    public boolean handlePortalVisualizerUpdates(Player player, Location locfrom, Location locto) {
+
+	return false;
     }
 
     public void savePortals() {
-	
+    }
+
+    private Integer id = null;
+    private boolean saving = false;
+
+    private void save() {
+
     }
 
     public void removeLastPortalInRange(CMIPortal portal, UUID uuid) {
-	
+
     }
 
     public void removeLastPortalInRange(UUID uuid) {
-	
+
     }
 
     public void addLastPortalInRange(CMIPortal portal, UUID uuid) {
-	
+
     }
 
     public SortedMap<String, CMIPortal> getPortals() {
@@ -142,10 +160,12 @@ public class PortalManager {
     }
 
     public List<CMIPortal> getPortalsByDistance(Location loc) {
+
 	return null;
     }
 
     public void removePortal(CMIPortal portal) {
+
     }
 
     public int getPortalsCheckInterval() {
@@ -172,6 +192,11 @@ public class PortalManager {
     }
 
     public void removeNearPortal(UUID uuid) {
-	playerNearPortals.remove(uuid);
+    }
+
+    public void forceUpdate(CMIPortal portal) {
+    }
+
+    public void forceUpdate(UUID uuid, CMIPortal portal) {
     }
 }

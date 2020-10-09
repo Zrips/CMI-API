@@ -22,6 +22,7 @@ public final class CMIPortalUseEvent extends PlayerEvent implements Cancellable 
     }
 
     @Override
+    @EventAnnotation(info = "Fired when player enters portal area")
     public final HandlerList getHandlers() {
 	return handlers;
     }

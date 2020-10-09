@@ -9,6 +9,10 @@ public class CMIVanish {
 
     private CMIUser user;
 
+    private HashMap<VanishAction, Boolean> map = new HashMap<VanishAction, Boolean>();
+
+    private Boolean wasCollidable = null;
+
     public void fromString(String line) {
     }
 
@@ -26,6 +30,7 @@ public class CMIVanish {
     }
 
     public CMIVanish(CMIUser user) {
+	this.user = user;
     }
 
     public CMIUser getUser() {
@@ -37,13 +42,21 @@ public class CMIVanish {
     }
 
     public boolean is(VanishAction action) {
-	return true;
+	if (!map.containsKey(action) || map.get(action) == null) {
+	    return action.isEnabled();
+	}
+	return map.get(action);
     }
 
     public void set(VanishAction action, boolean state) {
+	map.put(action, state);
     }
 
-    public boolean isInitialized() {
-	return true;
+    public Boolean getWasCollidable() {
+	return wasCollidable == null ? true : wasCollidable;
+    }
+
+    public void setWasCollidable(Boolean wasCollidable) {
+	this.wasCollidable = wasCollidable;
     }
 }

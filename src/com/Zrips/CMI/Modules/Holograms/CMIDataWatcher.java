@@ -4,39 +4,71 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+
 public class CMIDataWatcher {
 
-    public CMIDataWatcher(Integer id, Object stand) {
+    private Integer id;
+    private Object stand;
+    private Location loc;
+    private CMIItemStack item;
+    private CMIHoloLineType type;
+
+//    @Deprecated
+//    public CMIDataWatcher(Integer id, Object stand) {
+//	this.stand = stand;
+//	this.id = id;
+//    }
+
+    public CMIDataWatcher(Integer id, Object stand, CMIHoloLineType type) {
+	this.stand = stand;
+	this.id = id;
+	this.type = type;
     }
 
     public Object getStand() {
-	return null;
+	return stand;
     }
 
     public void setStand(Object watcher) {
+	this.stand = watcher;
     }
 
     public Integer getId() {
-	return null;
+	return id;
     }
 
     public void setId(Integer id) {
+	this.id = id;
     }
 
     public void remove(Player player) {
+	CMI.getInstance().getNMS().removeHologram(player, id);
     }
 
     public Location getLoc() {
-	return null;
+	return loc;
     }
 
     public void setLoc(Location loc) {
+	this.loc = loc;
     }
 
-    public Material getOldMat() {
-	return null;
+
+    public CMIHoloLineType getType() {
+	return type;
     }
 
-    public void setOldMat(Material oldMat) {
+    public void setType(CMIHoloLineType type) {
+	this.type = type;
+    }
+
+    public CMIItemStack getItem() {
+	return item;
+    }
+
+    public void setItem(CMIItemStack item) {
+	this.item = item;
     }
 }

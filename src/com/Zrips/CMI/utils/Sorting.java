@@ -16,13 +16,13 @@ public class Sorting {
     public HashMap<String, Double> sortByValue(Map<String, Double> unsortMap) {
 	return null;
     }
-    
+
     public HashMap<String, Long> sortByValueLong(Map<String, Long> unsortMap) {
 	return null;
     }
-    
+
     public HashMap<Object, Integer> sortByValueObject(Map<Object, Integer> unsortMap) {
 	return null;
     }
-    
+
 }

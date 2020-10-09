@@ -1,18 +1,16 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
 
 public class FlightCharge {
 
-    private Integer max = 1000;
     private Double charge = null;
-    private CMIUser user;
     private Double lastChange = null;
+    private boolean enabled = false;
+    private Boolean autoRecharge = null;
+    private Boolean moneyRecharge = null;
 
-    public FlightCharge(CMIUser user) {
-	this.user = user;
-	max = CMI.getInstance().getFlightChargeManager().getMaxChargeLevel();
+    public FlightCharge() {
     }
 
     public Double getCharge() {
@@ -27,20 +25,50 @@ public class FlightCharge {
     }
 
     public void addCharge(Double charge) {
+
     }
 
     public void takeCharge(Double charge) {
+
     }
 
     public Integer getMax() {
-	return max;
-    }
-
-    public void setMax(Integer max) {
-	this.max = max;
+	return null;
     }
 
     public Double getLastChange() {
 	return lastChange;
+    }
+
+    public boolean isEnabled() {
+	return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+	this.enabled = enabled;
+    }
+
+    public Boolean isAutoRecharge() {
+	return autoRecharge == null ? false : autoRecharge;
+    }
+
+    public void setAutoRecharge(Boolean autoRecharge) {
+	this.autoRecharge = autoRecharge;
+    }
+
+    public void setAutoMoneyRecharge() {
+	moneyRecharge = true;
+    }
+
+    public void setAutoExpRecharge() {
+	moneyRecharge = false;
+    }
+
+    public boolean isMoneyAutoRecharge() {
+	return moneyRecharge == null || moneyRecharge;
+    }
+
+    public boolean isExpAutoRecharge() {
+	return moneyRecharge != null && !moneyRecharge;
     }
 }

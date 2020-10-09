@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.ChunkInfo;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class ViewRangeManager {
 
@@ -25,12 +26,6 @@ public class ViewRangeManager {
 
     public int getRangeFromPerm(Player player) {
 	int range = Bukkit.getViewDistance();
-	if (!player.hasPermission("cmi.viewrange"))
-	    return range;
-	for (int i = 15; i > range; i--) {
-	    if (player.hasPermission("cmi.viewrange." + i))
-		return i;
-	}
 	return range;
     }
 
@@ -39,22 +34,23 @@ public class ViewRangeManager {
     }
 
     private void unloadChunks(final ViewRangeInfo scan) {
-	
+
     }
 
     private void addToUnloadQuee(ViewRangeInfo scan) {
-	
+
     }
 
     private void getNextUnload() {
-	
+
     }
 
     private void addToSendQuee(ViewRangeInfo scan) {
-	
+
     }
 
     private void getNextLoad() {
+
     }
 
     private void sendChunk(final ViewRangeInfo scan) {

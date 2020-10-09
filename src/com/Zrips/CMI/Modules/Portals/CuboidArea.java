@@ -9,16 +9,40 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
+import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
 
 public class CuboidArea {
-    private Location highPoints;
-    private Location lowPoints;
+    private Vector p1;
+    private Vector p2;
+    private Vector highPoints;
+    private Vector lowPoints;
     private World world;
+
+    private static final int MIN_HEIGHT = 0;
+
+    public CuboidArea(World world, Vector startLoc, Vector endLoc) {
+    }
 
     public CuboidArea(Location startLoc, Location endLoc) {
     }
 
-    public CuboidArea() {
+    @Override
+    public CuboidArea clone() {
+	return null;
+    }
+
+    private void recheck() {
+    }
+
+    public boolean valid() {
+	return p1 != null && p2 != null;
+    }
+
+    public CuboidArea(World world) {
+	this.world = world;
     }
 
     public boolean isAreaWithinArea(CuboidArea area) {
@@ -27,82 +51,119 @@ public class CuboidArea {
 
     public Location getOutsideFreeLoc() {
 
-
 	return null;
     }
 
     public boolean containsLoc(Location loc) {
-	return true;
+	return false;
+    }
+
+    public boolean containsLoc(Vector vector) {
+	return containsLoc(vector, 0);
     }
 
     public boolean containsLoc(Location loc, int extraRange) {
-	
+	return false;
+    }
 
+    public boolean containsLoc(Vector vector, int extraRange) {
 	return true;
     }
 
     public boolean checkCollision(CuboidArea area) {
-	    return true;
+	return false;
     }
 
-    private static boolean advCuboidCheckCollision(Location A1High, Location A1Low, Location A2High, Location A2Low) {
+    private static boolean advCuboidCheckCollision(Vector A1High, Vector A1Low, Vector A2High, Vector A2Low) {
+
 	return false;
     }
 
     public long getSize() {
-	int xsize = (highPoints.getBlockX() - lowPoints.getBlockX()) + 1;
-	int zsize = (highPoints.getBlockZ() - lowPoints.getBlockZ()) + 1;
-	int ysize = (highPoints.getBlockY() - lowPoints.getBlockY()) + 1;
-	return xsize * ysize * zsize;
+	return 0;
     }
 
     public int getXSize() {
-	return (highPoints.getBlockX() - lowPoints.getBlockX()) + 1;
+	return 0;
     }
 
     public int getYSize() {
-	return (highPoints.getBlockY() - lowPoints.getBlockY()) + 1;
+	return 0;
     }
 
     public int getZSize() {
+	if (!this.valid())
+	    return 0;
 	return (highPoints.getBlockZ() - lowPoints.getBlockZ()) + 1;
     }
 
+    @Deprecated
     public Location getHighLoc() {
+	return null;
+    }
+
+    public Vector getHighPoint() {
 	return highPoints;
     }
 
+    @Deprecated
     public Location getLowLoc() {
+	if (!this.valid())
+	    return null;
+	return new Location(this.getWorld(), lowPoints.getBlockX(), lowPoints.getBlockY(), lowPoints.getBlockZ());
+    }
+
+    public Vector getLowPoint() {
 	return lowPoints;
     }
 
     public World getWorld() {
-	return highPoints.getWorld();
+	return this.world;
     }
 
     public List<ChunkRef> getChunks() {
-	List<ChunkRef> chunks = new ArrayList<>();
-	return chunks;
+	return getChunks(0);
     }
 
     public List<ChunkRef> getChunks(int range) {
-	List<ChunkRef> chunks = new ArrayList<>();
-	return chunks;
+	return null;
+    }
+
+    public void setArea(CuboidArea area) {
     }
 
     public void setHighLocation(Location highLocation) {
-	this.highPoints = highLocation;
+    }
+
+    public void setHighPoint(Vector highLocation) {
     }
 
     public void setLowLocation(Location lowLocation) {
-	this.lowPoints = lowLocation;
+	if (lowLocation == null)
+	    return;
+	world = lowLocation.getWorld();
+	setLowPoint(lowLocation.toVector());
+    }
+
+    public void setLowPoint(Vector lowPoint) {
     }
 
     public void setWorld(World world) {
 	this.world = world;
     }
 
-    public Location getMiddlePoint() {
+    public void setLocation(Location location) {
+    }
+
+    public void setPoint(Vector vector) {
+    }
+
+    @Deprecated
+    public Location getMiddleLocation() {
+	return null;
+    }
+
+    public Vector getMiddlePoint() {
 	return null;
     }
 
@@ -121,8 +182,8 @@ public class CuboidArea {
 	private final int x;
 
 	public ChunkRef(Location loc) {
-	    this.x = getChunkCoord(loc.getBlockX());
-	    this.z = getChunkCoord(loc.getBlockZ());
+	    this.z = 0;
+	    this.x = 0;
 	}
 
 	public ChunkRef(int x, int z) {
@@ -132,17 +193,7 @@ public class CuboidArea {
 
 	@Override
 	public boolean equals(final Object obj) {
-	    if (this == obj) {
-		return true;
-	    }
-	    if (obj == null) {
-		return false;
-	    }
-	    if (getClass() != obj.getClass()) {
-		return false;
-	    }
-	    ChunkRef other = (ChunkRef) obj;
-	    return this.x == other.x && this.z == other.z;
+	    return true;
 	}
 
 	@Override
@@ -152,7 +203,52 @@ public class CuboidArea {
 
 	@Override
 	public String toString() {
-		return null;
+	    return null;
 	}
+    }
+
+    public boolean shift(Player player, double amount) {
+	return shift(getDirection(player), amount);
+    }
+
+    public boolean shift(Direction d, double amount) {
+
+	return false;
+
+    }
+
+    public boolean expand(Player player, double amount) {
+	return expand(getDirection(player), amount);
+    }
+
+    public boolean expand(Direction d, double amount) {
+
+	return true;
+    }
+
+    public boolean contract(Player player, double amount) {
+	if (!this.valid()) {
+	    return false;
+	}
+	return contract(getDirection(player), amount);
+    }
+
+    public boolean contract(Direction d, double amount) {
+
+	return true;
+    }
+
+    private int getMaxWorldHeight() {
+
+	return 256;
+    }
+
+    private static Direction getDirection(Player player) {
+
+	return null;
+    }
+
+    public enum Direction {
+	UP, DOWN, PLUSX, PLUSZ, MINUSX, MINUSZ
     }
 }

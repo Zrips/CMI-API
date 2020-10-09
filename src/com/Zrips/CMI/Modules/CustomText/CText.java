@@ -1,9 +1,11 @@
 package com.Zrips.CMI.Modules.CustomText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class CText {
 
@@ -23,6 +25,14 @@ public class CText {
 
     public int getTotalPages() {
 	return pages.size();
+    }
+
+    public int getTotalLines() {
+	int i = 0;
+	for (Entry<Integer, List<String>> one : pages.entrySet()) {
+	    i += one.getValue().size();
+	}
+	return i;
     }
 
     public void setName(String name) {
@@ -69,8 +79,7 @@ public class CText {
 	return autoAlias;
     }
 
-    public void setAutoAlias(boolean autoAlias) {
-	this.autoAlias = autoAlias;
+    public void setAutoAlias(boolean autoAlias, boolean save) {
     }
 
     public boolean isRequirePermission() {
@@ -81,4 +90,8 @@ public class CText {
 	this.requirePermission = requirePermission;
     }
 
+    public ItemStack convertToBook(Player player) {
+
+	return null;
+    }
 }

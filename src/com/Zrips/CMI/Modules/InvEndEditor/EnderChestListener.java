@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class EnderChestListener implements Listener {
     private CMI plugin;
@@ -19,12 +20,10 @@ public class EnderChestListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEnderChestClick(InventoryClickEvent event) {
-	
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEnderChestDrag(InventoryDragEvent event) {
-	
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

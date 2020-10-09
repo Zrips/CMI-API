@@ -1,17 +1,18 @@
 package com.Zrips.CMI.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMITimeRate;
 import com.Zrips.CMI.Containers.TimeInfo;
 
 public class TimeManager {
@@ -20,7 +21,56 @@ public class TimeManager {
     double tPMin = 1000d / 60d;
     double tPSec = 1000d / 60d / 60d;
     private int schedID = -1;
+    private HashMap<World, Integer> daySchedID = new HashMap<World, Integer>();
+
+    private HashMap<World, HashMap<timeState, CMITimeRate>> dayTimeDurations = new HashMap<World, HashMap<timeState, CMITimeRate>>();
+
+    private Set<World> froozenWorlds = new HashSet<World>();
+
     private CMI plugin;
+
+    static int dayTime = 600;
+    static int sunriseTime = 90;
+    static int sunsetTime = 90;
+    static int nightTime = 420;
+
+    public enum timeState {
+	day(0, 12000, 600), sunset(12000, 13800, 90), night(13800, 22200, 420), sunrise(22200, 24000, 90);
+
+	private int from;
+	private int until;
+	private int defaultDuration;
+
+	timeState(int from, int until, int defaultDuration) {
+	    this.from = from;
+	    this.until = until;
+	    this.defaultDuration = defaultDuration;
+	}
+
+	public int getFrom() {
+	    return from;
+	}
+
+	public int getUntil() {
+	    return until;
+	}
+
+	public static timeState getTimeState(World world) {
+	    return getTimeState((int) world.getTime());
+	}
+
+	public static timeState getTimeState(int ticks) {
+	    for (timeState one : timeState.values()) {
+		if (one.getFrom() <= ticks && one.getUntil() >= ticks)
+		    return one;
+	    }
+	    return timeState.day;
+	}
+
+	public int getDefaultDuration() {
+	    return defaultDuration;
+	}
+    }
 
     private List<String> worlds = new ArrayList<String>();
 
@@ -28,8 +78,11 @@ public class TimeManager {
 	this.plugin = plugin;
     }
 
+    static Pattern patern = Pattern.compile("((\\d+.)?\\d+[a-zA-Z])");
+
     public enum timeModifier {
 	s(1), m(60), h(60 * 60), d(60 * 60 * 24), w(60 * 60 * 24 * 7), M(60 * 60 * 24 * 30), Y(60 * 60 * 24 * 365);
+
 	private int modifier = 0;
 
 	timeModifier(int modifier) {
@@ -45,23 +98,14 @@ public class TimeManager {
 	}
 
 	public static Long getTimeRangeFromString(String time) {
-	    try {
-		return Long.parseLong(time);
-	    } catch (Exception e) {
-	    }
-
-	    for (timeModifier one : timeModifier.values()) {
-		if (time.endsWith(one.name())) {
-		    try {
-			Long amount = Long.parseLong(time.substring(0, time.length() - one.name().length()));
-			return (long) (amount * one.getModifier());
-		    } catch (Exception e) {
-			break;
-		    }
-		}
-	    }
 	    return null;
 	}
+
+	public static Double getDoubleTimeRangeFromString(String time) {
+
+	    return null;
+	}
+
     }
 
     public List<String> getWorlds() {
@@ -69,7 +113,25 @@ public class TimeManager {
     }
 
     public void runTimer() {
-	
+
+    }
+
+    public void loadConfig() {
+
+    }
+
+    public void stopDayTimer(World world) {
+	if (world == null)
+	    return;
+	Integer oldId = daySchedID.get(world);
+	if (oldId != null) {
+	    Bukkit.getScheduler().cancelTask(oldId);
+	}
+    }
+//    Long time = System.currentTimeMillis();
+
+    private void runDayTimer(World world) {
+
     }
 
     public String to24hour(Long ticks) {
@@ -77,68 +139,37 @@ public class TimeManager {
     }
 
     public String to24hourShort(Long ticks) {
+	return to24hourShort(ticks, true);
+    }
+
+    public String to24hourShort(Long ticks, boolean trim) {
 
 	return null;
     }
 
-    public long toSec(Long ticks) {
-	return (ticks - ((ticks / (60 * 1000)) * 60 * 1000)) / 1000;
-    }
+    public String toOnlyHoursShort(Long ticks, boolean trim, boolean includeMinutes) {
 
-    public long toMin(Long ticks) {
-	return (ticks - ((ticks / (60 * 60 * 1000)) * 60 * 60 * 1000)) / (1000 * 60);
-    }
-
-    public long toHour(Long ticks) {
-	return (ticks - ((ticks / (24 * 60 * 60 * 1000)) * 24 * 60 * 60 * 1000)) / (1000 * 60 * 60);
-    }
-
-    public long toSeconds(Long ticks) {
-	long m = toMinutes(ticks);
-	long seconds = (ticks - (m * 60 * 1000)) / 1000 / 60;
-	return seconds;
-    }
-
-    public long toMinutes(Long ticks) {
-	long d = toDays(ticks);
-	ticks = ticks - (d * 1000 * 60 * 60 * 24);
-	long h = toHours(ticks);
-	long minutes = (ticks - (h * 60 * 60 * 1000)) / 1000 / 60;
-	return minutes;
-    }
-
-    public long toHours(Long ticks) {
-	long d = toDays(ticks);
-	long hours = (ticks - (d * 1000 * 60 * 60 * 24)) / 1000 / 60 / 60;
-	return hours;
-    }
-
-    public long toDays(Long ticks) {
-	long days = (ticks - (toYears(ticks) * 1000 * 60 * 60 * 24 * 365)) / 1000 / 60 / 60 / 24;
-	return days;
-    }
-
-    public long toYears(Long ticks) {
-	long years = ticks / 1000 / 60 / 60 / 24 / 365;
-	return years;
+	return null;
     }
 
     public String to12hour(Long ticks) {
+
 	return null;
     }
 
     private TimeInfo convertToTicks(TimeInfo tInfo) {
+
 	return null;
     }
 
-    public long setTime(World world, String time) {
+    public long setTime(World world, String time, boolean smooth) {
 	TimeInfo tInfo = stringToTimeInfo(time);
-	return setTime(world, tInfo);
+	return setTime(world, tInfo, smooth);
     }
 
-    public long setPTime(Player player, String time) {
+    public long setPTime(Player player, String time, boolean smooth) {
 	TimeInfo tInfo = stringToTimeInfo(time);
-	return setPTime(player, tInfo);
+	return setPTime(player, tInfo, smooth);
     }
 
     public TimeInfo stringToTimeInfo(String time) {
@@ -146,32 +177,40 @@ public class TimeManager {
 	return null;
     }
 
-    public long setTime(World world, TimeInfo tInfo) {
-	if (tInfo.getHours() < 0L && tInfo.getTicks() < 0L)
-	    return -1L;
+    int timeMoverId = -1;
 
-	if (tInfo.getTicks() < 0L) {
-	    convertToTicks(tInfo);
-	    tInfo.setTicks(tInfo.getTicks() - 6000);
-	}
+    public static HashMap<World, String> movingmap = new HashMap<World, String>();
 
-	Long overalTicks = Long.valueOf(tInfo.getTicks());
-	world.setTime(overalTicks);
-	return world.getTime();
+    public void cancelSunMove(final World world) {
     }
 
-    public long setPTime(Player player, TimeInfo tInfo) {
-	if (tInfo.getHours() < 0L && tInfo.getTicks() < 0L)
-	    return -1L;
-	if (tInfo.getTicks() < 0L) {
-	    convertToTicks(tInfo);
-	    tInfo.setTicks(tInfo.getTicks() - 6000);
+    private static long showTimer = 0L;
+
+    public void moveSun(final World world, final int interval, final int updateInterval, int u, final boolean boosBar) {
+    }
+
+    public long setTime(World world, TimeInfo tInfo, boolean smooth) {
+	return 0;
+    }
+
+    public long setPTime(Player player, TimeInfo tInfo, boolean smooth) {
+	return 0;
+    }
+
+    public boolean isFroozenWorld(World world) {
+
+	if (world.getGameRuleValue("doDaylightCycle").equalsIgnoreCase("true")) {
+	    return false;
 	}
-	Long overalTicks = Long.valueOf(tInfo.getTicks());
-	player.setPlayerTime(overalTicks, false);
-	plugin.getPlayerManager().getUser(player).setpTime(overalTicks);
-	if (!player.isOnline())
-	    player.saveData();
-	return overalTicks;
+
+	return froozenWorlds.contains(world);
+    }
+
+    public void addFroozenWorlds(World world) {
+	this.froozenWorlds.add(world);
+    }
+
+    public void removeFroozenWorlds(World world) {
+	this.froozenWorlds.add(world);
     }
 }

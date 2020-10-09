@@ -6,14 +6,29 @@ import org.bukkit.entity.Player;
 
 public class Snd {
     private Player sender;
+    private String senderName;
     private CMIUser senderUser;
     private ConsoleCommandSender console;
     private Player target;
+    private String targetName;
     private CMIUser targetUser;
     private ConsoleCommandSender targetConsole;
     private Player source;
     private CMIUser sourceUser;
     private ConsoleCommandSender sourceConsole;
+
+    public Snd() {
+
+    }
+
+    public Snd(Player sender, Player target) {
+	this.sender = sender;
+	if (sender != null)
+	    senderName = sender.getName();
+	this.target = target;
+	if (target != null)
+	    targetName = target.getName();
+    }
 
     public Player getPlayerSender() {
 	return sender;
@@ -24,89 +39,115 @@ public class Snd {
     }
 
     public Snd setSender(Player sender) {
-	this.sender = sender;
 	return this;
     }
 
     public Snd setSender(CMIUser user) {
-	this.senderUser = user;
 	return this;
     }
 
     public Snd setSender(CommandSender sender) {
-	return null;
+	return this;
     }
 
     public Snd setSender(ConsoleCommandSender console) {
-	return null;
+	this.console = console;
+	return this;
     }
 
     public Player getPlayerTarget() {
-	return null;
+	return target;
     }
 
     public ConsoleCommandSender getConsoleTarget() {
-	return null;
+	return targetConsole;
     }
 
     public Snd setTarget(Player sender) {
-	return null;
+	this.target = sender;
+	return this;
     }
 
     public Snd setTarget(CMIUser user) {
-	return null;
+	this.targetUser = user;
+	return this;
     }
 
     public Snd setTarget(CommandSender sender) {
-	return null;
+	return this;
     }
 
     public Snd setTarget(ConsoleCommandSender console) {
-	return null;
+	this.targetConsole = console;
+	return this;
     }
 
     public Player getPlayerSource() {
-	return null;
+	return source;
     }
 
     public ConsoleCommandSender getConsoleSource() {
-	return null;
+	return sourceConsole;
     }
 
     public Snd setSource(Player sender) {
-	return null;
+	this.source = sender;
+	return this;
     }
 
     public Snd setSource(CMIUser user) {
-	return null;
+	this.sourceUser = user;
+	return this;
     }
 
     public Snd setSource(CommandSender sender) {
-	return null;
+	return this;
     }
 
     public Snd setSource(ConsoleCommandSender console) {
-	return null;
+	this.sourceConsole = console;
+	return this;
     }
 
     public CMIUser getSenderUser() {
-	return null;
+	return senderUser;
     }
 
     public void setSenderUser(CMIUser senderUser) {
+	this.senderUser = senderUser;
     }
 
     public CMIUser getTargetUser() {
-	return null;
+	return targetUser;
     }
 
     public void setTargetUser(CMIUser targetUser) {
+	this.targetUser = targetUser;
     }
 
     public CMIUser getSourceUser() {
-	return null;
+	return sourceUser;
     }
 
     public void setSourceUser(CMIUser sourceUser) {
+	this.sourceUser = sourceUser;
+    }
+
+    public String getSenderName() {
+	return senderName;
+    }
+
+    public Snd setSenderName(String senderName) {
+	this.senderName = senderName;
+	return this;
+    }
+
+    public String getTargetName() {
+	return targetName;
+    }
+
+    public Snd setTargetName(String targetName) {
+	this.targetName = targetName;
+	return this;
     }
 }

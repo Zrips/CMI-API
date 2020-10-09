@@ -13,15 +13,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.ConfigReader;
+import com.Zrips.CMI.FileHandler.ConfigReader;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class EnchantManager {
 
-    private HashMap<String, List<String>> enchantList = new HashMap<String, List<String>>();
+//    private HashMap<String, List<String>> enchantList = new HashMap<String, List<String>>();
+    private HashMap<String, String> enchantList = new HashMap<String, String>();
+    private HashMap<String, String> transaltedEnchantList = new HashMap<String, String>();
     private Map<String, Object> maxValues = new HashMap<String, Object>();
-    private HashMap<Integer, Enchantment> disabled = new HashMap<Integer, Enchantment>();
+    private HashMap<String, Enchantment> disabled = new HashMap<String, Enchantment>();
 
     private CMI plugin;
+    private boolean RequireSpecificPermission;
+    private boolean PermissionLevelLimit;
 
     public EnchantManager(CMI plugin) {
 	this.plugin = plugin;
@@ -31,13 +36,16 @@ public class EnchantManager {
 
     }
 
-    @SuppressWarnings("deprecation")
     public void loadConfig() {
-	
+
     }
 
-    public HashMap<String, List<String>> getEnchantList() {
-	return null;
+    public HashMap<String, String> getEnchantList() {
+	return enchantList;
+    }
+
+    public HashMap<String, String> getTranslatedEnchantList() {
+	return transaltedEnchantList;
     }
 
     public Integer getMaxLevel(Enchantment enchant) {
@@ -50,23 +58,29 @@ public class EnchantManager {
     public void disableEnchantsOnLoad() {
     }
 
-    public HashMap<Integer, Enchantment> getDisabled() {
-	return null;
+    public HashMap<String, Enchantment> getDisabled() {
+	return disabled;
     }
 
-    @SuppressWarnings("deprecation")
     public void addDisabled(Enchantment disabled) {
-	this.disabled.put(disabled.getId(), disabled);
     }
 
-    @SuppressWarnings("deprecation")
     public void removeDisabled(Enchantment disabled) {
-	this.disabled.remove(disabled.getId());
     }
 
     private void loadDisabledEnchants() {
+
     }
 
     public void updateConfig() {
+
+    }
+
+    public boolean isRequireSpecificPermission() {
+	return RequireSpecificPermission;
+    }
+
+    public boolean isPermissionLevelLimit() {
+	return PermissionLevelLimit;
     }
 }

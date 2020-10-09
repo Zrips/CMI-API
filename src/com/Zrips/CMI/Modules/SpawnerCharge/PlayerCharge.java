@@ -12,20 +12,26 @@ public class PlayerCharge {
     private long lastChecked = 0L;
 
     public PlayerCharge(CMIUser user, boolean update) {
-	this.user = user;
-	if (update)
-	    updateSpawnerCharge();
-//	if (this.lastGive == 0L)
-//	    this.lastGive = System.currentTimeMillis();
     }
 
     private void updateSpawnerCharge() {
     }
 
     public void reset() {
+	reset(true);
+    }
+
+    public void reset(boolean update) {
+	charges = 0;
+	lastGive = 0L;
+	SCharge = null;
+	if (update)
+	    updateSpawnerCharge();
     }
 
     public int getCharges() {
+	updateSpawnerCharge();
+	updateChargeTimer();
 	return charges;
     }
 
@@ -34,15 +40,19 @@ public class PlayerCharge {
     }
 
     public boolean haveLeftCharge() {
+	if (!CMI.getInstance().getConfigManager().ChargesUse)
+	    return true;
+	updateSpawnerCharge();
 	return charges > 0;
     }
 
     public boolean have() {
+	updateSpawnerCharge();
 	return SCharge != null;
     }
 
     public int getBonus() {
-	return this.SCharge.getBonus();
+	return 0;
     }
 
     public boolean lowerCd() {
@@ -81,11 +91,13 @@ public class PlayerCharge {
     }
 
     public boolean takeCharge(int amount, boolean force) {
-	
 	return true;
     }
 
     public int getMaxCharges() {
+	updateSpawnerCharge();
+	if (SCharge == null)
+	    return 0;
 	return SCharge.getMaxCharges();
     }
 
@@ -98,6 +110,9 @@ public class PlayerCharge {
     }
 
     public int getCooldown() {
+	updateSpawnerCharge();
+	if (SCharge == null)
+	    return -1;
 	return SCharge.getCooldown();
     }
 }

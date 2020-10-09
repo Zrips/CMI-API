@@ -1,15 +1,14 @@
 package com.Zrips.CMI.Modules.TabList;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.ConfigReader;
-import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Permissions.PermissionInfo;
+import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 public class TabListManager {
 
@@ -22,15 +21,30 @@ public class TabListManager {
     }
 
     private int sched = -1;
+    private int sortSched = -1;
     private double interval = 1D;
-    private boolean Enabled = true;
+//    private Boolean Enabled = true;
+    private boolean async = true;
+    private boolean UpdateTabListNames = true;
     private boolean GroupedEnabled = true;
     private boolean UpdatesOnJoin = true;
     private boolean UpdatesOnLeave = true;
     private boolean UpdatesOnWorldChange = true;
     private boolean UpdatesOnPlayerDeath = false;
+    private boolean UpdatesOnAfkStateChange = false;
     private boolean UpdatesOnPlayerTeleport = false;
     private boolean UpdatesOnNickChange = false;
+
+    private boolean addTabListHeader = true;
+    private boolean addTabListFooter = true;
+
+    private boolean sortingEnabled = false;
+    private CMITabSortingType sortingType = CMITabSortingType.Name;
+    private CMITabSortingOrder sortingOrder = CMITabSortingOrder.ASC;
+
+    private List<String> SortingCustomGroup = new ArrayList<String>();
+    private int SortingBalanceInterval = 10;
+    private int SortingAutoUpdate = 1;
 
     public void stop() {
     }
@@ -40,6 +54,11 @@ public class TabListManager {
     }
 
     private void tasker() {
+
+    }
+
+    private void sortTasker() {
+
     }
 
     public TabList getTL(Player player) {
@@ -52,7 +71,43 @@ public class TabListManager {
     public void updateTabList() {
     }
 
+    public void updateTablistName(Player player) {
+    }
+
     public void updateTabList(Player player) {
+    }
+
+    ConcurrentHashMap<Object, Player> sortMapCache = new ConcurrentHashMap<Object, Player>();
+    Long lastUpdate = 0L;
+
+    private void fillSortCache() {
+
+    }
+
+    char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+    private String getKey(int place) {
+
+	return null;
+    }
+
+    public void updateTabListSorting() {
+
+    }
+
+    public void forceUpdateTabListSorting() {
+
+    }
+
+    public void updateTabListSorting(Player player) {
+
+    }
+
+    public void updateTabListSync(Player player) {
+
+    }
+
+    public void updateTabListAsync(final Player player) {
 
     }
 
@@ -78,6 +133,30 @@ public class TabListManager {
 
     public boolean isUpdatesOnNickChange() {
 	return UpdatesOnNickChange;
+    }
+
+    public boolean isUpdatesOnAfkStateChange() {
+	return UpdatesOnAfkStateChange;
+    }
+
+    public boolean isEnabled() {
+	return CMIModule.tablist.isEnabled();
+    }
+
+    public boolean isUpdateTabListNames() {
+	return UpdateTabListNames;
+    }
+
+    public boolean isSortingEnabled() {
+	return sortingEnabled;
+    }
+
+    public CMITabSortingType getSortingType() {
+	return sortingType;
+    }
+
+    public CMITabSortingOrder getSortingOrder() {
+	return sortingOrder;
     }
 
 }

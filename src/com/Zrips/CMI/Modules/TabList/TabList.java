@@ -1,14 +1,19 @@
 package com.Zrips.CMI.Modules.TabList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class TabList {
 
-    private List<String> header = Arrays.asList("");
-    private  List<String> footer = Arrays.asList("");
+    private HashMap<Integer, List<String>> headerMap = new HashMap<Integer, List<String>>();
+    Integer lastHeader = 1;
+    private HashMap<Integer, List<String>> footerMap = new HashMap<Integer, List<String>>();
+    Integer lastFooter = 1;
     private String playerNameFormat = "";
-    
+
     public TabList() {
     }
 
@@ -20,20 +25,52 @@ public class TabList {
 	this.playerNameFormat = format;
     }
 
-    public List<String> getHeader() {
-	return header;
+    public void prepareNextAnimationForHeader() {
     }
 
+    public void prepareNextAnimationForFooter() {
+    }
+
+    public List<String> getHeader() {
+	return null;
+    }
+
+    @Deprecated
     public void setHeader(List<String> header) {
-	this.header = header;
+	headerMap.put(1, header);
+    }
+
+    public void addHeaderAnimation(List<String> header) {
+	headerMap.put(headerMap.size() + 1, header);
+    }
+
+    public void addFooterAnimation(List<String> footer) {
+	footerMap.put(footerMap.size() + 1, footer);
     }
 
     public List<String> getFooter() {
-	return footer;
+	return null;
     }
 
+    @Deprecated
     public void setFooter(List<String> footer) {
-	this.footer = footer;
+	footerMap.put(1, footer);
+    }
+
+    public HashMap<Integer, List<String>> getHeaderMap() {
+	return headerMap;
+    }
+
+    public void setHeaderMap(HashMap<Integer, List<String>> headerMap) {
+	this.headerMap = headerMap;
+    }
+
+    public HashMap<Integer, List<String>> getFooterMap() {
+	return footerMap;
+    }
+
+    public void setFooterMap(HashMap<Integer, List<String>> footerMap) {
+	this.footerMap = footerMap;
     }
 
 }

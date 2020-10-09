@@ -21,9 +21,7 @@ public class RegWatcher {
     }
 
     public Player getTarget() {
-	if (Bukkit.getPlayer(target.getUniqueId()) != null)
-	    return Bukkit.getPlayer(target.getUniqueId());
-	return this.target;
+	return null;
     }
 
     public void setTarget(Player target) {

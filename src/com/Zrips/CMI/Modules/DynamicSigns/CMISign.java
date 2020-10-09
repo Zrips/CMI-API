@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,10 +12,13 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIBlock;
+import com.Zrips.CMI.Containers.CMIChatColor;
+import com.Zrips.CMI.Containers.CMILocation;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
-import com.Zrips.CMI.utils.Util.CMIChatColor;
 
 public class CMISign {
+
+//    private String name;
 
     private CuboidArea area;
 
@@ -31,16 +33,18 @@ public class CMISign {
 
     private int currentLine = 0;
 
-    public CMISign(Sign sign) {
-	this.sign = sign;
+    private CMILocation loc;
+
+    public CMISign(CMILocation loc) {
+	this.loc = loc;
     }
 
     public World getWorld() {
-	return sign.getWorld();
+	return loc.getWorld();
     }
 
-    public Location getLoc() {
-	return sign == null ? null : sign.getLocation();
+    public CMILocation getLoc() {
+	return loc;
     }
 
     public String[] getLines() {
@@ -48,12 +52,11 @@ public class CMISign {
     }
 
     public String getLine(int place) {
-	return lines.length - 1 < place || place < 0 ? "" : lines[place] == null ? "" : lines[place];
+	return null;
     }
 
     public List<String> getLinesAsList() {
-	List<String> ls = new ArrayList<String>();
-	return ls;
+	return null;
     }
 
     public void setLines(List<String> l) {
@@ -63,7 +66,8 @@ public class CMISign {
     }
 
     public CuboidArea getArea() {
-	return area;
+
+	return null;
     }
 
     public void setArea(CuboidArea area) {
@@ -71,7 +75,7 @@ public class CMISign {
     }
 
     public Sign getSign() {
-	return sign;
+	return null;
     }
 
     public void setSign(Sign sign) {
@@ -79,8 +83,6 @@ public class CMISign {
     }
 
     public boolean isTimeToUpdate() {
-	if (this.lastUpdate + (this.updateIntervalSec * 1000) > System.currentTimeMillis())
-	    return false;
 	return true;
     }
 
@@ -93,6 +95,7 @@ public class CMISign {
     }
 
     public void update(final Player player) {
+
     }
 
     public int getUpdateIntervalSec() {

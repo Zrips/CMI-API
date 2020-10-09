@@ -6,6 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.world.PortalCreateEvent.CreateReason;
+import org.bukkit.util.Vector;
 
 public final class CMIPortalCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
@@ -13,8 +14,14 @@ public final class CMIPortalCreateEvent extends Event implements Cancellable {
     private int height;
     private int width;
     private World world;
+    private Vector lowestPoint;
     private CreateReason reason;
     private boolean cancelled;
+    private CMIPortalType type;
+    
+    public enum CMIPortalType{
+	Nether, End;
+    }
 
     public CMIPortalCreateEvent(Player player, World world, CreateReason reason, int height, int width) {
 	this.player = player;
@@ -47,6 +54,7 @@ public final class CMIPortalCreateEvent extends Event implements Cancellable {
     }
 
     @Override
+    @EventAnnotation(info = "Fired when new portal is been created")
     public HandlerList getHandlers() {
 	return handlers;
     }
@@ -61,5 +69,21 @@ public final class CMIPortalCreateEvent extends Event implements Cancellable {
 
     public CreateReason getReason() {
 	return reason;
+    }
+
+    public CMIPortalType getType() {
+	return type;
+    }
+
+    public void setType(CMIPortalType type) {
+	this.type = type;
+    }
+
+    public Vector getLowestPoint() {
+	return lowestPoint;
+    }
+
+    public void setLowestPoint(Vector lowestPoint) {
+	this.lowestPoint = lowestPoint;
     }
 }

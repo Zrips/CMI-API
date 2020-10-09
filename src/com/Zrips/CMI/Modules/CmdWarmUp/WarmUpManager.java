@@ -1,23 +1,18 @@
 package com.Zrips.CMI.Modules.CmdWarmUp;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CommandAlias;
-import com.Zrips.CMI.Containers.ConfigReader;
-import com.Zrips.CMI.Locale.LC;
+import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
 
 public class WarmUpManager {
     public HashMap<String, CmdWarmUp> warmups = new HashMap<String, CmdWarmUp>();
-    private HashMap<String, WarmUpInfo> counter = new HashMap<String, WarmUpInfo>();
+    private HashMap<UUID, WarmUpInfo> counter = new HashMap<UUID, WarmUpInfo>();
 
     CMI plugin;
 
@@ -26,11 +21,11 @@ public class WarmUpManager {
     }
 
     public boolean isOnWarmUp(Player player) {
-	return isOnWarmUp(player.getName());
+	return isOnWarmUp(player.getUniqueId());
     }
 
-    public boolean isOnWarmUp(String name) {
-	return counter.containsKey(name);
+    public boolean isOnWarmUp(UUID uuid) {
+	return counter.containsKey(uuid);
     }
 
     public void addWU(String cmd, CmdWarmUp warmup) {
@@ -42,10 +37,11 @@ public class WarmUpManager {
     }
 
     public boolean canMove(Player player) {
-	return canMove(player.getName());
+	return canMove(player.getUniqueId());
     }
 
-    public boolean canMove(String name) {
+    public boolean canMove(UUID uuid) {
+
 	return true;
     }
 
@@ -53,30 +49,44 @@ public class WarmUpManager {
 	return true;
     }
 
+    @Deprecated
     public boolean startTeleportUsage(Player player, Location loc) {
+	return startTeleportUsage(TpAction.tp, player, loc);
+    }
+
+    private final static String bossBarName = "CMICmdWarmupBar";
+
+    public boolean startTeleportUsage(TpAction action, Player player, Location loc) {
+
 	return true;
     }
 
     public boolean startCmdUsage(CommandSender sender, String cmd) {
+
 	return true;
     }
 
-    private void performCmd(String target) {
+    private void performCmd(UUID uuid) {
+
     }
 
-    private void count(final String target, final int time) {
+    private void performCmd(Player player, WarmUpInfo info) {
     }
 
-    private void setId(String target, int id) {
+    private void count(UUID uuid) {
+
     }
 
-    public boolean cancel(String target) {
+    public boolean cancel(UUID uuid) {
+
 	return false;
     }
 
     boolean InformOnNoMove;
+    boolean counterBarInfo;
+    boolean showBossBarInfo = false;
 
-    public void load() {
+    public void loadConfig() {
 
     }
 }

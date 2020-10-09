@@ -1,23 +1,27 @@
 package com.Zrips.CMI.Modules.Totems;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
 
 public class TotemManager {
 
     private HashMap<UUID, TotemBossBar> totem = new HashMap<UUID, TotemBossBar>();
     CMI plugin;
+
+    private boolean TotemRemoveFromInventory = false;
+    private boolean TotemCooldownUse = false;
+    private boolean TotemWarmupUse = false;
+    private boolean TotemProtectFromVoid = false;
+    private int TotemCooldownTime = -1;
+    private int TotemWarmupTime = -1;
+
+    private int TotemEffectRegeneration = -1;
+    private int TotemEffectFireResistance = -1;
+    private int TotemEffectAbsorbtion = -1;
 
     public enum BossBarType {
 	Cooldown, Warmup
@@ -27,15 +31,42 @@ public class TotemManager {
 	this.plugin = plugin;
     }
 
+    public void loadConfig() {
+    }
+
+    public boolean isTotemRemoveFromInventory() {
+	return TotemRemoveFromInventory;
+    }
+
+    public boolean isTotemCooldownUse() {
+	return TotemCooldownUse;
+    }
+
+    public boolean isTotemWarmupUse() {
+	return TotemWarmupUse;
+    }
+
+    public int getTotemCooldownTime() {
+	return TotemCooldownTime;
+    }
+
+    public int getTotemWarmupTime() {
+	return TotemWarmupTime;
+    }
+
+    public boolean isTotemProtectFromVoid() {
+	return TotemProtectFromVoid;
+    }
+
     public void hideAllBars() {
     }
 
     public boolean isOnCd(Player player) {
-	return false;
+	    return false;
     }
 
     public boolean isOnWarmup(Player player) {
-	return false;
+	    return false;
     }
 
     public TotemBossBar getBossBar(Player player) {
@@ -50,28 +81,36 @@ public class TotemManager {
     }
 
     public void addWarmupPlayer(Player player) {
+	
+    }
+
+    public void showWarmupEffect(Player player) {
+	
+    }
+
+    public void stopWarmupEffect(Player player) {
+	
     }
 
     public boolean toggleBar(Player player) {
+	
 	return true;
     }
 
     public void removePlayer(Player player, BossBarType type) {
+	
     }
 
     public synchronized void ShowTotemWarmup(Player player) {
-
+	
     }
 
     public synchronized void ShowTotemCooldown(Player player) {
+
     }
 
     public Long getLeftCd(Player player, int cd) {
-	CMIUser user = plugin.getPlayerManager().getUser(player);
-	if (user == null)
-	    return 0L;
-	Long usedOn = user.getTotemCooldown();
-	return getLeftCd(usedOn, cd);
+	return null;
     }
 
     private Long getLeftCd(Long usedOn, int cd) {
@@ -88,5 +127,17 @@ public class TotemManager {
     }
 
     public void checkAllForTotemCd() {
+    }
+
+    public int getRegenerationDuration() {
+	return TotemEffectRegeneration;
+    }
+
+    public int getFireResistanceDuration() {
+	return TotemEffectFireResistance;
+    }
+
+    public int getAbsorbtionDuration() {
+	return TotemEffectAbsorbtion;
     }
 }

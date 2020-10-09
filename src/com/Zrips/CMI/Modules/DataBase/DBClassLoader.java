@@ -19,9 +19,5 @@ public class DBClassLoader extends URLClassLoader {
     
     @Override
     public void addURL(URL url) {
-        for (URL u : getURLs())
-            if (url.sameFile(u)) return;
-        
-        super.addURL(url);
     }
 }

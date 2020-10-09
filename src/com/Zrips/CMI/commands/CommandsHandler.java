@@ -1,6 +1,5 @@
 package com.Zrips.CMI.commands;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,45 +9,67 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.teleportAll;
 
 public class CommandsHandler implements CommandExecutor {
-    private static final String label = "cmi";
+    public static final String label = "cmi";
     private static String packagePath = "";
-    private static final List<String> hidenCommands = Arrays.asList("openchest", "openentity");
-    private static final List<String> ignoreHelpPage = Arrays.asList("msg", "reply");
-    public int stage = 0;
-    public String msg = "";
-    public teleportAll tpInfo = new teleportAll();
-    private Map<String, CMICommand> Commands = new TreeMap<String, CMICommand>();
+    public static int stage = 0;
+    public static String msg = "";
+    private Map<String, CMICommand> commands = new TreeMap<>();
+
+    private boolean testServer = false;
 
     protected CMI plugin;
 
     public CommandsHandler(CMI plugin) {
+
+    }
+
+    public Boolean performCMICommand(CommandSender sender, Class<?> command, String... args) {
+	return null;
+    }
+
+    public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String[] args) {
+	return null;
+    }
+
+    public Boolean performCMICommand(CommandSender sender, Class<?> command, String args) {
+	return null;
+    }
+
+    public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String args) {
+	return null;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	return true;
+
+	return false;
     }
 
-    private static String[] reduceArgs(String[] args) {
-	return null;
-    }
-
-    private static boolean hasCommandPermission(CommandSender sender, String cmd) {
-	return true;
+    public static boolean hasCommandPermission(CommandSender sender, String cmd, Long delay) {
+	return false;
     }
 
     private String getUsage(String cmd) {
 	return null;
     }
 
-    public String getUsageNoCmd(String cmd) {
-	return null;
-    }
+//    public String getUsageNoCmd(String cmd) {
+//	StringBuilder builder = new StringBuilder();
+//	builder.append(ChatColor.GREEN.toString());
+//	builder.append('/').append(label).append(' ');
+//	builder.append(ChatColor.GOLD);
+//	String key = "command." + cmd + ".help.args";
+//	if (plugin.getLM().containsKey(key)) {
+//	    builder.append(' ');
+//	    builder.append(plugin.getLM().getMessage(key));
+//	}
+//	return builder.toString();
+//    }
 
     public void sendUsage(CommandSender sender, String cmd) {
+	sendUsage(sender, cmd, true);
     }
 
     public void sendUsage(CommandSender sender, String cmd, boolean explanation) {
@@ -60,31 +81,32 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     public static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
-
 	return null;
     }
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
-
 	return null;
     }
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
-
 	return null;
     }
 
     public void fillCommands() {
-
+	return;
     }
 
     private static Class<?> getClass(String cmd) {
-
 	return null;
     }
 
     private Cmd getCmdClass(String cmdName) {
+
 	return null;
+    }
+
+    public static int distance(String a, String b) {
+	return 0;
     }
 
     private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
@@ -92,10 +114,18 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     public Map<String, CMICommand> getCommands() {
-	return null;
+	return this.commands;
     }
 
-    public String getLabel() {
+    public static String getLabel() {
+	return label;
+    }
+
+    public boolean isTestServer() {
+	return testServer;
+    }
+
+    public static String getCommandPrefix(String command) {
 	return null;
     }
 }

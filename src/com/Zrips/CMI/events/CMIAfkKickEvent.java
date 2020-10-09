@@ -24,6 +24,7 @@ public final class CMIAfkKickEvent extends Event  implements Cancellable {
     }
 
     @Override
+    @EventAnnotation(info = "Fired when player should be kicked from server after being afk")
     public HandlerList getHandlers() {
 	return handlers;
     }

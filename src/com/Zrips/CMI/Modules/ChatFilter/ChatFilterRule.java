@@ -1,11 +1,13 @@
 package com.Zrips.CMI.Modules.ChatFilter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterManager.ChatFilterBlockType;
+import com.Zrips.CMI.Modules.Logs.CMIDebug;
 
 public class ChatFilterRule {
 
@@ -16,6 +18,9 @@ public class ChatFilterRule {
     private String messageToStaff;
     private List<String> commands = new ArrayList<String>();
     private String group;
+    private boolean informConsole = false;
+    private boolean applyToPrivateMessages = true;
+    
 
     public ChatFilterRule(String ruleName, String group, List<String> list, String replaceWith, ChatFilterBlockType blockType, String messageToStaff, List<String> commands) {
 	this.group = group;
@@ -38,6 +43,11 @@ public class ChatFilterRule {
 
     public List<Pattern> getPattern() {
 	return pattern;
+    }
+
+    public ChatFilterRule setPattern(String list) {
+	setPattern(Arrays.asList(list));
+	return this;
     }
 
     public void setPattern(List<String> list) {
@@ -72,14 +82,7 @@ public class ChatFilterRule {
     }
 
     public Matcher getMatcher(String msg) {
-	Matcher matcher = null;
-	for (Pattern one : pattern) {
-	    if (one.matcher(msg).find()) {
-		matcher = one.matcher(msg);
-		break;
-	    }
-	}
-	return matcher;
+	return null;
     }
 
     public String getMessageToStaff() {
@@ -104,6 +107,22 @@ public class ChatFilterRule {
 
     public void setGroup(String group) {
 	this.group = group;
+    }
+
+    public boolean isInformConsole() {
+	return informConsole;
+    }
+
+    public void setInformConsole(boolean informConsole) {
+	this.informConsole = informConsole;
+    }
+
+    public boolean isApplyToPrivateMessages() {
+	return applyToPrivateMessages;
+    }
+
+    public void setApplyToPrivateMessages(boolean applyToPrivateMessages) {
+	this.applyToPrivateMessages = applyToPrivateMessages;
     }
 
 }

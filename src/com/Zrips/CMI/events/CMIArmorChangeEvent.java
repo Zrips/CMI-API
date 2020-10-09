@@ -29,6 +29,7 @@ public final class CMIArmorChangeEvent extends PlayerEvent implements Cancellabl
     }
 
     @Override
+    @EventAnnotation(info = "Fired when player changes items in armor slots")
     public final HandlerList getHandlers() {
 	return handlers;
     }

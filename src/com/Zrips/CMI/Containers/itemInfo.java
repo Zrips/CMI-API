@@ -1,13 +1,15 @@
 package com.Zrips.CMI.Containers;
 
+import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+
 public class itemInfo {
 
-    private int id = 0;
+    private CMIMaterial mat = null;
     private int data = -1;
     private int chance = 100;
 
-    public itemInfo(int id, int data) {
-	this.id = id;
+    public itemInfo(CMIMaterial mat, int data) {
+	this.mat = mat;
 	this.data = data;
     }
 
@@ -19,12 +21,12 @@ public class itemInfo {
 	this.data = data;
     }
 
-    public int getId() {
-	return id;
+    public CMIMaterial getMat() {
+	return mat;
     }
 
-    public void setId(int id) {
-	this.id = id;
+    public void setId(CMIMaterial mat) {
+	this.mat = mat;
     }
 
     public int getChance() {

@@ -24,6 +24,7 @@ public class PaintingManager {
     }
 
     public void addEditor(UUID uuid, Entity ent) {
+	map.put(uuid, ent);
     }
 
     public Painting getPainting(UUID uuid) {

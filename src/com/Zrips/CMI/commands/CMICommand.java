@@ -1,21 +1,19 @@
 package com.Zrips.CMI.commands;
 
+import com.Zrips.CMI.CMI;
+
 public class CMICommand {
 
     private Cmd cmdClass;
     private String name;
-    private boolean isHidden = false;
     private CAnnotation anottation;
 
-    public CMICommand(Cmd cmdClass, String name, CAnnotation anottation) {
-	this(cmdClass, name, anottation, false);
-    }
+    private Boolean enabled = null;
 
-    public CMICommand(Cmd cmdClass, String name, CAnnotation anottation, boolean isHidden) {
+    public CMICommand(Cmd cmdClass, String name, CAnnotation anottation) {
 	this.cmdClass = cmdClass;
 	this.name = name;
 	this.anottation = anottation;
-	this.isHidden = isHidden;
     }
 
     public Cmd getCmdClass() {
@@ -40,16 +38,20 @@ public class CMICommand {
 	return anottation;
     }
 
+    public String getTranslatedArgs() {
+	return null;
+    }
+
     public void setAnottation(CAnnotation anottation) {
 	this.anottation = anottation;
     }
 
-    public boolean isHidden() {
-	return isHidden;
+    public Boolean getEnabled() {
+	return enabled;
     }
 
-    public void setHidden(boolean isHidden) {
-	this.isHidden = isHidden;
+    public void setEnabled(Boolean enabled) {
+	this.enabled = enabled;
     }
 
 }

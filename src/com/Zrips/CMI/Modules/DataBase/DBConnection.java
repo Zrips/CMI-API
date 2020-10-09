@@ -39,20 +39,22 @@ public class DBConnection {
     }
 
     public synchronized PreparedStatement prepareStatement(String sql) throws SQLException {
-	return null;
+	return conn.prepareStatement(sql);
     }
 
     public synchronized PreparedStatement prepareStatement(String sql, int returnGeneratedKeys) throws SQLException {
-	return null;
+	return conn.prepareStatement(sql, returnGeneratedKeys);
     }
 
     public synchronized void setAutoCommit(Boolean mode) throws SQLException {
+	conn.setAutoCommit(mode);
     }
 
     public synchronized void commit() throws SQLException {
+	conn.commit();
     }
 
     public synchronized DatabaseMetaData getMetaData() throws SQLException {
-	return null;
+	return conn.getMetaData();
     }
 }

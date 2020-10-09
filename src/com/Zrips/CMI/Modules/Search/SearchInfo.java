@@ -6,10 +6,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
-import com.Zrips.CMI.Containers.itemInfo;
 import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
 import com.Zrips.CMI.Modules.Search.Search.SearchPlaceType;
 
@@ -24,6 +23,7 @@ public class SearchInfo {
 
     String ItemName = null;
     String ItemLore = null;
+    private Enchantment enchant = null;
 
     long time = System.currentTimeMillis();
     int current = 1;
@@ -165,25 +165,14 @@ public class SearchInfo {
     }
 
     public Integer get(SearchPlaceType type, String name) {
-	ConcurrentHashMap<String, Integer> one = this.places.get(type);
-	if (one == null)
-	    return null;
-	if (one.containsKey(name))
-	    return one.get(name);
-	return 0;
+	return null;
     }
 
     public void remove(SearchPlaceType type, String name) {
-	ConcurrentHashMap<String, Integer> one = this.places.get(type);
-	if (one == null)
-	    return;
-	one.remove(name);
     }
 
     public ConcurrentHashMap<String, Integer> get(SearchPlaceType type) {
-	if (this.places.containsKey(type))
-	    return this.places.get(type);
-	return new ConcurrentHashMap<String, Integer>();
+	return null;
     }
 
     public void add(SearchPlaceType type, String name) {
@@ -191,14 +180,6 @@ public class SearchInfo {
     }
 
     public void add(SearchPlaceType type, String name, int amount) {
-	ConcurrentHashMap<String, Integer> one = this.places.get(type);
-	if (one == null)
-	    one = new ConcurrentHashMap<String, Integer>();
-	Integer sec = one.get(name);
-	if (sec == null)
-	    sec = 0;
-	one.put(name, sec + amount);
-	this.places.put(type, one);
     }
 
     public int getTotalPlayersToCheck() {
@@ -216,5 +197,13 @@ public class SearchInfo {
     public void setPlayers(List<OfflinePlayer> players) {
 	this.players = players;
 	setTotalPlayersToCheck(players.size());
+    }
+
+    public Enchantment getEnchant() {
+	return enchant;
+    }
+
+    public void setEnchant(Enchantment enchant) {
+	this.enchant = enchant;
     }
 }

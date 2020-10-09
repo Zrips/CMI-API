@@ -1,10 +1,12 @@
 package com.Zrips.CMI.Modules.ChatTag;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.ConfigReader;
+import com.Zrips.CMI.Containers.CMIChatColor;
 
 public class TagManager {
 
@@ -15,18 +17,22 @@ public class TagManager {
     }
 
     private boolean ChatTagEnabled;
+    private boolean HardCoreMode;
+    private boolean OnlyWhenAfk;
     private String ChatTagColor;
     private boolean ChatTagRemoveEta;
-    private Sound sound;
-    private float volume;
-    private float pitch;
+    List<String> commands = new ArrayList<String>();
 
     public void load() {
+    }
 
+    public String tag(Player player, String msg, String format) {
+	
+	return null;
     }
 
     public String getChatTagColor() {
-	return ChatColor.translateAlternateColorCodes('&', ChatTagColor);
+	return CMIChatColor.translate(ChatTagColor);
     }
 
     public boolean isChatTagRemoveEta() {
@@ -37,15 +43,11 @@ public class TagManager {
 	return ChatTagEnabled;
     }
 
-    public Sound getSound() {
-	return sound;
+    public boolean isHardCoreMode() {
+	return HardCoreMode;
     }
 
-    public float getVolume() {
-	return volume;
-    }
-
-    public float getPitch() {
-	return pitch;
+    public void setHardCoreMode(boolean hardCoreMode) {
+	HardCoreMode = hardCoreMode;
     }
 }

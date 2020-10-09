@@ -18,12 +18,27 @@ public @interface CAnnotation {
 
     String[] tab() default {};
 
-    int[] regVar() default { 666 };
+    int[] regVar() default { -666 };
 
-    int[] consoleVar() default { 666 };
+    int[] consoleVar() default { -666 };
 
     boolean alias() default false;
 
+    boolean hidden() default false;
+
+    boolean test() default false;
+
+    boolean ignoreHelpPage() default false;
+
     String[] customAlias() default {};
 
+    String[] modules() default {};
+
+    boolean paccess() default false;
+
+    Class<? extends Cmd> redirectClass() default Void.class;
+
+    String redirectFormat() default "";
+
+    boolean others();
 }

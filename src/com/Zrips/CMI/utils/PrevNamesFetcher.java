@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -19,6 +21,7 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.Snd;
 import com.Zrips.CMI.Locale.LC;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class PrevNamesFetcher {
 
@@ -35,22 +38,20 @@ public class PrevNamesFetcher {
     }
 
     public List<String> start(Player player) {
-
 	return null;
     }
 
     public HashMap<String, Long> getWithTime(OfflinePlayer player) {
-
 	return null;
     }
 
     public UUID getUUID(String name) {
-
+	
 	return null;
     }
 
     public String getPrevNames(UUID uuid, boolean update) {
-
+	
 	return null;
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.itemInfo;
+import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
 import com.Zrips.CMI.Modules.Region.WorldInfo;
 
 @SuppressWarnings("deprecation")

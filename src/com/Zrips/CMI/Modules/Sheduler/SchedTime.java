@@ -1,14 +1,19 @@
 package com.Zrips.CMI.Modules.Sheduler;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import com.Zrips.CMI.utils.DateFormat;
 
 public class SchedTime {
 
     private Integer year = null;
     private Integer month = null;
     private Integer day = null;
+    private Integer dayOfWeek = null;
     private Integer hour = null;
     private Integer minute = null;
     private Integer second = null;
@@ -68,7 +73,16 @@ public class SchedTime {
     }
 
     public boolean isNow() {
+
 	return true;
+    }
+
+    Long next = 0L;
+
+    public long getNextMili() {
+
+	return 0;
+
     }
 
     public boolean isDone() {
@@ -77,6 +91,14 @@ public class SchedTime {
 
     public void setDone(boolean done) {
 	this.done = done;
+    }
+
+    public Integer getDayOfWeek() {
+	return dayOfWeek;
+    }
+
+    public void setDayOfWeek(Integer dayOfWeek) {
+	this.dayOfWeek = dayOfWeek;
     }
 
 }

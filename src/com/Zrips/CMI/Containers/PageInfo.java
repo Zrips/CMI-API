@@ -33,7 +33,16 @@ public class PageInfo {
     }
 
     public boolean isEntryOk() {
-	return true;
+	currentEntry++;
+	return currentEntry - 1 >= start && currentEntry - 1 <= end;
+    }
+
+    public boolean isContinue() {
+	return !isEntryOk();
+    }
+
+    public boolean isContinueNoAdd() {
+	return currentEntry - 1 >= start && currentEntry - 1 <= end;
     }
 
     public boolean isBreak() {
@@ -45,6 +54,10 @@ public class PageInfo {
     }
 
     public boolean isPageOk(int page) {
+	if (this.totalPages < page)
+	    return false;
+	if (page < 1)
+	    return false;
 	return true;
     }
 
@@ -66,5 +79,17 @@ public class PageInfo {
 
     public int getTotalEntries() {
 	return totalEntries;
+    }
+
+    public int getNextPageNumber() {
+	return this.getCurrentPage() + 1 > this.getTotalPages() ? this.getTotalPages() : this.getCurrentPage() + 1;
+    }
+
+    public int getPrevPageNumber() {
+	return this.getCurrentPage() - 1 < 1 ? 1 : this.getCurrentPage() - 1;
+    }
+    
+    public Boolean pageChange(int page) {	
+	return true;
     }
 }

@@ -26,6 +26,7 @@ public final class CMIAnvilItemRenameEvent extends PlayerEvent implements Cancel
     }
 
     @Override
+    @EventAnnotation(info = "Fired on item rename in anvil")
     public final HandlerList getHandlers() {
 	return handlers;
     }

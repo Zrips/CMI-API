@@ -1,15 +1,14 @@
 package com.Zrips.CMI.Modules.CmiItems;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import org.bukkit.ChatColor;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.Recipe;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Attributes.Attribute;
@@ -18,15 +17,25 @@ public class CMIItemStack {
 
     private int id = 0;
     private short data = 0;
+    private short durability = 0;
     private int amount = 0;
 
     private String bukkitName = null;
     private String mojangName = null;
+    private CMIMaterial cmiMaterial = null;
     private Material material = null;
+    private CMIEntityType entityType = null;
     private ItemStack item;
 
     public CMIItemStack(Material material) {
 	this.material = material;
+	this.cmiMaterial = CMIMaterial.get(material);
+    }
+
+    public CMIItemStack(CMIMaterial cmiMaterial) {
+	this.cmiMaterial = cmiMaterial;
+	if (cmiMaterial != null)
+	    this.material = cmiMaterial.getMaterial();
     }
 
     public CMIItemStack(ItemStack item) {
@@ -36,11 +45,16 @@ public class CMIItemStack {
     @Override
     public CMIItemStack clone() {
 	CMIItemStack cm = new CMIItemStack(material);
+	cm.entityType = this.entityType;
 	cm.setId(id);
 	cm.setData(data);
+	cm.setAmount(amount);
+	cm.setDurability(durability);
 	cm.setBukkitName(bukkitName);
 	cm.setMojangName(mojangName);
-	cm.setItemStack(this.item);
+	cm.setCMIMaterial(cmiMaterial);
+	cm.setMaterial(material);
+	cm.setItemStack(this.item != null ? this.item.clone() : null);
 	return cm;
     }
 
@@ -48,7 +62,7 @@ public class CMIItemStack {
 	return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
 	this.id = id;
     }
 
@@ -60,6 +74,12 @@ public class CMIItemStack {
 	return getMaxDurability() > 0;
     }
 
+    public boolean isArmor() {
+	if (this.getCMIType() != null && this.getCMIType().isArmor())
+	    return true;
+	return CMIMaterial.isArmor(this.getType());
+    }
+
     public short getDurability() {
 	return this.getItemStack().getDurability();
     }
@@ -69,61 +89,62 @@ public class CMIItemStack {
     }
 
     public void setData(short data) {
-	this.data = data;
     }
 
     public CMIItemStack setUnbreakable(Boolean state) {
-	return this;
+	return null;
     }
 
     public CMIItemStack addAttributes(List<Attribute> attList) {
-	return this;
+	return null;
     }
 
     public CMIItemStack setTag(String tag) {
-	return this;
+	return null;
     }
 
     public CMIItemStack setDisplayName(String name) {
-	return this;
+	return null;
     }
 
     public String getDisplayName() {
-	ItemMeta meta = this.getItemStack().getItemMeta();
-	return meta.getDisplayName() == null ? this.getRealName() : meta.getDisplayName();
+	return null;
     }
 
     public CMIItemStack addLore(String string) {
-	return this;
+	return null;
+    }
+
+    public CMIItemStack clearLore() {
+	return null;
     }
 
     public CMIItemStack setLore(List<String> lore) {
-	return this;
+	return null;
     }
 
     public CMIItemStack addEnchant(Enchantment enchant, Integer level) {
-	return this;
+	return null;
     }
 
     public CMIItemStack addEnchant(HashMap<Enchantment, Integer> enchants) {
-	return this;
+	return null;
     }
 
     public CMIItemStack clearEnchants() {
-	return this;
+	return null;
     }
 
     public List<String> getLore() {
-	ItemMeta meta = this.getItemStack().getItemMeta();
-	return meta.getLore();
+	return null;
     }
 
     public String getRealName() {
-	return CMI.getInstance().getItemManager().getRealName(this, true).getName();
+	return null;
     }
 
     public String getBukkitName() {
-	return bukkitName;
+	return bukkitName == null || bukkitName.isEmpty() ? null : bukkitName;
     }
 
     public void setBukkitName(String bukkitName) {
@@ -131,23 +152,34 @@ public class CMIItemStack {
     }
 
     public String getMojangName() {
-	return mojangName;
+	return null;
     }
 
     public void setMojangName(String mojangName) {
-	this.mojangName = mojangName.replace("minecraft:", "");
     }
 
+    public Material getType() {
+	return null;
+    }
+
+    public CMIMaterial getCMIType() {
+	return null;
+    }
+
+    @Deprecated
     public Material getMaterial() {
-	return material;
+	return getType();
     }
 
     public void setMaterial(Material material) {
-	this.material = material;
+    }
+
+    public void setCMIMaterial(CMIMaterial material) {
     }
 
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack() {
+
 	return null;
     }
 
@@ -158,11 +190,13 @@ public class CMIItemStack {
     }
 
     public int getAmount() {
-	return amount;
+	return amount <= 0 ? 1 : amount;
     }
 
     public void setAmount(int amount) {
 	this.amount = amount;
+	if (item != null)
+	    this.item.setAmount(this.amount == 0 ? item.getAmount() : this.amount);
     }
 
     public boolean isSimilar(ItemStack item) {
@@ -170,12 +204,52 @@ public class CMIItemStack {
     }
 
     public boolean isSimilar(CMIItemStack item) {
-	if (item == null)
-	    return false;
-	return this.getMaterial().equals(item.material) && this.getData() == item.getData();
+	return false;
+    }
+
+    public EntityType getEntityType() {
+
+	return null;
     }
 
     public boolean hasNbtTag() {
-	return CMI.getInstance().getRef().hasNbt(this.getItemStack());
+	return false;
+    }
+
+    public List<Recipe> getRecipesFor() {
+
+	return null;
+    }
+
+    public List<Recipe> getRecipesFrom() {
+
+	return null;
+    }
+
+    public void setDurability(short durability) {
+	this.durability = durability;
+    }
+
+    public Set<Enchantment> getValidEnchants() {
+
+	return null;
+    }
+
+    public String toOneLiner() {
+
+	return null;
+    }
+
+    public static ItemStack getHead(String texture) {
+
+	return null;
+    }
+
+    public void setEntityType(CMIEntityType entityType) {
+	this.entityType = entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+	setEntityType(CMIEntityType.getByType(entityType));
     }
 }

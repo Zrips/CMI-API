@@ -1,40 +1,56 @@
 package com.Zrips.CMI.Modules.Portals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticleEffect;
-import com.Zrips.CMI.Modules.tp.Teleportations.TpCondition;
+import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
 import com.Zrips.CMI.events.CMIPortalUseEvent;
 
 public class CMIPortal {
 
     private CuboidArea area;
     private Location tpLoc;
+    private Location safeLoc;
+    private String bungeeServer;
+    private String bungeeLocation;
+    private boolean toExactBungeeLocation = true;
     private Boolean performCommandsWithoutTp = false;
     private World world;
+    private String worldName;
 
     private boolean enabled = true;
     private boolean showParticles = true;
     private int particleAmount = 10;
 
+    private boolean requiresPermission = false;
+    private boolean kickBack = true;
+    private boolean informOnMissingPerm = false;
+
     private int percentToHide = 0;
     private int activationRange = 16;
 
-    private CMIParticleEffect effect = CMIParticleEffect.COLOURED_DUST;
-
+    private CMIParticle effect = CMIParticle.COLOURED_DUST;
     private List<String> commands = null;
 
     private String name;
 
+    private boolean particlesByPermission = false;
+    private Set<UUID> particleForPlayers = new HashSet<UUID>();
+
     public CMIPortal() {
-	area = new CuboidArea();
+	area = new CuboidArea(null);
     }
 
     public boolean containsLoc(Location loc) {
@@ -58,19 +74,13 @@ public class CMIPortal {
     }
 
     public World getWorld() {
-	return world;
+	return null;
     }
 
     public void setWorld(World world) {
-	this.world = world;
     }
 
     public boolean checkCollision(CuboidArea area) {
-	if (this.area != null) {
-	    if (this.area.checkCollision(area)) {
-		return true;
-	    }
-	}
 	return false;
     }
 
@@ -83,7 +93,6 @@ public class CMIPortal {
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
-
 	return null;
     }
 
@@ -95,7 +104,7 @@ public class CMIPortal {
 	this.tpLoc = tpLoc;
     }
 
-    public void setArea(CuboidArea area) {
+    public void setArea(CuboidArea area, boolean recalculatePart) {
     }
 
     public boolean isEnabled() {
@@ -135,11 +144,13 @@ public class CMIPortal {
     public void setActivationRange(int activationRange) {
     }
 
-    public CMIParticleEffect getEffect() {
+    public CMIParticle getEffect() {
+	if (effect == null)
+	    effect = CMIParticle.COLOURED_DUST;
 	return effect;
     }
 
-    public void setEffect(CMIParticleEffect effect) {
+    public void setEffect(CMIParticle effect) {
 	this.effect = effect;
     }
 
@@ -152,6 +163,9 @@ public class CMIPortal {
     }
 
     public void setCommands(List<String> commands) {
+	if (this.commands == null)
+	    this.commands = new ArrayList<String>();
+	this.commands.addAll(commands);
     }
 
     public Boolean getPerformCommandsWithoutTp() {
@@ -160,5 +174,98 @@ public class CMIPortal {
 
     public void setPerformCommandsWithoutTp(Boolean performCommandsWithoutTp) {
 	this.performCommandsWithoutTp = performCommandsWithoutTp;
+    }
+
+    public String getBungeeServer() {
+	return bungeeServer;
+    }
+
+    public void setBungeeServer(String bungeeServer) {
+	this.bungeeServer = bungeeServer;
+    }
+
+    public String getBungeeLocation() {
+	return bungeeLocation;
+    }
+
+    public void setBungeeLocation(String bungeeLocation) {
+	this.bungeeLocation = bungeeLocation;
+    }
+
+    public Location getSafeLoc() {
+	return safeLoc;
+    }
+
+    public void setSafeLoc(Location safeLoc) {
+	this.safeLoc = safeLoc;
+    }
+
+    public boolean isToExactBungeeLocation() {
+	return toExactBungeeLocation;
+    }
+
+    public void setToExactBungeeLocation(boolean toExactBungeeLocation) {
+	this.toExactBungeeLocation = toExactBungeeLocation;
+    }
+
+    public boolean isRequiresPermission() {
+	return requiresPermission;
+    }
+
+    public void setRequiresPermission(boolean requiresPermission) {
+	this.requiresPermission = requiresPermission;
+    }
+
+    public boolean isInformOnMissingPerm() {
+	return informOnMissingPerm;
+    }
+
+    public void setInformOnMissingPerm(boolean informOnMissingPerm) {
+	this.informOnMissingPerm = informOnMissingPerm;
+    }
+
+    public String getWorldName() {
+	return null;
+    }
+
+    public void setWorldName(String worldName) {
+	this.worldName = worldName;
+	this.world = CMI.getInstance().getUtilManager().getWorld(worldName);
+    }
+
+    public Set<UUID> getParticleForPlayers() {
+	return particleForPlayers;
+    }
+
+    public void setParticleForPlayers(Set<UUID> particleForPlayers) {
+	this.particleForPlayers = particleForPlayers;
+    }
+
+    public Set<UUID> removeParticleLimitations(Player player) {
+	return removeParticleLimitations(player.getUniqueId());
+    }
+
+    public Set<UUID> removeParticleLimitations(UUID uuid) {
+	return null;
+    }
+
+    public Set<UUID> updateParticleLimitations(Player player) {
+	return null;
+    }
+
+    public boolean isParticlesByPermission() {
+	return particlesByPermission;
+    }
+
+    public void setParticlesByPermission(boolean particlesByPermission) {
+	this.particlesByPermission = particlesByPermission;
+    }
+
+    public boolean isKickBack() {
+	return this.kickBack;
+    }
+
+    public void setKickBack(boolean kickBack) {
+	this.kickBack = kickBack;
     }
 }

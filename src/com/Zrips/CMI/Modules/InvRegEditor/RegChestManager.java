@@ -1,33 +1,16 @@
 package com.Zrips.CMI.Modules.InvRegEditor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.utils.ActionBar;
-import com.Zrips.CMI.utils.DateFormat;
-import com.Zrips.CMI.utils.VersionChecker.Version;
 
 public class RegChestManager {
 
     private HashMap<String, RegWatcher> WatcherList = new HashMap<String, RegWatcher>();
-    private String InventoryTopLineBeforeName = "Info: ";
 
     private CMI plugin;
 
@@ -47,7 +30,6 @@ public class RegChestManager {
     }
 
     public void removeWatcher(Player player) {
-	WatcherList.remove(player.getName());
     }
 
     public boolean isThisSlave(Player player) {
@@ -64,6 +46,7 @@ public class RegChestManager {
     }
 
     public boolean openInventory(Player player, Player Target) {
+
 	return true;
     }
 
@@ -72,7 +55,6 @@ public class RegChestManager {
     }
 
     public void UpdateMaster(Player player) {
-
     }
 
     public void UpdateMasterContents(final Player player) {
@@ -117,12 +99,10 @@ public class RegChestManager {
 
     @SuppressWarnings("deprecation")
     public Inventory CreateGui(Player source, Player player) {
-
 	return null;
     }
 
     public ItemStack SlaveCraftInv(Player player, int Slot) {
-
 	return null;
     }
 

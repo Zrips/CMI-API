@@ -30,6 +30,7 @@ public final class CMIAfkEnterEvent extends Event implements Cancellable {
     }
 
     @Override
+    @EventAnnotation(info = "Fired when player enters afk mode")
     public HandlerList getHandlers() {
 	return handlers;
     }

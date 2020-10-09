@@ -18,9 +18,6 @@ public class UnloadChunks {
     }
 
     public void loadRegionFile(final UCInfo scan) {
-	if (scan.getStartTime() == 0L)
-	    scan.setShowInfo(System.currentTimeMillis());
-	loadChunk(scan);
     }
 
     private void loadChunk(final UCInfo scan) {

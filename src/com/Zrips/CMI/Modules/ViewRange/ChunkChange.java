@@ -14,9 +14,8 @@ public class ChunkChange implements Listener {
     public ChunkChange(CMI plugin) {
 	this.plugin = plugin;
     }
-    
+
     @EventHandler
     public void onChunkChangeMove(CMIChunkChangeEvent event) {
-
     }
 }

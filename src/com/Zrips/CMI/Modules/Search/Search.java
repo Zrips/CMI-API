@@ -1,7 +1,6 @@
 package com.Zrips.CMI.Modules.Search;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,32 +10,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.entity.Damageable;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
 import com.Zrips.CMI.Modules.Scan.ScanResultLocations;
 import com.Zrips.CMI.utils.PlayerVaultManager;
-import com.drtshock.playervaults.vaultmanagement.UUIDVaultManager;
-
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import com.Zrips.CMI.Containers.CMIChatColor;
 
 public class Search {
 
-    public HashMap<String, SearchInfo> SearchInfo = new HashMap<String, SearchInfo>();
+    public HashMap<UUID, SearchInfo> SearchInfo = new HashMap<UUID, SearchInfo>();
     public int showInterval = 1000;
     private CMI plugin;
 
@@ -75,12 +75,10 @@ public class Search {
     }
 
     public HashMap<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
-
 	return null;
     }
 
     public HashMap<Integer, ArrayList<ScanResultLocations>> sortByKey(HashMap<Integer, ArrayList<ScanResultLocations>> list2) {
-
 	return null;
     }
 
@@ -104,5 +102,6 @@ public class Search {
 
     public void showTimer(SearchInfo SI) {
 
+	return;
     }
 }
