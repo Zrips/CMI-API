@@ -12,7 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMILocation;
+import net.Zrips.CMILib.Container.CMILocation;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 
 public class HDConverter {

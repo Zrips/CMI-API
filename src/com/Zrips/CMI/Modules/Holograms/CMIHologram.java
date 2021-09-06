@@ -1,31 +1,25 @@
 package com.Zrips.CMI.Modules.Holograms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIInteractType;
-import com.Zrips.CMI.Containers.CMILocation;
-import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
 import com.Zrips.CMI.Modules.Packets.FakeInfo;
-import com.Zrips.CMI.Modules.Packets.PacketHandler;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+
+import net.Zrips.CMILib.Container.CMILocation;
 
 public class CMIHologram {
 
@@ -81,8 +75,8 @@ public class CMIHologram {
     private ConcurrentHashMap<Integer, CMIHologramPage> pages = new ConcurrentHashMap<Integer, CMIHologramPage>();
     private ConcurrentHashMap<Integer, CMIHologramPage> oldPages = new ConcurrentHashMap<Integer, CMIHologramPage>();
 
-    private Set<UUID> lastHoloInRange = new HashSet<UUID>();
-    private Set<UUID> lastHoloInRangeExtra = new HashSet<UUID>();
+    private Set<UUID> lastHoloInRange = Collections.synchronizedSet(new HashSet<UUID>());
+    private Set<UUID> lastHoloInRangeExtra = Collections.synchronizedSet(new HashSet<UUID>());
 
     private boolean uSync = true;
 
@@ -108,49 +102,53 @@ public class CMIHologram {
     }
 
     public void goToNextPage(UUID uuid) {
+	
     }
 
     Set<UUID> skipPageChange = new HashSet<UUID>();
 
     private void goToNextPageAuto(UUID uuid) {
-
+	
     }
 
     public Integer getPlayerPage(UUID uuid) {
-	return null;
+	Integer page = inPage.get(uuid);
+	return page == null ? 1 : page;
     }
 
     public void goToPrevPage(UUID uuid) {
+	
     }
 
     public void goToPage(UUID uuid, int page) {
-
+	
     }
 
     private void checkPageChange(UUID uuid, Integer oldPage, Integer newPage) {
-
+	
     }
 
     private List<String> getCommandsByPlayerPage(UUID uuid) {
-
 	return null;
     }
 
     private List<CMIHologramLine> getLinesByPlayerPage(Player player) {
-
 	return null;
     }
 
     public void updatePages() {
-
+	
     }
 
     public List<String> getCommands(Player player, CMIInteractType type) {
-
+	
 	return null;
     }
 
     public void setCommands(List<String> commands) {
+	if (this.commands == null)
+	    this.commands = new ArrayList<String>();
+	this.commands.addAll(commands);
     }
 
     public World getWorld() {
@@ -178,12 +176,19 @@ public class CMIHologram {
     }
 
     public void setLines(List<String> l) {
+	
     }
 
     public void addLine(String line) {
+	
     }
 
     public void setLine(int place, String line) {
+	
+    }
+
+    public void removeLine(int line) {
+	
     }
 
     public boolean isChangedLine() {
@@ -209,32 +214,55 @@ public class CMIHologram {
 	this.areaExtra = area;
     }
 
+
     public void update() {
     }
 
     @Deprecated
     public void hide(Player player) {
+	if (player == null)
+	    return;
+	hide(player.getUniqueId());
     }
 
     public void refresh() {
+	this.hide();
+	this.updatePages();
+	this.update();
     }
 
     public void hide() {
+	for (Player one : Bukkit.getOnlinePlayers()) {
+	    removeFromCache(one.getUniqueId());
+	}
     }
 
     public void hide(UUID uuid) {
+	if (uuid == null)
+	    return;
+	removeFromCache(uuid);
     }
 
     public double getHeight() {
 	double offset = 0;
+	
 	return offset;
     }
 
     public Location getCenterLocation() {
-	return null;
+	double h = getHeight();
+	Location l = this.getLocation().clone();
+	l.add(0, 0.25, 0);
+	if (isDownOrder()) {
+	    l.add(0, -(h / 2D), 0);
+	} else {
+	    l.add(0, h / 2D, 0);
+	}
+
+	return l;
     }
 
-    HashMap<Integer, String> changed = new HashMap<Integer, String>();
+    ConcurrentHashMap<Integer, String> changed = new ConcurrentHashMap<Integer, String>();
     List<Integer> changedPages = new ArrayList<Integer>();
 
     private void recalcualteChangedLines() {
@@ -248,15 +276,27 @@ public class CMIHologram {
 
     }
 
-    final String regex = "(%)(?i)(CustomModelData:)(\\d+)(%)";
-    final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+    private Double processLineDown(Player player, CMIHologramLine one, int i, Location targetLoc, Double offset) {
+
+	
+	return .0;
+    }
+
+    private Double processLineUp(Player player, CMIHologramLine one, int i, Location targetLoc, Double offset, int size) {
+	return .0;
+    }
 
     public void update(final Player player) {
 	update(player, false);
     }
 
-    public void update(final Player player, boolean oneTime) {
+    ConcurrentHashMap<UUID, Long> nextUpdate = new ConcurrentHashMap<UUID, Long>();
+    List<UUID> stillUpdating = Collections.synchronizedList(new ArrayList<>());
 
+//    private boolean stillUpdating = false;
+
+    public void update(final Player player, boolean oneTime) {
+	
     }
 
     ConcurrentHashMap<UUID, List<CMIDataWatcher>> cache = new ConcurrentHashMap<UUID, List<CMIDataWatcher>>();
@@ -272,13 +312,15 @@ public class CMIHologram {
     }
 
     public void removeFromCache(UUID uuid, int size) {
-
+	
     }
 
     private void updateCache(UUID uuid, int place, CMIDataWatcher w) {
+	
     }
 
     private CMIDataWatcher getCache(UUID uuid, int place) {
+	
 	return null;
     }
 
@@ -311,6 +353,7 @@ public class CMIHologram {
     }
 
     public void setShowRange(int showRange) {
+
     }
 
     public Double getIconSpacing() {
@@ -334,6 +377,9 @@ public class CMIHologram {
     }
 
     public void setDownOrder(Boolean downOrder) {
+	this.hide();
+	this.update();
+	this.downOrder = downOrder;
     }
 
     public boolean isInteractable() {
@@ -364,29 +410,42 @@ public class CMIHologram {
 	return schedId;
     }
 
-    public void setSchedId(int schedId) {
+    public void setId(int schedId) {
 	this.schedId = schedId;
     }
 
     public void stop() {
+	if (lineOfSightSchedId != -1) {
+	    Bukkit.getScheduler().cancelTask(lineOfSightSchedId);
+	    lineOfSightSchedId = -1;
+	}
+	if (schedId != -1) {
+	    Bukkit.getScheduler().cancelTask(schedId);
+	    schedId = -1;
+	}
+	if (pageSchedId != -1) {
+	    Bukkit.getScheduler().cancelTask(pageSchedId);
+	    pageSchedId = -1;
+	}
     }
 
     private void tasker() {
-
+	
     }
 
     @SuppressWarnings("deprecation")
     private void lineOfSightTasker() {
+	
     }
 
     private void pageTasker() {
-
+	
     }
 
-    Set<UUID> skipPlayers = new HashSet<UUID>();
+    Set<UUID> skipPlayers = Collections.synchronizedSet(new HashSet<UUID>());
 
     private void updateHolo() {
-
+	
     }
 
     public Set<UUID> getLastHoloInRange() {
@@ -401,6 +460,10 @@ public class CMIHologram {
     }
 
     public void removeLastHoloInRange(UUID uuid) {
+	this.lastHoloInRange.remove(uuid);
+	tasker();
+	lineOfSightTasker();
+	pageTasker();
     }
 
     public Set<UUID> getLastHoloInRangeExtra() {
@@ -408,9 +471,15 @@ public class CMIHologram {
     }
 
     public void addLastHoloInRangeExtra(UUID uuid) {
+	this.lastHoloInRangeExtra.add(uuid);
+	lineOfSightTasker();
+	update(Bukkit.getPlayer(uuid));
     }
 
     public void removeLastHoloInRangeExtra(UUID uuid) {
+	this.lastHoloInRangeExtra.remove(uuid);
+	lineOfSightTasker();
+	hide(uuid);
     }
 
     public boolean isuSync() {
@@ -468,7 +537,14 @@ public class CMIHologram {
     }
 
     public void setPageChangeIntervalSec(double pageChangeIntervalSec) {
-
+	boolean update = false;
+	if (this.pageChangeIntervalSec != pageChangeIntervalSec)
+	    update = true;
+	this.pageChangeIntervalSec = Math.ceil((int) (pageChangeIntervalSec * 100D)) / 100D;
+	if (this.pageChangeIntervalSec <= 0)
+	    this.pageChangeIntervalSec = 0;
+	if (update)
+	    pageTasker();
     }
 
     public void remove() {
@@ -488,6 +564,9 @@ public class CMIHologram {
     }
 
     public void setLOSInterval(double LOSupdateIntervalSec) {
+	if (LOSupdateIntervalSec < 0)
+	    LOSupdateIntervalSec = 0;
+	this.LOSupdateIntervalSec = Math.ceil((int) (LOSupdateIntervalSec * 100D)) / 100D;
     }
 
     public double getLOSupdateIntervalSec() {
@@ -499,6 +578,9 @@ public class CMIHologram {
     }
 
     public void setFollowPlayer(double followPlayer) {
+	if (followPlayer < 0)
+	    followPlayer = 0;
+	this.followPlayer = Math.ceil((int) (followPlayer * 100D)) / 100D;
     }
 
     public double getFollowPlayer() {

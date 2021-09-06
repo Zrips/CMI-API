@@ -1,13 +1,18 @@
 package com.Zrips.CMI.Modules.Warnings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.Snd;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class WarningManager {
 
@@ -31,10 +36,13 @@ public class WarningManager {
     }
 
     public CMIWarningCategory getCategory(String name) {
-	return null;
+	if (name == null)
+	    return null;
+	return Categories.get(name.toLowerCase());
     }
 
     public List<String> getCommandsByWarns(Player player, int from, int to) {
+	
 	return null;
     }
 

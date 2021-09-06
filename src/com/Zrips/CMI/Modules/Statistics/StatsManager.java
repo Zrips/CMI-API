@@ -1,18 +1,26 @@
 package com.Zrips.CMI.Modules.Statistics;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Config;
 import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class StatsManager {
 
@@ -24,6 +32,11 @@ public class StatsManager {
 
     public enum CMIType {
 	None, Material, Block, Entity
+    }
+
+    private static HashMap<String, CMIStatistic> cache = new HashMap<String, CMIStatistic>();
+
+    static {
     }
 
     public enum CMIStatistic {
@@ -99,7 +112,31 @@ public class StatsManager {
 	CRAFT_ITEM("Item crafts", svt.Number, false, true, CMIType.Material),
 	USE_ITEM("Items used", svt.Number, false, true, CMIType.Material),
 	PICKUP("Item pickups", svt.Number, false, true, CMIType.Material),
-	KILL_ENTITY("Monster kills", svt.Number, false, true, CMIType.Entity);
+	KILL_ENTITY("Monster kills", svt.Number, false, true, CMIType.Entity),
+
+	STRIDER_ONE_CM("Strider travel", svt.Distance, false, false, CMIType.None),
+
+	INTERACT_WITH_BLAST_FURNACE("Interaction with blast furnace", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_SMOKER("Interaction with smoker", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_LECTERN("Interaction with lectern", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_CAMPFIRE("Interaction with campfire", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_CARTOGRAPHY_TABLE("Interaction with cartography table", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_LOOM("Interaction with loom", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_STONECUTTER("Interaction with stonecutter", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_ANVIL("Interaction with anvil", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_GRINDSTONE("Interaction with grindstone", svt.Number, false, false, CMIType.None),
+	INTERACT_WITH_SMITHING_TABLE("Interaction with smithing table", svt.Number, false, false, CMIType.None),
+
+	BELL_RING("Bell rings", svt.Number, false, false, CMIType.None),
+	RAID_TRIGGER("Raid triggers", svt.Number, false, false, CMIType.None),
+	RAID_WIN("Raid wins", svt.Number, false, false, CMIType.None),
+	TARGET_HIT("Target hits", svt.Number, false, false, CMIType.None),
+	OPEN_BARREL("Opened barrels", svt.Number, false, false, CMIType.None),
+	DROP_COUNT("Drop count", svt.Number, false, false, CMIType.None),
+
+	TOTAL_WORLD_TIME("Time in world", svt.Time, false, false, CMIType.None),
+
+	;
 
 	private svt type;
 	private boolean isBlock;
@@ -108,6 +145,7 @@ public class StatsManager {
 	private String name;
 	private String newName;
 	private Statistic bukkit;
+	private boolean checked = false;
 
 	CMIStatistic(String name, svt type, boolean isBlock, boolean isSubSatistic, CMIType subType, Statistic stat) {
 	    this(name, type, isBlock, isSubSatistic, subType, "");
@@ -152,13 +190,15 @@ public class StatsManager {
 	}
 
 	public Statistic getBukkitStat() {
-	    if (bukkit == null)
+	    if (bukkit == null && !checked) {
+		checked = true;
 		for (Statistic one : Statistic.values()) {
 		    if (one.name().equalsIgnoreCase(this.name()))
 			bukkit = one;
 		    if (getNewName() != null && one.name().equalsIgnoreCase(getNewName()))
 			bukkit = one;
 		}
+	    }
 	    return bukkit;
 	}
 
@@ -171,7 +211,7 @@ public class StatsManager {
 	}
 
 	public static CMIStatistic getByName(String name) {
-	    return null;
+	    return cache.get(name.toLowerCase().replace("_", ""));
 	}
     }
 
@@ -179,7 +219,7 @@ public class StatsManager {
 
     public StatsManager(CMI plugin) {
 	this.plugin = plugin;
-	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 100L, 100L);
+	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 60 * 20L, 60 * 20L);
     }
 
     public void stop() {
@@ -188,14 +228,21 @@ public class StatsManager {
     }
 
     public CMIStatistic getStatisticByName(String name) {
-	return null;
+	return cache.get(name.toLowerCase().replace("_", "").replace(" ", ""));
     }
 
     public Statistic getStatistic(CMIStatistic type) {
+	if (type.getBukkitStat() != null)
+	    return type.getBukkitStat();
+	for (Statistic one : Statistic.values()) {
+	    if (one.name().equalsIgnoreCase(type.name()))
+		return one;
+	}
 	return null;
     }
 
     public synchronized boolean changeTo(Player player, CMIStatistic st, String extra, Long amount) {
+	
 
 	return true;
     }
@@ -222,25 +269,53 @@ public class StatsManager {
     }
 
     public void addUserData(CMIUser user) {
+	if (isScanning())
+	    return;
+	if (Config.PlaytimeTopExclude.contains(user.getName(false).toLowerCase()))
+	    return;
+	Long time = user.getTotalPlayTime(false);
+	Long od = smt.get(user.getUniqueId());
+	if (od != null) {
+	    sm.remove(od);
+	}
+	smt.put(user.getUniqueId(), time);
+	sm.put(time, user);
+    }
+
+    public Long getPlaytimeFromCache(CMIUser user) {
+	return smt.get(user.getUniqueId());
     }
 
     long lastUpdate = 0L;
+//    SortedMap<Long, CMIUser> tmp = Collections.synchronizedSortedMap(new TreeMap<Long, CMIUser>(Collections.reverseOrder()));
 
     public SortedMap<Long, CMIUser> getTop() {
 	return null;
     }
 
+    public synchronized SortedMap<Long, CMIUser> getTop(int count) {
+	return null;
+    }
+
     public int getPlace(CMIUser user) {
+	int i = 0;
+	UUID uuid = user.getUniqueId();
+	for (Entry<Long, CMIUser> one : sm.entrySet()) {
+	    i++;
+	    if (one.getValue().getUniqueId().equals(uuid))
+		return i;
+	}
 	return 0;
     }
 
     private Runnable autoTimer = new Runnable() {
 	@Override
 	public void run() {
+
 	}
     };
 
     public void loadStats(final CommandSender sender, final String targetName) {
-
+	
     }
 }

@@ -16,10 +16,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMILocation;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+
+import net.Zrips.CMILib.Container.CMILocation;
 
 public class SpawnUtil {
 
@@ -62,7 +63,13 @@ public class SpawnUtil {
 	}
 
 	public CMILocation getLocation() {
-	return null;
+	    if (rng != null && rng > 0) {
+		Random random = new Random(System.currentTimeMillis());
+		double rx = (random.nextInt(rng * 10 * 2) - (rng * 10)) / 10D;
+		double rz = (random.nextInt(rng * 10 * 2) - (rng * 10)) / 10D;
+		return new CMILocation(location.clone().add(rx, 0, rz));
+	    }
+	    return location;
 	}
 
 	public void setLocation(CMILocation location) {
@@ -92,7 +99,14 @@ public class SpawnUtil {
 	}
 
 	public List<String> getWorldsAsStringList() {
-	return null;
+	    List<String> ls = new ArrayList<String>();
+	    if (this.worlds != null)
+		for (World one : this.worlds) {
+		    if (one == null)
+			continue;
+		    ls.add(one.getName());
+		}
+	    return ls;
 	}
 
 	public void setWorlds(List<World> worlds) {
@@ -111,25 +125,34 @@ public class SpawnUtil {
     }
 
     public static void addNew(String group, CMILocation loc, boolean respawn, Integer range, List<World> worlds) {
+	if (group == null && !worlds.isEmpty())
+	    group = defaultGW + (new Random(Integer.MAX_VALUE).nextInt(100000));
+
+	if (group == null)
+	    group = defaultG;
+	if (loc == null)
+	    return;
+	map.put(group, new SpawnPoint(group, loc, respawn, range, worlds));
     }
 
-    public static Location getSpawnPoint(Player player) {
-	
+    public static CMILocation getSpawnPoint(Player player) {
+
 	return null;
     }
 
-    public static Location getGroupReSpawnPoint(Player player) {
-	
+    public static CMILocation getGroupReSpawnPoint(Player player) {
+
 	return null;
     }
 
     public static void save() {
+
     }
 
     private static boolean SpawnSpawnOnJoin = false;
 
     public static void loadConfig() {
-	
+
     }
 
     public static boolean isSpawnSpawnOnJoin() {

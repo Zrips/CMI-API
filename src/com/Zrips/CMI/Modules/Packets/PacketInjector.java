@@ -4,10 +4,7 @@ import java.lang.reflect.Field;
 
 import org.bukkit.entity.Player;
 
-import com.Zrips.CMI.CMI;
-
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 
 public class PacketInjector {
 
@@ -19,12 +16,25 @@ public class PacketInjector {
     private Field channel;
 
     public PacketInjector() {
+
+    }
+
+    public Field getField(Class<?> clazz, String fieldName) throws Exception {
+	return null;
+    }
+
+    @Deprecated
+    private Class<?> getClass(String classname) {
+
+	return null;
     }
 
     public void addPlayer(Player p) {
+
     }
 
     public void removePlayer(Player p) {
+
     }
 
     private Object getNetworkManager(Object ep) {
@@ -32,6 +42,7 @@ public class PacketInjector {
     }
 
     private Channel getChannel(Object networkManager) {
+
 	return null;
     }
 }

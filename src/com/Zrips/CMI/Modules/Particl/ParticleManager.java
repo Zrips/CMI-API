@@ -1,20 +1,33 @@
 package com.Zrips.CMI.Modules.Particl;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
+
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.Snd;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class ParticleManager {
 
@@ -43,6 +56,7 @@ public class ParticleManager {
     }
 
     public void drawLine(Player player, Location loc1, Location loc2, CMIParticle effect, boolean center) {
+	drawLine(loc1, loc2, effect, center, Arrays.asList(player));
     }
 
     public void drawLine(Location loc1, Location loc2, CMIParticle effect, boolean center, Player player) {
@@ -62,6 +76,7 @@ public class ParticleManager {
     }
 
     private static ArrayList<Location> getLineLocations(Location loc1, Location loc2, boolean center, Double speed) {
+	
 	return null;
     }
 
@@ -92,18 +107,21 @@ public class ParticleManager {
     }
 
     private void markBlockShed(final Location o, final CMIParticle effect, final Long until, final List<Player> players) {
-
     }
 
     private void markBlock(Location o, CMIParticle effect, final List<Player> players) {
+
+
     }
 
     private static List<Vector> remakePlotLineInRange(Double rowSpacing, int range, Vector p1, Vector p2, Location loc) {
-
+	
 	return null;
     }
 
     private static boolean inRange(Location loc, Location loc2, Integer range) {
+
+
 	return true;
     }
 
@@ -124,6 +142,7 @@ public class ParticleManager {
 	tpaWarmup("circle;effect:flying_glyph;dur:5;pitchc:15;part:10;offset:0,1.7,0;radius:0.5;yawc:12;color:rs;pitch:90"),
 	GColumn("circle;c:0,255,0;twist;part:5;r:0.75;pitch:90;move:0,0.1,0;rc:-0.02"),
 	SmallBoop("circle;effect:flying_glyph;yaw:[playerName];pitch:[playerName];r:0.1;part:3;rc:0.03;mr:0.3;twist"),
+	HologramInteraction("circle;effect:flying_glyph;yaw:[playerName];pitch:[playerName];r:0.1;part:3;rc:0.03;mr:0.3;twist"),
 	TpUp("circle;c:200,50,210;twist;part:5;r:0.5;pitch:90;move:0,0.33,0;offset:0,-0.2,0"),
 	TpDown("circle;c:150,50,10;part:5;r:0.5;pitch:90;move:0,-0.33,0;offset:0,2.2,0"),
 	custom1(customPreset),
@@ -157,7 +176,6 @@ public class ParticleManager {
 	custom29(customPreset),
 	custom30(customPreset);
 
-//	private CMIPEAnimationInterface inter;
 	private String string = "";
 	private boolean enabled = true;
 
@@ -166,22 +184,28 @@ public class ParticleManager {
 	}
 
 	public CMIPEAnimationInterface getInter() {
-	    return null;
+	    return CMI.getInstance().getParticleManager().getParticleAnimation(string);
 	}
 
 	public CMIPEAnimationInterface getInter(Player player) {
-	    return null;
+	    Snd snd = new Snd(player, player);
+	    String s = CMI.getInstance().getLM().updateSnd(snd, string);
+	    return CMI.getInstance().getParticleManager().getParticleAnimation(s);
 	}
+
 
 	public void show(Location loc) {
 	    CMI.getInstance().getParticleManager().show(CMI.getInstance().getParticleManager().getParticleAnimation(string), loc);
 	}
 
 	public void show(Player player) {
-
 	}
 
 	public static CMIPresetAnimations getByName(String name) {
+	    for (CMIPresetAnimations one : CMIPresetAnimations.values()) {
+		if (one.toString().equalsIgnoreCase(name))
+		    return one;
+	    }
 	    return null;
 	}
 
@@ -214,8 +238,8 @@ public class ParticleManager {
     }
 
     public CMIPEAnimationInterface getParticleAnimation(String string) {
-
 	return null;
+
     }
 
 }

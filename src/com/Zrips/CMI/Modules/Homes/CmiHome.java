@@ -1,7 +1,7 @@
 package com.Zrips.CMI.Modules.Homes;
 
-import com.Zrips.CMI.Containers.CMILocation;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class CmiHome {
 
@@ -50,6 +50,9 @@ public class CmiHome {
     }
 
     public void setMaterial(CMIMaterial material) {
+	if (material != null && (material == CMIMaterial.NONE || material.isAir()))
+	    return;
+	this.material = material;
     }
 
     public Integer getSlot() {
@@ -57,7 +60,10 @@ public class CmiHome {
     }
 
     public void setSlot(Integer slot) {
-	this.slot = slot;
+	if (slot != null && slot < 0)
+	    this.slot = null;
+	else
+	    this.slot = slot;
     }
 
 }

@@ -9,8 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-
 public class CMIRayTrace {
 
     Vector origin;
@@ -31,19 +29,26 @@ public class CMIRayTrace {
 
     //get a point on the raytrace at X blocks away
     public Vector getPostion(double blocksAway) {
-	return null;
+	return origin.clone().add(direction.clone().multiply(blocksAway));
     }
 
     public ArrayList<Vector> traverse(double blocksAway, double accuracy) {
-	return null;
+	ArrayList<Vector> positions = new ArrayList<>();
+	for (double d = 0; d <= blocksAway; d += accuracy) {
+	    positions.add(getPostion(d));
+	}
+	return positions;
     }
 
     public ArrayList<Block> getBlocks(double blocksAway) {
 	return getBlocks(blocksAway, 0.01);
     }
 
-    public ArrayList<Block> getBlocks(double blocksAway, double accuracy) {	
-	return null;
+    public ArrayList<Block> getBlocks(double blocksAway, double accuracy) {
+	ArrayList<Vector> positions = traverse(blocksAway, accuracy);
+	Set<Block> blocks = new LinkedHashSet<Block>();
+
+	return new ArrayList<Block>(blocks);
     }
 
     public ArrayList<Block> getLastTwoBlocks(double blocksAway) {
@@ -51,6 +56,10 @@ public class CMIRayTrace {
     }
 
     public ArrayList<Block> getLastTwoBlocks(double blocksAway, double accuracy) {
-	return null;
+	ArrayList<Block> blocks = getBlocks(blocksAway, accuracy);
+
+	ArrayList<Block> t = new ArrayList<Block>();
+
+	return t;
     }
 }

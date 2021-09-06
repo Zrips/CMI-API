@@ -14,11 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Entities.CMIEntitySubType;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.Entities.MobHeadInfo;
+
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.CmiItems.CMIEntityType;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class EntityHeadDrop {
     private CMIEntityType type;
@@ -36,13 +40,19 @@ public class EntityHeadDrop {
     }
 
     public void setHeads(HashMap<String, Double> heads) {
+	this.heads = heads;
+	ls.clear();
+	for (Entry<String, Double> one : heads.entrySet()) {
+	    ls.add(one.getKey());
+	}
     }
 
     public void addHead(String texture, Double chance) {
+	this.heads.put(texture, chance);
+	ls.add(texture);
     }
 
     public ItemStack getHead() {
-
 	return null;
     }
 

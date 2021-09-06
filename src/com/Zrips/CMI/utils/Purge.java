@@ -1,15 +1,11 @@
 package com.Zrips.CMI.utils;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.utils.VersionChecker.Version;
 
 public class Purge {
 
@@ -44,7 +40,7 @@ public class Purge {
     private static int count = 0;
 
     public void StartingPurge() {
-
+	
     }
 
     private void addValue(PurgeType type) {
@@ -56,23 +52,25 @@ public class Purge {
     }
 
     public boolean purgePlayerAdvancementsFiles(UUID uuid, boolean chekcIfEnabled) {
+
 	return true;
     }
 
     public boolean purgePlayerDataFiles(UUID uuid, boolean chekcIfEnabled) {
-
+	
 	return true;
     }
 
     public boolean purgePlayerStatsFiles(UUID uuid, boolean chekcIfEnabled) {
-
+	
 	return true;
     }
 
     public void purgeEssentialsFiles(UUID uuid) {
-
+	
     }
 
     public void purgeLWC(UUID uuid) {
+	
     }
 }

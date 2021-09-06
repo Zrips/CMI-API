@@ -1,19 +1,8 @@
 package com.Zrips.CMI.Containers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.Repairable;
-
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.Scavenger.ScavengeManager;
-import com.Zrips.CMI.Modules.Worth.WorthEnchantment;
-import com.Zrips.CMI.Modules.Worth.WorthItem;
 
 public class CMIItemRepair {
 
@@ -65,11 +54,16 @@ public class CMIItemRepair {
     }
 
     public static double getRepairCost(List<ItemStack> items) {
-	return format(0);
+	double repairCost = 0D;
+	for (ItemStack one : items) {
+	    repairCost += getRepairCost(one);
+	}
+	return format(repairCost);
     }
 
     public static double getRepairCost(ItemStack item) {
-	return format(0);
+	    return 0D;
+
     }
 
     private static double format(double number) {

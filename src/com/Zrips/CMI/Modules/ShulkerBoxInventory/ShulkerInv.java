@@ -12,9 +12,8 @@ public class ShulkerInv {
 
     private Integer sourceId = null;
 
-    public ShulkerInv(Player player, int sourceId, Inventory customInv) {
+    public ShulkerInv(Player player, Inventory customInv) {
 	this.player = player;
-	this.sourceId = sourceId;
 	this.customInv = customInv;
     }
 

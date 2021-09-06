@@ -5,13 +5,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+
+import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class RecipeManager {
 
@@ -38,7 +40,8 @@ public class RecipeManager {
 	Shaped, Shapeless, Furnace, Blasting, Campfire, Cooking, Merchant, Smoking, Stonecutting, Smithing, Complex, Unknown;
 
 	public static CMIRecipeType getByName(String name) {
-	    return null;
+	 
+	return null;
 	}
     }
 
@@ -59,21 +62,25 @@ public class RecipeManager {
     }
 
     public static int getIndex(LinkedHashMap<String, ItemStack> itemsused, Object value) {
+	int result = 0;
+	for (Entry<String, ItemStack> entry : itemsused.entrySet()) {
+	    if (entry.getKey().equals(value))
+		return result;
+	    result++;
+	}
 	return -1;
     }
 
     @SuppressWarnings("deprecation")
     public Recipe MakeShapedRecipe(ItemStack result, HashMap<Integer, ItemStack> Recipe) {
-
+	
 	return null;
-
     }
 
     @SuppressWarnings("deprecation")
     public Recipe MakeShaplessRecipe(ItemStack result, HashMap<Integer, ItemStack> Recipe) {
 
 	return null;
-
     }
 
     public Recipe MakeFurnaceRecipe(ItemStack result, ItemStack Recipe) {
@@ -81,7 +88,7 @@ public class RecipeManager {
     }
 
     public Recipe MakeFurnaceRecipe(ItemStack result, ItemStack Recipe, FurnaceTempData temp) {
-
+	
 	return null;
     }
 
@@ -90,7 +97,7 @@ public class RecipeManager {
     }
 
     public Recipe createRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, ItemStack> Recipe, FurnaceTempData temp) {
-
+	
 	return null;
     }
 
@@ -99,12 +106,12 @@ public class RecipeManager {
     }
 
     public Recipe addRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, ItemStack> Recipe, FurnaceTempData temp) {
-
+	
 	return null;
     }
 
     public Recipe addRecipe(CMIRecipeType type, Recipe recipe) {
-
+	
 	return null;
     }
 
@@ -123,12 +130,18 @@ public class RecipeManager {
     }
 
     private void loadRecipes() {
-
+	
     }
 
     public List<Integer> getGUIRecipeIngridientsSlots(CMIRecipeType type) {
-	return null;
+	if (type.equals(CMIRecipeType.Furnace))
+	    return new ArrayList<Integer>(this.GUIRecipeFurnacetSlot);
+	return GUIRecipeIngridientsSlots;
     }
+
+//    public void setGUIRecipeIngridientsSlots(List<Integer> gUIRecipeIngridientsSlots) {
+//	GUIRecipeIngridientsSlots = gUIRecipeIngridientsSlots;
+//    }
 
     public Integer getGUIRecipeResultSlot() {
 	return GUIRecipeResultSlot;
@@ -142,6 +155,7 @@ public class RecipeManager {
 	return recipes;
     }
 
+    @Deprecated
     public void setRecipes(List<CMIRecipe> recipes) {
 	this.recipes = recipes;
     }

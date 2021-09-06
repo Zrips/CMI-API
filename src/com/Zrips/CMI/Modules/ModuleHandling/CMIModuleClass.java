@@ -1,6 +1,6 @@
 package com.Zrips.CMI.Modules.ModuleHandling;
 
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.Version.Version;
 
 public class CMIModuleClass {
     private Class<?> listener;

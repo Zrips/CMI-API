@@ -25,16 +25,18 @@ public class FlightCharge {
     }
 
     public void addCharge(Double charge) {
-
     }
 
     public void takeCharge(Double charge) {
-
     }
 
     public Integer getMax() {
-	return null;
+	return CMI.getInstance().getFlightChargeManager().getMaxChargeLevel();
     }
+
+//    public void setMax(Integer max) {
+//	this.max = max;
+//    }
 
     public Double getLastChange() {
 	return lastChange;
@@ -49,7 +51,7 @@ public class FlightCharge {
     }
 
     public Boolean isAutoRecharge() {
-	return autoRecharge == null ? false : autoRecharge;
+	return autoRecharge == null ? false : autoRecharge; 
     }
 
     public void setAutoRecharge(Boolean autoRecharge) {

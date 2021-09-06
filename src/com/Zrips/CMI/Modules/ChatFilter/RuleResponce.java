@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.Zrips.CMI.Modules.ChatFilter.ChatFilterManager.ChatFilterBlockType;
+import net.Zrips.CMILib.Chat.ChatFilterBlockType;
 
 public class RuleResponce {
 
@@ -31,18 +31,28 @@ public class RuleResponce {
     }
 
     public String getRulesNamesAsString() {
-	return null;
+	String n = "";
+	return n;
     }
 
     public void addRule(ChatFilterRule rule) {
+	if (rule != null && !this.rules.containsKey(rule.getRuleName()))
+	    this.rules.put(rule.getRuleName(), rule);
     }
 
     public ChatFilterBlockType getMaxFilterBlockType() {
-	return null;
+	ChatFilterBlockType type = ChatFilterBlockType.None;
+	return type;
     }
 
     public boolean isInformConsole() {
 	boolean inform = false;
+	for (Entry<String, ChatFilterRule> one : rules.entrySet()) {
+	    if (isBypass(one.getValue().getGroup()))
+		continue;
+	    if (one.getValue().isInformConsole())
+		inform = true;
+	}
 	return inform;
     }
 
@@ -56,7 +66,9 @@ public class RuleResponce {
     }
 
     public String getUpdatedMessage() {
-	return null;
+	if (updatedMessage == null)
+	    return message;
+	return updatedMessage;
     }
 
     public void setUpdatedMessage(String updatedMessage) {

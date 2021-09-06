@@ -1,5 +1,6 @@
 package com.Zrips.CMI.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,35 +17,46 @@ public class CommandsHandler implements CommandExecutor {
     public static int stage = 0;
     public static String msg = "";
     private Map<String, CMICommand> commands = new TreeMap<>();
+    private List<String> disabledBase = new ArrayList<String>();
 
     private boolean testServer = false;
 
     protected CMI plugin;
 
     public CommandsHandler(CMI plugin) {
-
     }
 
     public Boolean performCMICommand(CommandSender sender, Class<?> command, String... args) {
-	return null;
+	CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
+	if (cmd == null)
+	    return false;
+	return performCMICommand(sender, cmd, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String[] args) {
-	return null;
+	if (cmd == null)
+	    return false;
+	return cmd.getCmdClass().perform(plugin, sender, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, Class<?> command, String args) {
-	return null;
+	CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
+	if (cmd == null)
+	    return false;
+	return performCMICommand(sender, cmd, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String args) {
-	return null;
+	if (cmd == null)
+	    return false;
+	String[] ar = { args };
+	return cmd.getCmdClass().perform(plugin, sender, args.contains(" ") ? args.split(" ") : args.isEmpty() ? new String[0] : ar);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String l, String[] args) {
 
-	return false;
+	return true;
     }
 
     public static boolean hasCommandPermission(CommandSender sender, String cmd, Long delay) {
@@ -52,27 +64,15 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     private String getUsage(String cmd) {
-	return null;
+	return "";
     }
-
-//    public String getUsageNoCmd(String cmd) {
-//	StringBuilder builder = new StringBuilder();
-//	builder.append(ChatColor.GREEN.toString());
-//	builder.append('/').append(label).append(' ');
-//	builder.append(ChatColor.GOLD);
-//	String key = "command." + cmd + ".help.args";
-//	if (plugin.getLM().containsKey(key)) {
-//	    builder.append(' ');
-//	    builder.append(plugin.getLM().getMessage(key));
-//	}
-//	return builder.toString();
-//    }
 
     public void sendUsage(CommandSender sender, String cmd) {
 	sendUsage(sender, cmd, true);
     }
 
     public void sendUsage(CommandSender sender, String cmd, boolean explanation) {
+	
     }
 
     protected boolean help(CommandSender sender, int page) {
@@ -81,36 +81,37 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     public static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
-	return null;
-    }
-
-    private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
-	return null;
+	List<String> result = new ArrayList<String>();
+	
+	return result;
     }
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
-	return null;
+	Map<String, Integer> temp = new TreeMap<String, Integer>();
+	
+	return temp;
     }
 
     public void fillCommands() {
 	return;
     }
 
-    private static Class<?> getClass(String cmd) {
-	return null;
-    }
-
-    private Cmd getCmdClass(String cmdName) {
-
-	return null;
-    }
-
     public static int distance(String a, String b) {
-	return 0;
-    }
-
-    private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
-	return null;
+	a = a.toLowerCase();
+	b = b.toLowerCase();
+	int[] costs = new int[b.length() + 1];
+	for (int j = 0; j < costs.length; j++)
+	    costs[j] = j;
+	for (int i = 1; i <= a.length(); i++) {
+	    costs[0] = i;
+	    int nw = i - 1;
+	    for (int j = 1; j <= b.length(); j++) {
+		int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+		nw = costs[j];
+		costs[j] = cj;
+	    }
+	}
+	return costs[b.length()];
     }
 
     public Map<String, CMICommand> getCommands() {
@@ -126,6 +127,28 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     public static String getCommandPrefix(String command) {
-	return null;
+
+
+	return "";
+    }
+
+    public void setBaseCommandState(String command, boolean state) {
+	CMICommand cmd = this.getCommands().get(command.toLowerCase());
+	if (cmd != null)
+	    cmd.setBaseEnabled(state);
+	if (!state)
+	    addDisabledBase(command.toLowerCase());
+    }
+
+    public List<String> getDisabledBase() {
+	return disabledBase;
+    }
+
+    public void clearDisabledBase() {
+	this.disabledBase.clear();
+    }
+
+    public void addDisabledBase(String disabledBase) {
+	this.disabledBase.add(disabledBase);
     }
 }

@@ -11,8 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
-import com.Zrips.CMI.Modules.GUI.GUIManager.GUIClickType;
+
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 
 public class ArmorStandManager {
 
@@ -77,7 +78,7 @@ public class ArmorStandManager {
     }
 
     public Entity getLast(Player player) {
-	return last.get(player.getUniqueId());
+	return null;
     }
 
     public boolean isBeingEdited(UUID uuid) {
@@ -91,15 +92,14 @@ public class ArmorStandManager {
     }
 
     public boolean isTooFar(Player player, Entity ent) {
-	return false;
-    }
 
-    private void addCopyButton(CMIGui gui, int slot, armorStandActions action) {
+	Location loc1 = player.getLocation();
+	Location loc2 = ent.getLocation();
 
-    }
+	if (!loc1.getWorld().equals(loc2.getWorld()))
+	    return true;
 
-    private void addCopyButton(CMIGui gui, int slot, armorStandExtraActions action) {
-
+	return loc1.distance(loc2) > 20;
     }
 
     public boolean openCopyWindow(Player player, ArmorStand armor) {
@@ -144,13 +144,6 @@ public class ArmorStandManager {
 	return 0D;
     }
 
-    private static EulerAngle getEulerAngle(ArmorStand armor, armorStandActions apose, armorStandPoseC coord) {
-	return null;
-    }
-
-    private static void duplicate(armorStandActions part, ArmorStand source, ArmorStand target) {
-    }
-
     public void duplicate(ArmorStand source, ArmorStand target, Set<armorStandActions> copy) {
 
     }
@@ -159,22 +152,13 @@ public class ArmorStandManager {
 
     }
 
-    private boolean canBuild(Player player, Location loc) {
-
-	return false;
-    }
-
     public boolean canInteract(Player player, Entity ent, boolean checkInteraction) {
+
 	return true;
     }
 
     public void changeAngle(CMIGui gui, armorStandActions apose, armorStandPoseC coord, int value) {
-	if (!isOk(gui))
-	    return;
 
-	Entity ent = (Entity) gui.getWhatShows();
-
-	changeAngle((ArmorStand) ent, gui.getPlayer(), apose, coord, value);
     }
 
     public void changeAngle(ArmorStand armor, Player player, armorStandActions apose, armorStandPoseC coord, int value) {
@@ -189,6 +173,7 @@ public class ArmorStandManager {
     }
 
     public void updateArmorStandItems(CMIGui gui) {
+
     }
 
 }

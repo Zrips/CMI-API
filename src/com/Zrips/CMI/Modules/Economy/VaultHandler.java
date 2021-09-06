@@ -4,10 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.milkbowl.vault.economy.AbstractEconomy;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
@@ -16,10 +12,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
+
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.Economy.EconomyManager.CMIMoneyLogType;
-import com.Zrips.CMI.events.CMIUserBalanceChangeEvent;
+
+import net.milkbowl.vault.economy.AbstractEconomy;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 public class VaultHandler extends AbstractEconomy {
     public CMI cmi;
@@ -124,7 +123,7 @@ public class VaultHandler extends AbstractEconomy {
 	if (user.hasMoney(amount)) {
 	    Double before = user.getBalance();
 	    user.withdraw(amount);
-	    fireEvent(user, before, user.getBalance(), "Withdraw");
+//	    fireEvent(user, before, user.getBalance(), "Withdraw");
 	    return new EconomyResponse(amount, user.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
 	}
 	return new EconomyResponse(0.0D, user.getBalance(), EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
@@ -152,7 +151,7 @@ public class VaultHandler extends AbstractEconomy {
 
 	Double before = user.getBalance();
 	user.deposit(amount);
-	fireEvent(user, before, user.getBalance(), "Deposit");
+//	fireEvent(user, before, user.getBalance(), "Deposit");
 	return new EconomyResponse(amount, user.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
@@ -362,19 +361,5 @@ public class VaultHandler extends AbstractEconomy {
 		}
 	    }
 	}
-    }
-
-    private static void fireEvent(final CMIUser user, final Double from, final Double to, String type) {
-	if (!CMI.getInstance().isFullyLoaded())
-	    return;
-	Bukkit.getScheduler().runTaskAsynchronously(CMI.getInstance(), new Runnable() {
-	    @Override
-	    public void run() {
-		CMIUserBalanceChangeEvent e = new CMIUserBalanceChangeEvent(user, from, to, type);
-		Bukkit.getServer().getPluginManager().callEvent(e);
-		CMI.getInstance().getEconomyManager().moneyLog(user, null, to - from, CMIMoneyLogType.Unknown, type);
-		return;
-	    }
-	});
     }
 }

@@ -1,19 +1,10 @@
 package com.Zrips.CMI.Containers;
 
 import org.bukkit.Axis;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIBlock.BedPart;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.utils.VersionChecker.Version;
 
 public class CMIBlock {
     public static enum blockDirection {
@@ -30,6 +21,10 @@ public class CMIBlock {
 	}
 
 	public static blockDirection getByDir(int dir) {
+	    for (blockDirection one : blockDirection.values()) {
+		if (one.getDir() == dir)
+		    return one;
+	    }
 	    return null;
 	}
     }
@@ -59,6 +54,10 @@ public class CMIBlock {
 	STRAIGHT;
 
 	public static StairShape getByName(String name) {
+	    for (StairShape one : StairShape.values()) {
+		if (one.toString().equalsIgnoreCase(name))
+		    return one;
+	    }
 	    return null;
 	}
     }
@@ -71,6 +70,11 @@ public class CMIBlock {
 	this.block = block;
     }
 
+    public Inventory getShulkerInv() {
+	return null;
+
+    }
+
     @Deprecated
     public blockDirection getDirection() {
 
@@ -78,48 +82,58 @@ public class CMIBlock {
     }
 
     public boolean isWaterlogged() {
+
 	return false;
     }
 
     public Bisect getBisect() {
+
 	return null;
     }
 
     public boolean isAttached() {
+
 	return false;
     }
 
     public Axis getAxis() {
+
 	return null;
     }
 
     public BedPart getBedPart() {
+
 	return null;
     }
 
     public StairShape getStairShape() {
+
 	return null;
     }
 
     public BlockFace getFacing() {
+
 	return null;
     }
 
-    public CMIBlock flip(FlipDirection direction, boolean angle) {	
+    public CMIBlock flip(FlipDirection direction, boolean angle) {
+
 	return this;
     }
 
-    public CMIBlock rotate90Reverse() {	
+    public CMIBlock rotate90Reverse() {
+
 	return this;
 
     }
 
-    public CMIBlock rotate90() {	
+    public CMIBlock rotate90() {
+
 	return this;
     }
 
     public Object getData() {
-	return null;
+	return data.byteValue();
     }
 
     public CMIBlock setData(Object data) {
@@ -131,14 +145,17 @@ public class CMIBlock {
     }
 
     public Inventory getInventory() {
+
 	return null;
     }
 
     public Block getSecondaryBedBlock() {
+
 	return null;
     }
 
     public Block getBedFootBlock() {
+
 	return null;
     }
 }

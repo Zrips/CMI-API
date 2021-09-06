@@ -5,25 +5,37 @@ import java.util.HashMap;
 public class CmdCooldown {
     HashMap<String, CMICooldown> list = new HashMap<String, CMICooldown>();
 
-//    public void addCooldown2(String cmd, Long time) {
-//	addCooldown(cmd, time, 0L);
-//    }
-
     public void addCooldown(String cmd, Long time, Long timePeriod) {
+	addCooldown(cmd, time, (int)(timePeriod / 1000));
+    }
+
+    public void addCooldown(String cmd, int cooldownSeconds) {
+	addCooldown(cmd, System.currentTimeMillis(), cooldownSeconds);
+    }
+
+    public void addCooldown(String cmd, Long startedAt, int cooldownSeconds) {
+	list.put(cmd.toLowerCase(), new CMICooldown(startedAt, cooldownSeconds));
     }
 
     public void removeCooldown(String cmd) {
+	list.remove(cmd.toLowerCase());
     }
 
     public HashMap<String, CMICooldown> getList() {
-	return null;
+	return this.list;
+    }
+
+    public void clear() {
+	this.list.clear();
     }
 
     public class CMICooldown {
 	private Long initialized = 0L;
-	private Long timePeriod = 0L;
+	private int cooldownSeconds = 0;
 
-	public CMICooldown(Long time, Long timePeriod) {
+	public CMICooldown(Long time, int cooldownSeconds) {
+	    initialized = time;
+	    this.cooldownSeconds = cooldownSeconds < 0 ? 0 : cooldownSeconds;
 	}
 
 	public Long getInitialized() {
@@ -31,22 +43,24 @@ public class CmdCooldown {
 	}
 
 	public Long getEndTime() {
-	    return initialized + timePeriod;
+	    return initialized + (cooldownSeconds * 1000L);
 	}
 
 	public Long getDelta() {
-	return null;
+	    long delta = getEndTime() - System.currentTimeMillis();
+	    return delta < 0 ? 0 : delta;
 	}
 
 	public void setInitialized(Long initialized) {
 	    this.initialized = initialized;
 	}
 
-	public Long getTimePeriod() {
-	    return timePeriod;
+	public int getTimePeriod() {
+	    return cooldownSeconds;
 	}
 
-	public void setTimePeriod(Long timePeriod) {
+	public void setTimePeriod(int cooldownSeconds) {
+	    this.cooldownSeconds = cooldownSeconds;
 	}
 
     }

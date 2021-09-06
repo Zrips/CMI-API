@@ -12,11 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Worth.WorthEnchantment;
 import com.Zrips.CMI.Modules.Worth.WorthItem;
 
@@ -38,10 +39,12 @@ public class CMIScavengeItem {
     }
 
     public boolean canScavenge() {
+	
 	return true;
     }
 
     public boolean isBlackListedItem() {
+
 	return false;
     }
 
@@ -62,7 +65,14 @@ public class CMIScavengeItem {
     }
 
     public double getEnchantExtractionFailChance(Enchantment enchant) {
-	return 0;
+	Integer level = this.enchants.get(enchant);
+	if (level == null)
+	    level = 1;
+	Double chance = ScavengeManager.baseEnchantFailPercentage;
+	int max = enchant.getMaxLevel();
+	chance += (level * ScavengeManager.levelEnchantFailPercentage) / max;
+	chance = chance > ScavengeManager.levelEnchantFailMaxChance ? ScavengeManager.levelEnchantFailMaxChance : chance;
+	return format(chance);
     }
 
     private double format(double number) {
@@ -70,22 +80,34 @@ public class CMIScavengeItem {
     }
 
     public double getExtractionCost() {
-	return 0D;
+	    return 0D;
     }
 
     public double getIngredientReturnChance() {
 
+
 	double chance = ScavengeManager.IngredientReturnBase;
+
+//	chance = (chance * keepPercent) / 100D;
 
 	return format(chance);
     }
 
     public double getEnchantLevelLowerChance(Enchantment enchant) {
-	return 0;
+	Integer level = this.enchants.get(enchant);
+	if (level == null)
+	    level = 1;
+	Double chance = ScavengeManager.LowerLevelChanceBase;
+	int max = enchant.getMaxLevel();
+	chance += (level * ScavengeManager.LowerLevelForEachLevel) / max;
+	chance = chance > ScavengeManager.LowerLevelMaxChance ? ScavengeManager.LowerLevelMaxChance : chance;
+	return format(chance);
     }
 
     public double getItemBreakChance() {
-	return 0;
+	
+	    return 100D;
+	
     }
 
     public double getBreakChanceByItemDurability() {
@@ -113,7 +135,7 @@ public class CMIScavengeItem {
     }
 
     public List<ItemStack> enchantsToBooks() {
-
+	
 	return null;
     }
 

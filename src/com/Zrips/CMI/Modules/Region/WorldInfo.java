@@ -20,10 +20,15 @@ public class WorldInfo {
 
     @Override
     public WorldInfo clone(){
-	return null;
+	WorldInfo wi = new WorldInfo(world, center);
+	wi.setRegion(new HashMap<String, List<Boolean>>(regionChunks));
+	wi.setTotalChunks(totalChunks);	
+	return wi;
     }
     
     public WorldInfo(World world, CMIRegion center) {
+	this.world = world;
+	this.center = center;
     }
     
     public void setRegion(Map<String, List<Boolean>> regionChunks) {
@@ -39,15 +44,30 @@ public class WorldInfo {
     }
 
     public Boolean getRegionsChunk(CMIRegion region, int place) {
-	return null;
+
+	List<Boolean> chunks = regionChunks.get(toString(region));
+//	for (Entry<SCord, List<Boolean>> one : regionChunks.entrySet()) {
+//	    if (one.getKey().getX() == region.getX() && one.getKey().getZ() == region.getZ())
+//		chunks = one.getValue();
+//	}
+
+	if (chunks == null)
+	    return null;
+	return chunks.get(place);
     }
 
     public List<Boolean> getRegionPlaces(CMIRegion region) {
-	return null;
+//	List<Boolean> chunks = ;
+//	for (Entry<SCord, List<Boolean>> one : regionChunks.entrySet()) {
+//	    if (one.getKey().getX() == region.getX() && one.getKey().getZ() == region.getZ())
+//		chunks = one.getValue();
+//	}
+	return regionChunks.get(toString(region));
     }
 
     public WorldInfo setRegionPlaces(CMIRegion region, List<Boolean> places) {
-	return null;
+	regionChunks.put(toString(region), places);
+	return this;
     }
 
     public CMIRegion getNextChunkLoc(boolean exist) {

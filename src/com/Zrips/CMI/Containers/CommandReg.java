@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.command.defaults.BukkitCommand;
 
+import com.Zrips.CMI.CMI;
+
 public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
     protected final String command;
@@ -25,14 +27,16 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
     }
 
     private static void unRegisterBukkitCommand(Command cmd) {
+
     }
 
     public boolean register(String permission) {
+
 	return false;
     }
 
     final static CommandMap getCommandMap() {
-	return null;
+	return cmap;
     }
 
     @Override
@@ -43,7 +47,8 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-	return null;
+
+	return CMI.getInstance().getTab().get(sender, command, "cmi", args);
     }
 
     private final class ReflectCommand extends BukkitCommand {
@@ -69,13 +74,13 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+
 	    return true;
 	}
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
-	return null;
+	    return null;
 	}
-
     }
 }

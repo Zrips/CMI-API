@@ -1,14 +1,25 @@
 package com.Zrips.CMI.Modules.Permissions;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.Snd;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 import com.Zrips.CMI.Modules.tp.Teleportations.TpCondition;
+import com.Zrips.CMI.commands.CommandsHandler;
 
 public class PermissionsManager {
 
@@ -35,11 +46,11 @@ public class PermissionsManager {
 //	me_colors("Allows to use colors in me command"),
 	dynmap_hidden("Hides player from dynmap map"),
 	prewards_notification("Allows to see playtime rewards notifications"),
-	prewards_$1("Allows to get particular playtime reward"),
+	prewards_$1("Allows to get particular playtime reward", "preward"),
 	anvil_colors("Allows to use colors when renaming item"),
 	title_colors("Allows to use colors in titlemsg command"),
 	tag_color("Tagged player name gets colorized"),
-	colors_$1_$star2("Allows all color usage in particular areas", "type"),
+	colors_$1_$star("Allows all color usage in particular areas", "type"),
 	colors_$1_$2("Allows color usage in particular areas. Types: publicmessage, privatemessage, nickname, signs, books, me", "type", "colorName/hex"),
 	seevanished("Allows to see vanished people"),
 	messages_disablelogin("Disables login message"),
@@ -50,6 +61,7 @@ public class PermissionsManager {
 	permisiononerror("Allows to see missing permission on error message"),
 	invedit("Allow to edit players inventory"),
 	book_colors("Allows to colorize books"),
+	book_pages_$1("Defines max pages you can create in a book","20to100"),
 	damagecontrol_$1("Defines damage multiplier by group", "groupName"),
 	chorusteleport("Allows to use chorus to teleport around"),
 	teleport_with_$1("Allows teleportation with defined mount", "entityType"),
@@ -63,6 +75,7 @@ public class PermissionsManager {
 	versioncheck("Allows to see new version message on login"),
 	worldlimit_gamemode_bypass("Allows to bypass game mode limitations by worlds"),
 	worldlimit_fly_bypass("Allows to bypass fly mode limitations by worlds"),
+	worldlimit_elytra_bypass("Allows to bypass elytra mode limitations by worlds"),
 	worldlimit_fly_aboveroof("Allows to fly over world build limit. Feature should be enabled in config file"),
 	worldlimit_god_bypass("Allows to bypass god mode limitations by worlds"),
 	spawners_charge_bypass("Allows to bypass charge limitations"),
@@ -77,8 +90,13 @@ public class PermissionsManager {
 	kit_bypass_time("Allows to bypass kit time limitations"),
 	kit_bypass_onetimeuse("Allows to bypass kit onetimeuse limitations"),
 
+	pvp_cmdBypass("Allows to use commands durring combat mode"),
 	pvp_godBypass("Allows to damage player while being in god mode"),
+	pve_godBypass("Allows to damage mobs while being in god mode"),
+	pvp_PFlyBypass("Allows to keep flying while entering combat mode by player"),
+	pvp_MFlyBypass("Allows to keep flying while entering combat mode by monster"),
 
+	spawnonjoin_bypass("Allows to bypass spawnOnJoin option"),
 	spawngroup_$1("Defines player individual spawn point", "spawnGroup"),
 	respawngroup_$1("Defines player individual respawn point", "respawnGroup"),
 
@@ -89,6 +107,7 @@ public class PermissionsManager {
 	chatmessagegroup_$1("Defines player custom chat message group for public message format", "groupNumber"),
 	chat_shout("Allows to send messges over greater distances"),
 	chat_rangebypass("Allows to send messages over greater distances"),
+	chat_rangespy("Allows to see all messages over greater distances"),
 	tablist_$1("Defines player custom tab list group", "groupNumber"),
 
 	elytra("Allows to equip elytra"),
@@ -102,13 +121,16 @@ public class PermissionsManager {
 //	hunger_max_$1("Defines max amount of hunger player can have", "value"),
 //	hunger_rate_$1("Defines mhow fast hunger is depleating, default rate is 1.0", "value"),
 
-	anvil_itemrename_bypass("Allows to rename items with black listed names"),
-	anvil_nolimits("Allows repair items without level limitations"),
+	anvil_itemrename_bypass("Allows to rename items with black listed names. /itemanem and physical anvil"),
+//	anvil_nolimits("Allows repair items without level limitations"),
+	
+	sleepignore("Players with this permission node will be ignored when checking how many players are sleeping in the world to speed up time"),
 
 	chatfilter_inform("Informs player when some one breaks chat filter rules"),
 	chatfilter_bypass_$1("Allows to bypass particular chat filter group", "groupName"),
 	commandfilter_bypass("Allows to bypass command spam filter"),
 	chatfilter_spambypass("Allows to bypass chat spam filter"),
+	chatfilter_capbypass("Allows to bypass chat caps filter"),
 	deathlocation("Allows to see death location after death"),
 	saveinv("Saves player inventory on death to be restored if needed later on"),
 	scheduler_exclude("Excludes player from scheduler random player list"),
@@ -125,6 +147,7 @@ public class PermissionsManager {
 	dropspawner("Allows for spawner to be dropped after its being broken"),
 	dropspawner_$1("Allows for spawner to be dropped after its being broken by defined type", "entityType"),
 	dropspawner_nosilk("Drops spawner without silk touch"),
+	dropspawner_basedropchance_$1("Defines base drop chance. Used in case its higher than defined one in config file", "positiveValue"),
 	spawners_proximity_bypass("Bypass spawner place range limitations"),
 	spawners_charge_$1("Defines spawner charge group", "groupName"),
 
@@ -154,7 +177,7 @@ public class PermissionsManager {
 	cooldownbypass_$1("Allows to bypass command cooldown", "commandName"),
 	cooldown_$1_$2("Defines command cooldown for player. Spaces need to be separate with _", "some_command", "timer"),
 	command_armorstand_$1("Allows to access particular armor stand editor features",
-	    "updateitems plate size visible arms gravity glow invulnerable name interactable head body leftArm rightArm leftLeg rightLeg pos"),
+	    "updateitems/plate/size/visible/arms/gravity/glow/invulnerable/name/interactable/head/body/leftArm/rightArm/leftLeg/rightLeg/pos/torso"),
 	command_armorstand_movebypass("Allows to move armor stand where you cant build. Can help to bypass AntiCheat plugin restrictions"),
 
 	command_donate_bypass("Prevents you from getting items with donate command"),
@@ -164,6 +187,10 @@ public class PermissionsManager {
 	command_portal_$1("Allows to use portal", "portalName"),
 //	command_portalparticles_$1("Allows to see portal particles when requirement is enabled", "portalName"),
 
+	command_kill_byforce("Allows to kill player independent of protection plugins"),
+	
+	command_kiteditor_admin("Allows to define more dangerous aspects of kits, like commands"),
+	
 	command_world_$1("Allows to teleport to particular world with command", "worldName"),
 	command_skin_perm_$1("Allows to change skin to particular player", "skinName"),
 	command_point_$1("Allows to change particle type", "particleType"),
@@ -211,14 +238,24 @@ public class PermissionsManager {
 	command_afk_auto("Places player into afk mode autoamticaly"),
 	command_afk_staffinform("Uses different afk auto response message"),
 	command_afk_kickbypass("Prevents player from being kicked out of server when afk mode triggers event"),
+	command_afk_kickOutIn_$1("Defines time in seconds when player needs to be kicked after he enter afk mode", "[seconds]"),
 
-	command_cheque_admin("Allows to give out checque with money amount directly to target player without requiring paper"),
+	command_cheque_admin("Allows to give out cheque with money amount directly to target player without requiring paper"),
+	command_cheque_withdraw("Allows to withdraw cheque balance when option in config file is enabled"),
 
 	command_invcheck_edit("Allows to edit saved inventory"),
 
 	command_warp_$1("Allows to use particular warp if warp requires permission node", "warpName"),
 	command_warp_showlist("Allows to see warp list in chat or gui"),
 	command_warp_redefine("Allows to redefine warps"),
+	command_warp_specificlocation("Allows to define warps specific location"),
+	command_warp_diffdisplayname("Allows to define different warp display name"),
+	
+	command_setwarp_multiloc("Allows to set more than one location for warp point"),
+	command_setwarp_unlimited("Allows to have unlimited amount of warps"),
+	command_setwarp_$1("Allows to have defined amount of warps", "anyPositiveNumber"),
+	command_removewarp_bypass("Allows to remove warps which belong to anoher player"),
+	
 	command_counter_autojoin("Players will automatically join counter group on server join"),
 
 	command_tpa_warmupbypass("Allows to bypass tpa command warmup"),
@@ -233,9 +270,6 @@ public class PermissionsManager {
 	command_sethome_overwrite("Allows to overwrite existing home location"),
 	command_sethome_bypass("Allows to bypass block break protection"),
 
-	command_setwarp_unlimited("Allows to have unlimited amount of warps"),
-	command_setwarp_$1("Allows to have defined amount of warps", "anyPositiveNumber"),
-	command_removewarp_bypass("Allows to remove warps which belong to anoher player"),
 
 	command_mail_read("Allows to read mail"),
 	command_mail_clear("Allows to clear mail"),
@@ -247,7 +281,7 @@ public class PermissionsManager {
 	command_sudo_bypass("Prevents player from using sudo on player with permission"),
 	command_repair_repairshare_bypass("Allows to bypass repair share being applied on item"),
 	command_nick_bypassblacklist("Allows to bypass nick name black list"),
-	command_nick_bypass_length("Allows to bypass nick name lenght limitations"),
+	command_nick_bypass_length("Allows to bypass nick name length limitations"),
 	command_nick_bypassinuse("Allows to bypass limitationn in using already existing name"),
 	command_nick_different("Allows to set nick name to different one than original"),
 	command_msg_clean("Allows to send clean messages to player by using ! at beginning"),
@@ -266,18 +300,21 @@ public class PermissionsManager {
 	command_commandspy_bypass("Bypasses blacklisted command spy commands"),
 	command_signspy_hide("Hides created signs from signspy"),
 	command_socialspy_hide("Hides social messages from social spy"),
+	command_mute_max_$1("Allows to temp mute for defined max time", "anyPositiveNumber"),
 	command_mute_bypass("Bypass personal public chat mute"),
 	command_mutechat_bypass("Bypass public chat mute"),
 	command_money_admin("Allows to manipulate player balance"),
 	command_money_betweenworldgroups("Allows money transfer between worlds"),
-	command_time_edit("Allows to manipulate time"),
-	command_weather_$1_$2("Allows to define max lenght player can change weather to", "sun/rain", "maxValue"),
+	command_time_$1("Allows to manipulate time", "freeze/unfreeze/day/morning/night/dusk/add/take/realtime/autorealtime"),
+	command_weather_$1_$2("Allows to define max length player can change weather to", "sun/rain", "maxValue"),
 	command_back_ondeath("Allows returning to death location by using back command after death"),
 	command_back_worldbypass("Allows returning to blacklisted worlds"),
 	command_flightcharge_admin("Allows to edit flight charges for players"),
 	command_kick_bypass("Prevent player from being kicked from server"),
 	command_ride_$1("Allow to ride entity", "entityType"),
 	command_sit_stairs("Allows to sit on stairs automatically"),
+	command_sit_persistent("Allows to sit with persistent mode"),
+	command_sit_location("Allows to sit in specific location"),
 	command_maintenance_bypass("Allows to bypass maintenance mode"),
 	command_alert_inform("Player will get notification on player join with alert"),
 	command_helpop_inform("Players with permission gets helpop messages"),
@@ -311,10 +348,15 @@ public class PermissionsManager {
 	command_counter_msg("Allows to change counter default message"),
 	command_ctext_$1("Allows to see defined custom message", "ctextName"),
 	command_flyspeed_$1("Defines max flight speed player can set", "range1-10"),
+	command_shoot_$1("Allows to shoot specific type of entity", "type"),
 
 	command_chat_kick("Allows to kick players from chat room"),
+	command_chat_force("Allows to force join player into chat room"),
 	command_chat_create("Allows to create chatroom"),
 	command_chat_create_private("Allows to create private chatrooms"),
+	command_chat_create_locked("Allows to create locked chatrooms"),
+	command_chat_leave_locked("Allows to leave locked chatrooms"),
+	command_chat_create_persistent("Allows to create persistent chatrooms"),
 	command_chat_invite("Allows to intite player into chatroom"),
 	command_chat_joinbypass("Allows to join private chat room without invitation"),
 	command_chat_list("Allows to list players in chat room"),
@@ -356,7 +398,7 @@ public class PermissionsManager {
 	}
 
 	public String getPermissionForShow(boolean cmd) {
-	    return null;
+	return null;
 	}
 
 	public String getPermission() {
@@ -364,7 +406,7 @@ public class PermissionsManager {
 	}
 
 	public String getPermission(String... extra) {
-	    return null;
+	return null;
 	}
 
 	public boolean hasPermission(CommandSender sender) {
@@ -372,7 +414,11 @@ public class PermissionsManager {
 	}
 
 	public boolean hasPermission(CommandSender sender, Integer... extra) {
-	    return false;
+	    String[] ex = new String[extra.length];
+	    for (int i = 0; i < extra.length; i++) {
+		ex[i] = String.valueOf(extra[i]);
+	    }
+	    return hasPermission(sender, false, ex);
 	}
 
 	public boolean hasPermission(CommandSender sender, String... extra) {
@@ -396,7 +442,7 @@ public class PermissionsManager {
 	}
 
 	public boolean hasPermission(CommandSender sender, boolean inform, boolean informConsole, Long delay, String... extra) {
-	    return false;
+		return true;
 	}
 
 	private static void informConsole(CommandSender sender, String permission, boolean informConsole) {
@@ -411,8 +457,9 @@ public class PermissionsManager {
 	}
 
 	public static boolean hasSetPermission(CommandSender sender, String perm, boolean inform) {
-	    return false;
+	    PermissionAttachmentInfo has = CMI.getInstance().getPermissionsManager().getSetPermission(sender, perm);
 
+	    return has == null ? false : has.getValue();
 	}
 
 	public String[] getWars() {
@@ -436,7 +483,8 @@ public class PermissionsManager {
 	}
 
 	public static boolean hasPermission(CommandSender sender, String permision, Boolean output, boolean informConsole) {
-	    return false;
+		return true;
+	   
 	}
     }
 
@@ -449,41 +497,68 @@ public class PermissionsManager {
     }
 
     public String getMainGroup(Player player) {
-	return null;
+	if (player == null)
+	    return "";
+	String group = perm.getMainGroup(player);
+	return group == null ? "" : group;
     }
 
     public String getPrefix(UUID uuid) {
-	return null;
+	String prefix = perm.getPrefix(uuid);
+	return prefix == null ? "" : prefix;
     }
 
     public String getSufix(UUID uuid) {
-	return null;
+	String sufix = perm.getSufix(uuid);
+	return sufix == null ? "" : sufix;
     }
 
     public String getPrefix(Player player) {
-	return null;
+	String prefix = perm.getPrefix(player);
+	return prefix == null ? "" : prefix;
     }
 
     public String getSufix(Player player) {
-	return null;
+	String sufix = perm.getSufix(player);
+	return sufix == null ? "" : sufix;
     }
 
     public String getNameColor(Player player) {
-	return null;
+	String sufix = perm.getNameColor(player);
+	return sufix == null ? "" : sufix;
     }
 
     private String label = "";
 
     public PermissionAttachmentInfo getSetPermission(CommandSender sender, String perm) {
+	if (sender instanceof Player)
+	    for (PermissionAttachmentInfo permission : ((Player) sender).getEffectivePermissions()) {
+		if (permission.getPermission().equalsIgnoreCase(perm)) {
+		    return permission;
+		}
+	    }
 	return null;
     }
 
     public boolean isSetPermission(CommandSender sender, String perm) {
+	if (sender instanceof Player)
+	    return isSetPermission((Player) sender, perm);
 	return true;
     }
 
     public boolean isSetPermission(Player player, String perm) {
-	return false;
+	return player.hasPermission(new Permission(perm, PermissionDefault.FALSE));
+
+    }
+
+    private static HashMap<String, Boolean> getAll(Player player, String pref) {
+	pref = pref.endsWith(".") ? pref : pref + ".";
+	HashMap<String, Boolean> mine = new HashMap<String, Boolean>();
+	for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+	    if (permission.getPermission().startsWith(pref))
+		mine.put(permission.getPermission(), permission.getValue());
+	}
+	return mine;
     }
 
     private HashMap<UUID, HashMap<String, PermissionInfo>> cache = new HashMap<UUID, HashMap<String, PermissionInfo>>();
@@ -493,7 +568,7 @@ public class PermissionsManager {
     }
 
     public PermissionInfo getFromCache(Player player, String perm) {
-	return null;
+	    return null;
     }
 
     public PermissionInfo addToCache(Player player, String perm, boolean has, Long delayInMiliseconds) {
@@ -509,7 +584,12 @@ public class PermissionsManager {
     }
 
     public PermissionInfo getPermissionInfo(Player player, CMIPerm perm, Long delayInMiliseconds) {
-	return null;
+	String permission = perm.getPermission(" ");
+	if (permission.endsWith(" "))
+	    permission = permission.replace(" ", "");
+	if (permission.endsWith("."))
+	    permission = permission.substring(0, permission.length() - 1);
+	return getPermissionInfo(player, permission, false, delayInMiliseconds);
     }
 
     @Deprecated
@@ -521,7 +601,8 @@ public class PermissionsManager {
 	return getPermissionInfo(player, perm, force, 1000L);
     }
 
-    public PermissionInfo getPermissionInfo(Player player, String perm, boolean force, Long delay) {	
+    public PermissionInfo getPermissionInfo(Player player, String perm, boolean force, Long delay) {
+	
 	return null;
     }
 }

@@ -65,7 +65,7 @@ public class BungeeCordListener implements PluginMessageListener, Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-
+	
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

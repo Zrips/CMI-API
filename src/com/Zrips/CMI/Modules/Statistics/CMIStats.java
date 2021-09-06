@@ -1,7 +1,17 @@
 package com.Zrips.CMI.Modules.Statistics;
 
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
+import com.Zrips.CMI.Modules.Statistics.StatsManager.svt;
+import net.Zrips.CMILib.Version.Version;
+
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class CMIStats {
 
@@ -24,20 +34,39 @@ public class CMIStats {
     }
 
     public Long getStat(CMIStatistic stat, Object thing) {
-	
+
 	return null;
     }
 
     private Long getStats(CMIStatistic stat) {
-	return null;
+	if (stat == CMIStatistic.PLAY_ONE_TICK && user != null) {
+	    return user.getTotalPlayTime(false);
+	}
+	if (stat == CMIStatistic.TRAVEL) {
+	    return getTotalTravelDistance();
+	}
+	if (stat == CMIStatistic.ACOUNT_AGE && user != null) {
+	    Player player = user.getPlayer();
+	    if (player != null)
+		return System.currentTimeMillis() - player.getFirstPlayed();
+	}
+	return getTotal(stat);
     }
 
     public Long getTotalTravelDistance() {
-	return null;
+	Long i = 0L;
+	for (CMIStatistic oneS : CMIStatistic.values()) {
+	    if (oneS.getType() != svt.Distance)
+		continue;
+	    if (oneS.getBukkitStat() == null)
+		continue;
+	    i += getStat(oneS);
+	}
+	return i;
     }
 
     private long getTotal(CMIStatistic stat) {
-	long total = 0;
-	return total;
+
+	return 0L;
     }
 }

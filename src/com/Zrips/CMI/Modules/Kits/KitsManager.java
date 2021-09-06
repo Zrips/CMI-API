@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,13 +26,18 @@ public class KitsManager {
     private CMI plugin;
 
     public void clearCache(UUID uuid) {
+	clickeryMap.remove(uuid);
+	cloneCache.remove(uuid);
+//	chatMap.remove(uuid);
     }
 
     public void onDisable() {
     }
 
     public KitsManager(CMI plugin) {
+	this.plugin = plugin;
     }
+
 
     public void addKit(Kit kit) {
 	map.put(kit.getConfigName().toLowerCase(), kit);
@@ -42,9 +48,15 @@ public class KitsManager {
     }
 
     public void renameKitConfigName(Kit kit, String newName) {
+	map.remove(kit.getConfigName().toLowerCase());
+	kit.setName(newName);
+	map.put(kit.getConfigName().toLowerCase(), kit);
+	save();
     }
 
     public void renameKitCommandName(Kit kit, String newName) {
+	kit.setCommandName(newName);
+	save();
     }
 
     public HashMap<String, List<Kit>> getValidKitsForPlayer(Player player, boolean includePreview) {
@@ -61,19 +73,22 @@ public class KitsManager {
     }
 
     public Kit getKit(Player player, String name, boolean ignorePerm, boolean includePreview) {
-
+	
 	return null;
     }
 
     public Kit getKit(String name, boolean getdisabled) {
+	
 	return null;
     }
 
     public List<Kit> getKitsByCommandName(Kit kit) {
+	
 	return null;
     }
 
     public List<Kit> getGroupedKits(Kit kit) {
+	
 	return null;
     }
 
@@ -86,21 +101,30 @@ public class KitsManager {
     }
 
     public void load() {
-
+	
     }
 
     private int saveId = -1;
 
     public void safeSave() {
+	if (saveId != -1)
+	    return;
 
+	saveId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CMI.getInstance(), new Runnable() {
+	    @Override
+	    public void run() {
+		save();
+		saveId = -1;
+	    }
+	}, 60 * 20);
     }
 
     public void save() {
-
+	
     }
 
     private static Material getMaterial(String val) {
-
+	
 	return null;
     }
 
@@ -109,12 +133,12 @@ public class KitsManager {
     }
 
     public ItemStack updateItemStackLore(ItemStack item, Player player, Kit kit) {
-
+	
 	return null;
     }
 
     public String processText(String text, Player player, Kit kit) {
-
+	
 	return null;
     }
 
@@ -124,10 +148,11 @@ public class KitsManager {
 
     public void listPlayersKits(CommandSender sender, Player player, int page) {
 
+
     }
 
     private List<String> getLoreForButton(CMIUser user, Kit kit) {
-
+	
 	return null;
     }
 
@@ -140,7 +165,7 @@ public class KitsManager {
     }
 
     public void listPlayersKitsForEditing(Player player, Integer page) {
-
+	
     }
 
     public boolean startChatKitAdd(Player player, String kitName) {
@@ -149,34 +174,41 @@ public class KitsManager {
     }
 
     public boolean startChatKitRename(Player player, Kit kit) {
-
+	
 	return true;
     }
 
     public boolean startChatKitCommandRename(Player player, Kit kit) {
-
+	
 	return true;
     }
 
     public boolean startChatKitGroupRename(Player player, Kit kit) {
-
+	
 	return true;
     }
 
     public void startChatKitRemove(Player player, Kit kit, boolean confirmed) {
-
+	
     }
+	
 
     private static int min = 36;
 
     public void giveKit(Player player, Kit kit) {
+	giveKit(player, kit, true);
+    }
+
+    public void giveKit(Player player, Kit kit, boolean giveItems) {
 
     }
 
     String newbieKitName;
 
     public Kit getNewbieKit() {
-	return null;
+	if (NewbieKit == null)
+	    this.NewbieKit = this.getKit(newbieKitName, true);
+	return NewbieKit;
     }
 
     public void setNewbieKit(String name) {
@@ -215,6 +247,7 @@ public class KitsManager {
 
 	Commands(33),
 	Conditions(42),
+	ShowWithoutUsage(18),
 	Usages(19),
 	Description(24),
 	Enabled(8),
@@ -241,7 +274,7 @@ public class KitsManager {
     }
 
     public void openGuiEditorMain(Kit kit, Player player, boolean editor) {
-
+	
     }
 
     public static void saveOnClose() {
@@ -249,7 +282,7 @@ public class KitsManager {
     }
 
     public static void ItemClickInGui(final Player player, final Kit kit) {
-
+	
     }
 
     public static void openGuiEditorSettingsPreview(Player player, Kit kit) {
@@ -257,10 +290,11 @@ public class KitsManager {
     }
 
     public void openGuiEditorSettings(final Kit kit, final Player player, final boolean editor) {
-
+	
     }
 
     private static int getSpeed(UUID uuid) {
+	Clickery clickery = clickeryMap.get(uuid);
 	int speed = 1;
 	return speed;
     }

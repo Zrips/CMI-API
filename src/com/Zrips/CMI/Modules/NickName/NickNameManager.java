@@ -1,19 +1,14 @@
 package com.Zrips.CMI.Modules.NickName;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Containers.CMIChatColor;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class NickNameManager {
 
@@ -39,7 +34,10 @@ public class NickNameManager {
     }
 
     public UUID whoUsesName(String nick) {
-	return null;
+	UUID uuid = NickMap.get(nick.toLowerCase());
+	if (uuid == null)
+	    uuid = NameMap.get(nick.toLowerCase());
+	return uuid;
     }
 
     public List<String> getNickNamesStartingWith(Player player, String nick) {
@@ -72,7 +70,6 @@ public class NickNameManager {
     public int getNickNameLengthMax() {
 	return NickNameLengthMax;
     }
-
     public int getNickNameLengthMin() {
 	return NickNameLengthMin;
     }

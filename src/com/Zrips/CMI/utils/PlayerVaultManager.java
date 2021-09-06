@@ -18,17 +18,20 @@ public class PlayerVaultManager {
     static Class<?> c = null;
 
     private static void setVaultExistsMeth() {
+	
     }
 
     private static void setLoadOtherVaultMeth() {
+	
     }
 
     private static void setClass() {
+	
     }
 
     public static boolean vaultExists(UUID uuid, int id) {
 
-	return true;
+	    return false;
     }
 
     public static Inventory loadOtherVault(UUID uuid, int i, int y) {

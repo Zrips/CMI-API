@@ -1,9 +1,22 @@
 package com.Zrips.CMI.Modules.Sheduler;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.Zrips.CMI.CMI;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 public class SchedulerManager {
 
@@ -24,10 +37,19 @@ public class SchedulerManager {
     }
 
     public Schedule getSchedule(String name, boolean includeDisabled) {
-	return null;
+	Schedule sched = map.get(name.toLowerCase());
+	if (sched == null)
+	    return null;
+	if (!sched.isEnabled() && !includeDisabled)
+	    return null;
+	return sched;
     }
 
     public void stop() {
+	if (autoTimerBukkitId != 0) {
+	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
+	    autoTimerBukkitId = 0;
+	}
     }
 
     @SuppressWarnings("unchecked")
@@ -41,10 +63,17 @@ public class SchedulerManager {
     private Runnable autoTimer = new Runnable() {
 	@Override
 	public void run() {
+	    try {
+		checkSchedulers();
+	    } catch (Throwable e) {
+		e.printStackTrace();
+	    }
+	    runTimer();
 	}
     };
 
     private static Long nextIn() {
+
 	return null;
     }
 

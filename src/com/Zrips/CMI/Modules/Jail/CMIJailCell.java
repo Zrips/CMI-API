@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.Zrips.CMI.Containers.CMILocation;
+import net.Zrips.CMILib.Container.CMILocation;
 
 public class CMIJailCell {
 
@@ -29,7 +29,9 @@ public class CMIJailCell {
 	this.id = id;
     }
 
+
     public void loadJailed(String root) throws Exception {
+	
     }
 
     public CMILocation getTeleportInLocation() {

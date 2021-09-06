@@ -9,13 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIEntityType;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Particl.ParticleManager.CMIPresetAnimations;
 import com.Zrips.CMI.Modules.Ranks.RankManager.rankupFailType;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
@@ -41,6 +42,8 @@ public class CMIRank {
     private double moneyCost;
     private double expCost;
     private int votes;
+
+    private int weight = 0;
 
     public void reset() {
     }
@@ -87,14 +90,7 @@ public class CMIRank {
     }
 
     public List<CMIRank> getNextValidRankUps(CMIUser user) {
-	List<CMIRank> r = new ArrayList<CMIRank>();
-
-	for (CMIRank oneR : getNextRanks()) {
-	    if (oneR.canRankup(user) != rankupFailType.None)
-		continue;
-	    r.add(oneR);
-	}
-	return r;
+	return null;
     }
 
     public boolean isOnSamePathWith(CMIRank rank2) {
@@ -118,6 +114,7 @@ public class CMIRank {
     }
 
     public String getValidPreviousRanksAsString() {
+
 	return null;
     }
 
@@ -179,6 +176,12 @@ public class CMIRank {
     }
 
     public void calculateNextRanks() {
+	nextRanks.clear();
+	for (String one : nextRanksT) {
+	    CMIRank rank = CMI.getInstance().getRankManager().getRank(one);
+	    if (rank != null)
+		nextRanks.add(rank);
+	}
     }
 
     public void finalizeRankup(CMIUser user) {
@@ -186,17 +189,19 @@ public class CMIRank {
     }
 
     public void finalizeRankup(CMIUser user, Boolean commands, Boolean cost) {
-	
+
     }
 
     @Deprecated
     public void takeExp(CMIUser user) {
-	
 
     }
 
     @Deprecated
     public void takeMoney(CMIUser user) {
+	if (this.getMoneyCost() <= 0)
+	    return;
+	user.withdraw(this.getMoneyCost());
     }
 
     public void takeItems(CMIUser user) {
@@ -204,13 +209,20 @@ public class CMIRank {
     }
 
     public void performCommands(CMIUser user) {
+	Snd snd = new Snd().setSender(user).setTarget(user);
+
+	List<String> cp = new ArrayList<String>(this.Commands);
+	cp = CMI.getInstance().getLM().updateSnd(snd, cp);
+	CMI.getInstance().getSpecializedCommandManager().processCmds(cp, user.isOnline() ? user.getPlayer() : null);
     }
 
     public void performCommandsOnRankDown(CMIUser user) {
     }
 
     public String getDisplayName() {
-	return null;
+	if (displayName == null)
+	    return this.getName();
+	return CMIChatColor.translate(displayName);
     }
 
     public void setDisplayName(String displayName) {
@@ -263,5 +275,13 @@ public class CMIRank {
 
     public void setCommandsOnRankDown(List<String> commandsOnRankDown) {
 	CommandsOnRankDown = commandsOnRankDown;
+    }
+
+    public int getWeight() {
+	return weight;
+    }
+
+    public void setWeight(int weight) {
+	this.weight = weight;
     }
 }

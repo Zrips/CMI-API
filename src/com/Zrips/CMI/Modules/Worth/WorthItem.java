@@ -1,10 +1,20 @@
 package com.Zrips.CMI.Modules.Worth;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+
+import com.Zrips.CMI.CMI;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class WorthItem {
 
@@ -55,6 +65,14 @@ public class WorthItem {
 	return sellPrice;
     }
 
+    public Double getPlayerSellPrice(ItemStack item, boolean includeEnchants, boolean includeDurability) {
+	return null;
+    }
+
+    public static double getEnchantSellPrice(ItemStack item) {
+	    return 0D;
+    }
+
     public void setSellPrice(double price) {
     }
 
@@ -76,6 +94,11 @@ public class WorthItem {
     }
 
     public void setBuyPrice(Double buyPrice) {
+
+	this.buyPrice = buyPrice == null ? null : Math.round(buyPrice * 100) / 100D;
+
+	if (this.buyPrice != null && this.buyPrice < 0D)
+	    this.buyPrice = null;
     }
 
     public Recipe getExploitRecipe() {
@@ -88,6 +111,11 @@ public class WorthItem {
     }
 
     public void resetRecipes() {
+	this.exploitRecipe = null;
+	this.recipe = null;
+
+	this.recipesFor = null;
+	this.recipesFrom = null;
     }
 
     public void setExploitRecipe(Recipe exploitRecipe) {

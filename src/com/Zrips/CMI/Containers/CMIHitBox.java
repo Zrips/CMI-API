@@ -6,6 +6,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Portals.CuboidArea;
+
 public class CMIHitBox {
     private Vector max;
     private Vector min;
@@ -14,41 +17,69 @@ public class CMIHitBox {
     private World world;
 
     CMIHitBox(World world, Vector min, Vector max) {
+	this.world = world;
+	this.max = max;
+	this.min = min;
     }
 
     public CMIHitBox(Block block) {
+	this.block = block;
+	world = block.getWorld();
+	CMI.getInstance().getNMS().getBlockHitBox(this);
 
     }
 
     public CMIHitBox(Entity ent) {
+	this.ent = ent;
+	if (ent != null) {
+	    world = ent.getWorld();
+	    CMI.getInstance().getNMS().getEntityHitBox(this);
+	}
     }
 
     public Vector getMax() {
-	return null;
+	if (max == null)
+	    max = new Vector(0, 0, 0);
+	return max;
     }
 
     public Location getCenterLocation() {
-	return null;
+
+	Double width = this.getMaxGlobal().getX() - this.getMinGlobal().getX();
+	Double length = this.getMaxGlobal().getZ() - this.getMinGlobal().getZ();
+
+	return new Location(this.world, this.getMinGlobal().getX() + (width / 2D), this.getMinGlobal().getY(), this.getMinGlobal().getZ() + (length / 2D));
     }
 
     public Double getHeightAtLocation(Location loc) {
-	return null;
+
+	return 0D;
     }
 
     public Vector getMaxGlobal() {
-	return null;
+	return new Vector(getMax().getX(), getMax().getY(), getMax().getZ());
     }
 
     public Vector getMin() {
-	return null;
+	if (min == null)
+	    min = new Vector(1, 1, 1);
+	return min;
     }
 
     public double getHitBoxHeight() {
-	return this.getMax().getY() - this.getMin().getY();
+	return Math.abs(this.getMax().getY() - this.getMin().getY());
+    }
+
+    public double getHitBoxWidth() {
+	return Math.abs(this.getMax().getX() - this.getMin().getX());
+    }
+
+    public double getHitBoxLength() {
+	return Math.abs(this.getMax().getZ() - this.getMin().getZ());
     }
 
     public Vector getMinGlobal() {
-	return null;
+	return new Vector(getMin().getX(), getMin().getY(), getMin().getZ());
     }
 
     public void byExactXYZ(double x, double y, double z) {
@@ -56,10 +87,12 @@ public class CMIHitBox {
     }
 
     public boolean byExactXYZ(double x, double y, double z, double tolerance) {
+
 	return false;
     }
 
     private boolean checkBlock(Block block, boolean resize) {
+
 	return false;
     }
 
@@ -68,7 +101,12 @@ public class CMIHitBox {
     }
 
     public boolean isEmptySpace(Location loc) {
-	return false;
+	Double width = this.getMaxGlobal().getX() - this.getMinGlobal().getX();
+	Double height = this.getMaxGlobal().getY() - this.getMinGlobal().getY();
+	Double length = this.getMaxGlobal().getZ() - this.getMinGlobal().getZ();
+	Vector mn = new Vector(loc.getX() - (width / 2D), loc.getY(), loc.getZ() - (length / 2D));
+	Vector mx = new Vector(loc.getX() + (width / 2D), loc.getY() + height, loc.getZ() + (length / 2D));
+	return isEmptySpace(loc.getWorld(), mn, mx, true);
     }
 
     public boolean isEmptySpace() {
@@ -88,20 +126,37 @@ public class CMIHitBox {
     }
 
     public Block getCollidingdBlock(World world, Vector minimal, Vector maximum, boolean resize) {
+
 	return null;
     }
 
     public boolean collides(Entity ent) {
-	return false;
+	if (ent == null)
+	    return false;
+	CMIHitBox hitbox = new CMIHitBox(ent);
 
+	if (hitbox.world == null || hitbox.min == null || hitbox.max == null)
+	    return false;
+
+	if (world == null || min == null || max == null)
+	    return false;
+
+	CuboidArea cuboid = new CuboidArea(hitbox.world, hitbox.min, hitbox.max);
+	CuboidArea cuboid2 = new CuboidArea(world, min, max);
+
+	return cuboid.checkCollision(cuboid2);
     }
 
     public boolean canPlayerStand(Location loc) {
+
 	return true;
+
     }
 
     public boolean collides(Vector position) {
-	return true;
+	return !(position.getX() < getMinGlobal().getX() || position.getX() > getMaxGlobal().getX() ||
+	    position.getY() < getMinGlobal().getY() || position.getY() > getMaxGlobal().getY() ||
+	    position.getZ() < getMinGlobal().getZ() || position.getZ() > getMaxGlobal().getZ());
     }
 
     public Block getBlock() {

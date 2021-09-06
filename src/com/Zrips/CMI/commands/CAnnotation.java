@@ -16,7 +16,10 @@ public @interface CAnnotation {
 
     String[] explanation() default {};
 
+    @Deprecated
     String[] tab() default {};
+
+    String[] multiTab() default {};
 
     int[] regVar() default { -666 };
 
@@ -39,6 +42,8 @@ public @interface CAnnotation {
     Class<? extends Cmd> redirectClass() default Void.class;
 
     String redirectFormat() default "";
+    
+    boolean asyncSupported() default false;
 
     boolean others();
 }

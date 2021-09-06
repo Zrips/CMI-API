@@ -3,6 +3,7 @@ package com.Zrips.CMI.Modules.Holograms;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,6 +32,9 @@ public class HologramManager {
     private CMI plugin;
 
     public void clearCache(UUID uuid) {
+	playerNearHoloUpdate.remove(uuid);
+	playerNearHoloExtra.remove(uuid);
+//	playerNearSticky.remove(uuid);
     }
 
     public HologramManager(CMI plugin) {
@@ -39,7 +43,14 @@ public class HologramManager {
     private int sched = -1;
 
     public void stop() {
-	
+	if (saveId != null) {
+	    Bukkit.getScheduler().cancelTask(saveId);
+	    this.saveHolograms();
+	}
+	if (sched == -1)
+	    return;
+	Bukkit.getScheduler().cancelTask(sched);
+	sched = -1;
     }
 
     public void addHologram(CMIHologram holo) {
@@ -47,9 +58,11 @@ public class HologramManager {
     }
 
     public void addHologram(CMIHologram holo, boolean checkForPlayers) {
+
     }
 
     public void recalculateChunks() {
+	
     }
 
     public void removeChunkRecords(CMIHologram holo) {
@@ -65,10 +78,13 @@ public class HologramManager {
     }
 
     public CMIHologram getByName(String name) {
-	return null;
+	if (name == null)
+	    return null;
+	return holograms.get(name.toLowerCase());
     }
 
     public CMIHologram getByLoc(Location loc) {
+	
 	return null;
     }
 
@@ -102,6 +118,8 @@ public class HologramManager {
     public static boolean defaultsPlaceUp = true;
 
     public void loadConfig() {
+	
+
     }
 
     public void load() {
@@ -109,6 +127,15 @@ public class HologramManager {
     }
 
     public void save() {
+	if (saveId != null)
+	    return;
+	saveId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @Override
+	    public void run() {
+		saveHolograms();
+		saveId = null;
+	    }
+	}, 20L * 15);
     }
 
     private void saveHolograms() {
@@ -120,15 +147,19 @@ public class HologramManager {
     }
 
     public void hideHoloForAllPlayers(CMIHologram holo) {
+	
     }
 
     public void resetHoloForAllPlayers(CMIHologram holo) {
+	
     }
 
     public void addPlayersNearHolo(CMIHologram holo, boolean forceUpdate) {
+	
     }
 
     public void addPlayersNearHoloExtra(CMIHologram holo, boolean forceUpdate) {
+	
     }
 
     public HashMap<String, CMIHologram> getHolograms() {
@@ -141,6 +172,7 @@ public class HologramManager {
     }
 
     public void removeHolo(CMIHologram holo) {
+	
     }
 
     public int getHoloCheckInterval() {
@@ -162,15 +194,19 @@ public class HologramManager {
     }
 
     public void addNearHolo(UUID uuid, CMIHologram holo) {
+	
     }
 
     public void removeNearHolo(UUID uuid, CMIHologram holo) {
+	
     }
 
     public void addNearHoloExtra(UUID uuid, CMIHologram holo) {
+	
     }
 
     public void removeNearHoloExtra(UUID uuid, CMIHologram holo) {
+
     }
 
     public void openGui(Player player, CMIHologram holo) {
@@ -178,9 +214,16 @@ public class HologramManager {
     }
 
     public void hideAllHolograms() {
+	for (Entry<String, CMIHologram> one : HologramManager.holograms.entrySet()) {
+	    this.hideHoloForAllPlayers(one.getValue());
+	}
     }
 
     public Set<CMIHologram> getPlayerActiveHolograms(UUID uuid) {
 	return playerNearHoloUpdate.get(uuid);
     }
+
+//    public Map<Integer, Map<UUID, CMIHologram>> getFakeEntities() {
+//	return fakeEntities;
+//    }
 }

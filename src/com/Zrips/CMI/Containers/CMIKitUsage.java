@@ -9,12 +9,17 @@ public class CMIKitUsage {
     private int usedTimes = 0;
 
     public CMIKitUsage(Kit kit) {
-	this(kit, System.currentTimeMillis());
+	this(kit, System.currentTimeMillis(), 0);
     }
 
     public CMIKitUsage(Kit kit, Long lastUsage) {
+	this(kit, lastUsage, 0);
+    }
+
+    public CMIKitUsage(Kit kit, Long lastUsage, int usedTimes) {
 	this.kit = kit;
 	this.lastUsage = lastUsage;
+	this.usedTimes = usedTimes;
     }
 
     public Long getLastUsage() {

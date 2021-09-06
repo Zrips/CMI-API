@@ -28,11 +28,16 @@ import org.bukkit.potion.PotionEffect;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+
 import com.Zrips.CMI.Modules.Scan.ScanResultLocations;
 import com.Zrips.CMI.utils.PlayerVaultManager;
-import com.Zrips.CMI.Containers.CMIChatColor;
+
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class Search {
 
@@ -75,10 +80,12 @@ public class Search {
     }
 
     public HashMap<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
+
 	return null;
     }
 
     public HashMap<Integer, ArrayList<ScanResultLocations>> sortByKey(HashMap<Integer, ArrayList<ScanResultLocations>> list2) {
+
 	return null;
     }
 
@@ -102,6 +109,5 @@ public class Search {
 
     public void showTimer(SearchInfo SI) {
 
-	return;
     }
 }

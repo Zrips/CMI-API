@@ -6,14 +6,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class Schedule {
 
@@ -23,6 +24,7 @@ public class Schedule {
     private boolean performed = false;
     private List<String> commands = new ArrayList<String>();
     private List<String> tempCommands = new ArrayList<String>();
+    private List<String> minPlayerCommands = new ArrayList<String>();
     private boolean repeatable = false;
     private boolean randomize = false;
     private boolean duplicateRandomize = false;
@@ -42,27 +44,22 @@ public class Schedule {
     }
 
     public void reset() {
-	performOn = 0L;
-	performed = false;
-	commands = new ArrayList<String>();
-	repeatable = false;
-	delay = 0L;
-	randomize = false;
-	duplicateRandomize = false;
-	singleLinear = false;
-	MinPlayer = null;
-	MaxPlayer = null;
+
     }
 
     public String getDuplicatedRandomCommand() {
+
 	return null;
+
     }
 
     public String getRandomCommand() {
+
 	return null;
     }
 
     public String getSingleLinearCommand() {
+
 	return null;
     }
 
@@ -83,11 +80,15 @@ public class Schedule {
     }
 
     public boolean isPlayerAmountOk() {
-	if (this.getMaxPlayer() != null && Bukkit.getOnlinePlayers().size() > this.getMaxPlayer())
-	    return false;
-	if (this.getMinPlayer() != null && Bukkit.getOnlinePlayers().size() < this.getMinPlayer())
-	    return false;
-	return true;
+	return isPlayerMinOk() && isPlayerMaxOk();
+    }
+
+    public boolean isPlayerMinOk() {
+	return this.getMinPlayer() == null || Bukkit.getOnlinePlayers().size() >= this.getMinPlayer();
+    }
+
+    public boolean isPlayerMaxOk() {
+	return this.getMaxPlayer() == null || Bukkit.getOnlinePlayers().size() <= this.getMaxPlayer();
     }
 
     public boolean itsTimeToPerform() {
@@ -105,6 +106,10 @@ public class Schedule {
 
 	return performOn;
     }
+
+//    public void setPerformOn(Long performOn) {
+//	this.performOn = performOn;
+//    }
 
     public String getName() {
 	return name;
@@ -135,6 +140,11 @@ public class Schedule {
     }
 
     public void setLastPerformedOn() {
+	if (this.time.isEmpty())
+	    setLastPerformedOn(System.currentTimeMillis());
+	else {
+	    recalculateNext();
+	}
     }
 
     public void setLastPerformedOn(Long lastPerformedOn) {
@@ -179,13 +189,17 @@ public class Schedule {
     }
 
     public void safePerform() {
+
     }
+
+    Pattern placeholderKeepPatern = Pattern.compile("(\\{\\%)([^\\\"^\\%^ ]+)(\\%\\})(\\B)");
 
     public void perform() {
 
     }
 
     public List<String> updateSchedCmds(List<String> cmds, Player player) {
+
 	return null;
     }
 
@@ -228,5 +242,13 @@ public class Schedule {
 
     public void setDuplicateRandomize(boolean duplicateRandomize) {
 	this.duplicateRandomize = duplicateRandomize;
+    }
+
+    public List<String> getMinPlayerCommands() {
+	return minPlayerCommands;
+    }
+
+    public void setMinPlayerCommands(List<String> minPlayerCommands) {
+	this.minPlayerCommands = minPlayerCommands;
     }
 }

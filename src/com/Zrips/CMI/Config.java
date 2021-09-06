@@ -1,9 +1,10 @@
 package com.Zrips.CMI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.jar.JarFile;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -16,22 +17,24 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
-import com.Zrips.CMI.Containers.CMIBiome;
-import com.Zrips.CMI.Containers.CMILocation;
 import com.Zrips.CMI.Containers.DamageControl;
 import com.Zrips.CMI.Containers.RandomTeleport;
-import com.Zrips.CMI.FileHandler.ConfigReader;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
 import com.Zrips.CMI.Modules.CustomText.CText;
 import com.Zrips.CMI.Modules.Kits.KitsManager.CMIKitGUILayout;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
+
+import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Config {
 
-    public boolean ShowNewVersion = true;
+    public static String imageFolder = CMI.getInstance().getDataFolder().getPath() + File.separator + "Images";
+
+    private boolean ShowNewVersion = true;
     public static boolean DyeBoundToPlayer = true;
     public boolean CheckForNameChangeOnLogin = true;
     public boolean PerformCommandsOnNewName = false;
@@ -73,9 +76,11 @@ public class Config {
 //    private boolean DiscordSRVSupport = false;
     public boolean PreventDifferentCapitalizationNames = true;
     public boolean PlayTimeFromStats = false;
+    public static boolean PlayTimeAutoUpdater = false;
     private boolean PreloadTopPlaytime = false;
-    private List<Material> ItemNameTypeBlackList = new ArrayList<Material>();
     private List<Material> ItemLoreTypeBlackList = new ArrayList<Material>();
+    private boolean ItemNameMarkChanged = false;
+    private boolean ItemLoreMarkChanged = false;
     private boolean CMIPlayTimeTracking = false;
 
     public static List<String> PlaytimeTopExclude = new ArrayList<String>();
@@ -87,6 +92,7 @@ public class Config {
     private boolean RepairShareCancelEvent = true;
     private boolean RepairShareInformWithMessage = true;
     public static boolean ItemRepairRepairConfirmation = true;
+    public static List<Integer> RepairBlockedCustomDataID = new ArrayList<Integer>();
     private int RepairShareDurability = 1;
 
     private boolean DisableWorldChunkCheckInfo = true;
@@ -100,20 +106,24 @@ public class Config {
     private boolean PreventBedExplosionNether = true;
     private boolean PreventBedExplosionTheEnd = true;
     private boolean PreventPlayersOnNetherRoof = true;
+    private boolean PreventPlayersBelowBedrock = true;
 
     private boolean PreventIronGolemRoses = false;
     public static boolean ShowMainHelpPage = true;
     private boolean PreventHook = false;
+    public static int NearDefaultDistance = 200;
     public static boolean NearCommand = false;
     public static boolean NearDirection = true;
     public static int NearCommandCount = 10;
     private boolean MulticraftDisableList = false;
     private boolean PreventExpPortals = false;
     public static boolean NoCommandsInBed = false;
+    public static boolean LimitBooks = false;
 
 //    public static boolean AttachedCommandsAllowNonEncrypted = true;
 //    public static boolean AttachedCommandsEncrypt = true;
 //    public static boolean AttachedCommandsOldItemConversion = true;
+    public static List<String> CommandsClearExclude = new ArrayList<String>();
     public static boolean CommandsClearConfirmation = true;
     public static boolean CommandsListASCOrder = true;
 
@@ -156,6 +166,7 @@ public class Config {
 //    private Boolean customAlias = false;
 
     private HashMap<CMIItemStack, String> ItemRenamingPreventMap = new HashMap<CMIItemStack, String>();
+    public static boolean ItemRenamingGlobalDisable = false;
 
     private HashMap<World, RandomTeleport> randomTeleports = new HashMap<World, RandomTeleport>();
     private int randomTeleportCooldown = 3;
@@ -239,12 +250,13 @@ public class Config {
     public boolean SpawnerDropFromCreeper = false;
     public int SpawnerDropChanceCreeper = 30;
 
-    public HashMap<String, List<Object>> variables = new HashMap<String, List<Object>>();
+//    public HashMap<String, List<Object>> variables = new HashMap<String, List<Object>>();
 
     public boolean WorldLimits = false;
     public HashMap<String, GameMode> worldGameMode = new HashMap<String, GameMode>();
     public HashMap<String, Boolean> worldFlyMode = new HashMap<String, Boolean>();
     public HashMap<String, Boolean> worldGodMode = new HashMap<String, Boolean>();
+    public HashMap<String, Boolean> worldElytraMode = new HashMap<String, Boolean>();
 
     private HashMap<Material, Integer> blockedItems = new HashMap<Material, Integer>();
     private HashMap<TpAction, Boolean> BlackListedItemsEnabledFor = new HashMap<TpAction, Boolean>();
@@ -255,6 +267,8 @@ public class Config {
 //    public static boolean BackExcludeCommandTypeEvent = true;
     public static boolean BackWithWE = true;
     private List<String> BackBlackList = new ArrayList<String>();
+
+    public boolean hatIgnoreLored = false;
 
     public boolean RemoveNegative = false;
     public List<String> RemoveNegativeEffects = new ArrayList<String>();
@@ -291,7 +305,7 @@ public class Config {
     public int NetherPortalMaxWidth = 23;
 
     public HashMap<DamageCause, ArrayList<DamageControl>> DamageControlMap = new HashMap<DamageCause, ArrayList<DamageControl>>();
-    private LinkedHashMap<Biome, CMIBiome> biomeNames = new LinkedHashMap<Biome, CMIBiome>();
+//    private LinkedHashMap<Biome, CMIBiome> biomeNames = new LinkedHashMap<Biome, CMIBiome>();
 
     public int MirrorMaxRange = 50;
 
@@ -325,10 +339,13 @@ public class Config {
     private List<String> cleanUpWhiteList;
 
     public static List<String> timeSpeedUpWorlds = new ArrayList<String>();
+    public static List<String> InvBlackList = new ArrayList<String>();
+//    public static boolean SleepingDisableVanillaMessage = false;
     public static boolean SleepingOnlyDurringNight, SleepingSpeedup, SleepingExcludeAfk, SleepingPercentage, SleepingInform;
     public static int SleepingBaseSpeed, SleepingInformDelay,
 	SleepingMinBeforeSpeeding, SleepingMinSpeed;
     private boolean CompassBossBar = false;
+    public static boolean CompassDefaultState = false;
     private boolean CompassRequireCompass = false;
     private int CompassUpdateInterval = 200;
     private String CompassShape;
@@ -358,6 +375,7 @@ public class Config {
     private ConfigReader cfg = null;
 
     public static ChatFilterRule InteractiveCommandsSignRegex = new ChatFilterRule();
+    public static boolean InteractiveCommandsSort = true;
 
     public static boolean ShowSkullOwner = true;
     public static boolean ShowBeeHive = true;
@@ -385,6 +403,7 @@ public class Config {
     }
 
     public void ChangeConfig(String path, Object list, boolean load) {
+
     }
 
     private static void newLn(StringBuilder header) {
@@ -393,6 +412,10 @@ public class Config {
 
     private static StringBuilder formStringBuilder(List<String> list) {
 	StringBuilder header = new StringBuilder();
+	for (String one : list) {
+	    newLn(header);
+	    header.append(one);
+	}
 	return header;
     }
 
@@ -409,7 +432,7 @@ public class Config {
 	return load(false);
     }
 
-    public boolean load(boolean isReload) {	
+    public boolean load(boolean isReload) {
 	return true;
     }
 
@@ -422,21 +445,33 @@ public class Config {
 
     public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
 	List<String> result = new ArrayList<String>();
+
 	return result;
     }
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath, String cleaner) {
+	JarFile jarFile = null;
 	List<String> listOfCommands = new ArrayList<String>();
+
 	return listOfCommands;
     }
 
     public void reload(CommandSender player) {
+
     }
 
     public boolean reloadLanguage() {
 	boolean langLoaded = LoadLang("EN", true);
 	return langLoaded;
     }
+
+//    public Location getSpawnPoint() {
+//	return spawnPoint;
+//    }
+//
+//    public boolean isRespawnLocation() {
+//	return RespawnLocation;
+//    }
 
     public Location getFirstSpawnPoint() {
 	return firstSpawnPoint == null ? null : firstSpawnPoint.clone();
@@ -459,13 +494,6 @@ public class Config {
     }
 
     public ConfigReader getConfig() {
-	if (cfg == null) {
-	    try {
-		cfg = new ConfigReader("config.yml");
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
-	}
 	return cfg;
     }
 
@@ -574,7 +602,7 @@ public class Config {
     }
 
     public ConfigReader getLocaleConfig() {
-	return null;
+	return localeFile;
     }
 
     public boolean isDisableWorldChunkCheckInfo() {
@@ -684,17 +712,9 @@ public class Config {
 	return CommandSpyBlackListed;
     }
 
-//    public String getMoneyFormat() {
-//	return MoneyFormat;
-//    }
-
     public int getSpyDelayForTrigger() {
 	return SpyDelayForTrigger;
     }
-
-//    public boolean isTeleportVehicleWorkArround() {
-//	return TeleportVehicleWorkArround;
-//    }
 
     public int getTeleportTpaWarmup() {
 	return TeleportTpaWarmup;
@@ -710,6 +730,10 @@ public class Config {
 
     public boolean isPreventPlayersOnNetherRoof() {
 	return PreventPlayersOnNetherRoof;
+    }
+
+    public boolean isPreventPlayersBelowBedrock() {
+	return PreventPlayersBelowBedrock;
     }
 
     public boolean isBossBarHpBarEnabled() {
@@ -815,10 +839,6 @@ public class Config {
 	return SpawnersXpDrop;
     }
 
-//    public boolean isDiscordSRVSupport() {
-//	return DiscordSRVSupport;
-//    }
-
     public boolean isSafeLocationDownThenUp() {
 	return SafeLocationDownThenUp;
     }
@@ -842,10 +862,6 @@ public class Config {
     public boolean isAutoDownloadGeoLiteCity() {
 	return AutoDownloadGeoLiteCity;
     }
-
-//    public boolean isChatDiscordSRVChangeIncomming() {
-//	return ChatDiscordSRVChangeIncomming;
-//    }
 
     public boolean isChatDynMapChat() {
 	return ChatDynMapChat;
@@ -940,25 +956,13 @@ public class Config {
 	return randomTeleportExcludedBiomes;
     }
 
-    public List<Material> getItemNameTypeBlackList() {
-	return ItemNameTypeBlackList;
-    }
-
     public List<Material> getItemLoreTypeBlackList() {
 	return ItemLoreTypeBlackList;
-    }
-
-    public HashMap<Biome, CMIBiome> getBiomeNames() {
-	return biomeNames;
     }
 
     public boolean isDisableRiptide() {
 	return disableRiptide;
     }
-
-//    public boolean isMoneyFormatSwitch() {
-//	return MoneyFormatSwitch;
-//    }
 
     public boolean isOptimizationsSimilarCommandPrevention() {
 	return OptimizationsSimilarCommandPrevention;
@@ -987,10 +991,6 @@ public class Config {
     public String getCompassTargetIcon() {
 	return CompassTargetIcon;
     }
-
-//    public boolean isAliasClearBaseCommands() {
-//	return AliasClearBaseCommands;
-//    }
 
     public boolean isArmorStandsCheckBlockPlace() {
 	return ArmorStandsCheckBlockPlace;
@@ -1022,5 +1022,17 @@ public class Config {
 
     public void setArmorDurabilityLossUse(boolean armorDurabilityLossUse) {
 	this.armorDurabilityLossUse = armorDurabilityLossUse;
+    }
+
+    public boolean isItemNameMarkChanged() {
+	return ItemNameMarkChanged;
+    }
+
+    public boolean isItemLoreMarkChanged() {
+	return ItemLoreMarkChanged;
+    }
+
+    public boolean isShowNewVersion() {
+	return ShowNewVersion;
     }
 }

@@ -1,32 +1,46 @@
 package com.Zrips.CMI.Modules.ChatFilter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.Chat.ChatFilterBlockType;
+
 public class ChatFilterManager {
 
     private CMI plugin;
 
+    private HashMap<String, ChatFilterRule> rules = new HashMap<String, ChatFilterRule>();
+    private ChatFilterRule whiteRules = null;
+
     private HashMap<UUID, MessageLog> spamMessages = new HashMap<UUID, MessageLog>();
     private HashMap<UUID, MessageLog> spamCommands = new HashMap<UUID, MessageLog>();
 
-    public enum ChatFilterBlockType {
-	All(0), Others(1), None(2);
+    private double similarityPercentage = 0.8D;
+    private boolean preventDoublicates = true;
+    private int douplicateInterval = 5;
+    private int douplicateChatMinAmount = 5;
 
-	private int id;
+    private double similarityComamndPercentage = 0.8D;
+    private boolean preventCommandDoublicates = true;
+    private int douplicateCommandInterval = 5;
+    private int douplicateCommandMinAmount = 5;
+    private List<String> douplicateCommandWhiteList = new ArrayList<String>();
 
-	ChatFilterBlockType(int id) {
-	    this.id = id;
-	}
+    private Boolean capsFilter;
+    private int capsIgnoreUnder;
+    private int capsPercentage;
 
-	public int getId() {
-	    return id;
-	}
-    }
+    private List<String> capsCommands;
+
+    private List<String> capsWhiteList;
+
+    public final static String StringchatFilterFile = "chatfilter.yml";
 
     public void clearCache(UUID uuid) {
 	spamMessages.remove(uuid);
@@ -34,7 +48,12 @@ public class ChatFilterManager {
     }
 
     public ChatFilterManager(CMI plugin) {
+	
+    }
 
+    public boolean checkCaps(Player player, String message) {
+
+	return true;
     }
 
     public RuleResponce getCorrectMessage(Player player, String message) {
@@ -42,38 +61,44 @@ public class ChatFilterManager {
     }
 
     public RuleResponce getCorrectMessage(Player player, String message, boolean privateMessage) {
-
+	
 	return null;
     }
 
     public boolean isSpamedCommand(Player player, String message) {
-
+	
 	return false;
     }
 
     private boolean isWhiteListedCommand(String command) {
-
+	
 	return false;
     }
 
     public boolean isSpam(Player player, String message) {
-
+	
 	return false;
     }
 
     public static double similarity(String s1, String s2) {
-	return 0;
+	    return 1.0;
+
     }
 
     public static int editDistance(String s1, String s2) {
+	
 	return 0;
     }
 
     private static ChatFilterBlockType getBlockType(String type) {
-	return null;
+	return ChatFilterBlockType.None;
     }
 
     public void load() {
+
     }
 
+    public void loadCommandFilters() {
+
+    }
 }

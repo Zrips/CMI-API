@@ -16,15 +16,22 @@ public class WorthEnchantment {
 	this.buyPrice = buyPrice;
     }
 
+//    public WorthEnchantment(Enchantment enchant) {
+//	this(enchant, 1, 0D);
+//    }
+
     public Double getSellPrice() {
-	return null;
+	return sellPrice;
     }
 
     public void setSellPrice(double price) {
+	this.sellPrice = price;
+	if (this.sellPrice < 0D)
+	    this.sellPrice = 0D;
     }
 
     public Double getBuyPrice() {
-	return null;
+	return buyPrice == null ? sellPrice : buyPrice;
     }
 
     public boolean isBuyPriceSet() {
@@ -32,6 +39,9 @@ public class WorthEnchantment {
     }
 
     public void setBuyPrice(Double buyPrice) {
+	this.buyPrice = buyPrice;
+	if (this.buyPrice != null && this.buyPrice < 0D)
+	    this.buyPrice = null;
     }
 
     public Enchantment getEnchant() {

@@ -23,46 +23,17 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Config;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.Version.Version;
 
 public class SpawnerActionsListener implements Listener {
     private CMI plugin;
 
     public SpawnerActionsListener(CMI plugin) {
 	this.plugin = plugin;
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreakExplodeTnT(EntityExplodeEvent event) {
-
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractEvent(PlayerInteractEvent event) {
-
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreakExplodeCreeper(EntityExplodeEvent event) {
-
-    }
-
-    private void dropSpawner(int chance, List<Block> blocks) {
-
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockPlace(BlockPlaceEvent event) {
-
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onSpawnerInteract(PlayerInteractEvent event) {
-
     }
 
 }

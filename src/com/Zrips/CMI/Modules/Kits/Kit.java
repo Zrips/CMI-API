@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import com.Zrips.CMI.Containers.CMIChatColor;
+import com.Zrips.CMI.CMI;
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Kit {
 
@@ -34,15 +39,17 @@ public class Kit {
     private Integer slot = null;
 
     private int maxUsages = -1;
+    private boolean showDespiteUsage = false;
     private boolean showDespiteWeight = false;
 
     private boolean dropItems = true;
 
     public Kit(String name) {
+	this.name = CMIChatColor.stripColor(name);
+	reset();
     }
 
     public void reset() {
-	
     }
 
     public ItemStack getFirstNotNullItem() {
@@ -54,6 +61,7 @@ public class Kit {
     }
 
     public List<ItemStack> getItems(Player player) {
+	
 	return null;
     }
 
@@ -63,15 +71,19 @@ public class Kit {
     }
 
     public void setItem(List<ItemStack> item) {
+	
     }
 
     public void setItem(int slot, ItemStack item) {
+	
     }
 
     public void addItem(ItemStack item) {
+	
     }
 
     public List<String> getCommands(Player player) {
+	
 	return null;
     }
 
@@ -106,6 +118,10 @@ public class Kit {
     public void setDelay(long delay) {
 	this.delay = delay;
     }
+
+//    public boolean isOneTimeUse() {
+//	return this.delay <= -1;
+//    }
 
     public List<String> getConditions() {
 	return conditions;
@@ -183,7 +199,10 @@ public class Kit {
     }
 
     public void setExtraItem(CMIInventorySlot slot, ItemStack item) {
-
+	if (item != null)
+	    extraItems.put(slot, item.clone());
+	else
+	    extraItems.put(slot, null);
     }
 
     @Deprecated
@@ -250,7 +269,9 @@ public class Kit {
     }
 
     public ItemStack getSafeIcon() {
-	return null;
+	if (Icon != null)
+	    return Icon.clone();
+	return this.item.isEmpty() ? CMIMaterial.WHITE_WOOL.newItemStack() : getFirstNotNullItem() != null ? getFirstNotNullItem() : CMIMaterial.WHITE_WOOL.newItemStack();
     }
 
     public ItemStack getIcon() {
@@ -313,6 +334,14 @@ public class Kit {
 
     public void setDisplayName(String displayName) {
 	this.displayName = displayName;
+    }
+
+    public boolean isShowDespiteUsage() {
+	return showDespiteUsage;
+    }
+
+    public void setShowDespiteUsage(boolean showDespiteUsage) {
+	this.showDespiteUsage = showDespiteUsage;
     }
 
 }

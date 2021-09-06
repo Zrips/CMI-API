@@ -7,8 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
+
 
 public class CMIPEAnimation implements CMIPEAnimationInterface {
 
@@ -100,6 +100,9 @@ public class CMIPEAnimation implements CMIPEAnimationInterface {
 
     @Override
     public void show() {
+	CMIVisualEffect spir = new CMIVisualEffect(center, this);
+	spir.setUntil(System.currentTimeMillis() + (int) (1000L * duration));
+	spir.show();
     }
 
     @Override

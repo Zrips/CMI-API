@@ -26,6 +26,12 @@ public class ViewRangeManager {
 
     public int getRangeFromPerm(Player player) {
 	int range = Bukkit.getViewDistance();
+	if (!CMIPerm.viewrange.hasPermission(player))
+	    return range;
+	for (int i = 15; i > range; i--) {
+	    if (CMIPerm.viewrange_$1.hasPermission(player, i))
+		return i;
+	}
 	return range;
     }
 

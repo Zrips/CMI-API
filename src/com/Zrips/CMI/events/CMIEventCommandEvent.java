@@ -15,13 +15,15 @@ public final class CMIEventCommandEvent extends PlayerEvent implements Cancellab
     private boolean cancel = false;
     private final eventAction action;
     private List<String> commands;
+    private List<String> sourceCommands;
     private Player source;
 
-    public CMIEventCommandEvent(final Player player, Player source, final eventAction action, List<String> commands) {
+    public CMIEventCommandEvent(final Player player, Player source, final eventAction action, List<String> commands, List<String> sourceCommands) {
 	super(player);
 	this.source = source;
 	this.action = action;
 	this.commands = commands;
+	this.sourceCommands = sourceCommands;
     }
 
     public final static HandlerList getHandlerList() {
@@ -52,8 +54,10 @@ public final class CMIEventCommandEvent extends PlayerEvent implements Cancellab
 	return commands;
     }
 
+    @Deprecated
     public void setCommands(List<String> commands) {
-	this.commands = commands;
+	this.commands.clear();
+	this.commands.addAll(commands);
     }
 
     public Player getSource() {
@@ -62,5 +66,9 @@ public final class CMIEventCommandEvent extends PlayerEvent implements Cancellab
 
     public void setSource(Player source) {
 	this.source = source;
+    }
+
+    public List<String> getSourceCommands() {
+	return sourceCommands;
     }
 }

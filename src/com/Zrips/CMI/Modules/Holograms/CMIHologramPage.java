@@ -26,7 +26,7 @@ public class CMIHologramPage {
 
     public void setCommands(List<String> commands) {
 	this.commands = commands;
-    }
+    } 
 
     public int getPage() {
 	return page;

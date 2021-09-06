@@ -23,13 +23,15 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIBlock;
 import com.Zrips.CMI.Containers.CMIBlock.FlipDirection;
+import com.Zrips.CMI.Containers.CMIEvent;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
-import com.Zrips.CMI.Modules.GUI.CMIGuiButton;
-import com.Zrips.CMI.Modules.GUI.GUIManager.GUIClickType;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.Locale.LC;
+
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Version;
 
 public class MirrorManager {
 
@@ -139,11 +141,13 @@ public class MirrorManager {
     }
 
     private static Set<Location> getLocations(Mirrors mirror, Location loc) {
+	
 	return null;
     }
 
     private boolean inRange(Location center, Location location) {
-	return false;
+	    return false;
+
     }
 
     public enum mirrorShift {
@@ -188,34 +192,36 @@ public class MirrorManager {
     }
 
     private HashMap<String, blockInfo> combineMaps(HashMap<String, blockInfo> locs, HashMap<String, blockInfo> shiftedLocs) {
+	
 	return null;
     }
 
     public void MirrorPlace(Player player, Block block) {
-
+	
     }
 
     public void MirrorBreak(Player player, Block block) {
+	
 
     }
 
     private Location rotate90horClockWise(Mirrors mirror, Location loc) {
-
+	
 	return null;
     }
 
     private Location rotate90horCounterClockWise(Mirrors mirror, Location loc) {
-
+	
 	return null;
     }
 
     private static Location rotate90hor(Mirrors mirror, Location loc, boolean clock) {
-
+	
 	return null;
     }
 
     private static Location rotate180hor(Mirrors mirror, Location loc) {
-
+	
 	return null;
     }
 
@@ -230,17 +236,17 @@ public class MirrorManager {
     }
 
     private HashMap<String, blockInfo> getMirroredZXMap(Mirrors mirror, Block block, Object data, Location loc, int repeat, HashMap<String, blockInfo> map) {
-
+	
 	return null;
     }
 
     private static Set<Location> getMirroredXZ(Mirrors mirror, Location loc, int repeat) {
-
+	
 	return null;
     }
 
     private static Set<Location> getMirroredZX(Mirrors mirror, Location loc, int repeat) {
-
+	
 	return null;
     }
 
@@ -255,12 +261,12 @@ public class MirrorManager {
     }
 
     private static Set<Location> getMirroredZY(Mirrors mirror, Location loc, int repeat) {
-
+	
 	return null;
     }
 
     private static Set<Location> getMirroredXY(Mirrors mirror, Location loc, int repeat) {
-
+	
 	return null;
     }
 
@@ -275,15 +281,27 @@ public class MirrorManager {
     }
 
     private static int getX(Location center, Location loc) {
-	return 1;
+	int c = center.getBlockX();
+	int b = loc.getBlockX();
+	int dif = c - b;
+	int newValue = c + dif;
+	return newValue;
     }
 
     private static int getY(Location center, Location loc) {
-	return 1;
+	int c = center.getBlockY();
+	int b = loc.getBlockY();
+	int dif = c - b;
+	int newValue = c + dif;
+	return newValue;
     }
 
     private static int getZ(Location center, Location loc) {
-	return 1;
+	int c = center.getBlockZ();
+	int b = loc.getBlockZ();
+	int dif = c - b;
+	int newValue = c + dif;
+	return newValue;
     }
 
     private static int getXdif(Location center, Location loc) {
@@ -299,6 +317,6 @@ public class MirrorManager {
     }
 
     public void openNewGui(CMIUser user) {
-
+	
     }
 }

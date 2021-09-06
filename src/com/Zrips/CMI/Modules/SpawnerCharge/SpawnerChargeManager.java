@@ -15,14 +15,18 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Config;
-import com.Zrips.CMI.Containers.PageInfo;
-import com.Zrips.CMI.Modules.CmiItems.CMIEntityType;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
-import com.Zrips.CMI.Modules.GUI.CMIGuiButton;
-import com.Zrips.CMI.Modules.GUI.GUIManager.InvType;
+import com.Zrips.CMI.Modules.Permissions.PermissionInfo;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+
+import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.GUI.GUIManager.InvType;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.NBT.CMINBT;
 
 public class SpawnerChargeManager {
 
@@ -31,7 +35,8 @@ public class SpawnerChargeManager {
     private Integer total = 0;
 
     private void recalculateTotalSpawnerEntities() {
-
+	
+	
     }
 
     public void addCharge(SCharges charge) {
@@ -43,7 +48,6 @@ public class SpawnerChargeManager {
     }
 
     public SCharges getCharge(Player player) {
-
 	return null;
     }
 
@@ -57,11 +61,13 @@ public class SpawnerChargeManager {
     }
 
     public void openSpawnerPickerUI(Player player, int page) {
-
+	
     }
 
     public int getSpawnerDropChance(Player player, Block block) {
-	return 0;
+
+	    return 0;
+
     }
 
 }

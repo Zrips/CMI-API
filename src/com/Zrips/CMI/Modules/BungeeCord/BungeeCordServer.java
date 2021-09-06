@@ -1,22 +1,9 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.BungeeCord.ServerListPing.Player;
-import com.Zrips.CMI.Modules.BungeeCord.ServerListPing.StatusResponse;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Containers.CMIChatColor;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BungeeCordServer {
 
@@ -29,8 +16,8 @@ public class BungeeCordServer {
     private Long nextCheck = 0L;
     private boolean online = false;
 
-    private HashMap<String, BungeePlayer> playersMapUUID = new HashMap<String, BungeePlayer>();
-    private HashMap<String, BungeePlayer> playersMapName = new HashMap<String, BungeePlayer>();
+    private ConcurrentHashMap<String, BungeePlayer> playersMapUUID = new ConcurrentHashMap<String, BungeePlayer>();
+    private ConcurrentHashMap<String, BungeePlayer> playersMapName = new ConcurrentHashMap<String, BungeePlayer>();
 
     public BungeeCordServer(String name, String ip, Integer port) {
 	this.name = name;
@@ -80,6 +67,13 @@ public class BungeeCordServer {
 
     public int getCurrentPlayers() {
 	int total = 0;
+	Iterator<Entry<String, BungeePlayer>> iter = playersMapUUID.entrySet().iterator();
+	while (iter.hasNext()) {
+	    BungeePlayer user = iter.next().getValue();
+	    if (user.getVanished())
+		continue;
+	    total++;
+	}
 	return total;
     }
 
@@ -96,7 +90,7 @@ public class BungeeCordServer {
     }
 
     public void update() {
-	
+
     }
 
     public boolean isOnline() {
@@ -107,7 +101,7 @@ public class BungeeCordServer {
 	this.online = online;
     }
 
-    public HashMap<String, BungeePlayer> getPlayersMapUUID() {
+    public ConcurrentHashMap<String, BungeePlayer> getPlayersMapUUID() {
 	return playersMapUUID;
     }
 
@@ -116,13 +110,23 @@ public class BungeeCordServer {
     }
 
     public BungeePlayer getPlayer(String name) {
-	
-	return null;
+	return playersMapName.get(name.toLowerCase());
     }
 
     public void addPlayer(BungeePlayer player) {
+	this.playersMapUUID.put(player.getUniqueId().toString(), player);
+	this.playersMapName.put(player.getName().toLowerCase(), player);
     }
 
     public void removePlayer(UUID uuid, String name) {
+	this.playersMapUUID.remove(uuid.toString());
+	this.playersMapName.remove(name.toLowerCase());
+    }
+
+    public void clearPlayers() {
+	if (playersMapUUID != null)
+	    this.playersMapUUID.clear();
+	if (playersMapName != null)
+	    this.playersMapName.clear();
     }
 }

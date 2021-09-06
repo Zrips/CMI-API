@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.Zrips.CMI.Modules.ChatFilter.ChatFilterManager.ChatFilterBlockType;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import net.Zrips.CMILib.Chat.ChatFilterBlockType;
 
 public class ChatFilterRule {
 
@@ -82,7 +81,14 @@ public class ChatFilterRule {
     }
 
     public Matcher getMatcher(String msg) {
-	return null;
+	Matcher matcher = null;
+	for (Pattern one : pattern) {
+	    if (one.matcher(msg).find()) { 
+		matcher = one.matcher(msg);
+		break;
+	    }
+	}
+	return matcher;
     }
 
     public String getMessageToStaff() {

@@ -1,11 +1,22 @@
 package com.Zrips.CMI.Modules.CustomText;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CommandAlias;
+import com.Zrips.CMI.Containers.Snd;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class CText {
 
@@ -59,12 +70,15 @@ public class CText {
     }
 
     public void removeLine(Integer page, int lineNr) {
+
     }
 
     public void replaceLine(Integer page, Integer lineNr, String line) {
+
     }
 
     public void addLine(Integer page, String line) {
+
     }
 
     public boolean isAutoPage() {
@@ -80,6 +94,7 @@ public class CText {
     }
 
     public void setAutoAlias(boolean autoAlias, boolean save) {
+
     }
 
     public boolean isRequirePermission() {

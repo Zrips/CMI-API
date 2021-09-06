@@ -58,6 +58,15 @@ public class ScanInfo {
     }
 
     public void addLocation(int amount, ScanResultLocations location) {
+	if (multimap.containsKey(amount)) {
+	    ArrayList<ScanResultLocations> list = multimap.get(amount);
+	    list.add(location);
+	    multimap.put(amount, list);
+	} else {
+	    ArrayList<ScanResultLocations> list = new ArrayList<ScanResultLocations>();
+	    list.add(location);
+	    multimap.put(amount, list);
+	}
     }
 
     public int getCurrentId() {

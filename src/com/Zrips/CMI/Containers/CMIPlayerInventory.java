@@ -3,24 +3,12 @@ package com.Zrips.CMI.Containers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Version.Version;
 
 public class CMIPlayerInventory {
 
@@ -61,7 +49,7 @@ public class CMIPlayerInventory {
     public void setItem(CMIInventorySlot type, ItemStack item) {
 	Player player = user.getPlayer();
 	if (type.equals(CMIInventorySlot.MainHand)) {
-	    CMI.getInstance().getNMS().setItemInMainHand(user.getPlayer(), item);
+	    CMILib.getInstance().getReflectionManager().setItemInMainHand(user.getPlayer(), item);
 	} else {
 	    for (Integer slot : type.getSlots()) {
 		player.getInventory().setItem(slot, item);
@@ -73,11 +61,20 @@ public class CMIPlayerInventory {
 	Abort, Drop, Return;
     }
 
+    public HashMap<Integer, ItemStack> addItem(ItemStack item, int preferredSlot) {
+	return addItem(item, CMIFullInventoryAction.Drop, preferredSlot);
+    }
+
     public HashMap<Integer, ItemStack> addItem(ItemStack item) {
-	return addItem(item, CMIFullInventoryAction.Drop);
+	return addItem(item, CMIFullInventoryAction.Drop, -1);
     }
 
     public HashMap<Integer, ItemStack> addItem(ItemStack item, CMIFullInventoryAction action) {
+	return addItem(item, action, -1);
+    }
+
+    public HashMap<Integer, ItemStack> addItem(ItemStack item, CMIFullInventoryAction action, int preferredSlot) {
+	
 	return null;
     }
 
@@ -90,6 +87,7 @@ public class CMIPlayerInventory {
     }
 
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
+	
 	return null;
     }
 
@@ -106,6 +104,8 @@ public class CMIPlayerInventory {
     }
 
     private ItemStack[] getStorageContents() {
+	if (Version.isCurrentEqualOrLower(Version.v1_9_R1))
+	    return this.user.getPlayer().getInventory().getContents();
 	return this.user.getPlayer().getInventory().getStorageContents();
     }
 
@@ -114,32 +114,48 @@ public class CMIPlayerInventory {
     }
 
     private static boolean check(ItemStack citem, ItemStack item, itemCheckType... checkTypes) {
-
+	
 	return true;
     }
 
     private int first(ItemStack item, boolean withAmount) {
+	if (item == null) {
+	    return -1;
+	}
+	ItemStack[] inventory = getStorageContents();
+	for (int i = 0; i < inventory.length; i++) {
+	    if (inventory[i] == null)
+		continue;
 
+	    if (withAmount ? item.equals(inventory[i]) : isSimilar(item, inventory[i])) {
+		return i;
+	    }
+	}
 	return -1;
     }
 
     private static boolean isSimilar(ItemStack stack, ItemStack stack2) {
-	return false;
+	
+	return true;
     }
 
     public boolean canFit(ItemStack... item) {
-	return false;
+	    return false;
     }
 
+
     public void removeItemFromMainHand(ItemStack item) {
+	
     }
 
     public ItemStack getItem(CMIInventorySlot type) {
-	return null;
+	    return null;
     }
 
     public List<ItemStack> getItems(CMIInventorySlot type) {
-	return null;
+	Player player = user.getPlayer();
+	List<ItemStack> items = new ArrayList<ItemStack>();
+	return items;
     }
 
     public int getFreeSlots() {
@@ -151,6 +167,7 @@ public class CMIPlayerInventory {
     }
 
     public boolean contains(ItemStack item) {
+
 	return false;
     }
 

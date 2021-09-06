@@ -12,6 +12,11 @@ public class PlayerCharge {
     private long lastChecked = 0L;
 
     public PlayerCharge(CMIUser user, boolean update) {
+	this.user = user;
+	if (update)
+	    updateSpawnerCharge();
+//	if (this.lastGive == 0L)
+//	    this.lastGive = System.currentTimeMillis();
     }
 
     private void updateSpawnerCharge() {
@@ -52,7 +57,11 @@ public class PlayerCharge {
     }
 
     public int getBonus() {
-	return 0;
+	if (this.SCharge == null)
+	    return 0;
+	if (this.SCharge.getBonus() <= 0)
+	    return 0;
+	return this.SCharge.getBonus();
     }
 
     public boolean lowerCd() {

@@ -13,6 +13,7 @@ public class CMIRay {
     }
 
     public CMIRay(Player player) {
+	this(player.getEyeLocation().toVector(), player.getLocation().getDirection());
     }
 
     public Vector getOrigin() {
@@ -24,16 +25,32 @@ public class CMIRay {
     }
 
     public double origin(int i) {
-	return 0;
-
+	switch (i) {
+	case 0:
+	    return origin.getX();
+	case 1:
+	    return origin.getY();
+	case 2:
+	    return origin.getZ();
+	default:
+	    return 0;
+	}
     }
 
     public double direction(int i) {
-	return 0;
-
+	switch (i) {
+	case 0:
+	    return direction.getX();
+	case 1:
+	    return direction.getY();
+	case 2:
+	    return direction.getZ();
+	default:
+	    return 0;
+	}
     }
 
     public Vector getPoint(double distance) {
-	return null;
+	return direction.clone().normalize().multiply(distance).add(origin);
     }
 }

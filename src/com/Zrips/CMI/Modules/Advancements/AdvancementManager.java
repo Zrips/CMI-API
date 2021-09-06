@@ -10,15 +10,16 @@ public class AdvancementManager {
 
     static HashMap<String, CMIAdvancement> map = new HashMap<String, CMIAdvancement>();
 
-    public AdvancementManager() {
-
-    }
-
     public static CMIAdvancement getOld(String... key) {
-	return null;
+	String oneKey = "";
+	for (String one : key) {
+	    oneKey += one;
+	}
+	return map.get(oneKey);
     }
 
     public static void add(CMIAdvancement adv) {
+	map.put(adv.getId().getKey(), adv);
     }
 
     public enum FrameType {
@@ -33,7 +34,14 @@ public class AdvancementManager {
 	}
 
 	public static FrameType getFromString(String frameType) {
-	    return null;
+	    try {
+		for (FrameType one : FrameType.values()) {
+		    if (one.name.equalsIgnoreCase(frameType))
+			return one;
+		}
+	    } catch (EnumConstantNotPresentException e) {
+	    }
+	    return FrameType.TASK;
 	}
 
 	@Override

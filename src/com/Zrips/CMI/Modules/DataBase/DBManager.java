@@ -1,25 +1,19 @@
 package com.Zrips.CMI.Modules.DataBase;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.PlayerManager;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.FileHandler.ConfigReader;
 import com.Zrips.CMI.Modules.DataBase.DBDAO.UserTablesFields;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.PlayTime.CMIPlayDay;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class DBManager {
     private DBDAO dao;
@@ -56,16 +50,22 @@ public class DBManager {
     private boolean verifyServerCertificate = true;
 
     public void load() {
-
+	
     }
 
     private synchronized DBMySQL startMysql(boolean reload) {
-
+	
 	return null;
     }
 
     private synchronized DBSQLite startSqlite(boolean reload) {
-	return null;
+
+	if (reload && dao != null)
+	    return (DBSQLite) dao;
+
+	DBSQLite data = new DBSQLite(plugin, plugin.getDataFolder());
+	data.initialize();
+	return data;
     }
 
     public DataBaseType getDbType() {
@@ -100,6 +100,7 @@ public class DBManager {
     }
 
     public void start() {
+
     }
 
     public void addForSave(CMIUser user) {
@@ -116,6 +117,10 @@ public class DBManager {
 	invToSave.add(inv);
     }
 
+//    public void addForSave(ResidencePlayer player) {
+//	playerListToSave.add(player);
+//    }
+
     public void clear() {
     }
 
@@ -125,7 +130,7 @@ public class DBManager {
     private Runnable autoSave = new Runnable() {
 	@Override
 	public void run() {
-
+	  
 	}
     };
 
@@ -134,10 +139,7 @@ public class DBManager {
     HashMap<CMIPlayDay, CMIUser> getPlayerPlayTimeId = new HashMap<CMIPlayDay, CMIUser>();
     HashMap<Integer, CMIUser> getPlayerPlayTimeRewardId = new HashMap<Integer, CMIUser>();
 
-    private synchronized HashSet<CMIUser> getFirstPlayersForSave(boolean all) {
-
-	return null;
-    }
+   
 
     Boolean all = false;
 
@@ -146,7 +148,7 @@ public class DBManager {
     }
 
     public void saveBatchAsync(boolean allEntries) {
-
+	
     }
 
     Integer oldRapidvalue = null;
@@ -157,8 +159,10 @@ public class DBManager {
 	all = false;
     }
 
-    public void saveBatch(boolean all) {
+    boolean startingDb = false;
 
+    public void saveBatch(boolean all) {
+	
     }
 
     public boolean isRapidModeEnabled() {
@@ -166,6 +170,9 @@ public class DBManager {
     }
 
     private void showStats() {
+	for (Entry<UserTablesFields, Long> one : PlayerManager.timer.entrySet()) {
+	    CMIDebug.d(one.getKey() + " : " + (one.getValue() / PlayerManager.timesProcessed));
+	}
     }
 
     public boolean isForceSaveOnLogOut() {

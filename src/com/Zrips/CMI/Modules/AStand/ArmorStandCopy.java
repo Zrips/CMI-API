@@ -45,6 +45,8 @@ public class ArmorStandCopy {
     }
 
     public void duplicateOn(ArmorStand stand) {
+	CMI.getInstance().getArmorStandManager().duplicate(this.stand, stand, getCopy());
+	CMI.getInstance().getArmorStandManager().duplicateExtra(this.stand, stand, getExtraCopy());
     }
 
     public Set<armorStandExtraActions> getExtraCopy() {

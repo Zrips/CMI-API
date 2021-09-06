@@ -1,13 +1,25 @@
 package com.Zrips.CMI.utils;
 
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,33 +36,50 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
+import com.Zrips.CMI.Config;
+import com.Zrips.CMI.Containers.CMICollision;
+import com.Zrips.CMI.Containers.CMIHitBox;
+import com.Zrips.CMI.Containers.CMIRay;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.itemInfo;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIEntityType;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import com.Zrips.CMI.Modules.Animations.AnimationManager;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-import com.Zrips.CMI.Modules.RawMessages.RawMessage;
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
-import com.Zrips.CMI.commands.list.colorlimits.CMIColorTypes;
-import com.Zrips.CMI.utils.VersionChecker.Version;
 import com.google.common.base.Charsets;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.NBT.CMINBT;
+import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Version.Version;
 
 public class Util {
 
     public boolean Debug = true;
 
-    private HashMap<String, replyResponder> replayMapBySender = new HashMap<String, replyResponder>();
-    private HashMap<String, replyResponder> replayMapByReceiver = new HashMap<String, replyResponder>();
+    private HashMap<String, replyResponder> replyMapBySender = new HashMap<String, replyResponder>();
+    private HashMap<String, replyResponder> replyMapByReceiver = new HashMap<String, replyResponder>();
 
     private HashMap<UUID, String> worldCache = new HashMap<UUID, String>();
 
     static Random random = new Random(System.nanoTime());
+
+    private CMI plugin;
+
+    public Util(CMI plugin) {
+	this.plugin = plugin;
+	for (World one : Bukkit.getWorlds()) {
+	    worldCache.put(one.getUID(), one.getName());
+	}
+    }
 
     public class replyResponder {
 	private String name;
@@ -88,15 +117,6 @@ public class Util {
 	return UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
     }
 
-    private CMI plugin;
-
-    public Util(CMI plugin) {
-	this.plugin = plugin;
-	for (World one : Bukkit.getWorlds()) {
-	    worldCache.put(one.getUID(), one.getName());
-	}
-    }
-
     Integer range = null;
 
     public int getPlayerTrackingRange() {
@@ -104,17 +124,77 @@ public class Util {
     }
 
     public int getPlayerTrackingRange(World world) {
-	return 0;
+	if (range == null) {
+	    range = 64;
+	    try {
+		Object r = null;
+		if (world != null)
+		    r = Bukkit.spigot().getConfig().get("world-settings." + world.getName() + ".entity-tracking-range.players");
+		if (r == null)
+		    r = Bukkit.spigot().getConfig().get("world-settings.default.entity-tracking-range.players");
+		if (r != null)
+		    range = (int) r;
+	    } catch (Exception | Error e) {
+	    }
+	}
+	return range;
     }
 
+    @Deprecated
     public void addMessageReplayTo(String target, String sender) {
+	addMessageReplyTo(target, sender);
+    }
+
+    public void addMessageReplyTo(String target, String sender) {
+	replyMapBySender.put(sender, new replyResponder(target, System.currentTimeMillis()));
+	replyMapByReceiver.remove(sender);
+	replyMapByReceiver.put(target, new replyResponder(sender, System.currentTimeMillis()));
+    }
+
+    @Deprecated
+    public void removeMessageReplayTo(String sender) {
+	removeMessageReplyTo(sender);
+    }
+
+    public void removeMessageReplyTo(String sender) {
+	replyResponder removed = replyMapByReceiver.remove(sender);
+	if (removed != null) {
+	    replyResponder got = replyMapBySender.get(removed.getName());
+	    if (got != null && got.getName().equalsIgnoreCase(sender))
+		replyMapBySender.remove(removed.getName());
+	}
     }
 
     public double getDistance(Location loc1, Location loc2) {
-	return 0;
+	if (loc1 == null || loc2 == null || loc1.getWorld() != loc2.getWorld())
+	    return Integer.MAX_VALUE;
+
+	try {
+	    return loc1.distance(loc2);
+	} catch (Throwable e) {
+	    return Integer.MAX_VALUE;
+	}
     }
 
     public int getMaxWorldHeight(World world) {
+	if (world == null)
+	    return 256;
+
+	Integer custom = plugin.getConfigManager().getFlyAboveRoofLimitationsMap().get(world.getName());
+	if (custom != null && custom > 0)
+	    return custom;
+
+	switch (world.getEnvironment()) {
+	case NETHER:
+	    return 128;
+	case NORMAL:
+	case THE_END:
+	    if (Version.isCurrentEqualOrHigher(Version.v1_17_R1))
+		return world.getMaxHeight();
+	    return 256;
+	default:
+	    break;
+	}
 	return 256;
     }
 
@@ -124,44 +204,25 @@ public class Util {
     }
 
     public double getYaw(Location loc1, Location loc2) {
-	return 0d;
+	double dX = loc1.getX() - loc2.getX();
+	double dZ = loc1.getZ() - loc2.getZ();
+	return Math.toDegrees(Math.atan2(dZ, dX));
     }
 
     public double getPitch(Location loc1, Location loc2) {
-	return 0;
+	double dX = loc1.getX() - loc2.getX();
+	double dY = loc1.getY() - loc2.getY();
+	double dZ = loc1.getZ() - loc2.getZ();
+	return Math.toDegrees(Math.atan2(Math.sqrt(dZ * dZ + dX * dX), dY) + Math.PI);
     }
 
+    @Deprecated
     public String getMessageReplayTo(String sender) {
 	return null;
     }
 
-    public enum CommandType {
-	gui, warmup, acmd, rank, silent
-    }
-
-    public enum CMIText {
-
-	ten;
-
-	public static String getFirstVariable(String message) {
-	    if (message == null)
-		return null;
-	    if (!message.contains(" "))
-		return message;
-	    return message.split(" ")[0];
-	}
-
-	public static String replaceUnderScoreSpace(String message) {
-	    String underScore = "U" + random.nextInt(Integer.MAX_VALUE) + "U";
-	    message = message.replace("__", underScore);
-	    message = message.replace("_", " ");
-	    message = message.replace(underScore, "_");
-	    return message;
-	}
-
-	public static boolean isValidString(String message) {
-	    return message != null && !message.isEmpty();
-	}
+    public String getMessageReplyTo(String sender) {
+	return null;
     }
 
     public String createTextProbgressBar(int bars, int total, int current) {
@@ -169,22 +230,13 @@ public class Util {
 	return null;
     }
 
-    public String firstToUpperCase(String name) {
-	return null;
-    }
-
-    public String eachWordToFirstUpperCase(String name) {
-	return null;
-    }
-
-    public void toLowerCase(List<String> strings) {
-	ListIterator<String> iterator = strings.listIterator();
-	while (iterator.hasNext()) {
-	    iterator.set(iterator.next().toLowerCase());
-	}
-    }
-
     public Block getHighestBlockAt(Location loc, boolean includeSolids) {
+
+	return null;
+    }
+
+    public TreeMap<Double, Entity> getClosestEntities(Location center, int range, double treshold, EntityType type) {
+
 	return null;
     }
 
@@ -194,10 +246,18 @@ public class Util {
     }
 
     public Entity getTargetEntity(Player player) {
-	return getTargetEntity(player, 0.95);
+	return getTargetEntity(player, 0.95, false, true);
     }
 
     public Entity getTargetEntity(Player player, double pov) {
+	return getTargetEntity(player, pov, false, true);
+    }
+
+    public Entity getTargetEntity(Player player, boolean includeSpectator, boolean includeInvisible) {
+	return getTargetEntity(player, 0.95, includeSpectator, includeInvisible);
+    }
+
+    public Entity getTargetEntity(Player player, double pov, boolean includeSpectator, boolean includeInvisible) {
 
 	return null;
     }
@@ -228,39 +288,25 @@ public class Util {
 	return null;
     }
 
-    public void performCommand(CommandSender sender, String command, CommandType type) {
-    }
-
-    public void performCommand(Player player, String command, CommandType type) {
-
-    }
-
-    public String getMessageFromArray(String[] args, Integer from, Integer to) {
-
-	return null;
-    }
-
-    private static int cicles = 0;
-
-    public String cleanFromColorCodes(Object p, String msg, CMIColorTypes type, boolean clean) {
-
-	return null;
-    }
-
-    private static boolean hasColorPermission(Player player, CMIColorTypes type, String color) {
-	return false;
-    }
-
     public itemInfo getItemInfo(String text) {
+
 	return null;
     }
 
     public int getItemData(ItemStack item) {
-	return 0;
+	if (item.getType().toString().contains("_EGG"))
+	    return CMILib.getInstance().getReflectionManager().getEggId(item);
+	else if (item.getType().equals(CMIMaterial.SPAWNER.getMaterial()))
+	    return new CMIItemStack(item).getEntityType().getTypeId();
+	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1))
+	    return 0;
+	return item.getData().getData();
     }
 
     public String translateDamageCause(String cause) {
-	return null;
+	if (CMILib.getInstance().getLM().containsKey("info.DamageCause." + cause.toLowerCase()))
+	    cause = CMILib.getInstance().getLM().getMessage("info.DamageCause." + cause.toLowerCase());
+	return cause;
     }
 
     public int getOnlinePlayerCount() {
@@ -276,7 +322,15 @@ public class Util {
     }
 
     public String getOnlinePlayersAsString(String ignore) {
-	return null;
+	String players = "";
+	for (Player one : Bukkit.getOnlinePlayers()) {
+	    if (ignore != null && one.getName().equalsIgnoreCase(ignore))
+		continue;
+	    if (!players.isEmpty())
+		players += ",";
+	    players += one.getName();
+	}
+	return players;
     }
 
     @Deprecated
@@ -289,30 +343,48 @@ public class Util {
     }
 
     public List<Player> getPlayersFromRange(Player player, Location loc, int range) {
+
 	return null;
     }
 
     public List<Player> getPlayersFromRangeForCounter(Location loc, int range, boolean forced) {
+
 	return null;
     }
 
     public World getWorld(String name) {
+
 	return null;
     }
 
     public List<String> getWorldList() {
+
 	return null;
     }
 
     public void resendBlockInfo(final Player player, final Block block) {
+
     }
 
     public boolean isFullInv(ItemStack[] cn, List<ItemStack> list) {
+	int total = 36;
+	for (ItemStack one : cn) {
+	    if (one != null)
+		total--;
+	}
+	if (total < list.size())
+	    return true;
 	return false;
     }
 
     public List<ItemStack> ConvertInvToList(Inventory inv) {
-	return null;
+	ItemStack[] contents = inv.getContents();
+	List<ItemStack> items = new ArrayList<ItemStack>();
+	for (ItemStack one : contents) {
+	    if (one != null)
+		items.add(one);
+	}
+	return items;
     }
 
     public boolean isOnline(String name) {
@@ -320,72 +392,52 @@ public class Util {
     }
 
     public boolean canRepair(ItemStack item) {
+
 	return true;
     }
 
-    public String arrayToString(String[] args) {
-	return arrayToString(args, null);
-    }
+    public boolean needRepair(ItemStack item) {
 
-    public String[] removeFirst(String[] args) {
-	if (args.length == 0)
-	    return args;
-	return Arrays.copyOfRange(args, 1, args.length);
-    }
-
-    public String[] copyOfRange(String[] args, int from, int to) {
-	return Arrays.copyOfRange(args, from, to);
-    }
-
-    public String arrayToString(String[] args, String seperator) {
-	return null;
+	return true;
     }
 
     public ItemStack repairItem(ItemStack item) {
-	return null;
+
+	return item;
     }
 
     public boolean hasSilkTouch(ItemStack is, int lvl) {
+
 	return false;
     }
 
     @SuppressWarnings("deprecation")
     public ItemStack setEntityType(ItemStack is, EntityType type) {
+
 	return null;
     }
 
     public boolean haveBlackListedItems(Player player, TpAction action) {
+
 	return false;
     }
 
     private void showBlackListedItemList(Player player, HashMap<Material, Integer> items) {
+
     }
 
     public HashMap<Material, Integer> getBlackListedItems(Player player) {
+
 	return null;
     }
 
     private HashMap<Material, Integer> getAllItemsFromInv(Inventory inv, HashMap<Material, Integer> t) {
-	return null;
-    }
 
-    public String listToString(List<String> ls, String spliter) {
-	return null;
-    }
-
-    public List<String> StringToList(String ls, String spliter) {
-	return null;
-    }
-
-    public String listToString(List<String> ls) {
-	return null;
-    }
-
-    public List<String> spreadList(List<String> ls) {
 	return null;
     }
 
     public String convertLocToStringShort(Location loc) {
+
 	return null;
     }
 
@@ -394,6 +446,7 @@ public class Util {
     }
 
     public boolean validName(String regex, String name) {
+
 	return false;
     }
 
@@ -405,10 +458,35 @@ public class Util {
     }
 
     public CMIChatColor getTpsColor(Double tps) {
+
 	return null;
     }
 
-    public void printNBT(List<String> list, CommandSender sender, String pre, String name, String type, String value, int typeId) {
+    public static File getFile(Player player) {
+	return getFile(player.getUniqueId());
+    }
+
+    public static File getFile(UUID uuid) {
+	return new File(Bukkit.getWorlds().get(0).getWorldFolder(), "playerdata" + File.separator + uuid + ".dat");
+    }
+
+    public Player getRandomOnlinePlayer() {
+	return getRandomOnlinePlayer(null);
+    }
+
+    public Player getRandomOnlinePlayer(Set<Player> exclude) {
+
+	return null;
+    }
+
+    public boolean blockedItemFromRenaming(CommandSender sender, ItemStack item, String newName) {
+
+	return false;
+    }
+
+    public String getLineSplitter(String text) {
+
+	return null;
     }
 
 }

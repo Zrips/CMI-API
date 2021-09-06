@@ -24,16 +24,16 @@ public class NoTargetListener implements Listener {
     }
 
     public static boolean isInNoTargetPlayers(UUID uuid) {
-	return false;
+	if (noTargetPlayers.isEmpty())
+	    return false;
+	return noTargetPlayers.contains(uuid);
     }
 
     public static void addNoTargetPlayers(UUID uuid) {
+	noTargetPlayers.add(uuid);
     }
 
     public static void removeNoTargetPlayers(UUID uuid) {
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void EntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent event) {
+	noTargetPlayers.remove(uuid);
     }
 }

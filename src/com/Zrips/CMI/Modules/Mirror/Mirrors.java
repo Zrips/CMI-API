@@ -11,6 +11,7 @@ public class Mirrors {
     private HashMap<MirrorManager.MirrorAction, Boolean> map = new HashMap<MirrorManager.MirrorAction, Boolean>();
     private Location loc = null;
     private boolean paused = false;
+    private long lastAction = 0L;
 
     public Mirrors(Location loc) {
 	this.loc = loc;
@@ -22,7 +23,10 @@ public class Mirrors {
     }
 
     public Mirrors reset() {
-	return null;
+	for (MirrorAction one : MirrorManager.MirrorAction.values()) {
+	    map.put(one, false);
+	}
+	return this;
     }
 
     public boolean is(MirrorManager.MirrorAction action) {
@@ -54,6 +58,18 @@ public class Mirrors {
 
     @Override
     public Mirrors clone() {
-	return null;
+	Mirrors m = new Mirrors();
+	m.map = map;
+	m.loc = loc;
+	m.paused = paused;
+	return m;
+    }
+
+    public long getLastAction() {
+	return lastAction;
+    }
+
+    public void setLastAction(long lastAction) {
+	this.lastAction = lastAction;
     }
 }

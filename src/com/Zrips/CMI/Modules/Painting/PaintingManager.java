@@ -28,7 +28,8 @@ public class PaintingManager {
     }
 
     public Painting getPainting(UUID uuid) {
-	return null;
+	Entity ent = map.get(uuid);
+	return ent instanceof Painting ? (Painting) ent : null;
     }
 
     public void removeEditor(UUID uuid) {

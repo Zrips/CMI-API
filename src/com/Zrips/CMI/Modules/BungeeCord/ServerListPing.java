@@ -1,18 +1,12 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Zrips.CMI.CMI;
 import com.google.gson.Gson;
 
 public class ServerListPing {
@@ -47,6 +41,7 @@ public class ServerListPing {
     }
 
     public void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
+	
     }
 
     public StatusResponse fetchData() throws IOException {
@@ -58,6 +53,14 @@ public class ServerListPing {
 	private String text;
 
 	public String getText() {
+	    return text;
+	}
+    }
+
+    public class Description116 {
+	private Gson text;
+
+	public Gson getText() {
 	    return text;
 	}
     }
@@ -118,6 +121,38 @@ public class ServerListPing {
 	private int time;
 
 	public Description getDescription() {
+	    return description;
+	}
+
+	public Players getPlayers() {
+	    return players;
+	}
+
+	public Version getVersion() {
+	    return version;
+	}
+
+	public String getFavicon() {
+	    return favicon;
+	}
+
+	public int getTime() {
+	    return time;
+	}
+
+	public void setTime(int time) {
+	    this.time = time;
+	}
+    }
+
+    public class StatusResponse116 {
+	private Description116 description;
+	private Players players;
+	private Version version;
+	private String favicon;
+	private int time;
+
+	public Description116 getDescription() {
 	    return description;
 	}
 

@@ -13,10 +13,12 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
 import com.Zrips.CMI.events.CMIPortalUseEvent;
+
+import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 
 public class CMIPortal {
 
@@ -26,7 +28,7 @@ public class CMIPortal {
     private String bungeeServer;
     private String bungeeLocation;
     private boolean toExactBungeeLocation = true;
-    private Boolean performCommandsWithoutTp = false;
+    private boolean performCommandsWithoutTp = PortalManager.performCmd;
     private World world;
     private String worldName;
 
@@ -74,25 +76,39 @@ public class CMIPortal {
     }
 
     public World getWorld() {
-	return null;
+	if (world == null && this.getWorldName() != null)
+	    return CMI.getInstance().getUtilManager().getWorld(this.worldName);
+	return world;
     }
 
     public void setWorld(World world) {
+	this.world = world;
+	if (world != null)
+	    this.worldName = world.getName();
     }
 
     public boolean checkCollision(CuboidArea area) {
+	if (this.area != null) {
+	    if (this.area.checkCollision(area)) {
+		return true;
+	    }
+	}
 	return false;
     }
 
     public boolean teleport(Player player) {
+	
 	    return false;
+
     }
 
     public Location loadTpLoc(Object root) throws Exception {
-	return null;
+	tpLoc = (Location) root;
+	return tpLoc;
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
+
 	return null;
     }
 
@@ -163,16 +179,13 @@ public class CMIPortal {
     }
 
     public void setCommands(List<String> commands) {
-	if (this.commands == null)
-	    this.commands = new ArrayList<String>();
-	this.commands.addAll(commands);
     }
 
-    public Boolean getPerformCommandsWithoutTp() {
+    public boolean getPerformCommandsWithoutTp() {
 	return performCommandsWithoutTp;
     }
 
-    public void setPerformCommandsWithoutTp(Boolean performCommandsWithoutTp) {
+    public void setPerformCommandsWithoutTp(boolean performCommandsWithoutTp) {
 	this.performCommandsWithoutTp = performCommandsWithoutTp;
     }
 
@@ -225,7 +238,9 @@ public class CMIPortal {
     }
 
     public String getWorldName() {
-	return null;
+	if (worldName == null && world != null)
+	    return world.getName();
+	return worldName;
     }
 
     public void setWorldName(String worldName) {
@@ -246,7 +261,8 @@ public class CMIPortal {
     }
 
     public Set<UUID> removeParticleLimitations(UUID uuid) {
-	return null;
+	particleForPlayers.remove(uuid);
+	return particleForPlayers;
     }
 
     public Set<UUID> updateParticleLimitations(Player player) {

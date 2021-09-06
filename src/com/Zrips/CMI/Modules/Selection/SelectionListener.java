@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Items.CMIMaterial;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.events.CMISelectionEvent;
 
@@ -25,8 +25,4 @@ public class SelectionListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onSelection(PlayerInteractEvent event) {
-	
-    }
 }

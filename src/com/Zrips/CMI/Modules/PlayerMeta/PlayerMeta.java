@@ -1,6 +1,7 @@
 package com.Zrips.CMI.Modules.PlayerMeta;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class PlayerMeta {
 
@@ -8,7 +9,7 @@ public class PlayerMeta {
 
     public class metaValues {
 	private String value;
-	private String defaultV;
+	private String defaultV = null;
 
 	public String getValue() {
 	    return value;
@@ -19,7 +20,7 @@ public class PlayerMeta {
 	}
 
 	public String getDefaultV() {
-	    return defaultV;
+	    return defaultV == null ? getValue() : defaultV;
 	}
 
 	public void setDefaultV(String defaultV) {
@@ -31,7 +32,7 @@ public class PlayerMeta {
     }
 
     public void add(String key, String value) {
-	add(key, value, value);
+	add(key, value, null);
     }
 
     public void add(String key, String value, String defaultV) {

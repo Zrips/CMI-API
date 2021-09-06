@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.TabList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,32 +21,4 @@ public class TabListListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoinEvent(PlayerJoinEvent event) {
-
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerQuitEvent(PlayerQuitEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCMIAfkLeaveEvent(CMIAfkLeaveEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCMIAfkEnterEvent(CMIAfkEnterEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerTeleportEvent(PlayerTeleportEvent event) {
-    }
 }

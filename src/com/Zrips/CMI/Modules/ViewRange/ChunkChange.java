@@ -15,7 +15,4 @@ public class ChunkChange implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler
-    public void onChunkChangeMove(CMIChunkChangeEvent event) {
-    }
 }

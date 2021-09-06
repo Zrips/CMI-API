@@ -5,6 +5,8 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.CMILib;
+
 public enum CMIDirection {
     N("North", 0, 0, -1), NE("North_East", 45, 1, -1), E("East", 90, 1, 0), SE("South_East", 135, 1, 1), S("South", 180, 0, 1), SW("South_West", 225, -1, 1), W("West", 270, -1, 0), NW("North_West", 315,
 	-1, 1);
@@ -27,12 +29,6 @@ public enum CMIDirection {
     }
 
     public static CMIDirection getFromAngle(double angle) {
-	for (CMIDirection one : CMIDirection.values()) {
-	    double dif = one.getAngle() - angle;
-	    dif = dif < 0 ? -dif : dif;
-	    if (dif <= 22.5)
-		return one;
-	}
 	return CMIDirection.N;
     }
 
@@ -53,7 +49,10 @@ public enum CMIDirection {
     }
 
     public static float getAngle(Location loc1, Location loc2) {
-	return 0f;
+	org.bukkit.util.Vector dirBetweenLocations = loc1.toVector().subtract(loc2.toVector());
+	Location l = loc1.clone();
+	l.setDirection(dirBetweenLocations);
+	return (l.getYaw() + 540) % 360;
     }
 
     public static float getAngle(float yaw) {
@@ -65,7 +64,7 @@ public enum CMIDirection {
     }
 
     public String getTranslatedName() {
-	return null;
+	return "";
     }
 
     public int getX() {

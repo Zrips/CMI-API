@@ -27,13 +27,13 @@ public class CMIInventory {
     private Collection<PotionEffect> potions = new ArrayList<PotionEffect>();
     private HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
     private Location loc;
-    
+
     private boolean editable = false;
     private UUID uuid;
 
     public CMIInventory() {
     }
-    
+
     public CMIInventory(String owner, UUID uuid) {
 	this.owner = owner;
 	this.uuid = uuid;
@@ -45,6 +45,10 @@ public class CMIInventory {
 
     public void setId(int id) {
 	this.id = id;
+    }
+    
+    public void afterSave() {
+	
     }
 
     public Long getTime() {
@@ -187,7 +191,12 @@ public class CMIInventory {
 	this.editable = editable;
     }
 
+    @Deprecated
     public UUID getUuid() {
+	return getUniqueId();
+    }
+
+    public UUID getUniqueId() {
 	return uuid;
     }
 

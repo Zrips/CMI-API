@@ -15,11 +15,16 @@ public class CMIAdvancement {
     private static final Gson gson = new Gson();
 
     private NamespacedKey id;
-    private String parent, icon, background;
-    private String title, description;
+    private String parent;
+    private String icon;
+    private String background;
+    private String title;
+    private String description;
     private int data;
     private FrameType frame;
-    private boolean announce = true, toast = true, hidden = true;
+    private boolean announce = true;
+    private boolean toast = true;
+    private boolean hidden = true;
 
     private CMIAdvancement(NamespacedKey id, String parent, String icon, int data, String background, String title, String description, FrameType frame, boolean announce, boolean toast, boolean hidden) {
 	this.id = id;
@@ -40,7 +45,7 @@ public class CMIAdvancement {
     }
 
     public String getJSON() {
-	return null;
+	return gson.toJson("");
     }
 
     public String getIcon() {
@@ -53,7 +58,7 @@ public class CMIAdvancement {
 
     public static JsonElement getJsonFromComponent(String textComponent) {
 
-	return null;
+	return gson.fromJson("\"" + textComponent + "\"", JsonElement.class);
     }
 
     public String getTitle() {
@@ -77,19 +82,23 @@ public class CMIAdvancement {
     }
 
     public CMIAdvancement show(JavaPlugin plugin, final Player... players) {
+	
 	return this;
     }
 
     public CMIAdvancement add() {
+	
 	return this;
     }
 
     public CMIAdvancement grant(Player... players) {
-	return null;
+	
+	return this;
     }
 
     public CMIAdvancement revoke(Player... players) {
-	return null;
+	
+	return this;
     }
 
     public Advancement getAdvancement() {

@@ -49,6 +49,7 @@ public class CMIPlayTime {
     }
 
     public void updatePlayTime(boolean checkForOnline) {
+
     }
 
     public Long getPlayTime(PlaytimeRange range) {
@@ -57,7 +58,11 @@ public class CMIPlayTime {
     }
 
     public Long getTotalPlayTime() {
-	return null;
+	Long total = 0L;
+	for (Entry<Integer, CMIPlayDay> one : map.entrySet()) {
+	    total += one.getValue().getTotalTime();
+	}
+	return total;
     }
 
     public Set<CMIPlayDay> getForSave() {

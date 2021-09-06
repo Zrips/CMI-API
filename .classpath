@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_251"/>
 	<classpathentry kind="lib" path="D:/MC/lib/Vault-1.7.3.jar"/>
+	<classpathentry kind="lib" path="D:/MC/lib/CMILib1.0.3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

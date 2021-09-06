@@ -29,7 +29,6 @@ public class SkinManager {
     }
 
     public void removeSkinFromCache(String playerName) {
-	
     }
 
     public boolean applySkin(Player player, String playerName) {
@@ -46,15 +45,18 @@ public class SkinManager {
 
     public boolean setSkin(GameProfile profile, UUID uuid) {
 
-	    return false;	
+	    return false;
+	
 
     }
 
     private boolean checkCache(GameProfile profile, UUID uuid) {
+	
 	return false;
     }
 
     public CMISkin getSkin(String name) {
+	
 	return null;
     }
 
@@ -64,10 +66,10 @@ public class SkinManager {
 	
     }
 
+
     public void load() {
 	
     }
-
 
     public boolean isSteveOnOff() {
 	return SteveOnOff;

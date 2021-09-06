@@ -1,11 +1,12 @@
 package com.Zrips.CMI.Modules.Economy;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,8 @@ public class EconomyManager {
     private boolean Confirmation = false;
     private boolean LogEnabled = false;
     private Double MaxChequeValue;
+    private boolean ChequePaper;
+    private boolean ChequePermission;
     private boolean BalTopIncludeFakes;
     private boolean BalTopDisplayWithShorts;
     private List<String> BalTopExclude;
@@ -36,6 +39,7 @@ public class EconomyManager {
     private boolean townyPresent = false;
     private String townyTownPrefix = "town-";
     private String townyNationPrefix = "nation-";
+    private String townyDebtPrefix = "[DEBT]-";
     private String townyClosed_economy = "towny-server";
 
     private Boolean recalculatingTop = false;
@@ -48,7 +52,7 @@ public class EconomyManager {
     private VaultManager vmanager = null;
 
     public EconomyManager(CMI plugin) {
-
+	
     }
 
     SortedMap<Double, UUID> balTop = Collections.synchronizedSortedMap(new TreeMap<Double, UUID>(Collections.reverseOrder()));
@@ -62,7 +66,11 @@ public class EconomyManager {
     }
 
     public String format(Double money) {
-	return null;
+	if (money == null)
+	    return "0";
+	if (vmanager == null)
+	    return String.valueOf(money);
+	return vmanager.format(money);
     }
 
     public boolean isVaultEnabled() {
@@ -72,6 +80,7 @@ public class EconomyManager {
     boolean locked = false;
 
     public synchronized void updateBalTop(final CMIUser user) {
+
     }
 
     BukkitTask recTask = null;
@@ -81,23 +90,34 @@ public class EconomyManager {
     }
 
     private boolean startsWithExcluded(String name) {
+	name = name.toLowerCase();
+	for (String one : BalTopExcludeStartingWith) {
+	    if (name.startsWith(one))
+		return true;
+	}
 	return false;
     }
 
     public SortedMap<Double, UUID> getBalTopMap() {
-	return null;
+	
+	return balTop;
     }
 
     public Set<WorldGroup> getWorldGroups() {
-	return null;
+	Set<WorldGroup> groups = new HashSet<WorldGroup>();
+
+	return groups;
     }
 
     public Set<String> getWorlds(WorldGroup worldGroup) {
-	return null;
+	Set<String> groups = new HashSet<String>();
+
+	return groups;
     }
 
     public WorldGroup getWorldGroup(String name) {
-	return null;
+
+	return groups.get(name);
     }
 
     public DecimalFormat getMoneyFormat() {
@@ -105,15 +125,21 @@ public class EconomyManager {
     }
 
     public Double translateMoney(String value) {
-
-	return null;
+	
+	return 0D;
     }
 
     public DecimalFormat getMoneyFormat(String worldName) {
-	return null;
+
+	WorldGroup group = getDefaultGroup();
+
+
+	    return new DecimalFormat(group.getCurrencyFormat());
+	
     }
 
     public void loadConfig() {
+
     }
 
     public boolean isCustomWorldsEnabled() {
@@ -208,7 +234,7 @@ public class EconomyManager {
 	private boolean switchPlaces = false;
 	private boolean UseShortNumbers = false;
 	private boolean fractions = true;
-	private List<String> ShortNumbersSuffixes = new ArrayList<String>();
+	private HashMap<Long, String> ShortNumbersSuffixes = new HashMap<Long, String>();
 	private String name;
 
 	public WorldGroup(String name) {
@@ -307,11 +333,11 @@ public class EconomyManager {
 	    return this;
 	}
 
-	public List<String> getShortNumbersSuffixes() {
+	public HashMap<Long, String> getShortNumbersSuffixes() {
 	    return ShortNumbersSuffixes;
 	}
 
-	public WorldGroup setShortNumbersSuffixes(List<String> shortNumbersSuffixes) {
+	public WorldGroup setShortNumbersSuffixes(HashMap<Long, String> shortNumbersSuffixes) {
 	    ShortNumbersSuffixes = shortNumbersSuffixes;
 	    return this;
 	}
@@ -339,6 +365,18 @@ public class EconomyManager {
     Writer writer = null;
 
     public void closeStream() {
+	if (writer != null) {
+	    try {
+		writer.flush();
+	    } catch (IOException e1) {
+		e1.printStackTrace();
+	    }
+	    try {
+		writer.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
     public enum CMIMoneyLogType {
@@ -390,7 +428,13 @@ public class EconomyManager {
     }
 
     public boolean isTownyAccount(String playerName) {
-	return false;
+	if (playerName == null)
+	    return false;
+
+	return plugin.getEconomyManager().isTownyPresent() && (playerName.startsWith(plugin.getEconomyManager().getTownyTownPrefix()) ||
+	    playerName.startsWith(plugin.getEconomyManager().getTownyNationPrefix()) ||
+	    playerName.startsWith(plugin.getEconomyManager().getTownyDebtPrefix()) ||
+	    playerName.equalsIgnoreCase(plugin.getEconomyManager().getTownyClosedEconomyName()));
     }
 
     public String getTownyClosedEconomyName() {
@@ -399,5 +443,21 @@ public class EconomyManager {
 
     public boolean isBalTopDisplayWithShorts() {
 	return BalTopDisplayWithShorts;
+    }
+
+    public String getTownyDebtPrefix() {
+	return townyDebtPrefix;
+    }
+
+    public void setTownyDebtPrefix(String townyDebtPrefix) {
+	this.townyDebtPrefix = townyDebtPrefix;
+    }
+
+    public boolean isChequePaperRequired() {
+	return ChequePaper;
+    }
+
+    public boolean isChequeRequiresPermission() {
+	return ChequePermission;
     }
 }

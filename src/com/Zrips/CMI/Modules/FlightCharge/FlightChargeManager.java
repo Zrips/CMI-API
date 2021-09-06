@@ -3,8 +3,9 @@ package com.Zrips.CMI.Modules.FlightCharge;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
 import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class FlightChargeManager {
 
@@ -17,6 +18,7 @@ public class FlightChargeManager {
 //    private boolean Enabled = false;
     private boolean FlightChargeEnabledByDefault = true;
     private boolean FlightChargeAutoSwitch = true;
+    private boolean bossbar = true;
     private double ExpRechargeCost = 0;
     private double MoneyRechargeCost = 0D;
     private int MaxChargeLevel = 0;
@@ -32,11 +34,11 @@ public class FlightChargeManager {
     private double autoRechargeAmount = 0;
 
     public void load() {
+	
 
     }
 
     public void process(Player player, Integer take) {
-
     }
 
     public void process(traveledDistance dinfo, Integer take) {
@@ -50,7 +52,7 @@ public class FlightChargeManager {
     public static final String flightChargeBossBar = "CMIFlightChargeBossBar";
 
     public void updateBossBar(CMIUser user) {
-
+	
     }
 
     private void updateBossBar(traveledDistance dinfo) {

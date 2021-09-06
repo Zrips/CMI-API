@@ -2,6 +2,7 @@ package com.Zrips.CMI.Modules.SavedInv;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -11,11 +12,12 @@ import org.bukkit.inventory.Inventory;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
+
+import net.Zrips.CMILib.GUI.CMIGui;
 
 public class SavedInventoryManager {
 
-    private HashMap<UUID, SavedInventories> map = new HashMap<UUID, SavedInventories>();
+    private ConcurrentHashMap<UUID, SavedInventories> map = new ConcurrentHashMap<UUID, SavedInventories>();
     private CMI plugin;
 
     public SavedInventoryManager(CMI plugin) {
@@ -34,6 +36,7 @@ public class SavedInventoryManager {
     }
 
     private void checkInvLimit(SavedInventories inventories) {
+	
     }
 
     public CMIInventory getInvById(CMIUser user, int id) {
@@ -53,25 +56,30 @@ public class SavedInventoryManager {
     }
 
     public CMIInventory getNextInv(CMIUser user, int id) {
+	
 	return null;
     }
 
     public CMIInventory getPrevInv(CMIUser user, int id) {
+	
 	return null;
     }
 
     public SavedInventories getInventories(CMIUser user) {
+	
 	return null;
     }
 
     public void loadInventories(CMIUser user) {
+	
     }
 
     public void loadInventories(CMIUser user, String invString) {
-
+	
     }
 
     public boolean saveAllInventories(UUID uuid) {
+	
 	return true;
     }
 
@@ -82,10 +90,21 @@ public class SavedInventoryManager {
     public CMIInventory saveInv(Player player, Entity killer, DamageCause cause, Integer id) {
 
 	return null;
+
+    }
+
+    public CMIInventory saveInv(CMIInventory inv, Integer id) {
+	
+	return null;
+
+    }
+
+    public CMIInventory generateCMIInventory(Player player, Entity killer, DamageCause cause) {
+	return generateCMIInventory(new CMIInventory(player.getName(), player.getUniqueId()), killer, cause);
     }
 
     @SuppressWarnings("deprecation")
-    public CMIInventory generateCMIInventory(Player player, Entity killer, DamageCause cause) {
+    public CMIInventory generateCMIInventory(CMIInventory cmiI, Entity killer, DamageCause cause) {
 
 	return null;
     }
@@ -97,18 +116,18 @@ public class SavedInventoryManager {
     }
 
     public HashMap<String, Object> generateMapFromPlayerInv(CMIInventory inv) {
-
+	
 	return null;
     }
 
     private static String serialize(HashMap<String, Object> map) {
-
+	
 	return null;
     }
 
     @SuppressWarnings("unchecked")
     private static HashMap<String, Object> deserialize(String string) {
-
+	
 	return null;
     }
 
@@ -121,28 +140,30 @@ public class SavedInventoryManager {
     }
 
     public void openSavedInv(Player player, CMIInventory inv, boolean preview) {
-
+	
     }
 
     public void InvList(CommandSender sender, Player player) {
     }
 
     public void InvList(CommandSender sender, CMIUser user) {
-
+	
     }
 
     @SuppressWarnings("deprecation")
     public boolean loadInv(CommandSender sender, CMIUser user, CMIInventory inv) {
 
+
 	return true;
     }
 
     public boolean removeInventory(CMIUser user, int id) {
-
+	
 	return true;
     }
 
     public int showTimer(Player player, int current, int found, int total, int skipped, int currentplace) {
+	
 	return 1;
     }
 
@@ -158,7 +179,7 @@ public class SavedInventoryManager {
     private int SavedInventorys = 10;
 
     public void loadConfig() {
-
+	
     }
 
     public Boolean isSaveOnDeath() {
@@ -173,7 +194,7 @@ public class SavedInventoryManager {
 	return SavedInventorys;
     }
 
-    public HashMap<UUID, SavedInventories> getMap() {
+    public ConcurrentHashMap<UUID, SavedInventories> getMap() {
 	return map;
     }
 

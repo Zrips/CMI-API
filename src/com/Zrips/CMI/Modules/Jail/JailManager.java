@@ -27,6 +27,7 @@ public class JailManager {
     private boolean CountWhileOffline = false;
     private boolean NoAfk = false;
     private boolean PreventDamage = true;
+    private boolean noHunger = true;
     private List<String> whiteList;
     private CMI plugin;
 
@@ -36,14 +37,12 @@ public class JailManager {
     private int sched = -1;
 
     public void recheckAllOnline() {
-
     }
 
     public void stop() {
     }
 
     private void tasker() {
-
     }
 
     public boolean anyJailedOnline() {
@@ -63,15 +62,15 @@ public class JailManager {
     }
 
     public void recalculateChunks(CMIJail jail) {
-
     }
 
     public CMIJail getByName(String name) {
-	return null;
+	if (name == null)
+	    return null;
+	return jails.get(name.toLowerCase());
     }
 
     public CMIJail getByLoc(Location loc) {
-
 	return null;
     }
 
@@ -84,7 +83,7 @@ public class JailManager {
     }
 
     private static List<ChunkRef> getChunks(CMIJail jail) {
-	return null;
+	return jail.getArea().getChunks();
     }
 
     private static List<ChunkRef> getChunks(CMIJail jail, int range) {
@@ -96,13 +95,15 @@ public class JailManager {
     }
 
     public void load() {
+	
     }
 
     public void loadMap(Map<String, Object> root) throws Exception {
+	
     }
 
     public void save() {
-
+	
     }
 
     public SortedMap<String, CMIJail> getJails() {
@@ -115,6 +116,9 @@ public class JailManager {
     }
 
     public void removeJail(CMIJail jail) {
+	jails.remove(jail.getName().toLowerCase());
+	this.recalculateChunks();
+	this.save();
     }
 
     public int getJailsCheckInterval() {
@@ -122,10 +126,12 @@ public class JailManager {
     }
 
     private boolean isCellOk(CMIJailCell cell) {
+	
 	return true;
     }
 
     private boolean isJailOk(CMIJail jail) {
+
 	return true;
     }
 
@@ -134,12 +140,12 @@ public class JailManager {
     }
 
     public CMIJailCell getValidCell(CMIUser user, CMIJail j, Integer cellId) {
-
+	
 	return null;
     }
 
     public void removePlayerFromJail(CMIUser user) {
-
+	
     }
 
     public void placePlayerIntoJail(CMIUser user) {
@@ -147,6 +153,7 @@ public class JailManager {
     }
 
     public boolean placePlayerIntoJail(CMIUser user, CMIJail jail, Integer cellId, Long jailedFor) {
+	
 
 	return true;
     }
@@ -156,9 +163,11 @@ public class JailManager {
     }
 
     public void informAboutLeftTime(CMIUser user) {
+	
     }
 
     public boolean canUseCommand(String command) {
+	
 	return false;
     }
 
@@ -192,5 +201,9 @@ public class JailManager {
 
     public boolean isPreventDamage() {
 	return PreventDamage;
+    }
+
+    public boolean isNoHunger() {
+	return noHunger;
     }
 }

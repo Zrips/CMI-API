@@ -17,21 +17,4 @@ public class MirrorListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void BlockPlaceEvent(BlockPlaceEvent event) {
-	Player player = event.getPlayer();
-	if (event.isCancelled())
-	    return;
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-	    plugin.getMirrorManager().MirrorPlace(player, event.getBlock());
-	}, 1);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void BlockBreakEvent(BlockBreakEvent event) {
-	Player player = event.getPlayer();
-	if (event.isCancelled())
-	    return;
-	plugin.getMirrorManager().MirrorBreak(player, event.getBlock());
-    }
 }

@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Locale.LC;
+import net.Zrips.CMILib.Locale.LC;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class PrevNamesFetcher {
@@ -38,10 +38,12 @@ public class PrevNamesFetcher {
     }
 
     public List<String> start(Player player) {
+	
 	return null;
     }
 
     public HashMap<String, Long> getWithTime(OfflinePlayer player) {
+	
 	return null;
     }
 

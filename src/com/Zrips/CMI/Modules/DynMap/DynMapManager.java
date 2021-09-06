@@ -10,6 +10,7 @@ public class DynMapManager {
     private CMI plugin;
 
     public DynMapManager(CMI plugin) {
+	
     }
 
     public boolean enabled() {
@@ -24,5 +25,6 @@ public class DynMapManager {
     }
 
     public void sentMessage(Player player, String message) {
+	
     }
 }

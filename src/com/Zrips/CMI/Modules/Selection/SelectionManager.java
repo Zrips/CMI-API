@@ -12,8 +12,9 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
+
+import net.Zrips.CMILib.Locale.LC;
 
 public class SelectionManager {
 
@@ -30,6 +31,10 @@ public class SelectionManager {
     }
 
     public void hideSelection(Player player) {
+	Visualizer vis = vMap.get(player.getUniqueId());
+	if (vis == null)
+	    return;
+	vis.cancelAll();
     }
 
     public void updateLocations(Player player, Location loc1, Location loc2) {
@@ -44,6 +49,7 @@ public class SelectionManager {
     }
 
     public void placeLoc1(Player player, Location loc, boolean show) {
+
     }
 
     public void placeLoc2(Player player, Location loc) {
@@ -51,19 +57,16 @@ public class SelectionManager {
     }
 
     public void placeLoc2(Player player, Location loc, boolean show) {
-	
+
     }
-	
-	
 
     public void afterSelectionUpdate(Player player) {
 	afterSelectionUpdate(player, false);
     }
 
     public void afterSelectionUpdate(Player player, boolean force) {
-	
+
     }
-	
 
     @Deprecated
     public Location getPlayerLoc1(Player player) {
@@ -72,10 +75,8 @@ public class SelectionManager {
 
     @Deprecated
     public Location getPlayerLoc1(String player) {
-	CMIUser user = plugin.getPlayerManager().getUser(player);
-	if (user == null)
-	    return null;
-	return getPlayerLoc1(user.getUniqueId());
+
+	return null;
     }
 
     @Deprecated
@@ -93,10 +94,7 @@ public class SelectionManager {
 
     @Deprecated
     public Location getPlayerLoc2(String player) {
-	CMIUser user = plugin.getPlayerManager().getUser(player);
-	if (user == null)
-	    return null;
-	return getPlayerLoc2(user.getUniqueId());
+	return null;
     }
 
     @Deprecated
@@ -105,6 +103,8 @@ public class SelectionManager {
     }
 
     public CuboidArea getSelectionCuboid(Player player) {
+	if (player == null)
+	    return null;
 	return getSelectionCuboid(player.getUniqueId());
     }
 
@@ -114,10 +114,15 @@ public class SelectionManager {
 
     @Deprecated
     public CuboidArea getSelectionCuboid(String player) {
-	return null;
+	CMIUser user = plugin.getPlayerManager().getUser(player);
+	if (user == null)
+	    return null;
+	return getSelectionCuboid(user.getUniqueId());
     }
 
     public CuboidArea getSelectionCuboid(UUID uuid) {
+	if (uuid == null)
+	    return null;
 	return selections.get(uuid);
     }
 
@@ -127,7 +132,10 @@ public class SelectionManager {
 
     @Deprecated
     public boolean hasPlacedBoth(String player) {
-	return false;
+	CMIUser user = plugin.getPlayerManager().getUser(player);
+	if (user == null)
+	    return false;
+	return hasPlacedBoth(user.getUniqueId());
     }
 
     public boolean hasPlacedBoth(UUID uuid) {
@@ -146,26 +154,18 @@ public class SelectionManager {
     }
 
     public void showBounds(final Player player, final Visualizer v) {
+
     }
 
     public List<Location> getLocations(Location lowLoc, Location loc, Vector vector, boolean StartFromZero) {
-	
-	return null;
-    }
 
-    private List<Location> getLocationsWallsByData(Location loc, Vector vector, Location lowLoc, SelectionSides Sides) {
-	
-	return null;
-    }
-
-    private List<Location> getLocationsCornersByData(Location loc, Vector vector, Location lowLoc, SelectionSides Sides) {
-	
 	return null;
     }
 
     private static int Range = 16;
 
     public boolean makeBorders(final Player player) {
+
 	return true;
     }
 

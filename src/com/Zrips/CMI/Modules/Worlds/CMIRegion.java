@@ -14,12 +14,17 @@ public class CMIRegion {
     private TreeMap<Integer, CMIChunk> chunks = new TreeMap<Integer, CMIChunk>();
 
     public CMIRegion(Location loc) {
+	this(loc.getWorld(), loc.getChunk().getX() >> 5, loc.getChunk().getZ() >> 5);
     }
 
     public CMIRegion(Chunk chunk) {
+	this(chunk.getWorld(), chunk.getX() >> 5, chunk.getZ() >> 5);
     }
 
     public CMIRegion(World world, int x, int z) {
+	this.x = x;
+	this.z = z;
+	this.world = world;
     }
 
     public int getX() {
@@ -41,11 +46,11 @@ public class CMIRegion {
     }
 
     public CMIChunk getChunk(Chunk chunk) {
-	return null;
+	return getChunk(chunk.getX(), chunk.getZ()).setGenerated(true).recheckBiomes();
     }
 
     public Integer getPlace() {
-	return null;
+	return x + (z * 1024);
     }
 
     public CMIChunk getRelativeChunk(int x, int z) {
@@ -69,7 +74,8 @@ public class CMIRegion {
     }
 
     public CMIChunk getChunk(int x, int z) {
-	return null;
+	CMIChunk c2 = chunks.get(getChunkRelativePlace(x, z));
+	return c2;
     }
 
     public TreeMap<Integer, CMIChunk> getChunks() {
@@ -81,12 +87,21 @@ public class CMIRegion {
     }
 
     public CMIChunk addChunk(World world, int x, int z) {
-	return null;
+	CMIChunk c = new CMIChunk(world, x, z);
+	chunks.put(c.getPlace(), c);
+	return c;
     }
 
     public CMIChunk addChunk(Chunk chunk) {
-	return null;
+	CMIChunk c = new CMIChunk(chunk);
+	chunks.put(c.getPlace(), c);
+	return c;
     }
+
+//    public CMIChunk addChunk(CMIChunk chunk) {
+//	chunks.put(chunk.getPlace(), chunk);
+//	return chunk;
+//    }
 
     public World getWorld() {
 	return world;

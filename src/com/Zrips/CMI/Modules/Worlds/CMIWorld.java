@@ -25,7 +25,9 @@ public class CMIWorld {
     }
 
     public CMIRegion addRegion(World world, int x, int z) {
-	return null;
+	CMIRegion c = new CMIRegion(world, x, z);
+	regions.put(coordinatesToPlace(x, z), c);
+	return c;
     }
 
     public CMIRegion addRegion(Chunk chunk) {
@@ -45,15 +47,16 @@ public class CMIWorld {
     }
 
     public CMIRegion getRegion(Chunk chunk) {
-	return null;
+	return getRegionByChunkCoord(chunk.getX(), chunk.getZ());
     }
 
     public CMIRegion getRegionByChunkCoord(int x, int z) {
-	return null;
+	return getRegion(x >> 5, z >> 5);
     }
 
     public CMIRegion getRegion(int x, int z) {
-	return null;
+	Integer place = coordinatesToPlace(x, z);
+	return regions.get(place);
     }
 
     private static Integer coordinatesToPlace(int x, int z) {
@@ -61,7 +64,11 @@ public class CMIWorld {
     }
 
     public boolean insideWorldBorder(Location loc) {
-	return true;
 
+	return true;
+    }
+
+    public static int getMinHeight(World world) {
+	return 0;
     }
 }

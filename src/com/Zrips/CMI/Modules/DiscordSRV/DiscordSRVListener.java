@@ -4,5 +4,4 @@ import org.bukkit.event.Listener;
 
 public class DiscordSRVListener implements Listener {
 
-
 }

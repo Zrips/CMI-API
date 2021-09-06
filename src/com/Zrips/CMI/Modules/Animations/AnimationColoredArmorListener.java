@@ -18,11 +18,4 @@ public class AnimationColoredArmorListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void leatherArmor(final CMIArmorChangeEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void leatherArmor(final PlayerJoinEvent event) {
-    }
 }

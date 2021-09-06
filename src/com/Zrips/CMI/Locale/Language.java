@@ -1,26 +1,18 @@
 package com.Zrips.CMI.Locale;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.YmlMaker;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Containers.CMIChatColor;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class Language {
     public FileConfiguration enlocale;
@@ -39,7 +31,7 @@ public class Language {
     }
 
     private FileConfiguration getEN() {
-	return null;
+	return enlocale;
     }
 
     /**
@@ -49,16 +41,12 @@ public class Language {
      */
 
     public String getMessage(String key, Object... variables) {
-	
-	return null;
+	return CMIChatColor.translate("");
     }
 
     public String filterNewLine(String msg) {
-	return null;
-    }
 
-    private String getM(LC lc) {
-	return null;
+	return "";
     }
 
     public List<String> updateSnd(Snd snd, List<String> msg) {
@@ -66,41 +54,33 @@ public class Language {
     }
 
     public String updateSnd(Snd snd, String msg) {
-	
-	return null;
+
+	return "";
     }
 
     @SuppressWarnings("deprecation")
     public String replacePlayer(String type, Player player, Player whoGets, String msg) {
 
-	return null;
+	return "";
     }
 
     public String replaceUser(String type, CMIUser user, String msg) {
-	
-	return null;
+
+	return "";
     }
 
     public String replacePlayer(String type, Location loc, String msg) {
-
-	return null;
+	return "";
     }
 
     public String replacePlayer(Location loc, String msg) {
-	
-	return null;
-    }
 
-    private static String outReplace(String msg, Object what, Object with) {
-	return null;
-    }
-
-    private static String replace(String msg, Object what, Object with) {
-	return null;
+	return "";
     }
 
     public String getDefaultMessage(String key) {
-	return null;
+
+	return CMIChatColor.translate("");
     }
 
     /**
@@ -109,11 +89,15 @@ public class Language {
      * @return the message
      */
     public List<String> getMessageList(String key, Object... variables) {
-	
+
 	return null;
     }
 
     public boolean isList(String key) {
+	if (Customlocale != null && Customlocale.contains(key))
+	    return Customlocale.isList(key);
+	if (getEN().contains(key))
+	    return getEN().isList(key);
 	return false;
     }
 

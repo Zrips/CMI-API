@@ -1,15 +1,12 @@
 package com.Zrips.CMI.Modules.Particl;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Particl.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 
 public class CMIPECircle extends CMIPEAnimation {
 
@@ -43,31 +40,25 @@ public class CMIPECircle extends CMIPEAnimation {
 
     @Override
     public boolean render(List<Player> players) {
+
 	return true;
     }
 
     private List<Location> getLocations(Location location, double radius, double yaw, double pitch) {
-	return null;
-    }
 
-    private static Vector rotateX(Vector v, double a) {
-	return null;
-    }
-
-    private static Vector rotateY(Vector v, double a) {
 	return null;
     }
 
     public double xPosYaw(double time, double radius, double yaw) {
-	return 1;
+	return Math.sin(time) * radius * Math.cos(Math.PI / 180 * yaw);
     }
 
     public double yPosYaw(double time, double radius) {
-	return 1;
+	return Math.cos(time) * radius;
     }
 
     public double zPosYaw(double time, double radius, double yaw) {
-	return 1;
+	return Math.sin(time) * radius * Math.sin(Math.PI / 180 * yaw);
     }
 
     public boolean isRotating() {

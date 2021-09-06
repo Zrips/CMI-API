@@ -66,6 +66,7 @@ public enum BlockStateType {
 	for (BlockStateType one : BlockStateType.values()) {
 	    if (one.toString().equalsIgnoreCase(name))
 		return one;
+
 	}
 	return null;
     }

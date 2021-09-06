@@ -4,21 +4,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.GUI.CMIGui;
 
 public class WarpManager {
 
     private CMI plugin;
     HashMap<String, CmiWarp> warps = new HashMap<String, CmiWarp>();
-    HashMap<UUID, List<CmiWarp>> userWarps = new HashMap<UUID, List<CmiWarp>>();
+    HashMap<UUID, HashMap<String, CmiWarp>> userWarps = new HashMap<UUID, HashMap<String, CmiWarp>>();
 
     public WarpManager(CMI plugin) {
 	this.plugin = plugin;
+    }
+
+    public void onDisable() {
+	if (saveId != -1) {
+	    Bukkit.getScheduler().cancelTask(saveId);
+	    saveId = -1;
+	    save();
+	}
     }
 
     public HashMap<String, CmiWarp> getWarps() {
@@ -38,11 +48,15 @@ public class WarpManager {
     }
 
     public int getMaxWarps(CommandSender sender) {
+	if (sender instanceof Player)
+	    return getMaxWarps((Player) sender);
 	return 9999;
     }
 
     public int getMaxWarps(Player player) {
-	    return 0;
+	int homes = 1;
+	    return homes;
+	
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group) {
@@ -50,12 +64,18 @@ public class WarpManager {
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group, boolean includeHidden) {
+	return getWarps(player, page, group, includeHidden, false);
+    }
+
+    public List<CmiWarp> getWarps(Player player, Integer page, String group, boolean includeHidden, boolean onlyOwn) {
 	
 	return null;
     }
 
     private enum warpEditorSlots {
-	icon(10), offIcon(19), randomYaw(20), autoLore(11), permission(13), reqPermission(22), hidden(31), location(16), group(25), iconSlot(14), page(23), back(8);
+
+	icon(10), offIcon(19), randomYaw(20), autoLore(11), permission(13), reqPermission(22), hidden(32), group(25), displayName(34), iconSlot(14), page(23), back(8),
+	location(37), seclocation(38), repeat(39);
 
 	private int slot;
 
@@ -81,20 +101,27 @@ public class WarpManager {
     }
 
     public List<CmiWarp> getWarps(int page, String group) {
+	
 	return null;
     }
 
     public int getPageCountFrom(int page, String group) {
 	int i = page;
+	
 	return i - page;
     }
 
     public List<CmiWarp> getWarps(int page, Integer slot, String group) {
+	
 	return null;
     }
 
+//    public CMIGui generateGUI(Player player, Player source, int page) {
+//	return generateGUI(player, getWarps(source), page);
+//    }
+
     public CMIGui openGUI(Player player, int page, String group) {
-	return null;
+	return openGUI(player, plugin.getWarpManager().getWarps(player, page, group, false), group);
     }
 
     public CMIGui openGUI(Player player, List<CmiWarp> warpList, String group) {
@@ -117,7 +144,9 @@ public class WarpManager {
     }
 
     public CmiWarp getWarp(String name) {
-	return null;
+	if (name == null)
+	    return null;
+	return warps.get(name.toLowerCase());
     }
 
     private boolean warpGUI = true;
@@ -126,8 +155,8 @@ public class WarpManager {
     private boolean warpShowCreator = true;
     private boolean warpRequirePerm = false;
     private int warpPerPage = 50;
-    private int MinLenght = 4;
-    private int MaxLenght = 16;
+    private int MinLength = 4;
+    private int MaxLength = 16;
 
     public void loadConfig(ConfigReader cfg) {
 	
@@ -138,13 +167,30 @@ public class WarpManager {
     }
 
     public void load() {
-	
+
     }
 
     boolean saving = false;
 
+    private int saveId = -1;
+
+    public void safeSave() {
+	if (saveId != -1)
+	    return;
+	saveId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CMI.getInstance(), new Runnable() {
+	    @Override
+	    public void run() {
+		asyncSave();
+		saveId = -1;
+	    }
+	}, 60 * 20);
+    }
+
+    public void asyncSave() {
+    }
+
     public void save() {
-	
+
     }
 
     public int getWarpPerPage() {
@@ -159,20 +205,20 @@ public class WarpManager {
 	return GUIOnCreation;
     }
 
-    public int getMinLenght() {
-	return MinLenght;
+    public int getMinLength() {
+	return MinLength;
     }
 
     public void setMinLenght(int minLenght) {
-	MinLenght = minLenght;
+	MinLength = minLenght;
     }
 
-    public int getMaxLenght() {
-	return MaxLenght;
+    public int getMaxLength() {
+	return MaxLength;
     }
 
     public void setMaxLenght(int maxLenght) {
-	MaxLenght = maxLenght;
+	MaxLength = maxLenght;
     }
 
     public boolean isWarpRequirePerm() {

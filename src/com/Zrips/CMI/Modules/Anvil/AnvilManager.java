@@ -16,6 +16,7 @@ public class AnvilManager {
     }
 
     public int getRepairCost(ItemStack source, ItemStack source2, ItemStack result) {
+
 	return 0;
     }
 

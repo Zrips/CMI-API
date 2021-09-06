@@ -1,7 +1,14 @@
 package com.Zrips.CMI.Containers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.BanEntry;
+import org.bukkit.BanList.Type;
+
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Locale.LC;
+import net.Zrips.CMILib.Locale.LC;
+
+import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class CMIBanEntry {
 
@@ -79,4 +86,11 @@ public class CMIBanEntry {
 	return banUntil - System.currentTimeMillis();
     }
 
+    public static String getBanMessage(BanEntry banEntry) {
+	return "";
+    }
+
+    public static String getIpBanMessage(BanEntry banEntry) {
+	return "";
+    }
 }

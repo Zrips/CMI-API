@@ -29,20 +29,24 @@ public class PacketHandler extends ChannelDuplexHandler {
 	static Class<?> packet = null;
 
 	public static packetNames get(String name) {
-	return null;
+
+	    return null;
 	}
 
 	public Class<?> getPacket() {
-	return null;
+	    return packet;
 	}
     }
 
     @Override
     public void write(ChannelHandlerContext ctx, Object m, ChannelPromise promise) throws Exception {
+	super.write(ctx, m, promise);
+	return;
 
     }
 
     @Override
     public void channelRead(ChannelHandlerContext c, Object m) throws Exception {
+	super.channelRead(c, m);
     }
 }

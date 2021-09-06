@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.utils.DateFormat;
 
 public class SchedTime {
@@ -80,9 +80,7 @@ public class SchedTime {
     Long next = 0L;
 
     public long getNextMili() {
-
-	return 0;
-
+	return 0L;
     }
 
     public boolean isDone() {

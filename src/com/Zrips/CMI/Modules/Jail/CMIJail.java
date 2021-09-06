@@ -7,7 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.Zrips.CMI.Containers.CMILocation;
+import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 
 public class CMIJail {
@@ -42,6 +44,11 @@ public class CMIJail {
     }
 
     public boolean checkCollision(CuboidArea area) {
+	if (this.area != null && area != null) {
+	    if (this.area.checkCollision(area)) {
+		return true;
+	    }
+	}
 	return false;
     }
 
@@ -76,13 +83,22 @@ public class CMIJail {
     }
 
     public void addCell(CMIJailCell cell) {
+	if (cell.getId() == null)
+	    cell.setId(this.getNextCellId());
+	this.cells.put(cell.getId(), cell);
     }
 
     public int getCountInCells() {
-	return 0;
+	if (this.cells.isEmpty())
+	    return 0;
+	int i = 0;
+	return i;
     }
 
     public int getNextCellId() {
-	return 1;
+	if (this.cells.isEmpty())
+	    return 1;
+	int i = 1;
+	return i;
     }
 }

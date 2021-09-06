@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.TimedCommands;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -8,6 +9,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class TimedCommandListener implements Listener {
     private CMI plugin;
@@ -16,16 +21,4 @@ public class TimedCommandListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerLogOff(PlayerQuitEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void PlayerLoginEvent(PlayerJoinEvent event) {
-    }
-
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void PlayerLoginEvent(PlayerChangedWorldEvent event) {
-    }
 }

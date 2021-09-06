@@ -1,8 +1,5 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -12,12 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 import com.google.common.collect.Iterables;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
+
+import net.Zrips.CMILib.CMILib;
 
 public class BungeeCordManager {
 
@@ -45,28 +39,28 @@ public class BungeeCordManager {
     HashMap<String, BungeeCordServer> servers = new HashMap<String, BungeeCordServer>();
     private CMI plugin;
     private boolean isBungee = false;
-    private Boolean CMIBPresent = false;
+    private boolean CMIBPresent = false;
     private boolean gotServerList = false;
     private BungeeCordServer thisServer;
     private String thisServerName;
     private boolean enabledSupport = true;
     public static boolean NamesInTabComplete = true;
+    private CMIBungeeCord bcord = null;
 
     public BungeeCordManager(CMI plugin) {
 	this.plugin = plugin;
+	bcord = CMIBungeeCord.of(plugin);
     }
 
     public void loadConfig() {
+
     }
 
     public void initialize() {
+
     }
 
-    public Boolean getCMIPresent() {
-	return CMIBPresent;
-    }
-
-    public Boolean isCMIBPresent() {
+    public boolean isCMIBPresent() {
 	return CMIBPresent;
     }
 
@@ -91,30 +85,45 @@ public class BungeeCordManager {
     }
 
     public void addServer(BungeeCordServer server) {
+	gotServerList = true;
+	servers.put(server.getName().toLowerCase(), server);
+	server.update();
     }
 
-    int updated = 0;
+    Long time = 0L;
 
     public BungeeCordServer getServer(String server) {
-	return null;
+	if (System.currentTimeMillis() > time + 60000L) {
+	    updateServers();
+	}
+	return servers.get(server.toLowerCase());
     }
 
     public HashMap<String, BungeeCordServer> getServers() {
-	return null;
+
+	return servers;
     }
 
     public void sendServerListRequest() {
+	
     }
 
     public void sendPlayerInfoRequest(String serverName) {
+
     }
 
     private static Player getFirstPlayer() {
-	return null;
+	Player firstPlayer = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+	return firstPlayer;
     }
 
     public BungeeCordServer getThisServer() {
-	return null;
+	if (thisServer == null) {
+	    if (getThisServerName() != null) {
+		thisServer = this.getServer(getThisServerName());
+	    }
+	}
+	return thisServer;
     }
 
     public void setThisServer(BungeeCordServer thisServer) {
@@ -122,51 +131,75 @@ public class BungeeCordManager {
     }
 
     public String getThisServerName() {
-	return null;
+	if (thisServerName == null && thisServer != null)
+	    thisServerName = thisServer.getName();
+	return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName() : thisServerName;
     }
 
     private static final String spacer = "_20_";
 
     public String getThisServerNameOneWord() {
-	return null;
+	if (thisServerName == null && thisServer != null)
+	    thisServerName = thisServer.getName();
+	return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName().replace(" ", spacer) : thisServerName.replace(" ", spacer);
     }
 
     public void setThisServerName(String thisServerName) {
     }
 
     public BungeePlayer getBungeePlayer(String player) {
+	if (!enabledSupport)
+	    return null;
+	for (Entry<String, BungeeCordServer> one : servers.entrySet()) {
+	    BungeePlayer p = one.getValue().getPlayer(player);
+	    if (p != null)
+		return p;
+	}
 	return null;
     }
 
     public BungeePlayer getBungeePlayer(UUID uuid) {
+
 	return null;
     }
 
     public BungeeCordServer getPlayerServer(UUID uuid) {
+
 	return null;
     }
 
     public BungeeCordServer getPlayerServer(String player) {
+
 	return null;
     }
 
     public boolean anyPlayersOnServer(String serverName) {
-	return false;
+	if (!enabledSupport)
+	    return false;
+	BungeeCordServer server = this.getServer(serverName);
+	if (server == null)
+	    return false;
+	return server.getCurrentPlayers() > 0;
     }
 
     public void updateServersInfo() {
+
     }
 
     public void updateServersIp() {
+
     }
 
     public void updateServers() {
+
     }
 
     public void connectToServer(Player player, String serverName) {
+
     }
 
     public void connectOther(String playerName, String server) {
+
     }
 
     public void connectToServer(String player, String server) {
@@ -174,23 +207,19 @@ public class BungeeCordManager {
     }
 
     public int getPlayersInServer(String serverName) {
-	if (!enabledSupport)
-	    return 0;
-	BungeeCordServer server = this.getServer(serverName);
-	if (server == null) {
-	    return 0;
-	}
-	server.update();
-	return server.getCurrentPlayers();
+	return 0;
     }
 
     public void sendPublicMessage(String server, String sender, String message) {
+
     }
 
     public void sendStaffMessage(String sender, String message) {
+
     }
 
     public void sendStaffMessage(String server, String sender, String message) {
+
     }
 
     @Deprecated
@@ -207,35 +236,39 @@ public class BungeeCordManager {
     }
 
     public void sendPortalSetLocation(String setter, String targetServer, String portalName, Location loc) {
-	
+
     }
 
     public void sendPortalSetSuccessResponse(String setter, String targetServer, String portalName, String loc) {
-	
+
     }
 
     public void sendPortalLoginLocation(String targetServer, UUID uuid, String loc, String cmds) {
-	
+
     }
 
     public void forward(String server, String channelName, byte[] data) {
-	
+
     }
 
     public boolean isPlayerOnAnotherServer(String player) {
-	
+
 	return false;
     }
 
     public void sendNewPlayerInfoToNetwork(Player player) {
+
     }
 
     public void sendNewPlayerInfoToNetwork(Player player, String server) {
-	
+
     }
 
     public boolean isEnabledSupport() {
 	return enabledSupport;
     }
 
+    public CMIBungeeCord getBungeeCord() {
+	return bcord;
+    }
 }

@@ -15,8 +15,4 @@ public class KitListener implements Listener {
     public KitListener(CMI plugin) {
 	this.plugin = plugin;
     }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerFirstLogin(PlayerJoinEvent event) {
-    }
 }

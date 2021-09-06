@@ -20,20 +20,12 @@ public class EssentialsConverter {
     }
 
     public static void convert(final CommandSender sender, importSettings is) {
-	if (is.is(importType.warps))
-	    convertWarps(sender);
-	convertUsers(sender, is);
+
     }
 
     public static void convertUsers(final CommandSender sender, final importSettings is) {
 
     }
 
-    private static void convertWarps(final CommandSender sender) {
-
-    }
-
-    private static void proccess(int place, final CommandSender sender, final importSettings is) {
-    }
 
 }

@@ -5,13 +5,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.bukkit.Bukkit;
+
 import java.util.UUID;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.DataBase.DBManager.DataBaseType;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.PlayTime.CMIPlayDay;
+import com.Zrips.CMI.Modules.PlayTimeRewards.PTROneTime;
+import com.Zrips.CMI.Modules.PlayTimeRewards.PTRRepeat;
 
 public abstract class DBDAO {
 
@@ -279,21 +288,28 @@ public abstract class DBDAO {
 	}
 
 	private String getQR() {
-	    return null;
+	    switch (dbType) {
+	    case MySQL:
+		return this.mySQL.replace("[tableName]", prefix + this.tableName);
+	    case SqLite:
+		return this.sQlite.replace("[tableName]", this.tableName);
+	    }
+	    return "";
 	}
 
 	public String getQuery() {
-	    return null;
+	    return getQR().replace("[fields]", "");
+
 	}
 
 	public String getUpdateQuery() {
-
-	    return null;
+	    
+	    return "";
 	}
 
 	public String getInsertQuery() {
-
-	    return null;
+	    
+	    return "";
 	}
 
 	public String getTableName() {
@@ -331,6 +347,10 @@ public abstract class DBDAO {
 
     public abstract String getTableCharSet(DBTables table);
 
+    public abstract String getTableRowFormat(DBTables table);
+
+    public abstract boolean convertTableRowFormat(DBTables table);
+
     public String getPrefix() {
 	return prefix;
     }
@@ -355,11 +375,7 @@ public abstract class DBDAO {
     }
 
     public boolean isConnected() {
-	try {
-	    return pool.getConnection() != null && !pool.getConnection().isClosed();
-	} catch (Error | Exception e) {
-	    return false;
-	}
+	return true;
     }
 
     /**
@@ -379,14 +395,16 @@ public abstract class DBDAO {
     }
 
     public void close(ResultSet res) {
+	
     }
 
     public void close(Statement stmt) {
     }
 
     // async
-    public void updatePlayer(CMIUser user) {
+    public boolean updatePlayer(CMIUser user) {
 	
+	return true;
     }
 
     // async
@@ -429,44 +447,58 @@ public abstract class DBDAO {
     private boolean locked = false;
 
     public void setAutoCommit(boolean state) {
+	try {
+//	    if (autoCommit != state) {
+	    getConnection().setAutoCommit(state);
+	    autoCommit = state;
+//	    }
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	}
     }
 
     boolean ignoredFirst = false;
 
-    public boolean executeTempBatch() {	
+    public boolean executeTempBatch() {
+	
 	return true;
     }
 
     public void prepareTempBatch() {
+	if (locked) {
+	    return;
+	}
+	setAutoCommit(false);
     }
 
     // async irelevant child method
     public int getInvId(int iid) {
-	    return 0;
+	
+	return 1;
     }
 
     // async irelevant child method
     private int getPlayTimeId(CMIPlayDay playDay, CMIUser user) {
 	
-	return 0;
+	return 1;
     }
 
     // async irelevant child method
     private int getPlayTimeRewardId(CMIUser user) {
 	
-	return 0;
+	return 1;
     }
 
     // async irelevant child method
     private int getId(String uuid) {
 	
-	return 0;
+	return 1;
     }
 
     // sync priority
     public String getInv(CMIUser user) {
 	
-	return null;
+	return "";
     }
 
     // sync irelevant
@@ -482,7 +514,6 @@ public abstract class DBDAO {
     public void loadAllUsers() {
 	
     }
-	
 
     // sync irelevant
     public void loadPlayTimes() {
@@ -492,11 +523,13 @@ public abstract class DBDAO {
     // sync irelevant
     public LinkedHashSet<CMIUser> getLastLogOffList(int from, int to) {
 	
+	
 	return null;
     }
 
     // sync irelevant
     public void loadPlayTimes(CMIUser user) {
+	
     }
 
     // sync irelevant
@@ -508,7 +541,6 @@ public abstract class DBDAO {
     public void getUserIds(HashMap<String, CMIUser> users) {
 	
     }
-	
 
     // async
     public void getUserPlayTimeIds(HashMap<CMIPlayDay, CMIUser> getPlayerPlayTimeId) {
@@ -528,7 +560,7 @@ public abstract class DBDAO {
     // sync no priority
     public boolean removeUser(int id) {
 	
-	return false;
+	return true;
     }
 
     private boolean createDefaultTable(DBTables table) {

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
@@ -22,7 +23,6 @@ public class AfkManager {
 
     public AfkManager(CMI plugin) {
 	this.plugin = plugin;
-	tasker();
     }
 
     private int sched = -1;
@@ -37,6 +37,8 @@ public class AfkManager {
 
     private boolean AfkEnabled = true;
     private boolean PreventJumping = true;
+    private boolean TitleMessage = true;
+    private boolean SubTitleMessage = true;
     private boolean PreventDamage = true;
     private boolean StopPlayTime = false;
     private int interval = 1;
@@ -77,9 +79,13 @@ public class AfkManager {
 
     }
 
-    private void tasker() {
-
+    private void loadAfk() {
+	afkSubTitle = plugin.getIML("afk", "afkSubTitle");
+	messageSize = afkSubTitle.size();
     }
+
+    int messageSize = -1;
+    List<String> afkSubTitle = new ArrayList<String>();
 
     public void setUserToAfk(CMIUser user, List<String> cmds) {
 
@@ -94,6 +100,10 @@ public class AfkManager {
     }
 
     public void updateUser(CMIUser user) {
+
+    }
+
+    public void setLastAction(CMIUser user, long time) {
 
     }
 
@@ -216,14 +226,14 @@ public class AfkManager {
 	return awayTrigerTime;
     }
 
-    public boolean nearActivePlayer(Location loc) {
-	return true;
+    public boolean nearActivePlayer(Location loc, SpawnReason reason) {
+
+	return false;
     }
 
-//    private static int distance = 3200;
-
     public static Boolean isNear(Location loc1, Location loc2) {
-	return false;
+
+	return true;
     }
 
     public boolean isDisableExpPickup() {
@@ -264,5 +274,9 @@ public class AfkManager {
 
     public boolean isPreventPushing() {
 	return PreventPushing;
+    }
+
+    public Set<CMIUser> getAfkPlayers() {
+	return afkPlayers;
     }
 }

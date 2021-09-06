@@ -12,9 +12,10 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
 import com.Zrips.CMI.Modules.Particl.ParticleManager.CMIPresetAnimations;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
+
+import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class RankManager {
 
@@ -57,10 +58,13 @@ public class RankManager {
     }
 
     public CMIRank getRank(String name) {
-	return null;
+	if (name == null)
+	    return null;
+	return ranks.get(name.toLowerCase());
     }
 
     public CMIRank getDefaultRank(Player player) {
+
 	return null;
     }
 
@@ -73,18 +77,22 @@ public class RankManager {
     }
 
     public boolean canRankUpAuto(CMIUser user) {
+
 	return false;
     }
 
     public rankupFailType canRankUp(CMIUser user, CMIRank rank) {
+
 	return null;
     }
 
     private static HashMap<String, CMIItemStack> getInvContentsAmounts(Player player) {
+
 	return null;
     }
 
     public boolean removeContents(Player player, LinkedHashMap<CMIItemStack, Integer> map) {
+
 	return true;
     }
 
@@ -139,24 +147,30 @@ public class RankManager {
     }
 
     public Double getMoneyDonePercentage(CMIUser user, CMIRank rank) {
+
 	return null;
     }
 
     public void listMoneyRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getExpDonePercentage(CMIUser user, CMIRank rank) {
+
 	return null;
     }
 
     public void listExpRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getVoteDonePercentage(CMIUser user, CMIRank rank) {
+
 	return null;
     }
 
     public void listVoteRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public void listPermRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
@@ -180,6 +194,8 @@ public class RankManager {
 	}
 
 	public void setCache(rankupType type, Double percent) {
+	    percentage.put(type, percent);
+	    nextPercentageCheck.put(type, System.currentTimeMillis() + 5000L);
 	}
     }
 
@@ -234,6 +250,16 @@ public class RankManager {
 
     }
 
+    private void calculateWeight(CMIRank rank, int weight) {
+	weight++;
+	if (weight > 1000)
+	    return;
+	rank.setWeight(weight);
+	for (CMIRank one : rank.getNextRanks()) {
+	    calculateWeight(one, weight);
+	}
+    }
+
     private int Delay = 30;
     private boolean OnlyHours = false;
     private boolean includeMinutes = false;
@@ -241,9 +267,12 @@ public class RankManager {
     private boolean ListSamePathOnly = false;
     private int PlayerDelay = 120;
     private boolean progressBar = true;
+    private boolean permissionCheck = false;
+    private boolean strictPermissionCheck = false;
     private CMIPresetAnimations RanksEffect = CMIPresetAnimations.GColumn;
 
     public void loadConfig() {
+
     }
 
     public boolean isProgressBar() {
@@ -256,5 +285,13 @@ public class RankManager {
 
     public CMIPresetAnimations getRankEffect() {
 	return RanksEffect;
+    }
+
+    public boolean isPermissionCheck() {
+	return permissionCheck;
+    }
+
+    public boolean isStrictPermissionCheck() {
+	return strictPermissionCheck;
     }
 }

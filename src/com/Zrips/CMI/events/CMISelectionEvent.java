@@ -21,7 +21,7 @@ public final class CMISelectionEvent extends PlayerEvent {
     }
 
     @Override
-    @EventAnnotation(info = "Fired on item rename in anvil")
+    @EventAnnotation(info = "Fired on selection")
     public final HandlerList getHandlers() {
 	return handlers;
     }

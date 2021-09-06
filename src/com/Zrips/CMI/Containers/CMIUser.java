@@ -1,6 +1,7 @@
 package com.Zrips.CMI.Containers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,38 +21,35 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.Team;
-import org.bukkit.scoreboard.Team.Option;
-import org.bukkit.scoreboard.Team.OptionStatus;
 import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Config;
 import com.Zrips.CMI.PlayerManager;
 import com.Zrips.CMI.Modules.Afk.AfkInfo;
-import com.Zrips.CMI.Modules.BossBar.BossBarInfo;
 import com.Zrips.CMI.Modules.ChatFormat.CMIChatRoom;
 import com.Zrips.CMI.Modules.CmdCooldown.CmdCooldown;
+import com.Zrips.CMI.Modules.DeathMessages.damageInformation;
 import com.Zrips.CMI.Modules.Economy.CMIEconomyAcount;
+import com.Zrips.CMI.Modules.Economy.EconomyManager;
 import com.Zrips.CMI.Modules.FlightCharge.FlightCharge;
 import com.Zrips.CMI.Modules.Homes.CmiHome;
 import com.Zrips.CMI.Modules.Jail.CMIJail;
 import com.Zrips.CMI.Modules.Jail.CMIJailCell;
 import com.Zrips.CMI.Modules.Kits.Kit;
 import com.Zrips.CMI.Modules.Mirror.Mirrors;
-import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.Zrips.CMI.Modules.Notify.Notification;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.Modules.PlayTime.CMIPlayTime;
 import com.Zrips.CMI.Modules.PlayTimeRewards.PTROneTime;
-import com.Zrips.CMI.Modules.PlayTimeRewards.PTRRepeat;
+import com.Zrips.CMI.Modules.PlayerCombat.CMIPlayerCombat;
 import com.Zrips.CMI.Modules.PlayerCombat.EntityKillCount;
 import com.Zrips.CMI.Modules.PlayerCombat.PlayerKillCount;
 import com.Zrips.CMI.Modules.PlayerMeta.PlayerMeta;
@@ -63,7 +62,12 @@ import com.Zrips.CMI.Modules.Warnings.CMIPlayerWarning;
 import com.Zrips.CMI.Modules.Warnings.CMIWarningCategory;
 import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
 import com.Zrips.CMI.events.CMIAfkEnterEvent.AfkType;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.BossBar.BossBarInfo;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Version.Version;
 
 public class CMIUser {
 
@@ -176,14 +180,10 @@ public class CMIUser {
 
     private String skin;
 
-    private HashMap<PTRRepeat, Long> repeatableRewards;
-    private Set<PTROneTime> oneTimeRewards;
+    private HashMap<String, Long> repeatableRewards;
+    private Set<String> oneTimeRewards;
 
     private List<CMIPlayerWarning> warnings;
-
-    private Long gotLastDamageAt;
-    private Long gotLastDamageFromPlayer;
-    private Long didLastDamageToPlayer;
 
     private Object fakeEntity;
 
@@ -199,13 +199,17 @@ public class CMIUser {
 
     private Long lastRespawn;
 
-    ConcurrentHashMap<String, BossBarInfo> barMap;
+//    ConcurrentHashMap<String, BossBarInfo> barMap;
 
     HashMap<String, Boolean> tempFlyModes = new HashMap<String, Boolean>();
+
+    private TreeMap<Long, damageInformation> lastDamage;
 
     private CMIChatRoom chatRoom;
 
     private int hungerSched = 0;
+
+    private CMIPlayerCombat combat = null;
 
     public CMIUser(int id) {
 	this.id = id;
@@ -213,17 +217,15 @@ public class CMIUser {
     }
 
     public void cacheClear() {
+	
     }
 
     public CMIUser(UUID uuid) {
-	this.uuid = uuid;
-	player = Bukkit.getPlayer(this.uuid);
-	if (player != null)
-	    name = player.getName();
     }
 
     @Deprecated
     public CMIUser(UUID uuid, boolean updatePerm) {
+	
     }
 
     public CMIUser(OfflinePlayer player) {
@@ -234,47 +236,58 @@ public class CMIUser {
     }
 
     public Location getLogOutLocation() {
-	return null;
+	return logOutLocation;
     }
 
     public Location getLocation() {
-	return null;
+	return this.getPlayer(true).getLocation();
     }
 
     public void setLogOutLocation(Location logOutLocation) {
+	this.logOutLocation = logOutLocation;
     }
 
     public void saveIfOffline() {
+	if (!isOnline())
+	    addForDelayedSave();
     }
 
     public void addForDelayedSave() {
+	CMI.getInstance().getDbManager().addForSave(this);
+    }
+
+    public void addForPlayTimeRewardSave() {
+	CMI.getInstance().getDbManager().addForPlayTimeRewardSave(this);
     }
 
     public void setIps(LinkedHashMap<String, Integer> ips) {
+	this.ips = ips;
     }
 
     public HashMap<String, Integer> getIps() {
-	return null;
+	return ips;
     }
 
     public boolean addIps(String ip) {
+	
 	return true;
     }
 
     public String getLastIp() {
-	return null;
+	
+	return "";
     }
 
     public String getCountry() {
-	return null;
+	return "";
     }
 
     public String getCountryCode() {
-	return null;
+	return "";
     }
 
     public String getCity() {
-	return null;
+	return "";
     }
 
     public boolean addAllIps(Map<String, Integer> map) {
@@ -286,6 +299,7 @@ public class CMIUser {
     private Boolean extend;
 
     private void ScheduleDataClear() {
+
     }
 
     public Player getPlayer() {
@@ -293,7 +307,7 @@ public class CMIUser {
     }
 
     public Player getPlayer(boolean loadOfflineObject) {
-	return null;
+	    return null;
     }
 
     public void setPlayer(Player player) {
@@ -305,11 +319,17 @@ public class CMIUser {
     }
 
     public OfflinePlayer getOfflinePlayer() {
-	return null;
+	if (this.isOnline()) {
+	    return this.getPlayer(false);
+	}
+	if (this.getUniqueId() == null)
+	    return null;
+	return Bukkit.getOfflinePlayer(this.getUniqueId());
     }
 
     public String getName(boolean update) {
-	return null;
+	
+	return name;
     }
 
     public void setName(String name) {
@@ -360,7 +380,7 @@ public class CMIUser {
 
     @Deprecated
     public Location getTpLoc() {
-	return TpLoc;
+	return getLastTeleportLocation();
     }
 
     public Location getLastTeleportLocation() {
@@ -382,14 +402,14 @@ public class CMIUser {
     }
 
     public void setLastTeleportLocation(Location tpLoc, boolean save) {
-	TpLoc = tpLoc.clone();
+	TpLoc = tpLoc != null ? tpLoc.clone() : null;
 	if (save)
 	    addForDelayedSave();
     }
 
     @Deprecated
     public UUID getUuid() {
-	return uuid;
+	return getUniqueId();
     }
 
     public UUID getUniqueId() {
@@ -397,6 +417,7 @@ public class CMIUser {
     }
 
     public void setUuid(UUID uuid) {
+	updatePermissions();
     }
 
     public void setUuidNoPermUpdate(UUID uuid) {
@@ -408,9 +429,11 @@ public class CMIUser {
     }
 
     public void updateDisplayName() {
+	updateDisplayName(false);
     }
 
     public void updateDisplayName(boolean force) {
+	
     }
 
     public void updatePrefix() {
@@ -423,11 +446,12 @@ public class CMIUser {
     }
 
     public String getCleanDisplayName() {
-	return null;
+	return CMIChatColor.translate(nickName);
     }
 
     public void setDisplayName(String displayName) {
-	this.displayName = displayName;
+	if (displayName == null || !displayName.isEmpty())
+	    this.displayName = displayName;
     }
 
     public String getDisplayName() {
@@ -439,7 +463,8 @@ public class CMIUser {
     }
 
     public String getDisplayNameClean(boolean update) {
-	return null;
+	
+	return nickName;
     }
 
     private enum updateType {
@@ -447,23 +472,30 @@ public class CMIUser {
     }
 
     private boolean timeToUpdate(updateType type) {
+	
 	return false;
     }
 
     public String getGroupName() {
-	return null;
+	if (this.isOnline() && timeToUpdate(updateType.group))
+	    updateGroup();
+	return group == null ? "" : group;
     }
 
     public String getNameColor() {
-	return null;
+	return this.nameColor;
     }
 
     public String getPrefix() {
-	return null;
+	if (timeToUpdate(updateType.prefix))
+	    updatePrefix();
+
+
+	return prefix == null ? "" : prefix;
     }
 
     public String getSuffix() {
-	return null;
+	return suffix == null ? "" : suffix;
     }
 
     public String getNickName() {
@@ -499,7 +531,7 @@ public class CMIUser {
     }
 
     public List<String> getLockedIps() {
-	return null;
+	return lockedIps;
     }
 
     public void setLockedIps(List<String> lockedIps) {
@@ -510,7 +542,7 @@ public class CMIUser {
     }
 
     public boolean removeLockedIps(String Ip) {
-	return false;
+	    return false;
     }
 
     public boolean isJoinedCounter() {
@@ -522,7 +554,9 @@ public class CMIUser {
     }
 
     public HashMap<String, Long> getCounter() {
-	return null;
+	if (counter == null)
+	    counter = new HashMap<String, Long>();
+	return counter;
     }
 
     public Long getCounter(String cmd) {
@@ -539,6 +573,9 @@ public class CMIUser {
 
     public void setAlertUntil(Long alertUntil) {
 	setAlertUntil(alertUntil, true);
+    }
+
+    public void removeAlert() {
     }
 
     public void setAlertUntil(Long alertUntil, boolean save) {
@@ -559,9 +596,7 @@ public class CMIUser {
     }
 
     public Boolean isGod() {
-	if (god == null && getPlayer(false) != null)
-	    god = CMI.getInstance().getNMS().getGodMode(getPlayer(false));
-	return god;
+	return god == null ? false : god;
     }
 
     public void setGod(Boolean god) {
@@ -586,11 +621,12 @@ public class CMIUser {
     }
 
     public HashMap<String, Long> getKitsAsMap() {
-	return null;
+	HashMap<String, Long> map = new HashMap<String, Long>();
+	return map;
     }
 
+    @Deprecated
     public void setKits(LinkedHashMap<Kit, CMIKitUsage> kits) {
-	this.kits = kits;
     }
 
     public void addKit(Kit kit, Long time) {
@@ -606,57 +642,63 @@ public class CMIUser {
     }
 
     public Long getKitTime(Kit kit) {
-	return null;
+	return getKits().get(kit) == null ? null : getKits().get(kit).getLastUsage();
     }
 
     public Long getKitUseTimeIn(Kit kit) {
-	return null;
+	return 0L;
     }
 
     public boolean canUseKit(Kit kit) {
+	
 	return false;
     }
 
     public int getLeftKitUseTimes(Kit kit) {
-	CMIKitUsage usage = getKits().get(kit);
-	if (usage == null)
-	    return kit.getMaxUsages();
-	if (kit.getMaxUsages() < 0)
-	    return kit.getMaxUsages();
-	return kit.getMaxUsages() - usage.getUsedTimes() < 0 ? 0 : kit.getMaxUsages() - usage.getUsedTimes();
+	return 0;
     }
 
     public int getKitUseTimes(Kit kit) {
-	CMIKitUsage usage = getKits().get(kit);
-	if (usage == null)
 	    return 0;
-	return usage.getUsedTimes();
     }
 
     public CMIUser resetKitUseTimes(Kit kit) {
-	return null;
+	CMIKitUsage usage = getKits().get(kit);
+	if (usage == null)
+	    return this;
+	usage.setUsedTimes(0);
+	return this;
     }
+
 
     public PlayerCharge getPCharge() {
 	return getPCharge(true);
     }
 
     public PlayerCharge getPCharge(boolean update) {
-	return null;
+	if (PCharge == null)
+	    PCharge = new PlayerCharge(this, update);
+	return PCharge;
     }
 
     public HashMap<String, Notification> getNotifications() {
-	return null;
+	if (notifications == null)
+	    notifications = new HashMap<String, Notification>();
+	return notifications;
     }
 
     public void addNotification(Notification notification) {
+	getNotifications().put(notification.getNotifyier(), notification);
+	addForDelayedSave();
     }
 
     public long getTotalPlayTime() {
 	return getTotalPlayTime(true);
     }
 
-    public long getTotalPlayTime(boolean update) {
+    private static Statistic statCheck = null;
+
+    public long getTotalPlayTime(boolean update) {	
 	return totalPlayTime == null ? 0L : totalPlayTime;
     }
 
@@ -735,6 +777,9 @@ public class CMIUser {
     }
 
     public void setTgod(Long tgod, boolean save) {
+	this.tgod = tgod != null && (tgod == 0 || tgod < 0) ? null : tgod;
+	if (save)
+	    addForDelayedSave();
     }
 
     public LinkedHashMap<String, CmiHome> getHomes() {
@@ -747,30 +792,41 @@ public class CMIUser {
 	if (homes == null)
 	    homes = new LinkedHashMap<String, CmiHome>();
 	int count = 0;
-	for (CmiHome one : homes.values()) {
-	    if (!one.getLoc().isValid())
-		continue;
-	    count++;
-	}
 	return count;
     }
 
     public int getLastHomeSlot() {
 	int i = 0;
+	for (Entry<String, CmiHome> one : homes.entrySet()) {
+	    if (one.getValue().getSlot() == null)
+		continue;
+	    if (i < one.getValue().getSlot())
+		i = one.getValue().getSlot();
+	}
 	return i == 0 || i < getHomes().size() ? getHomes().size() : i;
     }
 
     public Set<CmiHome> getHomesBySlot(int slot) {
 	Set<CmiHome> set = new HashSet<CmiHome>();
+	for (Entry<String, CmiHome> one : homes.entrySet()) {
+	    if (one.getValue().getSlot() == null)
+		continue;
+	    if (one.getValue().getSlot() != slot)
+		continue;
+	    set.add(one.getValue());
+	}
 	return set;
     }
 
     public LinkedHashMap<String, CMILocation> getHomesAsMap() {
-	return null;
+	LinkedHashMap<String, CMILocation> hm = new LinkedHashMap<String, CMILocation>();
+
+	return hm;
     }
 
     public ArrayList<String> getHomesList() {
-	return null;
+	ArrayList<String> list = new ArrayList<String>();
+	return list;
     }
 
     public CmiHome getHome(String name) {
@@ -778,16 +834,24 @@ public class CMIUser {
     }
 
     public void removeHome(CmiHome home) {
+	if (home != null)
+	    getHomes().remove(home.getName());
     }
 
     public void removeHome(String name) {
+	if (name == null)
+	    return;
+	CmiHome home = getHome(name);
+	removeHome(home);
     }
 
     @Deprecated
     public void addHome(@SuppressWarnings("unused") String name, CmiHome home, boolean save) {
+	addHome(home, save);
     }
 
     public void addHome(CmiHome home, boolean save) {
+	
     }
 
     public ChatColor getGlow() {
@@ -795,6 +859,7 @@ public class CMIUser {
     }
 
     public void setGlow(ChatColor glow, boolean save) {
+	
     }
 
     public boolean isTeleportToggled() {
@@ -837,7 +902,8 @@ public class CMIUser {
     }
 
     public List<PlayerNote> getNotes(boolean filterOldOut) {
-	return null;
+	
+	return notes;
     }
 
     public void setNotes(List<PlayerNote> notes) {
@@ -861,7 +927,7 @@ public class CMIUser {
     }
 
     public List<PlayerMail> getMails() {
-	return null;
+	return mail;
     }
 
     public void setMail(List<PlayerMail> mail) {
@@ -869,6 +935,9 @@ public class CMIUser {
     }
 
     public void addMail(PlayerMail mail, boolean save) {
+	getMails().add(mail);
+	if (save)
+	    addForDelayedSave();
     }
 
     public Long getLastPatrol() {
@@ -894,7 +963,15 @@ public class CMIUser {
     }
 
     public CMIRank getRank() {
-	return null;
+	if (rank == null) {
+	    rank = CMI.getInstance().getRankManager().getDefaultRank(this.getPlayer(false));
+	}
+	return rank;
+    }
+
+    public CMIRank recalculateRank() {
+
+	return rank;
     }
 
     public void setRank(CMIRank rank) {
@@ -929,6 +1006,7 @@ public class CMIUser {
     }
 
     public void setCommandSpy(boolean spy, boolean save) {
+	
     }
 
     public boolean isSignSpy() {
@@ -936,6 +1014,7 @@ public class CMIUser {
     }
 
     public void setSignSpy(boolean spy, boolean save) {
+	
     }
 
     public boolean isSame(CommandSender sender) {
@@ -963,13 +1042,19 @@ public class CMIUser {
     }
 
     public void setAfk(boolean afk, AfkType type) {
+	setAfk(afk, type, true);
+    }
 
+    public void setAfk(boolean afk, AfkType type, boolean performCommands) {
+	
     }
 
     private void tunOnAfk(AfkType type, List<String> cmds) {
+	
     }
 
     private void turnOffAfk(AfkType type, List<String> cmds) {
+
     }
 
     public void setAfkReason(String reason) {
@@ -1007,11 +1092,13 @@ public class CMIUser {
     }
 
     public CMIUser setBanned(String reason, CMIUser by, Date until, Date when) {
+	
 	return this;
     }
 
     public CMIUser unBan() {
-	return null;
+	
+	return this;
     }
 
     public CMIBanEntry getBanEntryRaw() {
@@ -1023,18 +1110,24 @@ public class CMIUser {
     }
 
     public void updateBanEntry(BanEntry entry) {
+	
     }
 
     public CMIBanEntry getBanEntry(boolean update) {
-	return null;
+	
+	return this.ban;
     }
 
     public Set<UUID> getIgnores() {
-	return null;
+	if (ignores == null)
+	    ignores = new HashSet<UUID>();
+	return ignores;
     }
 
     public String getIgnoresString() {
-	return null;
+	StringBuilder ig = new StringBuilder();
+	
+	return ig.toString();
     }
 
     public void setIgnores(Set<UUID> ignores) {
@@ -1070,13 +1163,22 @@ public class CMIUser {
     }
 
     public boolean isVanished() {
+
+	boolean vanished = isCMIVanished();
+
+	return vanished;
+    }
+
+    public boolean isCMIVanished() {
 	return false;
     }
 
     public void setVanished(boolean vanished) {
+	
     }
 
     public void updateVanishMode() {
+
     }
 
     public boolean isSitting() {
@@ -1187,11 +1289,11 @@ public class CMIUser {
     }
 
     public String getFormatedBalance() {
-	return null;
+	return getFormatedBalance(this.getWorld() == null ? EconomyManager.CMIDefaultWorld : this.getWorld().getName());
     }
 
     public String getFormatedBalance(boolean shorts) {
-	return null;
+	return getFormatedBalance(this.getWorld() == null ? EconomyManager.CMIDefaultWorld : this.getWorld().getName(), shorts);
     }
 
     public String getFormatedBalance(String worldName) {
@@ -1199,51 +1301,50 @@ public class CMIUser {
     }
 
     public String getFormatedBalance(String worldName, boolean shorts) {
-	return null;
+	return getEconomyAccount().getFormatedBalance(worldName, shorts);
     }
 
     public CMIEconomyAcount getEconomyAccount() {
-	return null;
+	if (this.economy == null)
+	    this.economy = new CMIEconomyAcount(this);
+	return this.economy;
     }
 
     public World getWorld() {
-	return null;
+	return this.getLogOutLocation() != null ? this.getLogOutLocation().getWorld() : null;
     }
 
     public boolean respawn() {
+
 	return true;
     }
 
     public void removeBossBar(String name) {
-	BossBarInfo old = this.getBossBar(name);
-	if (old == null)
-	    return;
-	this.removeBossBar(old);
+	CMILib.getInstance().getBossBarManager().removeBossBar(this.getPlayer(false), name);
     }
 
     public void removeBossBar(BossBarInfo bossBar) {
+	CMILib.getInstance().getBossBarManager().removeBossBar(this.getPlayer(false), bossBar);
     }
 
     public void addBossBar(BossBarInfo barInfo) {
-
+	CMILib.getInstance().getBossBarManager().addBossBar(this.getPlayer(false), barInfo);
     }
 
     public synchronized BossBarInfo getBossBar(String name) {
-	return getBossBarInfo().get(name.toLowerCase());
+	return CMILib.getInstance().getBossBarManager().getBossBar(this.getPlayer(false), name);
     }
 
     public synchronized ConcurrentHashMap<String, BossBarInfo> getBossBarInfo() {
-	return null;
+	return CMILib.getInstance().getBossBarManager().getBossBarInfo(this.getPlayer(false));
     }
 
     public synchronized void hideBossBars() {
+	CMILib.getInstance().getBossBarManager().hideBossBars(this.getPlayer(false));
     }
 
     public void clearBossMaps() {
-	for (Entry<String, BossBarInfo> one : getBossBarInfo().entrySet()) {
-	    one.getValue().cancelHideScheduler();
-	}
-	getBossBarInfo().clear();
+	CMILib.getInstance().getBossBarManager().clearBossMaps(this.getPlayer(false));
     }
 
     public CMIPlayerInventory getInventory() {
@@ -1256,6 +1357,7 @@ public class CMIUser {
     }
 
     public void setExp(int exp) {
+	
     }
 
     public void addExp(int exp) {
@@ -1266,46 +1368,27 @@ public class CMIUser {
     }
 
     public void takeExp(int exp) {
-	if (this.getPlayer() == null)
-	    return;
-	int old = getExp();
-	setExp(old - exp);
+	
     }
 
     public int getMissingExp() {
-	if (this.getPlayer() == null)
 	    return 0;
-	int t1 = deltaLevelToExp(this.getPlayer().getLevel());
-	return t1 - getExpForCurrentLevel();
+	
     }
 
     public int getLevel() {
-	if (this.getPlayer() == null)
 	    return 0;
-	return this.getPlayer().getLevel();
     }
 
     public int getExpForCurrentLevel() {
-	if (this.getPlayer() == null)
 	    return 0;
-	return getExp() - ExpToLevel(this.getPlayer().getLevel());
     }
 
     public int getExp() {
-	return 0;
+	    return 0;
     }
 
     public int getExpToLevel(int level) {
-	return ExpToLevel(level) - this.getExp();
-    }
-
-    // total xp calculation based by lvl
-    private static int ExpToLevel(int level) {
-	return 0;
-    }
-
-    // xp calculation for one current lvl
-    private static int deltaLevelToExp(int level) {
 	return 0;
     }
 
@@ -1377,6 +1460,7 @@ public class CMIUser {
     }
 
     public void setFlying(boolean flying) {
+	
     }
 
     public SavedInventories getSavedInventories() {
@@ -1392,31 +1476,23 @@ public class CMIUser {
     }
 
     public boolean addVotifierVote() {
+	
 	return true;
     }
 
     public int getDailyVoteCount() {
-	return votifierVotesByTime.size();
+
+	    return 0;
+
     }
 
     public Long getLastDailyVoteTime() {
-	return null;
+
+	    return null;
+
     }
 
     public boolean isJailed() {
-	if (this.jailedForTime == null)
-	    return false;
-	Long t = this.jailedForTime;
-
-	if (CMI.getInstance().getJailManager().isCountWhileOffline() && !this.isOnline() && this.getLastLogoff() > 0) {
-	    t -= System.currentTimeMillis() - this.getLastLogoff();
-	}
-
-	if (t <= 0) {
-	    this.jailedForTime = null;
-	    unjail();
-	    return false;
-	}
 	return true;
     }
 
@@ -1425,7 +1501,11 @@ public class CMIUser {
     }
 
     public boolean jail(Long jailTimeSec, CMIJail jail, Integer cellId, String reason) {
-	return false;
+	this.jailedReason = reason;
+	boolean feed = CMI.getInstance().getJailManager().placePlayerIntoJail(this, jail, cellId, jailTimeSec * 1000);
+	if (feed)
+	    setJailedForTime(jailTimeSec * 1000, true);
+	return feed;
     }
 
     public void unjail() {
@@ -1437,17 +1517,21 @@ public class CMIUser {
     }
 
     public void updateJailedTimeOnJoin() {
+	
     }
 
     public Long getJailedForTime() {
-	return null;
+	Long t = this.jailedForTime;
+	return t == null || t <= 0 ? 0 : t;
     }
+
 
     public void setJailedForTime(Long jailedForTime) {
 	setJailedForTime(jailedForTime, false);
     }
 
     public void setJailedForTime(Long jailedForTime, boolean save) {
+	
     }
 
     public CMIJailCell getCell() {
@@ -1455,10 +1539,17 @@ public class CMIUser {
     }
 
     public void setCell(CMIJailCell cell) {
+	if (this.cell != null)
+	    this.cell.removeJailed(this.getUniqueId());
+	if (cell != null)
+	    cell.addJailed(this.getUniqueId());
+	this.cell = cell;
     }
 
     public Boolean isFakeAccount() {
-	return null;
+//	if (recheck && isFakeAccount == null)
+//	    isFakeAccount = CMI.getInstance().getPlayerManager().isFakeUUID(this.getUniqueId());
+	return isFakeAccount == null ? false : isFakeAccount;
     }
 
     public void setFakeAccount(Boolean isFakeAccount) {
@@ -1507,10 +1598,22 @@ public class CMIUser {
     }
 
     public ItemStack getItemInHand() {
-	return CMI.getInstance().getNMS().getItemInMainHand(this.getPlayer());
+	return CMILib.getInstance().getReflectionManager().getItemInMainHand(this.getPlayer());
+    }
+
+    public void setItemInHand(ItemStack item) {
+	if (getPlayer() != null)
+	    getPlayer().getInventory().setItemInMainHand(item);
+    }
+
+    public void setItemInOffHand(ItemStack item) {
+	if (getPlayer() != null && Version.isCurrentHigher(Version.v1_8_R3))
+	    getPlayer().getInventory().setItemInOffHand(item);
     }
 
     public ItemStack getItemInOffHand() {
+	if (Version.isCurrentHigher(Version.v1_8_R3) && this.getPlayer() != null && this.getPlayer().getInventory() != null)
+	    return this.getPlayer().getInventory().getItemInOffHand();
 	return null;
     }
 
@@ -1535,28 +1638,54 @@ public class CMIUser {
     }
 
     public String getPTRRString() {
-	return null;
+	String full = "";
+	for (Entry<String, Long> one : getRepeatableRewards().entrySet()) {
+	    if (!full.isEmpty())
+		full += PlayerManager.lineSeparator;
+	    full += one.getKey() + PlayerManager.mapKeySeparator + one.getValue();
+	}
+	return full;
     }
 
     public String getPTROString() {
-	return null;
+	String full = "";
+	for (String one : getOneTimeRewards()) {
+	    if (!full.isEmpty())
+		full += PlayerManager.lineSeparator;
+	    full += one;
+	}
+	return full;
     }
 
-    public HashMap<PTRRepeat, Long> getRepeatableRewards() {
-	return null;
+    public HashMap<String, Long> getRepeatableRewards() {
+	if (repeatableRewards == null)
+	    repeatableRewards = new HashMap<String, Long>();
+	return repeatableRewards;
     }
 
-    public Set<PTROneTime> getOneTimeRewards() {
+    public void addRepeatableReward(String name, long time) {
+	getRepeatableRewards().put(name.toLowerCase(), time);
+    }
+
+    public Long getRepeatableRewardTime(String name) {
+	return getRepeatableRewards().get(name.toLowerCase());
+    }
+
+    public Set<String> getOneTimeRewards() {
 	if (oneTimeRewards == null)
-	    oneTimeRewards = new HashSet<PTROneTime>();
+	    oneTimeRewards = new HashSet<String>();
 	return oneTimeRewards;
+    }
+
+    public void addOneTimeReward(String name) {
+	getOneTimeRewards().add(name.toLowerCase());
     }
 
     public boolean isClaimedReward(PTROneTime reward) {
 	if (oneTimeRewards == null)
 	    return false;
 
-	return oneTimeRewards.contains(reward);
+	return oneTimeRewards.contains(reward.getName().toLowerCase());
     }
 
     public void unloadData() {
@@ -1568,20 +1697,38 @@ public class CMIUser {
     }
 
     public String getNamePlatePrefix() {
-	return null;
+
+	if (namePlatePrefix != null && Version.isCurrentEqualOrLower(Version.v1_15_R1) && namePlatePrefix.length() > 16) {
+	    return namePlatePrefix.substring(0, 15);
+	}
+
+	return namePlatePrefix;
     }
 
     public void setNamePlatePrefix(String namePlatePrefix) {
+	this.namePlatePrefix = namePlatePrefix;
+	if (this.namePlatePrefix != null && this.namePlatePrefix.isEmpty())
+	    this.namePlatePrefix = null;
     }
 
     public String getNamePlateSuffix() {
-	return null;
+	if (namePlateSuffix != null && Version.isCurrentEqualOrLower(Version.v1_15_R1) && namePlateSuffix.length() > 16) {
+	    return namePlateSuffix.substring(0, 15);
+	}
+	return namePlateSuffix;
     }
 
     public void setNamePlateSuffix(String namePlateSuffix) {
+	this.namePlateSuffix = namePlateSuffix;
+	if (this.namePlateSuffix != null && this.namePlateSuffix.isEmpty())
+	    this.namePlateSuffix = null;
     }
 
     public void setCollision(boolean state) {
+	collision = state;
+	applyCollision();
+	if (collision)
+	    collision = null;
     }
 
     public Boolean isCollidable() {
@@ -1598,7 +1745,7 @@ public class CMIUser {
     }
 
     public void reaplyNamePlate() {
-
+	
     }
 
     public double getLookDirectionInDegrees() {
@@ -1614,7 +1761,13 @@ public class CMIUser {
     }
 
     public List<CMIPlayerWarning> getWarnings() {
-	return null;
+	if (warnings == null)
+	    warnings = new ArrayList<CMIPlayerWarning>();
+	for (CMIPlayerWarning one : new ArrayList<CMIPlayerWarning>(warnings)) {
+	    if (one.getGivenAt() + one.getCategory().getLifeTime() < System.currentTimeMillis())
+		warnings.remove(one);
+	}
+	return warnings;
     }
 
     public void setWarnings(List<CMIPlayerWarning> warnings) {
@@ -1630,11 +1783,13 @@ public class CMIUser {
     }
 
     public int removeWarning(CMIPlayerWarning warning) {
-	return 1;
+	getWarnings().remove(warning);
+	return getWarningPoints();
     }
 
     public CMIPlayerWarning addWarning(String source, String reason, CMIWarningCategory category) {
-	return null;
+	CMIPlayerWarning warning = new CMIPlayerWarning();
+	return addWarning(warning);
     }
 
     public CMIPlayerWarning addWarning(CMIPlayerWarning warning) {
@@ -1643,7 +1798,8 @@ public class CMIUser {
     }
 
     public HashMap<String, Long> getWarningsAsMap() {
-	return null;
+	HashMap<String, Long> map = new HashMap<String, Long>();
+	return map;
     }
 
     public boolean isAcceptingPM() {
@@ -1655,28 +1811,73 @@ public class CMIUser {
     }
 
     public Long getGotLastDamageAt() {
-	return gotLastDamageAt;
+	return combat == null ? null : combat.getGotLastDamageAt();
+    }
+
+    private CMIPlayerCombat getCombatRecord() {
+	if (combat == null)
+	    combat = new CMIPlayerCombat();
+	return combat;
     }
 
     public void setGotLastDamageAt(Long gotLastDamageAt) {
-	this.gotLastDamageAt = gotLastDamageAt;
+	getCombatRecord().setGotLastDamageAt(gotLastDamageAt);
     }
 
     public boolean isInCombatWithPlayer() {
-	return false;
+	if (combat == null)
+	    return false;
+	return combat.isInCombatWithPlayer();
     }
 
     public Long getGotLastDamageFromPlayer() {
-	return null;
+	return combat == null ? 0L : combat.getGotLastDamageFromPlayer();
     }
 
     public void setGotLastDamageFromPlayer(Long gotLastDamageFromPlayer) {
+	if (!isInCombatWithPlayer())
+	    CMI.getInstance().getPlayerCombatManager().addPlayerIntoCombat(this);
+	getCombatRecord().setGotLastDamageFromPlayer(gotLastDamageFromPlayer);
     }
 
     public void setDidLastDamageToPlayer(Long didLastDamageToPlayer) {
+	if (!isInCombatWithPlayer())
+	    CMI.getInstance().getPlayerCombatManager().addPlayerIntoCombat(this);
+	getCombatRecord().setDidLastDamageToPlayer(didLastDamageToPlayer);
+    }
+
+    public boolean isInCombatWithMob() {
+	if (combat == null)
+	    return false;
+	return combat.isInCombatWithMob();
+    }
+
+    public Long getGotLastDamageFromMob() {
+	return combat == null ? 0L : combat.getGotLastDamageFromMob();
+    }
+
+    public void setGotLastDamageFromMob(Long gotLastDamageFromMob) {
+	if (!isInCombatWithMob())
+	    CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(this);
+	getCombatRecord().setGotLastDamageFromMob(gotLastDamageFromMob);
+    }
+
+    public void setDidLastDamageToEntity(Long didLastDamageToMob) {
+	if (!isInCombatWithMob()) {
+	    CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(this);
+	}
+	getCombatRecord().setDidLastDamageToMob(didLastDamageToMob);
+    }
+
+    public long getLeftCombatTime() {
+	if (combat == null)
+	    return 0L;
+	return getCombatRecord().getLeftCombatTime();
     }
 
     public void sendMessage(String msg) {
+	if (this.isOnline())
+	    CMI.getInstance().sendMessage(this, msg);
     }
 
     public void sendMessage(String command, String shortPath, Object... variables) {
@@ -1699,7 +1900,14 @@ public class CMIUser {
     }
 
     public CompletableFuture<Boolean> teleportAsync(Location loc, TeleportType type) {
-	return null;
+	return CompletableFuture.supplyAsync(() -> CMI.getInstance().getTeleportations().getSafeLocationAsync(getPlayer(), loc, false, true, null)).thenApply(greeting -> {
+	    try {
+		return CMI.getInstance().getTeleportations().teleportAsync(null, getPlayer(), true, greeting, type, true);
+	    } catch (Throwable e) {
+		e.printStackTrace();
+	    }
+	    return false;
+	});
     }
 
     public Object getFakeEntity() {
@@ -1716,7 +1924,22 @@ public class CMIUser {
 	return kills;
     }
 
+    public void addHeadDropCount(UUID uuid) {
+	PlayerKillCount killCount = getKills().get(uuid);
+	if (killCount == null) {
+	    killCount = new PlayerKillCount(uuid);
+	    getKills().put(uuid, killCount);
+	}
+	killCount.addHeadDropCount();
+    }
+
     public void addKill(UUID uuid) {
+	PlayerKillCount kill = getKills().get(uuid);
+	if (kill == null) {
+	    kill = new PlayerKillCount(uuid);
+	    getKills().put(uuid, kill);
+	}
+	kill.addKill();
     }
 
     @Deprecated
@@ -1725,6 +1948,7 @@ public class CMIUser {
     }
 
     public double getHeadDropChance(UUID uuid, boolean addEnchantBonus) {
+	
 	return 0;
     }
 
@@ -1735,7 +1959,6 @@ public class CMIUser {
     }
 
     public void addEntityKill(EntityType type) {
-
     }
 
     @Deprecated
@@ -1744,6 +1967,7 @@ public class CMIUser {
     }
 
     public double getEntityHeadDropChance(EntityType type, Boolean addEnchantBonus) {
+
 	return 0;
     }
 
@@ -1804,16 +2028,28 @@ public class CMIUser {
     }
 
     public void setChatRoom(CMIChatRoom cmiChatRoom) {
+	this.chatRoom = cmiChatRoom;
+	if (chatRoom != null && !chatRoom.getUsers().contains(this))
+	    chatRoom.getUsers().add(this);
     }
 
     public void dropItemNearPlayer(ItemStack one) {
+	Location loc = this.getPlayer().getLocation();
+	Vector direction = loc.getDirection().clone();
+	direction.multiply(0.4);
+	this.getPlayer().getWorld().dropItem(loc.clone().add(0, 1, 0).add(direction), one);
     }
 
     public void addItemDonationFrom(CMIItemDonations donation) {
+	if (donationsFrom == null)
+	    donationsFrom = new HashMap<UUID, CMIItemDonations>();
+	donationsFrom.put(donation.getDonor(), donation);
     }
 
     public HashMap<UUID, CMIItemDonations> getPendingDonations() {
-	return null;
+	if (donationsFrom == null)
+	    donationsFrom = new HashMap<UUID, CMIItemDonations>();
+	return donationsFrom;
     }
 
     public Long getTeleportInvulnerability() {
@@ -1832,12 +2068,45 @@ public class CMIUser {
 	this.hungerSched = hungerSched;
     }
 
-    public Boolean isToggledOffBRCompass() {
-	return toggleCompass == null ? false : toggleCompass;
+    public Boolean isToggledOffBBCompass() {
+	return toggleCompass == null ? !Config.CompassDefaultState : toggleCompass;
     }
 
-    public void setToggledOffBRCompass(Boolean toggleCompass) {
+    public void setToggledOffBBCompass(Boolean toggleCompass) {
 	this.toggleCompass = toggleCompass;
     }
 
+    public TreeMap<Long, damageInformation> getLastDamage() {
+	if (lastDamage == null)
+	    lastDamage = new TreeMap<Long, damageInformation>(Collections.reverseOrder());
+	return lastDamage;
+    }
+
+    public damageInformation getLastDamage(damageInformation comparison) {
+	
+	return null;
+    }
+
+    public void addLastDamage(damageInformation lastDamage) {
+    }
+
+    public void resetLastDamage() {
+	lastDamage = null;
+    }
+
+    public static CMIUser getUser(String playerName) {
+	return CMI.getInstance().getPlayerManager().getUser(playerName);
+    }
+
+    public static CMIUser getUser(OfflinePlayer player) {
+	return CMI.getInstance().getPlayerManager().getUser(player);
+    }
+
+    public static CMIUser getUser(Player player) {
+	return CMI.getInstance().getPlayerManager().getUser(player);
+    }
+
+    public static CMIUser getUser(UUID uuid) {
+	return CMI.getInstance().getPlayerManager().getUser(uuid);
+    }
 }

@@ -9,6 +9,8 @@ public class AfkInfo {
     private AfkType type;
     private String reason;
     private Long playtimeAtAfkStart;
+    
+    private int kickOutIn = 0;
 
     public AfkInfo() {
     }
@@ -55,6 +57,14 @@ public class AfkInfo {
 
     public void setPlaytimeAtAfkStart(Long playtimeAtAfkStart) {
 	this.playtimeAtAfkStart = playtimeAtAfkStart;
+    }
+
+    public int getKickOutInSec() {
+	return kickOutIn;
+    }
+
+    public void setKickOutInSec(int kickOutIn) {
+	this.kickOutIn = kickOutIn;
     }
 
 }

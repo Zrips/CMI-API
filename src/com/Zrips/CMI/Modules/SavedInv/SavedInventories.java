@@ -24,6 +24,10 @@ public class SavedInventories {
 
     private int getLastId() {
 	int id = 0;
+	for (Entry<Integer, CMIInventory> one : inventories.entrySet()) {
+	    if (one.getKey() > id)
+		id = one.getKey();
+	}
 	return id;
     }
 

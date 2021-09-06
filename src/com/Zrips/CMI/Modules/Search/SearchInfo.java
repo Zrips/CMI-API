@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIItemStack;
 import com.Zrips.CMI.Modules.Search.Search.SearchPlaceType;
 
 public class SearchInfo {
@@ -165,14 +165,25 @@ public class SearchInfo {
     }
 
     public Integer get(SearchPlaceType type, String name) {
-	return null;
+	ConcurrentHashMap<String, Integer> one = this.places.get(type);
+	if (one == null)
+	    return null;
+	if (one.containsKey(name))
+	    return one.get(name);
+	return 0;
     }
 
     public void remove(SearchPlaceType type, String name) {
+	ConcurrentHashMap<String, Integer> one = this.places.get(type);
+	if (one == null)
+	    return;
+	one.remove(name);
     }
 
     public ConcurrentHashMap<String, Integer> get(SearchPlaceType type) {
-	return null;
+	if (this.places.containsKey(type))
+	    return this.places.get(type);
+	return new ConcurrentHashMap<String, Integer>();
     }
 
     public void add(SearchPlaceType type, String name) {
@@ -180,6 +191,14 @@ public class SearchInfo {
     }
 
     public void add(SearchPlaceType type, String name, int amount) {
+	ConcurrentHashMap<String, Integer> one = this.places.get(type);
+	if (one == null)
+	    one = new ConcurrentHashMap<String, Integer>();
+	Integer sec = one.get(name);
+	if (sec == null)
+	    sec = 0;
+	one.put(name, sec + amount);
+	this.places.put(type, one);
     }
 
     public int getTotalPlayersToCheck() {

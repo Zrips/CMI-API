@@ -12,6 +12,8 @@ public class CMIChatRoom {
     private String chatName;
     private UUID owner;
     private boolean priv = false;
+    private boolean locked = false;
+    private boolean persistent = false;
     private Set<UUID> invitations;
     private long keepAliveUntil = 0L;
 
@@ -38,17 +40,24 @@ public class CMIChatRoom {
     }
 
     public boolean removeUser(CMIUser user) {
-	return false;
+	user.setChatRoom(null);
+	boolean feed = users.remove(user);
+	if (users.isEmpty() && !persistent)
+	    keepAliveUntil = System.currentTimeMillis() + (ChatFormatManager.ChatRoomLife * 1000L);
+	else
+	    keepAliveUntil = System.currentTimeMillis() + (60 * 60 * 24 * 7 * 1000L);
+	return feed;
     }
 
     public void broadcastMessage(CMIUser sender, String msg) {
 	
     }
 
-    public void cleanOldUsers() {	
+    public void cleanOldUsers() {
     }
 
     public void informLeave(CMIUser left) {
+
 
     }
 
@@ -85,13 +94,21 @@ public class CMIChatRoom {
     }
 
     public boolean isInvited(UUID uuid) {
-	return false;
+	if (this.invitations == null)
+	    return false;
+	return invitations.contains(uuid);
     }
 
     public void addInvitation(UUID uuid) {
+	if (this.invitations == null)
+	    this.invitations = new HashSet<UUID>();
+	this.invitations.add(uuid);
     }
 
     public void removeInvitation(UUID uuid) {
+	if (this.invitations == null)
+	    return;
+	this.invitations.remove(uuid);
     }
 
     public long getKeepAliveUntil() {
@@ -100,5 +117,21 @@ public class CMIChatRoom {
 
     public void setKeepAliveUntil(long keepAliveUntil) {
 	this.keepAliveUntil = keepAliveUntil;
+    }
+
+    public boolean isLocked() {
+	return locked;
+    }
+
+    public void setLocked(boolean locked) {
+	this.locked = locked;
+    }
+
+    public boolean isPersistent() {
+	return persistent;
+    }
+
+    public void setPersistent(boolean persistent) {
+	this.persistent = persistent;
     }
 }

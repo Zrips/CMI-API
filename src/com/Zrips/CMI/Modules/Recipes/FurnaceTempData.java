@@ -1,5 +1,7 @@
 package com.Zrips.CMI.Modules.Recipes;
 
+import net.Zrips.CMILib.Version.Version;
+
 public class FurnaceTempData {
 
     private float exp = 0;
@@ -15,6 +17,12 @@ public class FurnaceTempData {
     }
 
     public void setExp(float exp) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_17_R1) && exp > 2)
+	    exp = 2;
+	else if (!Version.isCurrentEqualOrHigher(Version.v1_17_R1) && exp > 1)
+	    exp = 1;
+	if (exp < 0)
+	    exp = 0;
 	this.exp = exp;
     }
 

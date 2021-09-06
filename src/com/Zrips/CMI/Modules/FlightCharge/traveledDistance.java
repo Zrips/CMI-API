@@ -1,7 +1,6 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Containers.CMIUser;
 
@@ -25,7 +24,8 @@ public class traveledDistance {
     }
 
     public Double getDistanceTraveled() {
-	return null;
+	
+	return 0D;
     }
 
     public Long sinceLastUpdate() {

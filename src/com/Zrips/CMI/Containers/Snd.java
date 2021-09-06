@@ -1,8 +1,15 @@
 package com.Zrips.CMI.Containers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import com.Zrips.CMI.CMI;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Snd {
     private Player sender;
@@ -22,12 +29,6 @@ public class Snd {
     }
 
     public Snd(Player sender, Player target) {
-	this.sender = sender;
-	if (sender != null)
-	    senderName = sender.getName();
-	this.target = target;
-	if (target != null)
-	    targetName = target.getName();
     }
 
     public Player getPlayerSender() {
@@ -64,7 +65,6 @@ public class Snd {
     }
 
     public Snd setTarget(Player sender) {
-	this.target = sender;
 	return this;
     }
 
@@ -91,7 +91,6 @@ public class Snd {
     }
 
     public Snd setSource(Player sender) {
-	this.source = sender;
 	return this;
     }
 

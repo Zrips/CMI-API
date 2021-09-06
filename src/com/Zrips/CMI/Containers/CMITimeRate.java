@@ -1,6 +1,6 @@
 package com.Zrips.CMI.Containers;
 
-import com.Zrips.CMI.utils.TimeManager.timeState;
+import net.Zrips.CMILib.Time.timeState;
 
 public class CMITimeRate {
 

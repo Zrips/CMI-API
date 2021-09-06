@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CommandAlias;
+import com.Zrips.CMI.Containers.CommandAliasType;
 
 public class AliasManager {
 
@@ -22,18 +23,26 @@ public class AliasManager {
 //    public LinkedHashMap<String, CommandAlias> fullList = new LinkedHashMap<String, CommandAlias>();
     public HashMap<String, CommandAlias> fromAliases = new HashMap<String, CommandAlias>();
 
+//    private HashMap<UUID, String> chatMap = new HashMap<UUID, String>();
 
     public AliasManager(CMI plugin) {
 	this.plugin = plugin;
     }
 
+//    public boolean isChatEditing(Player player) {
+//	return chatMap.containsKey(player.getUniqueId());
+//    }
+//
+//    public void addChatEditor(Player player, String cmd) {
+//	chatMap.put(player.getUniqueId(), cmd);
+//    }
 
     private static CommandAlias getFirst(String msg, CommandAlias compare, String key) {
-
 	return null;
     }
 
     private static CommandAlias getSecond(String msg, CommandAlias secondAlias, CommandAlias firstAlias, CommandAlias compare, String key) {
+
 	return null;
     }
 
@@ -44,26 +53,33 @@ public class AliasManager {
     }
 
     public CommandAlias getAliasForCommand(String msg) {
+
 	return null;
     }
 
     public List<CommandAlias> getAliasStartingWith(String msg) {
+	return getAliasStartingWith(msg, null);
+    }
+
+    public List<CommandAlias> getAliasStartingWith(String msg, CommandAliasType type) {
+
 	return null;
     }
 
-    private void register(CommandAlias ca) {
-    }
-
     public void addDefault(CommandAlias ca) {
+
     }
 
     public void addCustom(CommandAlias ca) {
+	
     }
 
     public void removeCustom(String command) {
+	
     }
 
     public void removeCustom(CommandAlias ca) {
+
     }
 
     public LinkedHashMap<String, CommandAlias> getCustom() {
@@ -75,7 +91,9 @@ public class AliasManager {
     }
 
     public HashMap<String, CommandAlias> getAll() {
-	return null;
+	HashMap<String, CommandAlias> t = new HashMap<String, CommandAlias>();
+
+	return t;
     }
 
     public HashMap<String, CommandAlias> getFrom() {
@@ -94,11 +112,11 @@ public class AliasManager {
 	plugin.getConfigManager().ChangeConfig("CustomAlias.List", convertCustom());
     }
 
-    public static Pattern patern = Pattern.compile("( |^|:|:/|\\S)(\\$(\\d{1,2})(-?))");
+    public static Pattern patern = Pattern.compile("( |^|:|:\\/|\\S)(\\$(\\d{1,2})(-?))");
 
-    public List<String> updateCommands(List<String> args, List<String> commands) {
-	
-	return null;
+    public List<String> updateCommands(CommandAlias alias, List<String> args, List<String> commands) {
+
+	return commands;
     }
 
     List<String> CommentList = new ArrayList<String>(Arrays.asList("",
@@ -130,10 +148,6 @@ public class AliasManager {
     }
 
     public void saveNew() {
-	
-    }
-
-    public void saveRegularAlias() {
 	
     }
 }

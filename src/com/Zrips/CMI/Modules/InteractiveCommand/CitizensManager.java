@@ -6,19 +6,21 @@ import org.bukkit.entity.Entity;
 
 import com.Zrips.CMI.CMI;
 
+
 public class CitizensManager {
 
     private CMI plugin;
 
     public CitizensManager(CMI plugin) {
+	this.plugin = plugin;
     }
 
     public boolean isCitizen(Entity ent) {
-	return false;
+	    return false;
     }
 
     public UUID getCitizenPrivateUUID(UUID uuid) {
-	return null;
+	    return null;
     }
 
     public Integer getEntityId(Entity ent) {
@@ -26,6 +28,7 @@ public class CitizensManager {
     }
 
     public Integer getEntityId(UUID uuid) {
+
 	return null;
     }
 

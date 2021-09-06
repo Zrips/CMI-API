@@ -1,51 +1,25 @@
 package com.Zrips.CMI.Modules.Animations;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIBlock;
-import com.Zrips.CMI.Containers.CMIBlock.Bisect;
-import com.Zrips.CMI.Containers.CMIBlock.StairShape;
-import com.Zrips.CMI.Containers.CMIBlock.blockDirection;
-import com.Zrips.CMI.Containers.CMIHitBox;
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.CmiItems.ItemManager.SlabType;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Modules.Worlds.CMIWorld;
-import com.Zrips.CMI.Modules.Worlds.WorldManager.CMIBiome;
-import com.Zrips.CMI.events.CMIPlayerSitEvent;
-import com.Zrips.CMI.utils.VersionChecker.Version;
 
 public class AnimationManager {
 
@@ -56,6 +30,7 @@ public class AnimationManager {
     public static final String CMIArmorStandForSit = "CMIArmorStandForSit";
     public static final String CMIRainbowArmor = "CMIRainbowArmor";
     public static final String CMISoulBound = "CMISoulBound";
+    public static final String CMIFakeSlime = "CMIFakeSlime";
 
     HashMap<UUID, Long> doubleClick = new HashMap<UUID, Long>();
 
@@ -71,12 +46,6 @@ public class AnimationManager {
     }
 
     public void clearCache(UUID uuid) {
-	doubleClick.remove(uuid);
-	leatherArmor.remove(uuid);
-	riding.remove(uuid);
-	Chair chair = map.remove(uuid);
-	if (chair != null && chair.getChairLoc() != null)
-	    chairLoc.remove(plugin.getUtilManager().convertLocToStringShort(chair.getChairLoc()));
     }
 
     private boolean SitOnStairs = true;
@@ -132,29 +101,18 @@ public class AnimationManager {
     private int autoTimerBukkitId = 0;
 
     public void stopLeatherUpdate() {
-    }
-
-    private Runnable autoTimer = new Runnable() {
-	@Override
-	public void run() {
-	    try {
-		checkLeatherArmors();
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
+	if (autoTimerBukkitId != 0) {
+	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
+	    autoTimerBukkitId = 0;
 	}
-    };
-
-    private void checkLeatherArmors() {
-
-    }
-
-    private static void setColor(CMIUser user, LeatherAnimationType type, List<CMIInventorySlot> slot, LeatherAnimation anim) {
-
     }
 
     public static int getIntFromColor(int Red, int Green, int Blue) {
-	return 0;
+	Red = (Red << 16) & 0x00FF0000;
+	Green = (Green << 8) & 0x0000FF00;
+	Blue = Blue & 0x000000FF;
+
+	return 0xFF000000 | Red | Green | Blue;
     }
 
     public boolean isDoubleClickWait(Player player) {
@@ -170,6 +128,8 @@ public class AnimationManager {
 	private Entity ent = null;
 	private Location ChairBlockLoc = null;
 	private Location armorStandLoc = null;
+	private long lastCheck = 0L;
+	private boolean persistent = false;
 
 	public Entity getEnt() {
 	    return ent;
@@ -198,13 +158,43 @@ public class AnimationManager {
 	    return this;
 	}
 
+	public long getLastCheck() {
+	    return lastCheck;
+	}
+
+	public void setLastCheck(long lastCheck) {
+	    this.lastCheck = lastCheck;
+	}
+
+	public boolean isPersistent() {
+	    return persistent;
+	}
+
+	public void setPersistent(boolean persistent) {
+	    this.persistent = persistent;
+	}
+
     }
 
     public boolean isValidChairBlock(Block block) {
+
 	return true;
     }
 
     public void sit(Player player) {
+	sit(player, false);
+    }
+
+    public void sit(Player player, boolean persistent) {
+	sit(player, player.getLocation(), persistent);
+    }
+
+    public void sit(Player player, Location location, boolean persistent) {
+	Chair chair = new Chair().setArmorStandLoc(location.clone().add(0.0D, -1.7D, 0.0D)).setChairLoc(location.clone().add(0, -1, 0));
+	chair.setPersistent(persistent);
+	if (sit(player, chair)) {
+	    chairLoc.put(plugin.getUtilManager().convertLocToStringShort(location.clone().add(0, -1, 0)), player.getUniqueId());
+	}
     }
 
     public boolean isSomeOneSittingHere(Block block) {
@@ -214,10 +204,15 @@ public class AnimationManager {
 
     private static Vector getStairLedgeDirection(Block block) {
 
-	return null;
+	return new Vector(0, 0, 0);
     }
 
     public void sit(Player player, Block block) {
+	sit(player, block, false);
+    }
+
+    public void sit(Player player, Block block, boolean persistent) {
+
     }
 
     public boolean isSitting(Player player) {
@@ -274,19 +269,16 @@ public class AnimationManager {
     }
 
     public void removePlayerFromChair(final Player player, boolean delay, boolean center) {
-	
+
     }
 
     private void tpPlayer(Player player, Chair chair, boolean center) {
-	
+
     }
 
     private void updateSitTask() {
-    }
 
-//    public DeadBodies getDeadManager() {
-//	return deadmanager;
-//    }
+    }
 
     public boolean isSitOnStairs() {
 	return SitOnStairs;
@@ -348,9 +340,12 @@ public class AnimationManager {
 	    id = runTaskTimerAsynchronously(plugin, 0L, 1L);
 	}
 
+	private Method method = null;
+	private Field field = null;
+
 	@Override
 	public void run() {
-	   
+
 	}
     }
 

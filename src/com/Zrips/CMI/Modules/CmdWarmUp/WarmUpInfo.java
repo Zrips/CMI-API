@@ -2,8 +2,9 @@ package com.Zrips.CMI.Modules.CmdWarmUp;
 
 import org.bukkit.Location;
 
-import com.Zrips.CMI.Modules.BossBar.BossBarInfo;
 import com.Zrips.CMI.Modules.Particl.CMIVisualEffect;
+
+import net.Zrips.CMILib.BossBar.BossBarInfo;
 
 public class WarmUpInfo {
 

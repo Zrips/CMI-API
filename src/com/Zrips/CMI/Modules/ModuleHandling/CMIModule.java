@@ -1,29 +1,30 @@
 package com.Zrips.CMI.Modules.ModuleHandling;
 
-import java.lang.reflect.Constructor;
-
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
-
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.AllListeners.BossBarCompassListener;
 import com.Zrips.CMI.AllListeners.CustomMessagesListener;
 import com.Zrips.CMI.AllListeners.FirstJoinListener;
+import com.Zrips.CMI.AllListeners.LaunchPadListener;
+import com.Zrips.CMI.AllListeners.LaunchPadListener1_9;
 import com.Zrips.CMI.AllListeners.NoTargetListener;
 import com.Zrips.CMI.AllListeners.PlayerItemDamageListener;
 import com.Zrips.CMI.AllListeners.UserCuffedEvents;
 import com.Zrips.CMI.AllListeners.WorldLimits;
+import com.Zrips.CMI.AllListeners.WorldLimitsElytra;
 import com.Zrips.CMI.AllListeners.versionCheck;
 import com.Zrips.CMI.Modules.AStand.ArmorStandListener;
+import com.Zrips.CMI.Modules.AStand.ArmorStandListener1_8;
 import com.Zrips.CMI.Modules.Afk.AfkListener;
+import com.Zrips.CMI.Modules.Afk.AfkListener1_8;
 import com.Zrips.CMI.Modules.Animations.AnimationColoredArmorListener;
+import com.Zrips.CMI.Modules.Animations.AnimationRideListener;
 import com.Zrips.CMI.Modules.Animations.AnimationSitListener;
 import com.Zrips.CMI.Modules.Anvil.AnvilColorRenameListener;
-import com.Zrips.CMI.Modules.Anvil.AnvilUnlimitedListener;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTListener;
+import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTListener1_8;
 import com.Zrips.CMI.Modules.ChatTag.TagListener;
 import com.Zrips.CMI.Modules.CmdCooldown.CooldownListener;
 import com.Zrips.CMI.Modules.CmdWarmUp.WarmUpListener;
+import com.Zrips.CMI.Modules.DeathMessages.DeathMessageListener;
 import com.Zrips.CMI.Modules.DynamicSigns.SignListener;
 import com.Zrips.CMI.Modules.Elytra.ElytraBoostListener;
 import com.Zrips.CMI.Modules.Elytra.ElytraExploitListener;
@@ -36,13 +37,17 @@ import com.Zrips.CMI.Modules.Holograms.HologramListener;
 import com.Zrips.CMI.Modules.Homes.HomeListener;
 import com.Zrips.CMI.Modules.HpBar.HpBarListener;
 import com.Zrips.CMI.Modules.InteractiveCommand.InteractiveCommandListener;
+import com.Zrips.CMI.Modules.InteractiveCommand.InteractiveCommandListener1_8;
 import com.Zrips.CMI.Modules.Jail.JailListener;
 import com.Zrips.CMI.Modules.Kits.KitListener;
 import com.Zrips.CMI.Modules.Mirror.MirrorListener;
 import com.Zrips.CMI.Modules.MoneyCheque.MoneyChequeListener;
 import com.Zrips.CMI.Modules.Painting.PaintingListener;
 import com.Zrips.CMI.Modules.PlayTime.PlayTimeListener;
+import com.Zrips.CMI.Modules.PlayerCombat.HeadDropListener;
+import com.Zrips.CMI.Modules.PlayerCombat.PlayerCombatListener;
 import com.Zrips.CMI.Modules.Portals.PortalListener;
+import com.Zrips.CMI.Modules.Selection.SelectionListener;
 import com.Zrips.CMI.Modules.ShulkerBoxInventory.ShulkerBoxListener;
 import com.Zrips.CMI.Modules.SilentChest.silentChestListener;
 import com.Zrips.CMI.Modules.Skin.SkinListener;
@@ -53,15 +58,16 @@ import com.Zrips.CMI.Modules.TabList.TabListListener;
 import com.Zrips.CMI.Modules.TimedCommands.TimedCommandListener;
 import com.Zrips.CMI.Modules.Totems.ResurectionListener;
 import com.Zrips.CMI.Modules.Vanish.VanishListener;
-import com.Zrips.CMI.Modules.Selection.SelectionListener;
 import com.Zrips.CMI.Modules.Votifier.VotifierListener;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+
+import net.Zrips.CMILib.Version.Version;
 
 public enum CMIModule {
 
     silentChest("Handles silent chest opening actions", new CMIModuleClass(silentChestListener.class)),
     versionCheck("Version check when player logs in", new CMIModuleClass(versionCheck.class)),
     worldLimits("World limitations: fly, game mode and god mode", new CMIModuleClass(WorldLimits.class)),
+    worldLimitsElytra("World limitations: elytra mode", new CMIModuleClass(WorldLimitsElytra.class, Version.v1_9_R1)),
     customMessages("Login, logout and death messages", new CMIModuleClass(CustomMessagesListener.class)),
     firstJoinMessages("First join messages", new CMIModuleClass(FirstJoinListener.class)),
     cuffed("Handling of cuffed players", new CMIModuleClass(UserCuffedEvents.class)),
@@ -72,14 +78,14 @@ public enum CMIModule {
     spawnerCharge("Checking spawner charges", new CMIModuleClass(SpawnerChargeListener.class)),
     cooldown("Handling of command cooldowns", new CMIModuleClass(CooldownListener.class)),
     warmup("Handling of command warmups", new CMIModuleClass(WarmUpListener.class)),
-    interactiveCommands("Handling of interactive commands", new CMIModuleClass(InteractiveCommandListener.class)),
-    attachedCommands("Handling of attached commands", new CMIModuleClass(CustomNBTListener.class)),
+    interactiveCommands("Handling of interactive commands", new CMIModuleClass(InteractiveCommandListener.class), new CMIModuleClass(InteractiveCommandListener1_8.class, Version.v1_8_R1)),
+    attachedCommands("Handling of attached commands", new CMIModuleClass(CustomNBTListener.class), new CMIModuleClass(CustomNBTListener1_8.class, Version.v1_8_R1)),
     playerChatTag("Handling of player tagging in chat and tabcomplete with @", new CMIModuleClass(TagListener.class)),
     tablist("Handling of tablist", new CMIModuleClass(TabListListener.class)),
     paintingEditor("Handling of painting editing with shift+right click", new CMIModuleClass(PaintingListener.class)),
     vanish("Handles player vanish mode", new CMIModuleClass(VanishListener.class)),
     moneyCheque("Handles money cheques", new CMIModuleClass(MoneyChequeListener.class)),
-    armorstand("Handles armor stand editor", new CMIModuleClass(ArmorStandListener.class)),
+    armorstand("Handles armor stand editor", new CMIModuleClass(ArmorStandListener.class), new CMIModuleClass(ArmorStandListener1_8.class, Version.v1_8_R1)),
     cmiPlaytime("Handles dedicated CMI playtime tracker", new CMIModuleClass(PlayTimeListener.class)),
     holograms("Handles hologram updates", new CMIModuleClass(HologramListener.class)),
     portals("Handles portals", new CMIModuleClass(PortalListener.class)),
@@ -89,6 +95,8 @@ public enum CMIModule {
     noTarget("Handles entity target prevention on player /cmi notarget", new CMIModuleClass(NoTargetListener.class)),
     ranks("Handles rankup system"),
     votifier("Handles votifier system", new CMIModuleClass(VotifierListener.class)),
+    playerCombat("Handles player combat system", new CMIModuleClass(PlayerCombatListener.class)),
+    headDrop("Handles head drops system", new CMIModuleClass(HeadDropListener.class)),
     kits("Handles kit listener, mainly to give out new player kit", new CMIModuleClass(KitListener.class)),
     schedule("Handles schedule system"),
     namePlates("Handles player name plates"),
@@ -98,18 +106,24 @@ public enum CMIModule {
     skin("Handles player skins", new CMIModuleClass(SkinListener.class, Version.v1_8_R1)),
     selection("Handles selection areas. While this is disabled, command can still be used", new CMIModuleClass(SelectionListener.class)),
     hpBossBar("Handles mob and player hp bars as boss bar", new CMIModuleClass(HpBarListener.class, Version.v1_9_R1)),
-    afk("Handling of afk feature. This will disable any checks related to afk and players will never get into afk mode", new CMIModuleClass(AfkListener.class)),
+    afk("Handling of afk feature. This will disable any checks related to afk and players will never get into afk mode", new CMIModuleClass(AfkListener.class), new CMIModuleClass(AfkListener1_8.class,
+	Version.v1_8_R1)),
     timedCommands("Handling timed commands like tfly and tgod", new CMIModuleClass(TimedCommandListener.class)),
     eventCommands("Handling of eventCommands.yml feature ", new CMIModuleClass(EventActionListener.class), new CMIModuleClass(EventActionListener19.class, Version.v1_9_R1)),
     disabledEnchants("Handling of disabled enchants in inventory", new CMIModuleClass(EnchantListener.class)),
     sitAnimation("Handling of siting on blocks", new CMIModuleClass(AnimationSitListener.class, Version.v1_8_R1)),
+    rideAnimation("Handling of ride suffocation detection", new CMIModuleClass(AnimationRideListener.class)),
     bossBarCompass("Handling of boss bar compass", new CMIModuleClass(BossBarCompassListener.class, Version.v1_9_R1)),
     elytraBoost("Elytra boost", new CMIModuleClass(ElytraBoostListener.class, Version.v1_9_R1)),
     elytraLaunch("Elytra launch", new CMIModuleClass(ElytraLaunchListener.class, Version.v1_9_R1)),
     elytraExploit("Exploit prevention, like using trident for infinite flight or self damage with arrow", new CMIModuleClass(ElytraExploitListener.class, Version.v1_9_R1)),
     totemBehavior("Handling of custom totem behavior", new CMIModuleClass(ResurectionListener.class, Version.v1_11_R1)),
     anvilRenameColor("Handling of anvil item renaming and colorization", new CMIModuleClass(AnvilColorRenameListener.class, Version.v1_9_R1)),
-    anvilUnlimitedRepair("Handling of anvil unlimited repair", new CMIModuleClass(AnvilUnlimitedListener.class, Version.v1_9_R1));
+    launchPad("Handling of launch command falldamage", new CMIModuleClass(LaunchPadListener.class), new CMIModuleClass(LaunchPadListener1_9.class, Version.v1_9_R1)),
+    deathMessages("Handling of launch custom death messages", new CMIModuleClass(DeathMessageListener.class))
+//    ,
+//    anvilUnlimitedRepair("Handling of anvil unlimited repair", new CMIModuleClass(AnvilUnlimitedListener.class, Version.v1_9_R1))
+    ;
 
     private CMIModuleClass[] listeners;
     private boolean enabled = true;
@@ -129,11 +143,13 @@ public enum CMIModule {
     }
 
     public Version getFromVersion() {
-	return null;
+	Version from = Version.v1_7_R4;
+	return from;
     }
 
     public Version getToVersion() {
-	return null;
+	Version to = null;
+	return to;
     }
 
     public void setEnabled(boolean enabled) {
@@ -145,7 +161,7 @@ public enum CMIModule {
     }
 
     public void registerListener() {
-
+	
     }
 
     public String getDesc() {

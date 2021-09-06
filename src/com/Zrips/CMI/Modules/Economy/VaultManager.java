@@ -1,5 +1,10 @@
 package com.Zrips.CMI.Modules.Economy;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+
 import com.Zrips.CMI.CMI;
 
 import net.milkbowl.vault.economy.Economy;
@@ -23,7 +28,8 @@ public class VaultManager {
     }
 
     public EconomySetupResponse setupVault() {
-	return null;
+
+	return economy != null ? EconomySetupResponse.Vault : EconomySetupResponse.NoVaultEconomy;
     }
 
     public Economy getVaultEconomy() {
@@ -35,7 +41,11 @@ public class VaultManager {
     }
 
     public String format(Double money) {
-	return null;
+	if (money == null)
+	    return "0";
+	if (this.economy == null)
+	    return String.valueOf(money);
+	return this.economy.format(money);
     }
 
     public String getVersion() {

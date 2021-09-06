@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.Vanish;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -14,17 +15,17 @@ import org.bukkit.potion.PotionEffectType;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.FileHandler.ConfigReader;
-import com.Zrips.CMI.Locale.LC;
+import net.Zrips.CMILib.Locale.LC;
 import com.Zrips.CMI.Modules.Afk.AfkManager;
-import com.Zrips.CMI.Modules.BossBar.BossBarInfo;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.Modules.SilentChest.silentChestListener;
 import com.Zrips.CMI.commands.list.vanishedit.VanishAction;
 import com.Zrips.CMI.events.CMIPlayerUnVanishEvent;
 import com.Zrips.CMI.events.CMIPlayerVanishEvent;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+
+import net.Zrips.CMILib.BossBar.BossBarInfo;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Version.Version;
 
 public class VanishManager {
 
@@ -42,9 +43,15 @@ public class VanishManager {
     }
 
     public void addPlayer(CMIUser user) {
+	if (user == null)
+	    return;
+	addPlayer(user.getUniqueId());
     }
 
     public void addPlayer(Player player) {
+	if (player == null)
+	    return;
+	addPlayer(player.getUniqueId());
     }
 
     public void addPlayer(UUID uuid) {
@@ -52,7 +59,9 @@ public class VanishManager {
 
     private static final String vanishBossBar = "CMIVanishBossBar";
 
-    public boolean nearVanishedPlayerMobSpawn(Location loc) {
+
+    public boolean nearActivePlayer(Location loc) {
+	
 
 	return false;
     }
@@ -66,21 +75,19 @@ public class VanishManager {
     }
 
     public void applyVanish(CMIUser user, boolean fireUnvanishEvent, boolean showMessages) {
-
+	
     }
 
     public static String defaultString = "";
 
     public void loadConfig() {
-
     }
 
     public void hideVanishedPlayersFor(Player player) {
-
+	
     }
 
     public void hidePlayerForEveryone(Player player) {
-
     }
 
     public void removePlayer(CMIUser user) {
@@ -94,6 +101,5 @@ public class VanishManager {
     }
 
     public void removePlayer(UUID uuid, boolean showForOthers) {
-
     }
 }

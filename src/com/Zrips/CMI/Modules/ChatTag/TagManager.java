@@ -6,7 +6,8 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class TagManager {
 
@@ -24,11 +25,12 @@ public class TagManager {
     List<String> commands = new ArrayList<String>();
 
     public void load() {
+
     }
 
     public String tag(Player player, String msg, String format) {
-	
-	return null;
+
+	return "";
     }
 
     public String getChatTagColor() {

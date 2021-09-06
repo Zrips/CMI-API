@@ -12,13 +12,16 @@ public class CMIVanish {
     private HashMap<VanishAction, Boolean> map = new HashMap<VanishAction, Boolean>();
 
     private Boolean wasCollidable = null;
+    
+    private Long vanishedFrom = null;
 
     public void fromString(String line) {
     }
 
     @Override
     public String toString() {
-	return null;
+	String line = "";
+	return line;
     }
 
     private static String to(boolean state) {
@@ -58,5 +61,13 @@ public class CMIVanish {
 
     public void setWasCollidable(Boolean wasCollidable) {
 	this.wasCollidable = wasCollidable;
+    }
+
+    public Long getVanishedFrom() {
+	return vanishedFrom;
+    }
+
+    public void setVanishedFrom(Long vanishedFrom) {
+	this.vanishedFrom = vanishedFrom;
     }
 }

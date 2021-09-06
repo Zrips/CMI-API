@@ -16,7 +16,9 @@ import org.bukkit.Bukkit;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.FileHandler.ConfigReader;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Time.CMITimeManager;
+
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 public class VotifierManager {
@@ -30,6 +32,39 @@ public class VotifierManager {
     private int MaxVotesInADay = 0;
     private HashMap<Integer, List<String>> rewards = new HashMap<Integer, List<String>>();
     private HashMap<UUID, HashMap<String, Long>> cooldowns = new HashMap<UUID, HashMap<String, Long>>();
+
+    private HashMap<UUID, voteReminder> voteReminder = new HashMap<UUID, voteReminder>();
+
+    private class voteReminder {
+	private int times = 0;
+	private long last = 0L;
+
+	public voteReminder() {
+	    last = System.currentTimeMillis();
+	}
+
+	public void recordNotified() {
+	    times++;
+	    last = System.currentTimeMillis();
+	}
+
+	public int getTimes() {
+	    return times;
+	}
+
+	public long getLast() {
+	    return last;
+	}
+    }
+
+    public void removeVoteReminder(UUID uuid) {
+	voteReminder.remove(uuid);
+    }
+
+    public void addToVoteReminder(UUID uuid) {
+
+	voteReminder.put(uuid, new voteReminder());
+    }
 
     public VotifierManager(CMI plugin) {
 	this.plugin = plugin;
@@ -52,7 +87,10 @@ public class VotifierManager {
     private Set<CMIUser> withVotes = new HashSet<CMIUser>();
 
     public void updateVoteCountList(CMIUser user) {
-
+	if (user.getVotifierVotes() <= 0)
+	    withVotes.remove(user);
+	else
+	    withVotes.add(user);
     }
 
     Long lastUpdate = 0L;
@@ -60,11 +98,9 @@ public class VotifierManager {
     int updateDelay = 5;
 
     private void delayUpdate() {
-
     }
 
     public void updateTopList() {
-
     }
 
     boolean calculating = false;

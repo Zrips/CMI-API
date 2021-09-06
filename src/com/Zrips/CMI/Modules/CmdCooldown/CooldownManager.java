@@ -1,25 +1,16 @@
 package com.Zrips.CMI.Modules.CmdCooldown;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Containers.CommandAlias;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmdCooldown.CmdCooldown.CMICooldown;
-import com.Zrips.CMI.Modules.CmdWarmUp.CmdWarmUp;
-
-import com.Zrips.CMI.Modules.Permissions.PermissionInfo;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-import com.Zrips.CMI.commands.CommandsHandler;
+import com.Zrips.CMI.Modules.SpecializedCommands.SpecCMDCooldown;
 
 public class CooldownManager {
-    private HashMap<String, CmdWarmUp> cooldowns = new HashMap<String, CmdWarmUp>();
+    private HashMap<String, CMICmdCooldown> cooldowns = new HashMap<String, CMICmdCooldown>();
 
     CMI plugin;
 
@@ -31,11 +22,21 @@ public class CooldownManager {
 	return cooldowns.size();
     }
 
-    public void addCD(String cmd, Long time) {
-	cooldowns.put(cmd.toLowerCase(), new CmdWarmUp(cmd, time, false));
+    @Deprecated
+    public void addCD(String cmd, Long seconds) {
+	addCooldown(new CMICmdCooldown(cmd, seconds.intValue()));
     }
 
-    private CmdWarmUp getTime(String cmd) {
+    public void addCooldown(String cmd, int seconds) {
+	addCooldown(new CMICmdCooldown(cmd, seconds));
+    }
+
+    public void addCooldown(CMICmdCooldown cooldown) {
+	cooldowns.put(cooldown.getCommand().toLowerCase(), cooldown);
+    }
+
+    private CMICmdCooldown getCooldown(String cmd) {
+	
 	return null;
     }
 
@@ -48,11 +49,12 @@ public class CooldownManager {
     }
 
     public boolean removeCooldown(CommandSender sender, String cmd) {
+	
 	return true;
     }
 
     public boolean isCmdInCooldown(CommandSender sender, String cmd) {
-
+	
 	return false;
     }
 
@@ -61,50 +63,22 @@ public class CooldownManager {
 	return true;
     }
 
-    public boolean inCD(String cmd, Long t) {
-	return false;
-    }
-
     HashMap<UUID, CmdCooldown> playerCustomCooldowns = new HashMap<UUID, CmdCooldown>();
 
-    public boolean canUseSpecCommand(Player player, commandCooldown cooldown, boolean inform) {
+    CmdCooldown globalCooldowns = new CmdCooldown();
+
+    public boolean canUseSpecCommandGlobal(CommandSender sender, SpecCMDCooldown cooldown, boolean inform) {
 
 	return true;
     }
 
-    public HashMap<String, CmdWarmUp> getCooldowns() {
-	return cooldowns;
+    public boolean canUseSpecCommand(Player player, SpecCMDCooldown cooldown, boolean inform) {
+	
+	return true;
     }
 
-    public class commandCooldown {
-	private Long cd = 0L;
-	private String cmd;
-
-	public Long getCd() {
-	    return cd;
-	}
-
-	public commandCooldown setCd(Long cd) {
-	    this.cd = cd;
-	    return this;
-	}
-
-	public String getCmd() {
-	    return cmd;
-	}
-
-	public String getBaseCmd() {
-	    return cmd.contains(" ") ? cmd.split(" ")[0] : cmd;
-	}
-
-	public commandCooldown setCmd(String cmd) {
-	    return null;
-	}
-
-	public long untilNextUse(Long usedOn) {
-	    return (usedOn + (getCd() * 1000)) - System.currentTimeMillis();
-	}
-
+    public HashMap<String, CMICmdCooldown> getCooldowns() {
+	return cooldowns;
     }
 
 }

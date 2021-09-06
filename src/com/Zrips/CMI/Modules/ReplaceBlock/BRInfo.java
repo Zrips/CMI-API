@@ -28,6 +28,8 @@ public class BRInfo {
 
     private boolean running = false;
 
+//    private int wId = 0;
+//    private short wData = -1;
     private int y = -1;
 
     private long replaced = 0L;
@@ -50,7 +52,6 @@ public class BRInfo {
 	    this.y = this.RI.getWorld().getMaxHeight();
 	return this.y;
     }
-
 
     public void addReplaced() {
 	this.replaced++;
@@ -129,7 +130,10 @@ public class BRInfo {
     }
 
     public Player getPlayer() {
-	return null;
+	    Player p = Bukkit.getPlayer(this.player.getUniqueId());
+	    if (p != null)
+		this.player = p;
+	return this.player;
     }
 
     public void setPlayer(Player Player) {

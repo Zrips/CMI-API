@@ -2,7 +2,11 @@ package com.Zrips.CMI.Modules.SpecializedCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,24 +18,30 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIChatColor;
 import com.Zrips.CMI.Containers.CMIInteractType;
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.LC;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.Modules.Portals.CMIPortal;
-import com.Zrips.CMI.Modules.RawMessages.RawMessage;
 import com.Zrips.CMI.commands.CMICommand;
 import com.Zrips.CMI.commands.CommandsHandler;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import com.Zrips.CMI.events.CMIPlayerKickEvent;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.TitleMessages.CMITitleMessage;
+import net.Zrips.CMILib.Version.Version;
 
 public class SpecializedCommandManager {
 
@@ -41,27 +51,75 @@ public class SpecializedCommandManager {
 	this.plugin = plugin;
     }
 
-    public void processAliasCmdsAsPlayer(List<String> cmds, final Player player) {
+    HashMap<UUID, HashMap<String, Long>> runaway = new HashMap<UUID, HashMap<String, Long>>();
+
+    public void clearCache(UUID uuid) {
+    }
+
+    public void processAliasCmdsAsPlayer(String initializer, List<String> cmds, final Player player) {
+
+    }
+
+    private void process(String initializer, List<String> cmds, final Player player) {
 
     }
 
     public void processCmds(List<String> cmds) {
-	processCmds(cmds, null, null, null);
+	processCmds(null, cmds, null, null, null);
     }
 
     public void processCmds(List<String> cmds, CommandSender sender) {
-	processCmds(cmds, null, null, sender);
+	processCmds(null, cmds, null, null, sender);
     }
 
     public void processCmds(List<String> cmds, final Player player) {
-	processCmds(cmds, player, null, null);
+	processCmds(null, cmds, player, null, null);
     }
 
     public void processCmds(List<String> cmds, final Player player, CMIInteractType clickType) {
-	processCmds(cmds, player, clickType, null);
+	processCmds(null, cmds, player, clickType, null);
     }
 
-    public void processCmds(List<String> cmds, final Player player, CMIInteractType clickType, CommandSender sender) {
+    public void processCmds(String initializer, List<String> cmds, final Player player) {
+	processCmds(initializer, cmds, player, null, null);
+    }
+
+    public void processCmds(String initializer, List<String> cmds, final Player player, CMIInteractType clickType) {
+	processCmds(initializer, cmds, player, clickType, null);
+    }
+
+    public void processCmds(String initializer, List<String> cmds, final Player player, CMIInteractType clickType, CommandSender sender) {
+
+    }
+
+    private class CheckStatements {
+	HashMap<String, Boolean> statements = new HashMap<String, Boolean>();
+
+	private String temp = null;
+
+	private CheckStatements() {
+
+	}
+
+	public void setStatement(String statement, boolean value) {
+	    statements.put(statement.toLowerCase(), value);
+	}
+
+	public Boolean getStatementValue(String statement) {
+	    return statements.get(statement.toLowerCase());
+	}
+
+	public String getTemp() {
+	    return temp;
+	}
+
+	public void setTemp(String temp) {
+	    this.temp = temp;
+	}
+
+    }
+
+    private void process(String initializer, List<String> cmds, final Player player, CMIInteractType clickType, CommandSender sender) {
 
     }
 
@@ -70,7 +128,7 @@ public class SpecializedCommandManager {
     }
 
     public enum specialisedCommandType {
-	action, subaction, condition;
+	action, subaction, condition, statement;
     }
 
     private enum invEmptyType {
@@ -97,11 +155,21 @@ public class SpecializedCommandManager {
 	hasExp("hasexp:[value][@][?][#]!", specialisedCommandType.condition),
 	votes("votes:[value][@][?][#]!", specialisedCommandType.condition),
 	cooldown("cooldown:[value][?][#]!", specialisedCommandType.condition),
+	ucooldown("ucooldown:[value][?][#]!", specialisedCommandType.condition),
+	gcooldown("gcooldown:[value][?][#]!", specialisedCommandType.condition),
 	ifonline("ifonline:[value][?][#]!", specialisedCommandType.condition),
 	ifoffline("ifoffline:[value][?][#]!", specialisedCommandType.condition),
 	ifempty("ifempty:[value][?][#]!", specialisedCommandType.condition),
 
 	check("check:[value1][==|>|>=|<|<=|!=][value2][?][#]!", specialisedCommandType.condition),
+
+	statement("statement:[value]!", specialisedCommandType.statement),
+	if_("if:[value][@][#]!", specialisedCommandType.statement),
+
+	ifhasair("ifhasair:[value][@][#]!", specialisedCommandType.condition),
+	ifhashunger("ifhashunger:[value][@][#]!", specialisedCommandType.condition),
+	ifhashealth("ifhashealth:[value][@][#]!", specialisedCommandType.condition),
+	ifingamemode("ifingamemode:[value][@][#]!", specialisedCommandType.condition),
 
 	ifinworld("ifinworld:[value][@][?][#]!", specialisedCommandType.condition),
 	ifinportal("ifinportal:[value][@][?][#]!", specialisedCommandType.condition),
@@ -155,7 +223,6 @@ public class SpecializedCommandManager {
 	}
 
 	public static specCommandAction get(String arg) {
-
 	    return null;
 	}
     }
@@ -165,6 +232,7 @@ public class SpecializedCommandManager {
 	private specialisedCommand action = null;
 	private List<specCommandAction> subactions = new ArrayList<specCommandAction>();
 	private List<specCommandAction> list = new ArrayList<specCommandAction>();
+	private List<specCommandAction> statements = new ArrayList<specCommandAction>();
 
 	public String getCmd() {
 	    return cmd;
@@ -178,7 +246,24 @@ public class SpecializedCommandManager {
 	    return list;
 	}
 
+//	public void setList(List<specCommandAction> list) {
+//	    this.list = list;
+//	}
+
 	public void add(specCommandAction l) {
+	    if (l.getCmd().getType().equals(specialisedCommandType.action)) {
+		action = l.getCmd();
+		return;
+	    }
+	    if (l.getCmd().getType().equals(specialisedCommandType.subaction)) {
+		subactions.add(l);
+		return;
+	    }
+	    if (l.getCmd().getType().equals(specialisedCommandType.statement)) {
+		statements.add(l);
+		return;
+	    }
+	    this.list.add(l);
 	}
 
 	public specialisedCommand getAction() {
@@ -189,6 +274,13 @@ public class SpecializedCommandManager {
 	    return subactions;
 	}
 
+	public List<specCommandAction> getStatements() {
+	    return statements;
+	}
+
+//	public void setAction(specialisedCommand action) {
+//	    this.action = action;
+//	}
     }
 
     public class specCommandAction {
@@ -198,6 +290,8 @@ public class SpecializedCommandManager {
 	private boolean opposite = false;
 	private Object value = null;
 	private Object value2 = null;
+
+	private String initializer = null;
 
 	public specCommandAction(specialisedCommand cmd) {
 	    this.cmd = cmd;
@@ -250,17 +344,30 @@ public class SpecializedCommandManager {
 	public void setOpposite(boolean opposite) {
 	    this.opposite = opposite;
 	}
+
+	public String getInitializer() {
+	    return initializer;
+	}
+
+	public void setInitializer(String initializer) {
+	    this.initializer = initializer;
+	}
     }
 
     public specCommand processSpecializedCommand(String cmd) {
-
+	
 	return null;
     }
 
     public boolean isSpecializedCommand(String cmd) {
+	specCommand processed = processSpecializedCommand(cmd);
+	if (processed.getConditionList().isEmpty() && processed.getAction() == null) {
+	    return false;
+	}
 	return true;
     }
 
+//    Pattern patern = Pattern.compile("^ptarget:(\\S+)!");
     Pattern patern = Pattern.compile("^ptarget:(\\S+)!|^asPlayer! ptarget:(\\S+)!");
 
     public boolean executeCmd(String cmd, Player senderPlayer) {
@@ -272,26 +379,45 @@ public class SpecializedCommandManager {
     }
 
     public boolean executeCmd(String cmd, Player senderPlayer, CMIInteractType clickType, CommandSender sender) {
+	return executeCmd(null, cmd, senderPlayer, clickType, sender);
+    }
+
+    public boolean executeCmd(String initializer, String cmd, Player senderPlayer, CMIInteractType clickType, CommandSender sender) {
+	return executeCmd(initializer, cmd, senderPlayer, clickType, sender, null);
+    }
+
+    public boolean executeCmd(String initializer, String cmd, Player senderPlayer, CMIInteractType clickType, CommandSender sender, CheckStatements groupedStatements) {
+	
 	return true;
+    }
+
+    private static void processCondition(failType feedback, CheckStatements groupedConditions) {
+	if (groupedConditions == null || groupedConditions.getTemp() == null)
+	    return;
+
+	groupedConditions.setStatement(groupedConditions.getTemp(), feedback == failType.none);
+	groupedConditions.setTemp(null);
     }
 
     private static final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", Pattern.LITERAL);
 
     public synchronized boolean dispatch(CommandSender sender, String commandLine) throws CommandException {
-	return false;
+	    return false;
     }
 
     private static boolean isOpCmd(String cmd) {
-	return false;
+	return cmd.toLowerCase().startsWith("op") || cmd.toLowerCase().startsWith("minecraft:op") || cmd.toLowerCase().startsWith("deop") || cmd.toLowerCase().startsWith("minecraft:deop");
     }
 
     private failType deductForCommand(Player player, List<specCommandAction> conditions) {
+	
 	return null;
     }
 
-    Pattern checkPattern = Pattern.compile("(.+)(==|>=|>|<=|<|!=)(.+)");
+    Pattern checkPattern = Pattern.compile("(.+)?(==|>=|>|<=|<|!=)(.+)");
 
-    private failType canPerformCommand(Player player, List<specCommandAction> conditions, boolean deduct, CMIInteractType clickType) {
+    private failType canPerformCommand(Player player, List<specCommandAction> conditions, boolean deduct, CMIInteractType clickType, CheckStatements groupedStatements) {
+
 	return null;
     }
 

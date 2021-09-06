@@ -1,9 +1,11 @@
 package com.Zrips.CMI.Modules.Economy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.bukkit.World;
+
+import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Economy.EconomyManager.WorldGroup;
 
@@ -13,18 +15,24 @@ public class CMIEconomyAcount {
     private CMIUser user = null;
 
     public CMIEconomyAcount(CMIUser user) {
+	this.user = user;
     }
 
     public WorldGroup getCurrentWorldGroup() {
-	return null;
+	World world = user.getWorld();
+	WorldGroup group = world == null ? CMI.getInstance().getEconomyManager().getWorldGroup(EconomyManager.CMIDefaultWorld) : CMI.getInstance().getEconomyManager().getWorldGroup(world.getName());
+	return group;
     }
 
     public String getCurrentWorldGroupName() {
-	return null;
+	World world = user.getWorld();
+	String name = world == null ? EconomyManager.CMIDefaultWorld : world.getName();
+	return name;
     }
 
     public Double setBalance(double amount) {
-	return null;
+	WorldGroup defaultGroup = CMI.getInstance().getEconomyManager().getDefaultGroup();
+	return setBalance(defaultGroup, amount);
     }
 
     public Double setBalance(WorldGroup defaultGroup, double amount) {
@@ -36,27 +44,28 @@ public class CMIEconomyAcount {
     }
 
     public Double setBalance(WorldGroup defaultGroup, double amount, boolean save, boolean reloading) {
-	return null;
+	Double balance = balances.put(defaultGroup, amount);
+	return balance;
     }
 
     private static void fireEvent(final CMIUser user, final Double from, final Double to, String type, CMIUser source) {
+
     }
 
     public Double getBalance() {
-	return null;
+	return getBalance(null);
     }
 
     public Double getBalance(String worldName) {
-
-	return null;
+	return 0D;
     }
 
     public String getFormatedBalance() {
-	return null;
+	return getFormatedBalance(null);
     }
 
     public String getFormatedBalance(boolean shorts) {
-	return null;
+	return getFormatedBalance(null, shorts);
     }
 
     public String getFormatedBalance(String worldName) {
@@ -65,15 +74,16 @@ public class CMIEconomyAcount {
 
     public String getFormatedBalance(String worldName, boolean shorts) {
 
-	return null;
+	return "";
     }
 
-    private static String format(double number, List<String> suffixes) {
-	return null;
+    public static String format(double number, HashMap<Long, String> hashMap, String worldName) {
+
+	return "";
     }
 
     public Double deposit(double amount) {
-	return null;
+	return deposit(null, amount);
     }
 
     public Double deposit(String worldName, double amount) {
@@ -86,7 +96,7 @@ public class CMIEconomyAcount {
     */
     public Double deposit(String worldName, double amount, CMIUser source) {
 
-	return null;
+	return 0D;
     }
 
     public Double withdraw(double amount) {
@@ -105,12 +115,10 @@ public class CMIEconomyAcount {
     */
     public Double withdraw(String worldName, double amount, CMIUser target) {
 
-	return null;
+	return 0D;
     }
 
     public boolean has(double amount) {
-	// Update for multiworld support
-//	return has(getCurrentWorldGroupName(), amount);
 	return has(null, amount);
     }
 
@@ -123,12 +131,12 @@ public class CMIEconomyAcount {
     }
 
     public HashMap<String, Double> getWorldGroupBalancesRounded() {
-
-	return null;
+	HashMap<String, Double> map = new HashMap<String, Double>();
+	return map;
     }
 
     public HashMap<String, Double> getWorldGroupBalances() {
-
-	return null;
+	HashMap<String, Double> map = new HashMap<String, Double>();
+	return map;
     }
 }

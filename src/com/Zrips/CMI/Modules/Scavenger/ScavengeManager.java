@@ -7,9 +7,10 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
-import com.Zrips.CMI.Modules.GUI.CMIGui;
-import com.Zrips.CMI.Modules.GUI.CMIGuiButton;
+
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ScavengeManager {
 
@@ -35,12 +36,13 @@ public class ScavengeManager {
     public static boolean ItemMaterialDurabilityCheck = true;
     public static boolean InvertBlackList = false;
     public static boolean AllowItemPickups = false;
+    public static boolean ResetRepairCost = true;
     public static Double ItemBreakDurabilityChange = 0D;
 
     public static Set<CMIMaterial> blackList = new HashSet<CMIMaterial>();
 
     public void loadConfig() {
-
+	
     }
 
 //item black list
@@ -55,6 +57,7 @@ public class ScavengeManager {
     }
 
     private void updateExtractor(CMIGui gui) {
+
     }
 
     private double format(double number) {

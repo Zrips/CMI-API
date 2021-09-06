@@ -3,7 +3,8 @@ package com.Zrips.CMI.commands;
 import org.bukkit.command.CommandSender;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.FileHandler.ConfigReader;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class Void implements Cmd {
 

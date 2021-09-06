@@ -5,15 +5,18 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmiItems.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class CMIDataWatcher {
 
     private Integer id;
+    private Integer secId = null;
     private Object stand;
     private Location loc;
     private CMIItemStack item;
     private CMIHoloLineType type;
+
+    private boolean updatingHead = false;
 
 //    @Deprecated
 //    public CMIDataWatcher(Integer id, Object stand) {
@@ -24,6 +27,13 @@ public class CMIDataWatcher {
     public CMIDataWatcher(Integer id, Object stand, CMIHoloLineType type) {
 	this.stand = stand;
 	this.id = id;
+	this.type = type;
+    }
+
+    public CMIDataWatcher(Integer id, Integer secid, Object stand, CMIHoloLineType type) {
+	this.stand = stand;
+	this.id = id;
+	this.secId = secid;
 	this.type = type;
     }
 
@@ -44,7 +54,6 @@ public class CMIDataWatcher {
     }
 
     public void remove(Player player) {
-	CMI.getInstance().getNMS().removeHologram(player, id);
     }
 
     public Location getLoc() {
@@ -54,7 +63,6 @@ public class CMIDataWatcher {
     public void setLoc(Location loc) {
 	this.loc = loc;
     }
-
 
     public CMIHoloLineType getType() {
 	return type;
@@ -70,5 +78,13 @@ public class CMIDataWatcher {
 
     public void setItem(CMIItemStack item) {
 	this.item = item;
+    }
+
+    public boolean isUpdatingHead() {
+	return updatingHead;
+    }
+
+    public void setUpdatingHead(boolean updatingHead) {
+	this.updatingHead = updatingHead;
     }
 }

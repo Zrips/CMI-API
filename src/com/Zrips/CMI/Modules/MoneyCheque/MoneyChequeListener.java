@@ -11,11 +11,15 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
+import net.Zrips.CMILib.NBT.CMINBT;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTManager.CustomNBTType;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.events.CMIAnvilItemRenameEvent;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.Version.Version;
 
 public class MoneyChequeListener implements Listener {
     private CMI plugin;
@@ -24,13 +28,4 @@ public class MoneyChequeListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void playerInteractOneTime(PlayerInteractEvent event) {
-	
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void playerInteractOneTime(CMIAnvilItemRenameEvent event) {
-	
-    }
 }

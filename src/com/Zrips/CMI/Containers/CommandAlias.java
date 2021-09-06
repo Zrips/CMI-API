@@ -10,8 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Containers.CMIChatColor;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class CommandAlias {
 
@@ -20,9 +20,23 @@ public class CommandAlias {
     private List<String> commands = new ArrayList<String>();
     private String alias = null;
     private boolean requiresPerm = false;
+    private boolean tabComplete = true;
     private CommandAliasType type;
+    
+    private boolean overrideTab = false;
+    private boolean addTabs = false;
+    
+    private boolean disableBase = false;
+
+    private List<String> customTabList = null;
+    private CMITabComplete customTab = null;
 
     private Boolean containsDynamic = null;
+
+//    public CommandAlias(String command, boolean state) {
+//	this.commands.add(command);
+//	this.state = state;
+//    }
 
     public CommandAlias(String alias, List<String> commands, boolean state) {
 	this(alias, commands, state, null);
@@ -33,6 +47,11 @@ public class CommandAlias {
     }
 
     public CommandAlias(String alias, List<String> commands, boolean state, CommandAliasType type, String cmiCommandName) {
+	this.commands.addAll(commands);
+	this.state = state;
+	this.alias = CMIChatColor.stripColor(CMIChatColor.deColorize(alias));
+	this.type = type;
+	this.cmiCommandName = cmiCommandName;
     }
 
     public boolean getState() {
@@ -50,13 +69,13 @@ public class CommandAlias {
     }
 
     public String getCleanCommand() {
-	
-	return null;
+	    return "";
     }
 
     public String getCommand(CommandSender sender, List<String> args) {
+
+	    return "";
 	
-	return null;
     }
 
     public List<String> getCommands() {
@@ -64,7 +83,9 @@ public class CommandAlias {
     }
 
     public String getCommandsForLore() {
-	return null;
+
+	String lore = "";
+	return lore;
     }
 
     public String getAlias() {
@@ -81,6 +102,16 @@ public class CommandAlias {
     }
 
     public void recalculateDynamicVariables() {
+	containsDynamic = null;
+	for (String one : commands) {
+	    Matcher match = patern.matcher(one);
+	    if (match.find()) {
+		containsDynamic = true;
+		break;
+	    }
+	}
+	if (containsDynamic == null)
+	    containsDynamic = false;
     }
 
     public String getAliasBaseCommand() {
@@ -117,5 +148,65 @@ public class CommandAlias {
 
     public String getCmiCommandName() {
 	return cmiCommandName;
+    } 
+
+    public boolean isTabComplete() {
+	return tabComplete;
     }
+
+    public void setTabComplete(boolean tabComplete) {
+	this.tabComplete = tabComplete;
+    }
+
+    public List<String> getCustomTabRawList() {
+	return customTabList;
+    }
+
+    public CMITabComplete getCustomTab() {
+	return customTab;
+    }
+
+    public List<Object> getTabCompleteList(String[] args) {
+	if (customTab == null)
+	    return new ArrayList<Object>();
+	return customTab.getTabCompleteList(args);
+    }
+
+    public void recheckTabCompletes() {
+	this.customTab = new CMITabComplete();
+	for (String tab : this.customTabList) {
+	    this.customTab.addTabComplete(tab);
+	}
+    }
+
+    public void setCustomTab(List<String> customTab) {
+	this.customTab = new CMITabComplete();
+	this.customTabList = customTab;
+	recheckTabCompletes();
+    }
+
+    public boolean isDisableBase() {
+	return disableBase;
+    }
+
+    public void setDisableBase(boolean disableBase) {
+	this.disableBase = disableBase;
+    }
+
+    public boolean isOverrideTab() {
+	return overrideTab;
+    }
+
+    public void setOverrideTab(boolean overrideTab) {
+	this.overrideTab = overrideTab;
+    }
+
+    public boolean isAddTabs() {
+	return addTabs;
+    }
+
+    public void setAddTabs(boolean addTabs) {
+	this.addTabs = addTabs;
+    }
+
 }

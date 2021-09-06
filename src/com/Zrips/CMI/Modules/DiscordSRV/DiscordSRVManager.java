@@ -11,13 +11,14 @@ public class DiscordSRVManager {
     private String channelName = null;
 
     public DiscordSRVManager(CMI plugin) {
+	
     }
 
     public boolean enabled() {
 	return false;
     }
 
-
     public void sendDiscordMessage(Player player, String message) {
+	
     }
 }

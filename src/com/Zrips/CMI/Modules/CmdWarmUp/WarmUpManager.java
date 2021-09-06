@@ -33,6 +33,7 @@ public class WarmUpManager {
     }
 
     private CmdWarmUp getTime(String cmd) {
+	
 	return null;
     }
 
@@ -41,11 +42,12 @@ public class WarmUpManager {
     }
 
     public boolean canMove(UUID uuid) {
-
+	
 	return true;
     }
 
     public boolean canMoveByCmd(String cmd) {
+	
 	return true;
     }
 
@@ -58,27 +60,31 @@ public class WarmUpManager {
 
     public boolean startTeleportUsage(TpAction action, Player player, Location loc) {
 
+
 	return true;
     }
 
     public boolean startCmdUsage(CommandSender sender, String cmd) {
 
+
 	return true;
     }
 
     private void performCmd(UUID uuid) {
+	
 
     }
 
     private void performCmd(Player player, WarmUpInfo info) {
+	
     }
 
     private void count(UUID uuid) {
-
+	
     }
 
     public boolean cancel(UUID uuid) {
-
+	
 	return false;
     }
 

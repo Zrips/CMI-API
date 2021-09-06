@@ -3,11 +3,7 @@ package com.Zrips.CMI.Modules.Elytra;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import com.Zrips.CMI.CMI;
 
@@ -32,25 +28,22 @@ public class ElytraLaunchListener implements Listener {
 	}
 
 	public void setLastCharge() {
+	    if (started == null)
+		started = System.currentTimeMillis();
+	    if (this.lastCharge != null && this.lastCharge + 333 < System.currentTimeMillis()) {
+		started = System.currentTimeMillis();
+	    } else
+		this.lastCharge = System.currentTimeMillis();
 	}
 
 	public boolean isFullyCharged() {
+	    if (started == null || lastCharge == null)
 		return false;
+	    return started + (plugin.getConfigManager().ElytraLaunchTime * 1000) < System.currentTimeMillis();
 	}
     }
 
     HashMap<UUID, CMILaunch> map = new HashMap<UUID, CMILaunch>();
 
-    @EventHandler
-    public void onSneakEnd(PlayerToggleSneakEvent event) {
-    }
 
-    @EventHandler
-    public void onMoveRemove(PlayerMoveEvent event) {
-    }
-
-    @EventHandler
-    public void onElytraLaunch(PlayerInteractEvent event) {
-	
-    }
 }

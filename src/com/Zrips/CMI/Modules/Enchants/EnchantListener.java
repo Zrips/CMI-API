@@ -1,18 +1,8 @@
 package com.Zrips.CMI.Modules.Enchants;
 
-import java.util.Map.Entry;
-
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
 
 public class EnchantListener implements Listener {
     private CMI plugin;
@@ -21,12 +11,5 @@ public class EnchantListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void PrepareItemEnchantEvent(PrepareItemEnchantEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void InventoryCloseEvent(InventoryCloseEvent event) {
-    }
 
 }

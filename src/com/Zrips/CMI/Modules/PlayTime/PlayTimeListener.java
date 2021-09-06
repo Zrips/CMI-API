@@ -17,11 +17,4 @@ public class PlayTimeListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerMoveExtendedRnage(PlayerQuitEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerMoveExtendedRnage(PlayerJoinEvent event) {
-    }
 }

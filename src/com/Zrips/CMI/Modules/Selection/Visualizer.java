@@ -34,9 +34,25 @@ public class Visualizer {
     }
 
     public void cancelAll() {
+	if (id != -1) {
+	    Bukkit.getScheduler().cancelTask(id);
+	}
+	if (errorId != -1) {
+	    Bukkit.getScheduler().cancelTask(errorId);
+	}
+	loc = null;
     }
 
     public boolean isSameLoc() {
+	if (loc == null)
+	    return false;
+	if (loc.getWorld() != player.getWorld())
+	    return false;
+	if (!errorAreas.isEmpty() && errorLocations.isEmpty())
+	    return false;
+	if (loc.distance(player.getLocation()) > 1)
+	    return false;
+
 	return true;
     }
 

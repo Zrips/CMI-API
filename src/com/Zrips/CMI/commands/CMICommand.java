@@ -9,6 +9,9 @@ public class CMICommand {
     private CAnnotation anottation;
 
     private Boolean enabled = null;
+    
+    private Boolean baseEnabled = true;
+    
 
     public CMICommand(Cmd cmdClass, String name, CAnnotation anottation) {
 	this.cmdClass = cmdClass;
@@ -39,7 +42,7 @@ public class CMICommand {
     }
 
     public String getTranslatedArgs() {
-	return null;
+	return "";
     }
 
     public void setAnottation(CAnnotation anottation) {
@@ -52,6 +55,14 @@ public class CMICommand {
 
     public void setEnabled(Boolean enabled) {
 	this.enabled = enabled;
+    }
+
+    public Boolean getBaseEnabled() {
+	return baseEnabled;
+    }
+
+    public void setBaseEnabled(Boolean baseEnabled) {
+	this.baseEnabled = baseEnabled;
     }
 
 }

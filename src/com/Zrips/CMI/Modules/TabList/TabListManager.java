@@ -3,8 +3,8 @@ package com.Zrips.CMI.Modules.TabList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
@@ -47,21 +47,27 @@ public class TabListManager {
     private int SortingAutoUpdate = 1;
 
     public void stop() {
+	if (sched != -1) {
+	    Bukkit.getScheduler().cancelTask(sched);
+	    sched = -1;
+	}
+	if (sortSched != -1) {
+	    Bukkit.getScheduler().cancelTask(sortSched);
+	    sortSched = -1;
+	}
     }
 
     public void loadConfig() {
-
+	
     }
 
     private void tasker() {
-
+	
     }
 
-    private void sortTasker() {
-
-    }
 
     public TabList getTL(Player player) {
+	
 	return null;
     }
 
@@ -69,46 +75,25 @@ public class TabListManager {
     }
 
     public void updateTabList() {
+	
     }
 
     public void updateTablistName(Player player) {
+	
     }
 
     public void updateTabList(Player player) {
+	
     }
 
-    ConcurrentHashMap<Object, Player> sortMapCache = new ConcurrentHashMap<Object, Player>();
-    Long lastUpdate = 0L;
-
-    private void fillSortCache() {
-
-    }
-
-    char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-
-    private String getKey(int place) {
-
-	return null;
-    }
-
-    public void updateTabListSorting() {
-
-    }
-
-    public void forceUpdateTabListSorting() {
-
-    }
-
-    public void updateTabListSorting(Player player) {
-
-    }
 
     public void updateTabListSync(Player player) {
+	
 
     }
 
     public void updateTabListAsync(final Player player) {
-
+	
     }
 
     public boolean isUpdatesOnJoin() {

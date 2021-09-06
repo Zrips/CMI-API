@@ -3,6 +3,7 @@ package com.Zrips.CMI.Modules.tp;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
 
 public class TpInfo {

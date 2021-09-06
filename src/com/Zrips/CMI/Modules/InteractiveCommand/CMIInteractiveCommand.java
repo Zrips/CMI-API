@@ -4,21 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Logs.CMIDebug;
-import com.Zrips.CMI.Containers.CMIChatColor;
-import com.Zrips.CMI.Containers.CMILocation;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMILocation;
 
 public class CMIInteractiveCommand {
 
@@ -34,10 +31,20 @@ public class CMIInteractiveCommand {
     private List<String> signLines = new ArrayList<String>();
 
     public CMIInteractiveCommand(String name) {
+
+	this.name = name;
+
+	signLines.add(" ");
+	signLines.add(" ");
+	signLines.add(" ");
+	signLines.add(" ");
     }
 
     public List<String> getCommands(Player player) {
-	return null;
+	Snd snd = new Snd();
+	snd.setSender(player);
+	snd.setTarget(player);
+	return CMI.getInstance().getLM().updateSnd(snd, new ArrayList<String>(commands));
     }
 
     public List<String> getCommandsOriginal() {
@@ -45,7 +52,11 @@ public class CMIInteractiveCommand {
     }
 
     public List<String> getCommands() {
-	return null;
+	List<String> cmd = new ArrayList<String>();
+	for (String one : commands) {
+	    cmd.add(CMIChatColor.deColorize(one));
+	}
+	return cmd;
     }
 
     public void setCommands(List<String> commands) {
@@ -61,7 +72,11 @@ public class CMIInteractiveCommand {
     }
 
     public List<String> getLocListAsString() {
-	return null;
+	List<String> ls = new ArrayList<String>();
+	for (CMILocation one : loc) {
+	    ls.add(CMI.getInstance().getPlayerManager().convertLocToStringShort(one));
+	}
+	return ls;
     }
 
     public void setLoc(List<CMILocation> loc) {
@@ -80,22 +95,28 @@ public class CMIInteractiveCommand {
     }
 
     public Set<UUID> getUUIDList() {
-	return null;
+	Set<UUID> ls = new HashSet<UUID>();
+	return ls;
     }
 
     public List<Integer> getIDList() {
-	return null;
+	List<Integer> ls = new ArrayList<Integer>();
+	return ls;
     }
 
     public List<String> getUUIDStringList() {
-	return null;
+	List<String> ls = new ArrayList<String>();
+	return ls;
     }
 
     public List<String> getUUIDStringListSave() {
-	return null;
+	List<String> ls = new ArrayList<String>();
+	return ls;
     }
 
     public void setUUIDList(HashMap<UUID, CMINPC> uuid) {
+	this.uuid.clear();
+	this.uuid.putAll(uuid);
     }
 
     public boolean hasUUID(UUID uuid) {
@@ -135,15 +156,15 @@ public class CMIInteractiveCommand {
     }
 
     public List<String> getSignLines() {
-	return null;
+	return signLines;
     }
 
     public boolean isSignLinesEmpty() {
-	return false;
+	return true;
     }
 
     public void updateSignText(final Block block) {
-
+	
     }
 
     public void setSignLines(List<String> signLines) {
@@ -159,7 +180,9 @@ public class CMIInteractiveCommand {
     }
 
     public CMIInteractiveCommand removeEntity(UUID uuid) {
-	return null;
+	if (uuid != null)
+	    CMI.getInstance().getInteractiveCommandManager().removeEntity(uuid);
+	return this;
     }
 
     public CMIInteractiveCommand removeLoc(CMILocation loc) {

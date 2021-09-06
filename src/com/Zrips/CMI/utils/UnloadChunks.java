@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.UCInfo;
 
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+
 public class UnloadChunks {
 
     public ConcurrentHashMap<String, UCInfo> ucinfo = new ConcurrentHashMap<String, UCInfo>();
@@ -18,6 +20,9 @@ public class UnloadChunks {
     }
 
     public void loadRegionFile(final UCInfo scan) {
+	if (scan.getStartTime() == 0L)
+	    scan.setShowInfo(System.currentTimeMillis());
+	loadChunk(scan);
     }
 
     private void loadChunk(final UCInfo scan) {

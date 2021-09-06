@@ -11,16 +11,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.ChunkInfo;
-import com.Zrips.CMI.utils.VersionChecker.Version;
+import net.Zrips.CMILib.Version.Version;
 
 public class ViewRangeListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onLogIn(PlayerJoinEvent event) {
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onJoin(PlayerTeleportEvent event) {
-
-    }
 }

@@ -33,15 +33,14 @@ public class CMIPEFireWork extends CMIPEAnimation {
 
     @Override
     public boolean render(List<Player> players) {
-
 	return true;
     }
 
     private static void ShotFirework(Location loc, FireworkEffect fe) throws Exception {
-
+	
     }
 
-    private static Method getMethod(Class<?> cl, String method) {
+    private static Method getMethod(Class<?> cl, String method) {	
 	return null;
     }
 

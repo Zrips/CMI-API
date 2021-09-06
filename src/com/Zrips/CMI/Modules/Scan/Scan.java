@@ -1,6 +1,8 @@
 package com.Zrips.CMI.Modules.Scan;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -49,7 +51,7 @@ public class Scan {
     }
 
     private static ScanResultLocations checkArmorStand(ScanResultLocations ScanResult, Entity oneEnt) {
-
+	
 	return null;
     }
 
@@ -69,5 +71,18 @@ public class Scan {
     }
 
     public void setCheckedPlace(Player player, int id) {
+	ScanInfo scan = ScanInfo.get(player.getUniqueId());
+	if (scan == null)
+	    return;
+
+	base: for (Entry<Integer, ArrayList<ScanResultLocations>> one : scan.getLocations().entrySet()) {
+	    for (ScanResultLocations oneLoc : one.getValue()) {
+		if (oneLoc.getId() == id) {
+		    oneLoc.setChecked(true);
+		    break base;
+		}
 	    }
+	}
+
+    }
 }

@@ -2,18 +2,21 @@ package com.Zrips.CMI.Modules.ChatFormat;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.FileHandler.ConfigReader;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
-import com.Zrips.CMI.Modules.RawMessages.RawMessage;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class ChatFormatManager {
 
@@ -21,6 +24,7 @@ public class ChatFormatManager {
 
     HashMap<Integer, String> groupFormats = new HashMap<Integer, String>();
     HashMap<Integer, String> groupMessageFormats = new HashMap<Integer, String>();
+
 //    private HashMap<UUID, String> fixedChats = new HashMap<UUID, String>();
     private HashMap<String, CMIChatRoom> chatRooms = new HashMap<String, CMIChatRoom>();
     private Set<UUID> staffChats = new HashSet<UUID>();
@@ -33,16 +37,32 @@ public class ChatFormatManager {
     private boolean BungeeStaffMessages = true;
 
     public void clearCache(UUID uuid) {
-	staffChats.remove(uuid);
-	for (Entry<String, CMIChatRoom> one : new HashMap<String, CMIChatRoom>(chatRooms).entrySet()) {
-	    one.getValue().cleanOldUsers();
-	    if (one.getValue().getUsers().isEmpty())
-		chatRooms.remove(one.getKey());
-	}
     }
 
     public ChatFormatManager(CMI plugin) {
 	this.plugin = plugin;
+    }
+
+    public enum chatReplySuggestion {
+	pubmsg, privmsg, staffmsg, helpop, chatroom, discord;
+
+	private String sug = "/msg [playerNickName] ";
+
+	public String getSuggestion(CMIUser user) {
+	    if (user == null)
+		return sug;
+	    return getSuggestion(user.getName(false), user.getDisplayName(false), user.getNickName());
+	}
+
+	public String getSuggestion(String playerName, String playerDisplayName, String playerNickName) {
+	  
+
+	    return "";
+	}
+
+	public void setSuggestion(String sug) {
+	    this.sug = sug;
+	}
     }
 
     private String ChatGeneralFormat = "";
@@ -58,7 +78,8 @@ public class ChatFormatManager {
     private boolean hoverItems = false;
 
     public void loadConfig(ConfigReader cfg) {
-
+	
+	
     }
 
     private String getChatGeneralFormat() {
@@ -66,11 +87,15 @@ public class ChatFormatManager {
     }
 
     public String getGroupFormat(Player player) {
-	return null;
+	String group = getChatGeneralFormat();
+
+	return group;
     }
 
     public String getGroupMessageFormat(Player player) {
-	return null;
+	String group = ChatMessageGeneralFormat;
+	
+	return group;
     }
 
     public Long getChatMutedUntil() {
@@ -82,36 +107,59 @@ public class ChatFormatManager {
     }
 
     public void broadcastBungeeMessage(String sender, String message) {
+
     }
 
     public void sendMessage(String sender, String Target, String message) {
-
+	
     }
 
     public void sendMessage(CommandSender sender, Player Target, String message) {
-	sendMessage(sender, sender != null ? sender.getName() : null, Target, Target != null ? Target.getName() : null, message);
+	sendMessage(sender, sender != null ? sender.getName() : null, Target, Target != null ? Target.getName() : null, message, true);
+    }
+
+    public void sendMessage(CommandSender sender, Player Target, String message, boolean showToReceiver) {
+	sendMessage(sender, sender != null ? sender.getName() : null, Target, Target != null ? Target.getName() : null, message, showToReceiver);
     }
 
     public void sendMessage(CommandSender sender, String senderName, Player Target, String targetname, String message) {
+	sendMessage(sender, senderName, Target, targetname, message, true);
+    }
 
+    public void sendMessage(CommandSender sender, String senderName, Player Target, String targetname, String message, boolean showToReceiver) {
+	
     }
 
     public String updateUrl(String message) {
-	return null;
+	return message;
     }
 
     public boolean containsUrl(String message) {
-	return false;
+	Matcher matcher = rule.getMatcher(message);
+	boolean url = false;
+	if (matcher != null)
+	    url = matcher.find();
+
+	Matcher matcherI = itemRule.getMatcher(message);
+	boolean item = false;
+	if (matcherI != null)
+	    item = matcherI.find();
+
+	return url || item;
     }
 
-//    public RawMessage convertHoverOver(RawMessage rm, String message) {
-//	return convertHoverOver(rm, message, null);
-//    }
-
     public RawMessage convertHoverOver(RawMessage rm, String message, Player player) {
+	return convertHoverOver(rm, message, player, false);
+    }
+
+    public RawMessage convertHoverOver(RawMessage rm, String message, Player player, boolean itemReplaced) {
 
 	return null;
+    }
 
+    public StringBuilder convertHoverItem(StringBuilder str, String message, Player player, boolean itemReplaced) {
+
+	return null;
     }
 
     public boolean isBungeeMessages() {
@@ -155,7 +203,9 @@ public class ChatFormatManager {
     }
 
     public HashMap<String, CMIChatRoom> getChatRooms() {
-	return null;
+	Iterator<Entry<String, CMIChatRoom>> iter = chatRooms.entrySet().iterator();
+	
+	return chatRooms;
     }
 
     public CMIChatRoom getChatRoom(String name) {
@@ -165,11 +215,31 @@ public class ChatFormatManager {
     }
 
     public boolean joinChatRoom(CMIUser user, String name) {
+	CMIChatRoom old = this.getChatRooms().get(name.toLowerCase());
+	if (old == null) {
+	    return false;
+	}
+	old.addUser(user);
 	return true;
     }
 
+    @Deprecated
     public boolean createChatRoom(CMIUser user, String name, boolean priv) {
+	return createChatRoom(user, name, priv, false, false);
+    }
+
+    public boolean createChatRoom(CMIUser user, String name, boolean priv, boolean locked, boolean persistent) {
+
 	return true;
+    }
+
+    public void load() {
+	
+
+    }
+
+    public void save() {
+	
     }
 
     @Deprecated
@@ -182,6 +252,10 @@ public class ChatFormatManager {
     }
 
     public void setChatMutedReason(String chatMutedReason) {
+	if (chatMutedReason == null || chatMutedReason.isEmpty())
+	    chatMutedReason = null;
+	else
+	    this.chatMutedReason = chatMutedReason;
     }
 
 }

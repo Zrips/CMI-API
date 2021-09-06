@@ -6,12 +6,14 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.Containers.ScanFindPlace;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class ScanResultLocations {
 
     Location TPloc;
     Location loc;
-    ScanFindPlace place = ScanFindPlace.UNKNOWN;
+    Object place = ScanFindPlace.UNKNOWN;
     private String type = "";
 
     ItemStack[] contents = new ItemStack[64];
@@ -93,10 +95,22 @@ public class ScanResultLocations {
 	this.place = place;
     }
 
-    public ScanFindPlace getScanPlace() {
+    public void setScanPlace(CMIMaterial place) {
+	this.place = place;
+    }
+
+    public Object getScanPlace() {
 	if (this.place == null)
 	    return ScanFindPlace.UNKNOWN;
 	return this.place;
+    }
+
+    public String getScanPlaceName() {
+	if (this.place instanceof CMIMaterial)
+	    return ((CMIMaterial) this.place).getName();
+	if (this.place instanceof ScanFindPlace)
+	    return ((ScanFindPlace) this.place).getName();
+	return ScanFindPlace.UNKNOWN.getName(); 
     }
 
     public String getType() {

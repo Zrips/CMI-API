@@ -22,7 +22,11 @@ public class CMIPlayDay {
     }
 
     public Long getTotalTime() {
-	    return null;
+	Long total = 0L;
+	for (int i = 0; i < 24; i++) {
+	    total += getHourPlaytime(i);
+	}
+	return total;
     }
 
     public void setLastUpdate(Long lastUpdate) {
@@ -42,7 +46,7 @@ public class CMIPlayDay {
     }
 
     public Long getHourPlaytime(int hour) {
-	    return null;
+	return null;
     }
 
     public void setHourPlaytime(int hour, Long playTime, boolean overTime) {

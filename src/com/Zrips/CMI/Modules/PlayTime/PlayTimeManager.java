@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import net.Zrips.CMILib.Items.CMIMaterial;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 public class PlayTimeManager {
@@ -28,7 +28,6 @@ public class PlayTimeManager {
 	thisyear(16, false, CMIMaterial.LIGHT_BLUE_WOOL),
 	year(25, false, CMIMaterial.BLUE_WOOL),
 	total(40, false, CMIMaterial.WHITE_WOOL);
-
 	private Integer StartTime;
 
 	private HashMap<UUID, Long> cache = new HashMap<UUID, Long>();
@@ -47,6 +46,7 @@ public class PlayTimeManager {
 	}
 
 	public void update() {
+	  
 	}
 
 	public Integer getStartTime() {
@@ -72,6 +72,10 @@ public class PlayTimeManager {
 	}
 
 	public static PlaytimeRange getByName(String name) {
+	    for (PlaytimeRange one : PlaytimeRange.values()) {
+		if (one.name().equalsIgnoreCase(name))
+		    return one;
+	    }
 	    return null;
 	}
 
@@ -109,6 +113,10 @@ public class PlayTimeManager {
     }
 
     public void stop() {
+	if (autoTimerBukkitId != 0) {
+	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
+	    autoTimerBukkitId = 0;
+	}
     }
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
@@ -131,7 +139,10 @@ public class PlayTimeManager {
     }
 
     private static int currentHour() {
-	return 0;
+	Date date = new Date();
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     static Integer hourBack(int back) {
@@ -149,7 +160,11 @@ public class PlayTimeManager {
     private Runnable autoTimer = new Runnable() {
 	@Override
 	public void run() {
-
+	    try {
+		updatePlayTimes();
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
 	}
     };
 

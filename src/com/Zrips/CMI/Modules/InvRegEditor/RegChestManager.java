@@ -30,13 +30,16 @@ public class RegChestManager {
     }
 
     public void removeWatcher(Player player) {
+
     }
 
     public boolean isThisSlave(Player player) {
+
 	return false;
     }
 
     public RegWatcher getWatcherInfoBySlave(Player player) {
+
 	return null;
     }
 
@@ -46,18 +49,26 @@ public class RegChestManager {
     }
 
     public boolean openInventory(Player player, Player Target) {
-
 	return true;
     }
 
-    public void UpdateSlaveContents(final Player player) {
+    public void UpdateSlaveContents(final Player player, ItemStack[] MasterContents) {
 
     }
 
     public void UpdateMaster(Player player) {
+
     }
 
     public void UpdateMasterContents(final Player player) {
+	UpdateMasterContents(player, true);
+    }
+
+    public void UpdateMasterContents(final Player player, boolean delay) {
+
+    }
+
+    private void updateMaster(Player player) {
 
     }
 
@@ -65,12 +76,12 @@ public class RegChestManager {
 
     }
 
+    @Deprecated
     public void UpdateSlaveCrafting(final Player player) {
-
     }
 
+    @Deprecated
     public void UpdateMasterCraftingResult(final Player player) {
-
     }
 
     public void UpdateMasterArmor(final Player player) {
@@ -81,7 +92,7 @@ public class RegChestManager {
 
     }
 
-    public void UpdateSlaveItemInHand(final Player player) {
+    public void UpdateSlaveItemInHand(final Player player, ItemStack[] masterContents) {
 
     }
 
@@ -89,20 +100,22 @@ public class RegChestManager {
 
     }
 
-    public void UpdateSlaveOffHand(final Player player) {
+    public void UpdateSlaveOffHand(final Player player, ItemStack[] MasterContents) {
 
     }
 
-    public void UpdateSlaveArmor(final Player player) {
+    public void UpdateSlaveArmor(final Player player, ItemStack[] MasterContents) {
 
     }
 
     @SuppressWarnings("deprecation")
     public Inventory CreateGui(Player source, Player player) {
+
 	return null;
     }
 
     public ItemStack SlaveCraftInv(Player player, int Slot) {
+
 	return null;
     }
 

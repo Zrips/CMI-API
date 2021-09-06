@@ -6,6 +6,7 @@ public class SavedItem {
 
     private ItemStack item;
     private String name;
+    private String category = null;
 
     public SavedItem(String name) {
 	this.name = name;
@@ -34,6 +35,14 @@ public class SavedItem {
 
     public void reset() {
 	item = null;	
+    }
+
+    public String getCategory() {
+	return category;
+    }
+
+    public void setCategory(String category) {
+	this.category = category;
     }
 
 }

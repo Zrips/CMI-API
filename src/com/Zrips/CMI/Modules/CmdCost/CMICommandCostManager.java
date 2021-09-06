@@ -24,13 +24,13 @@ public class CMICommandCostManager {
     }
 
     public CMICommandCost getCost(String cmd) {
-
 	return null;
     }
 
     public CMICommandCostUsage canUseCmd(CommandSender sender, String cmd) {
 
-	return null;
+	    return CMICommandCostUsage.Can;
+
     }
 
     public boolean isContinueCommand(CommandSender sender, String cmd) {
@@ -39,10 +39,14 @@ public class CMICommandCostManager {
     }
 
     public boolean loadConfig(boolean isReload) {
+	
 	return true;
     }
 
     private static CMICommandCost get(String line) {
-	return null;
+	String[] split = line.split(":");
+	CMICommandCost cost = null;
+	
+	return cost;
     }
 }

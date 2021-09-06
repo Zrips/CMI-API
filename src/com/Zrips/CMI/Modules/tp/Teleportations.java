@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -17,10 +19,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMILocation;
-import com.Zrips.CMI.Modules.CmiItems.CMIMaterial;
+import com.Zrips.CMI.Containers.CMIHitBox;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.RandomTeleport;
 import com.Zrips.CMI.Modules.Particl.ParticleManager.CMIPresetAnimations;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+import com.Zrips.CMI.Modules.Worlds.CMIWorld;
+
+import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Teleportations {
 
@@ -35,10 +42,11 @@ public class Teleportations {
 
     public enum TeleportType {
 	Unknown(TeleportCause.UNKNOWN),
-	Elevator(TeleportCause.PLUGIN),
+	Elevator(TeleportCause.UNKNOWN),
 	SafeLogin(TeleportCause.PLUGIN),
 	Spawn(TeleportCause.COMMAND),
 	NetherRoof(TeleportCause.PLUGIN),
+	BelowBedrock(TeleportCause.PLUGIN),
 	Back(TeleportCause.COMMAND),
 	DBack(TeleportCause.COMMAND),
 	Home(TeleportCause.COMMAND),
@@ -96,7 +104,8 @@ public class Teleportations {
 	Lava, Void, Suffocation, Good, Unknown, Plugin, unsafeTeleportation, noPerm;
 
 	public static String getBadLocations() {
-	    return null;
+	    String all = "";
+	    return all;
 	}
     }
 
@@ -108,42 +117,50 @@ public class Teleportations {
     }
 
     private static boolean isImortal(Player player) {
-	return false;
+	CMIUser user = CMI.getInstance().getPlayerManager().getUser(player);
+	if (user == null)
+	    return false;
+	return user.isGod() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode().name().equalsIgnoreCase("SPECTATOR");
     }
 
     public boolean teleport(Player player, Location loc, TeleportType type) {
-	return teleport(null, player, loc, true, false, true, type, false);
+	return teleport(null, player, loc, true, false, true, type, false, null);
     }
 
     public boolean teleport(Player player, Location loc, boolean inform, boolean reqPerm, TeleportType type) {
-	return teleport(null, player, loc, inform, reqPerm, true, type, false);
+	return teleport(null, player, loc, inform, reqPerm, true, type, false, null);
     }
 
     public boolean teleport(Player player, Location loc, boolean inform, boolean reqPerm, boolean forceTeleport, TeleportType type) {
-	return teleport(null, player, loc, inform, reqPerm, forceTeleport, type, false);
+	return teleport(null, player, loc, inform, reqPerm, forceTeleport, type, false, null);
     }
 
     public boolean teleport(Player player, Location loc, boolean reqPerm, TeleportType type) {
-	return teleport(null, player, loc, false, reqPerm, true, type, false);
+	return teleport(null, player, loc, false, reqPerm, true, type, false, null);
     }
 
     public boolean teleport(CommandSender sender, Player player, Location loc, TeleportType type) {
-	return teleport(sender, player, loc, true, true, true, type, false);
+	return teleport(sender, player, loc, true, true, true, type, false, null);
     }
 
     public boolean teleport(CommandSender sender, Player player, Location loc, boolean inform, TeleportType type) {
-	return teleport(sender, player, loc, inform, true, true, type, false);
+	return teleport(sender, player, loc, inform, true, true, type, false, null);
     }
 
     public boolean teleport(CommandSender sender, Player player, Location loc, boolean inform, boolean reqPerm, TeleportType type) {
-	return teleport(sender, player, loc, inform, reqPerm, true, type, false);
+	return teleport(sender, player, loc, inform, reqPerm, true, type, false, null);
     }
 
     public boolean teleport(CommandSender sender, Player player, Location loc, boolean inform, boolean reqPerm, boolean forceTeleport, TeleportType type) {
-	return teleport(sender, player, loc, inform, reqPerm, forceTeleport, type, false);
+	return teleport(sender, player, loc, inform, reqPerm, forceTeleport, type, false, null);
     }
 
     public boolean teleport(CommandSender sender, Player player, Location loc, boolean inform, boolean reqPerm, boolean forceTeleport, TeleportType type, boolean toSpawnIfNeeded) {
+	return teleport(sender, player, loc, inform, reqPerm, forceTeleport, type, toSpawnIfNeeded, null);
+    }
+
+    public boolean teleport(CommandSender sender, Player player, Location loc, boolean inform, boolean reqPerm, boolean forceTeleport, TeleportType type, boolean toSpawnIfNeeded,
+	Integer maxDistanceToCheck) {
 	return false;
     }
 
@@ -156,13 +173,15 @@ public class Teleportations {
     }
 
     public void addBadTeleport(UUID uuid, Location loc) {
+	DangerousTp dtp = new DangerousTp(uuid, loc);
+	badTeleports.put(uuid, dtp);
     }
 
     public void removeBadTp(UUID uuid) {
+	badTeleports.remove(uuid);
     }
 
     public Location getBadTp(UUID uuid) {
-
 	return null;
     }
 
@@ -175,14 +194,15 @@ public class Teleportations {
 	return getSafeLocation(player, loc, reqPerm, forceTeleport, null);
     }
 
+    private Location center(CMIHitBox hitBox, Location cloned) {
+	return null;
+    }
+
     public SafeTeleport getSafeLocation(Player player, Location loc, boolean reqPerm, boolean forceTeleport, Integer maxDistanceToCheck) {
 
 	return null;
     }
 
-//    private boolean finalizeTeleport(Player player, Location loc) {
-//	return finalizeTeleport(player, loc, TeleportType.Unknown, true);
-//    }
 
     public boolean directTeleport(Player player, Location loc, TeleportType type) {
 	return finalizeTeleport(player, loc, type, true);
@@ -191,13 +211,14 @@ public class Teleportations {
     private boolean finalizeTeleport(Player player, Location loc, TeleportType t, boolean toSpawnIfNeeded) {
 
 	return true;
-
     }
 
     private void setTeleportInvulnerability(Player player) {
+	
     }
 
-    public List<Entity> shakePassengers(Player player) {
+    public List<Entity> shakePassengers(Entity entity) {
+	
 	return null;
     }
 
@@ -208,7 +229,7 @@ public class Teleportations {
     }
 
     public boolean isEmpty(Block block) {
-
+	
 	return false;
     }
 
@@ -224,11 +245,12 @@ public class Teleportations {
     }
 
     public boolean isSafeToDrop(Location loc, Player player) {
+	
 	return false;
     }
 
     public Location getDownLocationAsync(Player player, Location oloc, Integer maxDistanceToCheck) {
-
+	
 	return null;
     }
 
@@ -237,12 +259,17 @@ public class Teleportations {
     }
 
     public Location getDownLocation(Player player, Location oloc, Integer maxDistanceToCheck) {
-
+	
 	return null;
     }
 
     public Location getDownLocationSimple(Location oloc) {
+	
+	return null;
+    }
 
+    private Location cycleDown(Location loc) {
+	
 	return null;
     }
 
@@ -261,7 +288,25 @@ public class Teleportations {
     }
 
     public boolean needToFly(Player player) {
-	return true;
+	int distance = 0;
+	Location loc = player.getLocation().clone();
+
+	int y = loc.getBlockY();
+
+	int lowestY = CMIWorld.getMinHeight(loc.getWorld());
+
+	while (isEmpty(loc.getBlock()) && y > lowestY) {
+	    distance++;
+	    y--;
+	    loc.setY(y);
+	}
+
+	if (isBad(loc.getBlock()))
+	    return true;
+
+	if (y <= lowestY)
+	    return true;
+	return distance > 4;
     }
 
     public Location getSafeLocation(Player player) {
@@ -277,6 +322,12 @@ public class Teleportations {
     }
 
     public void fillRLCache() {
+	for (World one : Bukkit.getWorlds()) {
+	    RandomTeleport rtloc = plugin.getConfigManager().getRandomTeleport(one);
+	    if (rtloc == null)
+		continue;
+	    fillRLCache(one);
+	}
     }
 
     private void fillRLCache(World world) {
@@ -284,11 +335,13 @@ public class Teleportations {
     }
 
     public CMILocation fillRLCache(String worldName) {
-
+	
 	return null;
     }
 
+
     public CMILocation getRandomCachedLocation(World world) {
+	
 	return null;
     }
 

@@ -61,11 +61,11 @@ public class CMIChunk {
     }
 
     public CMIChunk recheckBiomes(Chunk chunk) {
-	return null;
+	return this;
     }
 
     public CMIChunk recheckBiomes() {
-	return null;
+	return this;
     }
 
     public World getWorld() {
@@ -90,7 +90,10 @@ public class CMIChunk {
     }
 
     public CMIBiome getBiome() {
-	return null;
+	for (CMIBiome one : biomes) {
+	    return one;
+	}
+	return CMIBiome.PLAINS;
     }
 
     public List<CMIBiome> getBiomes() {
@@ -102,7 +105,7 @@ public class CMIChunk {
     }
 
     public Color getUnbluredColor() {
-
+	
 	return null;
     }
 
@@ -111,6 +114,7 @@ public class CMIChunk {
     }
 
     private static Color blend(Color c0, Color c1) {
+	
 	return null;
     }
 
