@@ -92,7 +92,10 @@ public class CMIHologram {
 	this.loc = loc;
 	updatePages();
     }
-
+    
+    public void onInteraction(Player player, CMIInteractType type) {
+    }
+    
     public List<String> getCommands() {
 	return commands;
     }
