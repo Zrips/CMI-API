@@ -32,7 +32,7 @@ public class ChatFilterManager {
     private int douplicateCommandMinAmount = 5;
     private List<String> douplicateCommandWhiteList = new ArrayList<String>();
 
-    private Boolean capsFilter;
+    private boolean capsFilter = true;
     private int capsIgnoreUnder;
     private int capsPercentage;
 
@@ -43,55 +43,87 @@ public class ChatFilterManager {
     public final static String StringchatFilterFile = "chatfilter.yml";
 
     public void clearCache(UUID uuid) {
-	spamMessages.remove(uuid);
-	spamCommands.remove(uuid);
+        spamMessages.remove(uuid);
+        spamCommands.remove(uuid);
     }
 
     public ChatFilterManager(CMI plugin) {
-	
+
     }
 
     public boolean checkCaps(Player player, String message) {
 
-	return true;
+        return true;
     }
 
     public RuleResponce getCorrectMessage(Player player, String message) {
-	return getCorrectMessage(player, message, false);
+        return getCorrectMessage(player, message, false);
     }
 
     public RuleResponce getCorrectMessage(Player player, String message, boolean privateMessage) {
-	
-	return null;
+
+        RuleResponce responce = new RuleResponce(message);
+
+        return responce;
     }
 
     public boolean isSpamedCommand(Player player, String message) {
-	
-	return false;
+
+        return false;
     }
 
     private boolean isWhiteListedCommand(String command) {
-	
-	return false;
+
+        return false;
     }
 
     public boolean isSpam(Player player, String message) {
-	
-	return false;
+
+        return false;
     }
 
     public static double similarity(String s1, String s2) {
-	    return 1.0;
-
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) {
+            longer = s2;
+            shorter = s1;
+        }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 1.0;
+        }
+        return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
     }
 
     public static int editDistance(String s1, String s2) {
-	
-	return 0;
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        return costs[s2.length()];
     }
 
     private static ChatFilterBlockType getBlockType(String type) {
-	return ChatFilterBlockType.None;
+
+        return ChatFilterBlockType.None;
     }
 
     public void load() {

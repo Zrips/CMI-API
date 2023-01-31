@@ -1,7 +1,5 @@
 package com.Zrips.CMI.Modules.Animations;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,4 +16,11 @@ public class AnimationColoredArmorListener implements Listener {
 	this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void leatherArmor(final CMIArmorChangeEvent event) {
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void leatherArmor(final PlayerJoinEvent event) {
+    }
 }

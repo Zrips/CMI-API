@@ -22,6 +22,7 @@ import com.Zrips.CMI.Modules.Afk.AfkManager;
 import com.Zrips.CMI.Modules.Alias.AliasManager;
 import com.Zrips.CMI.Modules.Animations.AnimationManager;
 import com.Zrips.CMI.Modules.Anvil.AnvilManager;
+import com.Zrips.CMI.Modules.ArmorEffects.ArmorEffectManager;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTManager;
 import com.Zrips.CMI.Modules.BungeeCord.BungeeCordManager;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterManager;
@@ -56,7 +57,6 @@ import com.Zrips.CMI.Modules.Kits.KitsManager;
 import com.Zrips.CMI.Modules.LightFix.LightFix;
 import com.Zrips.CMI.Modules.Mirror.MirrorManager;
 import com.Zrips.CMI.Modules.NickName.NickNameManager;
-import com.Zrips.CMI.Modules.Packets.PacketInjector;
 import com.Zrips.CMI.Modules.Painting.PaintingManager;
 import com.Zrips.CMI.Modules.Particl.ParticleManager;
 import com.Zrips.CMI.Modules.Patrol.PatrolManager;
@@ -66,6 +66,7 @@ import com.Zrips.CMI.Modules.Placeholders.Placeholder;
 import com.Zrips.CMI.Modules.PlayTime.PlayTimeManager;
 import com.Zrips.CMI.Modules.PlayTimeRewards.PlayTimeRewardsManager;
 import com.Zrips.CMI.Modules.PlayerCombat.PlayerCombatManager;
+import com.Zrips.CMI.Modules.PlayerOptions.PlayerOptionsManager;
 import com.Zrips.CMI.Modules.Portals.PortalManager;
 import com.Zrips.CMI.Modules.Ranks.RankManager;
 import com.Zrips.CMI.Modules.Recipes.RecipeManager;
@@ -106,16 +107,16 @@ import com.Zrips.CMI.utils.UnloadChunks;
 import com.Zrips.CMI.utils.Util;
 import com.Zrips.CMI.utils.VersionChecker;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.GUI.GUIManager;
-import net.Zrips.CMILib.Items.ItemManager;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Util.Sorting;
-import net.Zrips.CMILib.Version.Version;
 import net.milkbowl.vault.permission.Permission;
 
 public class CMI extends JavaPlugin {
+
+    public static final String configFolderName = "Settings";
+    public static final String savesFolderName = "Saves";
 
     private boolean fullyLoaded = false;
     protected NMS nms;
@@ -169,8 +170,11 @@ public class CMI extends JavaPlugin {
     protected ParticleManager ParticleManager;
     protected FlightChargeManager FlightChargeManager;
 
+    private ArmorEffectManager armorEffectManager;
+
     protected PaintingManager PaintingManager;
     protected VanishManager VanishManager;
+    protected PlayerOptionsManager PlayerOptionsManager;
     protected InteractiveCommandManager InteractiveCommandManager;
     protected SpecializedCommandManager SpecializedCommandManager;
     protected ArmorStandManager ArmorStandManager;
@@ -234,7 +238,6 @@ public class CMI extends JavaPlugin {
     protected StatsManager statsManager;
     protected AliasManager aliasManager;
     protected CTextManager cTextManager;
-    protected ItemManager itemManager;
 
     protected EventActionManager eventActionManager;
 
@@ -263,13 +266,12 @@ public class CMI extends JavaPlugin {
 
     private long timer = 0L;
 
-
     private boolean mcmmoexpmodulepresent = false;
     private boolean jobsPresent = false;
 
     protected HashMap<String, List<String>> preFetchNames = new HashMap<String, List<String>>();
     protected HashMap<String, UUID> preFetchUUIDs = new HashMap<String, UUID>();
-    private static final UUID ServerUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static final UUID ServerUUID = new UUID(0, 0);
 
     protected static CMI instance;
 
@@ -277,559 +279,556 @@ public class CMI extends JavaPlugin {
 
     protected Scoreboard scoreboard = null;
 
-    private PacketInjector injector;
-
-    public PacketInjector getPacketInjector() {
-	return injector;
-    }
-
     protected String getWorldFolderPath() {
-	return worldFolderPath;
+        return worldFolderPath;
     }
 
     public static CMI getInstance() {
-	return instance;
+        return instance;
     }
 
     private DBClassLoader classLoader;
 
     public DBClassLoader getDBClassloader() {
-	return classLoader;
+        return classLoader;
     }
 
     public void setDBClassloader() {
-	classLoader = new DBClassLoader(this);
+        classLoader = new DBClassLoader(this);
     }
 
-
     public HashMap<String, List<String>> preFetchNames() {
-	return preFetchNames;
+        return preFetchNames;
     }
 
     public HashMap<String, UUID> preFetchUUIDS() {
-	return preFetchUUIDs;
+        return preFetchUUIDs;
     }
 
     public NMS getNMS() {
-	return nms;
+        return nms;
     }
 
     @Deprecated
     public Reflections getRef() {
-	return getReflectionManager();
+        return getReflectionManager();
     }
 
     public Reflections getReflectionManager() {
-	if (ref == null)
-	    ref = new Reflections(this);
-	return ref;
+        if (ref == null)
+            ref = new Reflections(this);
+        return ref;
     }
 
     public MirrorManager getMirrorManager() {
-	return mirror;
+        return mirror;
     }
 
     public LookupService getLookupService() {
-	return LookupService;
+        return null;
     }
 
     public void defaultLocaleDownloader() {
-	
     }
 
-
     public DiscordSRVManager getDiscordSRVManager() {
-	return DiscordSRVManager;
+        return DiscordSRVManager;
     }
 
     public ArmorStandManager getArmorStandManager() {
-	return ArmorStandManager;
+        return ArmorStandManager;
     }
 
     public PlayerCombatManager getPlayerCombatManager() {
-	return PlayerCombatManager;
+        return PlayerCombatManager;
     }
 
     public DynMapManager getDynMapManager() {
-	return DynMapManager;
+        return DynMapManager;
     }
 
     public WarningManager getWarningManager() {
-	return WarningManager;
+        return WarningManager;
     }
 
     public EnchantManager getEnchantManager() {
-	return EnchantManager;
+        return EnchantManager;
     }
 
     public VotifierManager getVotifierManager() {
-	return VotifierManager;
+        return VotifierManager;
     }
 
     public CitizensManager getCitizensManager() {
-	return CitizensManager;
+        return CitizensManager;
     }
 
     public SpecializedCommandManager getSpecializedCommandManager() {
-	return SpecializedCommandManager;
+        return SpecializedCommandManager;
     }
 
     public InteractiveCommandManager getInteractiveCommandManager() {
-	return InteractiveCommandManager;
+        return InteractiveCommandManager;
     }
 
     public ChatFormatManager getChatFormatManager() {
-	return ChatFormatManager;
+        return ChatFormatManager;
     }
 
     public KitsManager getKitsManager() {
-	return kits;
+        return kits;
     }
 
     public SpawnerChargeManager getSpawnerChargesManager() {
-	return charges;
+        return charges;
     }
 
     public SkinManager getSkinManager() {
-	return SkinManager;
+        return SkinManager;
     }
 
     public RecipeManager getRecipeManager() {
-	return RecipeManager;
+        return RecipeManager;
     }
 
     public PaintingManager getPaintingManager() {
-	return PaintingManager;
+        return PaintingManager;
     }
 
     public VanishManager getVanishManager() {
-	return VanishManager;
+        return VanishManager;
+    }
+
+    public PlayerOptionsManager getPlayerOptionsManager() {
+        return PlayerOptionsManager;
     }
 
     public ParticleManager getParticleManager() {
-	return ParticleManager;
+        return ParticleManager;
     }
 
     public DeathMessageManager getDeathMessageManager() {
-	return DeathMessageManager;
+        return DeathMessageManager;
     }
 
     public FlightChargeManager getFlightChargeManager() {
-	return FlightChargeManager;
+        return FlightChargeManager;
     }
 
     public Lag getLagMeter() {
-	return lagMeter;
+        return lagMeter;
     }
 
     public EnderChestManager getEnderChestManager() {
-	return EnderChestManager;
+        return EnderChestManager;
     }
 
     public RegChestManager getRegChestManager() {
-	return RegChestManager;
+        return RegChestManager;
     }
 
     public HologramManager getHologramManager() {
-	return HologramManager;
+        return HologramManager;
     }
 
     public EconomyManager getEconomyManager() {
-	return economyManager;
+        return economyManager;
     }
 
     public CMICommandCostManager getCommandCostManager() {
-	return CMICommandCostManager;
+        return CMICommandCostManager;
     }
 
     public CooldownManager getCooldownManager() {
-	return cooldownManager;
+        return cooldownManager;
     }
 
     public PortalManager getPortalManager() {
-	return portalManager;
+        return portalManager;
     }
 
     public SignManager getSignManager() {
-	return signManager;
+        return signManager;
     }
 
     public SelectionManager getSelectionManager() {
-	return SelectionManager;
+        return SelectionManager;
+    }
+
+    public ArmorEffectManager getArmorEffectManager() {
+        return armorEffectManager;
     }
 
     public WarmUpManager getWarmUpManager() {
-	return WarmUpManager;
+        return WarmUpManager;
     }
 
     public WorldManager getRegionManager() {
-	return regionManager;
+        return regionManager;
     }
 
     public ShulkerBoxManager getShulkerBoxManager() {
-	return shulkerBoxManager;
+        return shulkerBoxManager;
     }
 
     public TimedCommandManager getTimedCommandManager() {
-	return timedCommandManager;
+        return timedCommandManager;
     }
 
     public PermissionsManager getPermissionsManager() {
-	return permissionsManager;
+        return permissionsManager;
     }
 
     public NickNameManager getNickNameManager() {
-	return nickNameManager;
+        return nickNameManager;
     }
 
     public TagManager getTagManager() {
-	return TagManager;
+        return TagManager;
     }
 
     public WarpManager getWarpManager() {
-	return warpManager;
+        return warpManager;
     }
 
     public IpManager getIpManager() {
-	return ipManager;
+        return ipManager;
     }
 
     public PlayTimeRewardsManager getPlayTimeRewardManager() {
-	return PlayTimeRewardsManager;
+        return PlayTimeRewardsManager;
     }
 
     public TpManager getTpManager() {
-	return tpManager;
+        return tpManager;
     }
 
     public Teleportations getTeleportations() {
-	return teleportations;
+        return teleportations;
     }
 
     public StatsManager getStatsManager() {
-	return statsManager;
+        return statsManager;
     }
 
     public JailManager getJailManager() {
-	return JailManager;
+        return JailManager;
     }
 
     public WorthManager getWorthManager() {
-	return WorthManager;
+        return WorthManager;
     }
 
     public AliasManager getAliasManager() {
-	return aliasManager;
+        return aliasManager;
     }
 
     public AfkManager getAfkManager() {
-	return AfkManager;
+        return AfkManager;
     }
 
     public TabListHeaderFooterHandler getTabListHandler() {
-	return TabListHandler;
+        return TabListHandler;
     }
 
     public TabListManager getTabListManager() {
-	return TabListManager;
+        return TabListManager;
     }
 
     public CTextManager getCTextManager() {
-	return cTextManager;
+        return cTextManager;
     }
 
     public CustomNBTManager getCustomNBTManager() {
-	return CustomNBTManager;
+        return CustomNBTManager;
     }
 
     public EventActionManager getEventActionManager() {
-	return eventActionManager;
+        return eventActionManager;
     }
 
     public HomeManager getHomeManager() {
-	return homeManager;
+        return homeManager;
     }
 
     public SchedulerManager getSchedulerManager() {
-	return schedulerManager;
+        return schedulerManager;
     }
 
     public AnvilManager getAnvilManager() {
-	return anvilManager;
+        return anvilManager;
     }
 
     public TotemManager getTotemManager() {
-	return totemManager;
+        return totemManager;
     }
 
     public AnimationManager getAnimationManager() {
-	return AnimationManager;
+        return AnimationManager;
     }
 
-
     public FindBiomeManager getFindBiomeManager() {
-	return findBiomeManager;
+        return findBiomeManager;
     }
 
     public ChatFilterManager getChatFilterManager() {
-	return chatFilterManager;
+        return chatFilterManager;
     }
 
     public SavedInventoryManager getSavedInventoryManager() {
-	return SavedInventoryManager;
+        return SavedInventoryManager;
     }
 
     BungeeCordManager BungeeCordManager;
 
     public BungeeCordManager getBungeeCordManager() {
-	return BungeeCordManager;
+        return BungeeCordManager;
     }
 
     public PatrolManager getPatrolManager() {
-	return PatrolManager;
+        return PatrolManager;
     }
 
     public RankManager getRankManager() {
-	return rankManager;
+        return rankManager;
     }
 
     public PlayerManager getPlayerManager() {
-	return PM;
+        return PM;
     }
 
     public Sorting getSortingManager() {
-	return Sorting;
+        return Sorting;
     }
 
     public PrevNamesFetcher getNamesChecker() {
-	return NamesChecker;
+        return NamesChecker;
     }
 
     public TimeManager getTimeManager() {
-	return TimeManager;
+        return TimeManager;
     }
 
     public VersionChecker getVersionCheckManager() {
-	return versionCheckManager;
+        return versionCheckManager;
     }
 
     public CommandsHandler getCommandManager() {
-	return cManager;
+        return cManager;
     }
 
     public SavedItemManager getSavedItemManager() {
-	return SavedItemManager;
+        return SavedItemManager;
     }
 
     public PlayTimeManager getPlayTimeManager() {
-	return PlayTimeManager;
+        return PlayTimeManager;
     }
 
     public LightFix getLightFixManager() {
-	return LightFixManager;
+        return LightFixManager;
     }
 
     public ChunkPreview getChunkPreviewManager() {
-	return ChunkPreviewManager;
+        return ChunkPreviewManager;
     }
 
     public ViewRangeManager getViewRangeManager() {
-	return ViewRangeManager;
+        return ViewRangeManager;
     }
 
     public Search getSearchManager() {
-	return SearchManager;
+        return SearchManager;
     }
 
     public Scan getScanManager() {
-	return ScanManager;
+        return ScanManager;
     }
 
     public ChunkFix getChunkFixManager() {
-	return ChunkFixManager;
+        return ChunkFixManager;
     }
 
     public ReplaceBlock getReplaceBlockManager() {
-	return replaceblock;
+        return replaceblock;
     }
 
     public UnloadChunks getUnloadChunksManager() {
-	return unloadchunks;
+        return unloadchunks;
     }
 
     public Purge getPurgeManager() {
-	return PurgeManager;
+        return PurgeManager;
     }
 
     public Util getUtilManager() {
-	return UtilManager;
+        return UtilManager;
     }
 
     public Config getConfigManager() {
-	return config;
+        return config;
     }
 
     public ScavengeManager getScavengeManager() {
-	return scavengeManager;
+        return scavengeManager;
     }
 
     public DBManager getDbManager() {
-	return dbManager;
+        return dbManager;
     }
 
     public Language getLM() {
-	return languageManager;
+        return languageManager;
     }
 
     @Override
     public void onDisable() {
-	
+
     }
 
     int lagId = -1;
 
     public Scoreboard getSB() {
-	return scoreboard;
+        return scoreboard;
     }
 
     public void renameDirectory(String fromDir, String toDir) {
     }
 
     public void Enabled(boolean state) {
-	this.setEnabled(state);
+        this.setEnabled(state);
     }
 
     List<String> logo = new ArrayList<String>(Arrays.asList(
 
-	"&7┏━━━┓ &f┏━┓┏━┓ &7┏━━┓",
-	"&7┃┏━┓┃ &f┃ ┗┛ ┃ &7┗┫┣┛",
-	"&7┃┃ ┗┛ &f┃┏┓┏┓┃ &7 ┃┃ ",
-	"&7┃┃ ┏┓ &f┃┃┃┃┃┃ &7 ┃┃ ",
-	"&7┃┗━┛┃ &f┃┃┃┃┃┃ &7┏┫┣┓",
-	"&7┗━━━┛ &f┗┛┗┛┗┛ &7┗━━┛",
-	"&7_______________________________________________________"
+        "&7┏━━━┓ &f┏━┓┏━┓ &7┏━━┓",
+        "&7┃┏━┓┃ &f┃ ┗┛ ┃ &7┗┫┣┛",
+        "&7┃┃ ┗┛ &f┃┏┓┏┓┃ &7 ┃┃ ",
+        "&7┃┃ ┏┓ &f┃┃┃┃┃┃ &7 ┃┃ ",
+        "&7┃┗━┛┃ &f┃┃┃┃┃┃ &7┏┫┣┓",
+        "&7┗━━━┛ &f┗┛┗┛┗┛ &7┗━━┛",
+        "&7_______________________________________________________"
 
     ));
 
     List<String> SpigotLogo = new ArrayList<String>(Arrays.asList(
-	"┏━━━┓ ┏━┓┏━┓ ┏━━┓",
-	"┃┏━┓┃ ┃ ┗┛ ┃ ┗┫┣┛",
-	"┃┃ ┗┛ ┃┏┓┏┓┃  ┃┃ ",
-	"┃┃ ┏┓ ┃┃┃┃┃┃  ┃┃ ",
-	"┃┗━┛┃ ┃┃┃┃┃┃ ┏┫┣┓",
-	"┗━━━┛ ┗┛┗┛┗┛ ┗━━┛",
-	"_______________________________________________________"));
+        "┏━━━┓ ┏━┓┏━┓ ┏━━┓",
+        "┃┏━┓┃ ┃ ┗┛ ┃ ┗┫┣┛",
+        "┃┃ ┗┛ ┃┏┓┏┓┃  ┃┃ ",
+        "┃┃ ┏┓ ┃┃┃┃┃┃  ┃┃ ",
+        "┃┗━┛┃ ┃┃┃┃┃┃ ┏┫┣┓",
+        "┗━━━┛ ┗┛┗┛┗┛ ┗━━┛",
+        "_______________________________________________________"));
 
     private int lastCMILibVersion = 1000100;
     private int requiredCMILibVersion = 1000100;
-    private String slastCMILibVersion = "1.0.1.0";
-    private String srequiredCMILibVersion = "1.0.1.0";
+    private final String slastCMILibVersion = "1.0.1.0";
+    private final String srequiredCMILibVersion = "1.0.1.0";
     public static int cmiLibId = 87610;
 
+    private void libCheck() {
+    }
+
+    private void libDownloader() {
+
+    }
 
     @Override
     public void onEnable() {
-	instance = this;
-	serverStartupTime = System.currentTimeMillis();
+        instance = this;
 
-	Version.getCurrent();
-
-	for (String one : Version.isPaper() ? logo : SpigotLogo) {
-	    sendMessage(Bukkit.getConsoleSender(), CMIChatColor.translate(one));
-	}
-	fullyLoaded = true;
     }
 
     public void consoleMessage(String message) {
-	
+
     }
 
     public void loadMessage(Integer amount, String type, Long took) {
     }
 
     public String getOffOn(Player player, Player whoGets) {
-	return getOffOn(whoGets == null ? player.isOnline() : whoGets.canSee(player) && player.isOnline());
+        return getOffOn(whoGets == null ? player == null ? false : player.isOnline() : whoGets.canSee(player) && player.isOnline());
     }
 
     public String getOffOn(Player player) {
-	return getOffOn(player.isOnline());
+        return getOffOn(player.isOnline());
     }
 
     public String getOffOn(boolean state) {
-	return state ? LC.info_variables_Online.getLocale() : LC.info_variables_Offline.getLocale();
+        return state ? LC.info_variables_Online.getLocale() : LC.info_variables_Offline.getLocale();
     }
 
     public void save(Player player) {
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd, boolean checkOrther, boolean inform) {
-	return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther, inform);
+        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther, inform);
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd) {
-	return getTarget(sender, playerName, cmd.getClass().getSimpleName(), true);
+        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd, boolean checkOrther) {
-	return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther);
+        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther);
     }
 
     public Player getTarget(CommandSender sender, String playerName, String cmd) {
-	return getTarget(sender, playerName, cmd, true);
+        return getTarget(sender, playerName, cmd, true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, String cmd, boolean checkOther) {
-	return getTarget(sender, playerName, cmd, checkOther, true);
+        return getTarget(sender, playerName, cmd, checkOther, true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, String cmd, boolean checkOther, boolean inform) {
-	CMIUser user = getUser(sender, playerName, cmd, inform, checkOther);
-	if (user == null)
-	    return null;
-	return user.getPlayer();
+        CMIUser user = getUser(sender, playerName, cmd, inform, checkOther);
+        if (user == null)
+            return null;
+        return user.getPlayer();
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd, boolean inform, boolean checkOther) {
-	return getUser(sender, playerName, cmd.getClass().getSimpleName(), inform, checkOther);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), inform, checkOther);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd) {
-	return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, true);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd, boolean checkOther) {
-	return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, checkOther);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, checkOther);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd) {
-	return getUser(sender, playerName, cmd, true, true);
+        return getUser(sender, playerName, cmd, true, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd, boolean inform, boolean checkOther) {
-	return getUser(sender, playerName, cmd, inform, checkOther, true);
+        return getUser(sender, playerName, cmd, inform, checkOther, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd, boolean inform, boolean checkOther, boolean informOnPerm) {
-	CMIUser user = null;
-	
-	return user;
+        return null;
     }
 
     public Player getPlayer(String playerName) {
-	
-	return null;
+        return null;
     }
 
     public void info(Object c, CMIUser user, String path, Object... variables) {
     }
 
     public void info(Class<?> c, Player player, String path, Object... variables) {
+        info(c.getSimpleName(), player, path, variables);
     }
 
     public void info(Object c, Player player, String path, Object... variables) {
+        info(c.getClass().getSimpleName(), player, path, variables);
     }
 
     public void info(Object thi, CommandSender sender, String path, Object... variables) {
+        info(thi.getClass().getSimpleName(), sender, path, variables);
     }
 
     public void info(String c, CommandSender sender, String path, Object... variables) {
@@ -839,143 +838,142 @@ public class CMI extends JavaPlugin {
     }
 
     public String getIM(Class<?> c, String path, Object... variables) {
-	return getIM(c.getSimpleName(), path, variables);
+        return getIM(c.getSimpleName(), path, variables);
     }
 
     public String getIM(Object c, String path, Object... variables) {
-	return getIM(c.getClass().getSimpleName(), path, variables);
+        return getIM(c.getClass().getSimpleName(), path, variables);
     }
 
     public String getIM(String cmd, String path, Object... variables) {
-	return getLM().getMessage("command." + cmd + ".info." + path, variables);
+        return getLM().getMessage("command." + cmd + ".info." + path, variables);
     }
 
     public List<String> getIML(String cmd, String path, Object... variables) {
-	return getLM().getMessageList("command." + cmd + ".info." + path, variables);
+        return getLM().getMessageList("command." + cmd + ".info." + path, variables);
     }
 
     public List<String> getIML(Object c, String path, Object... variables) {
-	return getIML(c.getClass().getSimpleName(), path, variables);
+        return getIML(c.getClass().getSimpleName(), path, variables);
+    }
+
+    public List<String> getIML(Class<?> c, String path, Object... variables) {
+        return getIML(c.getSimpleName(), path, variables);
     }
 
     public void sendMessage(Object sender, LC lc, Object... variables) {
-	
+
     }
 
     public void sendMessage(Object sender, String msg) {
-	sendMessage(sender, msg, true);
+        sendMessage(sender, msg, true);
     }
 
     public void sendMessage(Object sender, String msg, boolean updateSnd) {
-	sendMessage(sender, msg, updateSnd, true);
+        sendMessage(sender, msg, updateSnd, true);
     }
 
     public void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors) {
-	sendMessage(sender, msg, updateSnd, translateColors, true);
+        sendMessage(sender, msg, updateSnd, translateColors, true);
     }
 
     public void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors, boolean translatePlaceholders) {
-	
+
     }
 
     public int broadcastMessage(String msg) {
-	return broadcastMessage(null, msg, false, null, null);
+        return broadcastMessage(null, msg, false, null, null);
     }
 
     public int broadcastMessage(CommandSender sender, String msg) {
-	return broadcastMessage(sender, msg, true, null, null);
+        return broadcastMessage(sender, msg, true, null, null);
     }
 
     public int broadcastMessage(CommandSender sender, CMIPerm perm, String msg) {
-	return broadcastMessage(sender, msg, true, perm, null);
+        return broadcastMessage(sender, msg, true, perm, null);
     }
 
     public int broadcastMessage(CommandSender sender, String msg, boolean showForsender) {
-	return broadcastMessage(sender, msg, showForsender, null, null);
+        return broadcastMessage(sender, msg, showForsender, null, null);
     }
 
     public int broadcastMessage(CommandSender sender, String msg, boolean showForsender, Set<Player> ignorePlayers) {
-	return broadcastMessage(sender, msg, showForsender, null, ignorePlayers);
+        return broadcastMessage(sender, msg, showForsender, null, ignorePlayers);
     }
 
     public int broadcastMessage(CommandSender sender, String msg, boolean showForsender, CMIPerm perm, Set<Player> ignorePlayers) {
-	int i = 0;
-	
-	return i;
+        return 0;
     }
 
     public String getMsg(LC lc, Object... variables) {
-	return lc.getLocale(variables);
+        return lc.getLocale(variables);
     }
 
     public boolean isUseProtocollib() {
-	return useProtocollib;
+        return useProtocollib;
     }
 
     public boolean isPlayerVaultEnabled() {
-	return PlayerVaultEnabled;
+        return PlayerVaultEnabled;
     }
 
     public boolean isPlayerVaultXEnabled() {
-	return PlayerVaultXEnabled;
+        return PlayerVaultXEnabled;
     }
 
     public boolean isPlayerVaultNBTEnabled() {
-	return PlayerVaultNBTEnabled;
+        return PlayerVaultNBTEnabled;
     }
 
     public boolean isPlaceholderAPIEnabled() {
-	return PlaceholderAPIEnabled;
+        return PlaceholderAPIEnabled;
     }
 
     public Placeholder getPlaceholderAPIManager() {
-	if (Placeholder == null)
-	    Placeholder = new Placeholder(this);
-	return Placeholder;
+        if (Placeholder == null)
+            Placeholder = new Placeholder(this);
+        return Placeholder;
     }
 
     public long getTimer() {
-	return timer;
+        return timer;
     }
 
     public void setTimer(long timer) {
-	this.timer = timer;
+        this.timer = timer;
     }
 
     public boolean isVaultPermEnabled() {
-	return VaultPermEnabled;
+        return VaultPermEnabled;
     }
 
     public Permission getPerms() {
-	return perms;
+        return perms;
     }
 
     public TabComplete getTab() {
-	return tab;
+        return tab;
     }
 
     public void setUseProtocollib(boolean b) {
-	useProtocollib = b;
+        useProtocollib = b;
     }
 
-//    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
-//	ShowPagination(sender, pageCount, CurrentPage, cmd, null);
-//    }
-
     public void ShowPagination(CommandSender sender, PageInfo pi, String cmd) {
-	ShowPagination(sender, pi, cmd, null);
+        ShowPagination(sender, pi, cmd, null);
     }
 
     public void ShowPagination(CommandSender sender, PageInfo pi, Object cmd, String pagePref) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), getCommandManager().getLabel() + " " + cmd.getClass().getSimpleName(), pagePref);
+
+        ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), CommandsHandler.getLabel() + " " + cmd.getClass().getSimpleName(), pagePref);
     }
 
     public void ShowPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
+        ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
     }
 
     public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
-	
+
     }
 
     public void ShowPagination(Set<Player> players, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
@@ -987,67 +985,67 @@ public class CMI extends JavaPlugin {
     }
 
     public int getViewRange(World world) {
-	int view = Bukkit.getServer().getViewDistance();
-	
-	return view;
+        int view = Bukkit.getServer().getViewDistance();
+        return view;
     }
 
     public boolean isMcmmoexpmodulepresent() {
-	return mcmmoexpmodulepresent;
+        return mcmmoexpmodulepresent;
     }
 
     public boolean isJobsPresent() {
-	return jobsPresent;
+        return jobsPresent;
     }
 
     public void performCommand(CommandSender sender, Object cls) {
-	performCommand(sender, cls, "");
+        performCommand(sender, cls, "");
     }
 
     public void performCommand(CommandSender sender, Object cls, String cmd) {
+        cmd = CommandsHandler.getLabel() + " " + cls.getClass().getSimpleName() + (cmd.isEmpty() ? "" : " " + cmd);
+        performCommand(sender, cmd);
     }
 
     public void performCommand(CommandSender sender, String cmd) {
-
     }
 
     public boolean isVotifierEnabled() {
-	return VotifierEnabled;
+        return VotifierEnabled;
     }
 
     public boolean isFullyLoaded() {
-	return fullyLoaded;
+        return fullyLoaded;
     }
 
     public boolean isCitizensEnabled() {
-	return CitizensEnabled;
+        return CitizensEnabled;
     }
 
     public boolean isNCPEnabled() {
-	return NCPEnabled;
+        return NCPEnabled;
     }
 
     public boolean isMVdWPlaceholderAPIEnabled() {
-	return MVdWPlaceholderAPIEnabled;
+        return MVdWPlaceholderAPIEnabled;
     }
 
     public void setFullyLoaded(boolean fullyLoaded) {
-	this.fullyLoaded = fullyLoaded;
+        this.fullyLoaded = fullyLoaded;
     }
 
     public UUID getServerUUID() {
-	return ServerUUID;
+        return ServerUUID;
     }
 
     public int getLastCMILibVersion() {
-	return lastCMILibVersion;
+        return lastCMILibVersion;
     }
 
     public int getRequiredCMILibVersion() {
-	return requiredCMILibVersion;
+        return requiredCMILibVersion;
     }
 
     public long getServerStartupTime() {
-	return serverStartupTime;
+        return serverStartupTime;
     }
 }

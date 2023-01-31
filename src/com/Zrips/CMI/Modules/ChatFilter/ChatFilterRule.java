@@ -51,8 +51,8 @@ public class ChatFilterRule {
 
     public void setPattern(List<String> list) {
 	pattern.clear();
-	for (String one : list) {
-	    pattern.add(Pattern.compile(one));
+	for (String one : list) {	    
+	    pattern.add(Pattern.compile(one, Pattern.UNICODE_CASE));
 	}
     }
 

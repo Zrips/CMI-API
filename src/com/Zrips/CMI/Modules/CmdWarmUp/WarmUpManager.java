@@ -17,75 +17,73 @@ public class WarmUpManager {
     CMI plugin;
 
     public WarmUpManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public boolean isOnWarmUp(Player player) {
-	return isOnWarmUp(player.getUniqueId());
+        return isOnWarmUp(player.getUniqueId());
     }
 
     public boolean isOnWarmUp(UUID uuid) {
-	return counter.containsKey(uuid);
+        return counter.containsKey(uuid);
     }
 
     public void addWU(String cmd, CmdWarmUp warmup) {
-	warmups.put(cmd.toLowerCase(), warmup);
+        warmups.put(cmd.toLowerCase(), warmup);
     }
 
     private CmdWarmUp getTime(String cmd) {
-	
-	return null;
+
+        return null;
     }
 
     public boolean canMove(Player player) {
-	return canMove(player.getUniqueId());
+        return canMove(player.getUniqueId());
     }
 
     public boolean canMove(UUID uuid) {
-	
-	return true;
+
+        return true;
     }
 
     public boolean canMoveByCmd(String cmd) {
-	
-	return true;
+
+        return true;
     }
 
     @Deprecated
     public boolean startTeleportUsage(Player player, Location loc) {
-	return startTeleportUsage(TpAction.tp, player, loc);
+        return startTeleportUsage(TpAction.tp, player, loc);
     }
 
     private final static String bossBarName = "CMICmdWarmupBar";
 
     public boolean startTeleportUsage(TpAction action, Player player, Location loc) {
 
+        return true;
+    }
 
-	return true;
+    public boolean isWarmupCommand(CommandSender sender, String cmd) {
+
+        return true;
     }
 
     public boolean startCmdUsage(CommandSender sender, String cmd) {
 
-
-	return true;
-    }
-
-    private void performCmd(UUID uuid) {
-	
-
+        return true;
     }
 
     private void performCmd(Player player, WarmUpInfo info) {
-	
+
     }
 
     private void count(UUID uuid) {
-	
+
     }
 
     public boolean cancel(UUID uuid) {
-	
-	return false;
+
+        return false;
     }
 
     boolean InformOnNoMove;

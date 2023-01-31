@@ -31,304 +31,322 @@ public abstract class DBDAO {
     private static DataBaseType dbType = DataBaseType.SqLite;
 
     public enum TablesFieldsType {
-	decimal("double"),
-	number("int"),
-	longtext("longtext"),
-	text("text"),
-	stringList("text"),
-	stringLongMap("text"),
-	stringIntMap("text"),
-	stringDoubleMap("text"),
-	stringStringMap("text"),
-	locationMap("text"),
-	state("boolean"),
-	location("text"),
-	longNumber("bigint");
+        decimal("double"),
+        number("int"),
+        longtext("longtext"),
+        text("text"),
+        stringList("text"),
+        stringLongMap("text"),
+        stringIntMap("text"),
+        stringDoubleMap("text"),
+        stringStringMap("text"),
+        locationMap("text"),
+        state("boolean"),
+        location("text"),
+        longNumber("bigint");
 
-	private String type;
+        private String type;
 
-	TablesFieldsType(String type) {
-	    this.type = type;
-	}
+        TablesFieldsType(String type) {
+            this.type = type;
+        }
 
-	public static TablesFieldsType getByname(String name) {
-	    for (TablesFieldsType one : TablesFieldsType.values()) {
-		if (one.name().equalsIgnoreCase(name))
-		    return one;
-	    }
-	    return null;
-	}
+        public static TablesFieldsType getByname(String name) {
+            for (TablesFieldsType one : TablesFieldsType.values()) {
+                if (one.name().equalsIgnoreCase(name))
+                    return one;
+            }
+            return null;
+        }
 
-	public String getType() {
-	    return type;
-	}
+        public String getType() {
+            return type;
+        }
     }
 
     public enum UserTablesFields {
-	player_uuid("text", TablesFieldsType.text),
-	username("text", TablesFieldsType.text),
-	nickname("text", TablesFieldsType.text),
-	LogOutLocation("text", TablesFieldsType.location),
-	DeathLocation("text", TablesFieldsType.location),
-	TeleportLocation("text", TablesFieldsType.location),
-	teleportToggled("boolean", TablesFieldsType.state),
-	Homes("text", TablesFieldsType.locationMap),
-	LastLoginTime("bigint", TablesFieldsType.longNumber),
-	LastLogoffTime("bigint", TablesFieldsType.longNumber),
-	TotalPlayTime("bigint", TablesFieldsType.longNumber),
-	tFly("bigint", TablesFieldsType.longNumber),
-	tGod("bigint", TablesFieldsType.longNumber),
-	Glow("text", TablesFieldsType.text),
-	Ips("text", TablesFieldsType.stringIntMap),
-	Cuffed("boolean", TablesFieldsType.state),
-	AlertUntil("bigint", TablesFieldsType.longNumber),
-	AlertReason("text", TablesFieldsType.text),
-	JoinedCounter("boolean", TablesFieldsType.state),
-	LockedIps("text", TablesFieldsType.stringList),
-	pTime("bigint", TablesFieldsType.longNumber),
-	Kits("text", TablesFieldsType.stringLongMap),
-	Charges("text", TablesFieldsType.text),
-	Cooldowns("longtext", TablesFieldsType.text),
-	Balance("double", TablesFieldsType.decimal),
-	Notes("text", TablesFieldsType.stringList),
-	Rank("text", TablesFieldsType.text),
-	TagSound("boolean", TablesFieldsType.state),
-	SignShiftEdit("boolean", TablesFieldsType.state),
-	Spy("boolean", TablesFieldsType.state),
-	CommandSpy("boolean", TablesFieldsType.state),
-	BannedUntil("bigint", TablesFieldsType.longNumber),
-	BannedAt("bigint", TablesFieldsType.longNumber),
-	BannedBy("text", TablesFieldsType.text),
-	BanReason("text", TablesFieldsType.text),
-	Ignores("text", TablesFieldsType.text),
-	Vanish("text", TablesFieldsType.text),
-	Economy("text", TablesFieldsType.stringDoubleMap),
-	Mail("text", TablesFieldsType.stringList),
-	FlightCharge("double", TablesFieldsType.decimal),
-	UserMeta("text", TablesFieldsType.stringStringMap),
-	Flying("boolean", TablesFieldsType.state),
-	Votifier("int", TablesFieldsType.number),
-	Jail("text", TablesFieldsType.text),
-	JailedUntil("bigint", TablesFieldsType.longNumber),
-	FakeAccount("boolean", TablesFieldsType.state),
-	PlaytimeOptimized("bigint", TablesFieldsType.longNumber),
-	flightChargeEnabled("boolean", TablesFieldsType.state),
-	noPayToggled("boolean", TablesFieldsType.state),
-	JailReason("text", TablesFieldsType.text),
-	Skin("text", TablesFieldsType.text),
-	SignSpy("boolean", TablesFieldsType.state),
-	Collision("boolean", TablesFieldsType.state),
-	NamePrefix("text", TablesFieldsType.text),
-	NameSuffix("text", TablesFieldsType.text),
-	Warnings("text", TablesFieldsType.stringLongMap),
-	msgToggle("boolean", TablesFieldsType.state),
-	NameColor("text", TablesFieldsType.text),
-	Muted("text", TablesFieldsType.text),
-	ToggleBBCompassOff("boolean", TablesFieldsType.state),
-	AFRecharge("text", TablesFieldsType.text),
-	DisplayName("text", TablesFieldsType.text);
+        player_uuid("text", TablesFieldsType.text),
+        username("text", TablesFieldsType.text),
+        nickname("text", TablesFieldsType.text),
+        LogOutLocation("text", TablesFieldsType.location),
+        DeathLocation("text", TablesFieldsType.location),
+        TeleportLocation("text", TablesFieldsType.location),
+        Homes("text", TablesFieldsType.locationMap),
+        LastLoginTime("bigint", TablesFieldsType.longNumber),
+        LastLogoffTime("bigint", TablesFieldsType.longNumber),
+        TotalPlayTime("bigint", TablesFieldsType.longNumber),
+        tFly("bigint", TablesFieldsType.longNumber),
+        tGod("bigint", TablesFieldsType.longNumber),
+        Glow("text", TablesFieldsType.text),
+        Ips("text", TablesFieldsType.stringIntMap),
+        Cuffed("boolean", TablesFieldsType.state),
+        AlertUntil("bigint", TablesFieldsType.longNumber),
+        AlertReason("text", TablesFieldsType.text),
+        JoinedCounter("boolean", TablesFieldsType.state),
+        LockedIps("text", TablesFieldsType.stringList),
+        pTime("bigint", TablesFieldsType.longNumber),
+        Kits("text", TablesFieldsType.stringLongMap),
+        Charges("text", TablesFieldsType.text),
+        Cooldowns("longtext", TablesFieldsType.text),
+        Balance("double", TablesFieldsType.decimal),
+        Notes("text", TablesFieldsType.stringList),
+        Rank("text", TablesFieldsType.text),
+        BannedUntil("bigint", TablesFieldsType.longNumber),
+        BannedAt("bigint", TablesFieldsType.longNumber),
+        BannedBy("text", TablesFieldsType.text),
+        BanReason("text", TablesFieldsType.text),
+        Ignores("text", TablesFieldsType.text),
+        Vanish("text", TablesFieldsType.text),
+        Economy("text", TablesFieldsType.stringDoubleMap),
+        Mail("text", TablesFieldsType.stringList),
+        FlightCharge("double", TablesFieldsType.decimal),
+        UserMeta("text", TablesFieldsType.stringStringMap),
+        Flying("boolean", TablesFieldsType.state),
+        Votifier("int", TablesFieldsType.number),
+        Jail("text", TablesFieldsType.text),
+        JailedUntil("bigint", TablesFieldsType.longNumber),
+        FakeAccount("boolean", TablesFieldsType.state),
+        PlaytimeOptimized("bigint", TablesFieldsType.longNumber),
+        flightChargeEnabled("boolean", TablesFieldsType.state),
+        JailReason("text", TablesFieldsType.text),
+        Skin("text", TablesFieldsType.text),
+        Collision("boolean", TablesFieldsType.state),
+        NamePrefix("text", TablesFieldsType.text),
+        NameSuffix("text", TablesFieldsType.text),
+        Warnings("text", TablesFieldsType.stringLongMap),
+        NameColor("text", TablesFieldsType.text),
+        Muted("text", TablesFieldsType.text),
+        AFRecharge("text", TablesFieldsType.text),
+        DisplayName("text", TablesFieldsType.text),
+        Options("text", TablesFieldsType.text);
 
-	// Always add new collumns to the end
+        // Always add new collumns to the end
 
-	private String type;
-	private TablesFieldsType fieldType;
+        private String type;
+        private TablesFieldsType fieldType;
 
-	UserTablesFields(String type, TablesFieldsType fieldType) {
-	    this.type = type;
-	    this.fieldType = fieldType;
-	}
+        UserTablesFields(String type, TablesFieldsType fieldType) {
+            this.type = type;
+            this.fieldType = fieldType;
+        }
 
-	public String getCollumn() {
-	    return this.name();
-	}
+        public String getCollumn() {
+            return this.name();
+        }
 
-	public String getType() {
-	    return type;
-	}
+        public String getType() {
+            return type;
+        }
 
-	public TablesFieldsType getFieldType() {
-	    return fieldType;
-	}
+        public TablesFieldsType getFieldType() {
+            return fieldType;
+        }
     }
 
     public enum PlaytimeTablesFields {
-	player_id(TablesFieldsType.number),
-	date(TablesFieldsType.number),
-	h0(0, TablesFieldsType.longNumber),
-	h1(1, TablesFieldsType.longNumber),
-	h2(2, TablesFieldsType.longNumber),
-	h3(3, TablesFieldsType.longNumber),
-	h4(4, TablesFieldsType.longNumber),
-	h5(5, TablesFieldsType.longNumber),
-	h6(6, TablesFieldsType.longNumber),
-	h7(7, TablesFieldsType.longNumber),
-	h8(8, TablesFieldsType.longNumber),
-	h9(9, TablesFieldsType.longNumber),
-	h10(10, TablesFieldsType.longNumber),
-	h11(11, TablesFieldsType.longNumber),
-	h12(12, TablesFieldsType.longNumber),
-	h13(13, TablesFieldsType.longNumber),
-	h14(14, TablesFieldsType.longNumber),
-	h15(15, TablesFieldsType.longNumber),
-	h16(16, TablesFieldsType.longNumber),
-	h17(17, TablesFieldsType.longNumber),
-	h18(18, TablesFieldsType.longNumber),
-	h19(19, TablesFieldsType.longNumber),
-	h20(20, TablesFieldsType.longNumber),
-	h21(21, TablesFieldsType.longNumber),
-	h22(22, TablesFieldsType.longNumber),
-	h23(23, TablesFieldsType.longNumber);
+        player_id(TablesFieldsType.number),
+        date(TablesFieldsType.number),
+        h0(0, TablesFieldsType.longNumber),
+        h1(1, TablesFieldsType.longNumber),
+        h2(2, TablesFieldsType.longNumber),
+        h3(3, TablesFieldsType.longNumber),
+        h4(4, TablesFieldsType.longNumber),
+        h5(5, TablesFieldsType.longNumber),
+        h6(6, TablesFieldsType.longNumber),
+        h7(7, TablesFieldsType.longNumber),
+        h8(8, TablesFieldsType.longNumber),
+        h9(9, TablesFieldsType.longNumber),
+        h10(10, TablesFieldsType.longNumber),
+        h11(11, TablesFieldsType.longNumber),
+        h12(12, TablesFieldsType.longNumber),
+        h13(13, TablesFieldsType.longNumber),
+        h14(14, TablesFieldsType.longNumber),
+        h15(15, TablesFieldsType.longNumber),
+        h16(16, TablesFieldsType.longNumber),
+        h17(17, TablesFieldsType.longNumber),
+        h18(18, TablesFieldsType.longNumber),
+        h19(19, TablesFieldsType.longNumber),
+        h20(20, TablesFieldsType.longNumber),
+        h21(21, TablesFieldsType.longNumber),
+        h22(22, TablesFieldsType.longNumber),
+        h23(23, TablesFieldsType.longNumber);
 
-	private TablesFieldsType fieldType;
-	private int hour = 0;
+        private TablesFieldsType fieldType;
+        private int hour = 0;
 
-	PlaytimeTablesFields(TablesFieldsType fieldType) {
-	    this.fieldType = fieldType;
-	}
+        PlaytimeTablesFields(TablesFieldsType fieldType) {
+            this.fieldType = fieldType;
+        }
 
-	PlaytimeTablesFields(int hour, TablesFieldsType fieldType) {
-	    this.fieldType = fieldType;
-	    this.hour = hour;
-	}
+        PlaytimeTablesFields(int hour, TablesFieldsType fieldType) {
+            this.fieldType = fieldType;
+            this.hour = hour;
+        }
 
-	public String getCollumn() {
-	    return this.name();
-	}
+        public String getCollumn() {
+            return this.name();
+        }
 
-	public String getType() {
-	    return fieldType.getType();
-	}
+        public String getType() {
+            return fieldType.getType();
+        }
 
-	public TablesFieldsType getFieldType() {
-	    return fieldType;
-	}
+        public TablesFieldsType getFieldType() {
+            return fieldType;
+        }
 
-	public boolean isTimeField() {
-	    return this.name().startsWith("h") && this.name().length() < 4;
-	}
+        public boolean isTimeField() {
+            return this.name().startsWith("h") && this.name().length() < 4;
+        }
 
-	public int getHour() {
-	    return hour;
-	}
+        public int getHour() {
+            return hour;
+        }
     }
 
     public enum PlaytimeRewardTablesFields {
-	player_id(TablesFieldsType.number),
-	repeatable(TablesFieldsType.stringLongMap),
-	onetime(TablesFieldsType.stringList);
+        player_id(TablesFieldsType.number),
+        repeatable(TablesFieldsType.stringLongMap),
+        onetime(TablesFieldsType.stringList);
 
-	private TablesFieldsType fieldType;
+        private TablesFieldsType fieldType;
 
-	PlaytimeRewardTablesFields(TablesFieldsType fieldType) {
-	    this.fieldType = fieldType;
-	}
+        PlaytimeRewardTablesFields(TablesFieldsType fieldType) {
+            this.fieldType = fieldType;
+        }
 
-	public String getCollumn() {
-	    return this.name();
-	}
+        public String getCollumn() {
+            return this.name();
+        }
 
-	public String getType() {
-	    return fieldType.getType();
-	}
+        public String getType() {
+            return fieldType.getType();
+        }
 
-	public TablesFieldsType getFieldType() {
-	    return fieldType;
-	}
+        public TablesFieldsType getFieldType() {
+            return fieldType;
+        }
     }
 
     public enum InventoryTablesFields {
-	player_id("player_id", "int", TablesFieldsType.number),
-	inventories("inventories", "longtext", TablesFieldsType.longtext);
+        player_id("player_id", "int", TablesFieldsType.number),
+        inventories("inventories", "longtext", TablesFieldsType.longtext);
 
-	private String collumn;
-	private String type;
-	private TablesFieldsType fieldType;
+        private String collumn;
+        private String type;
+        private TablesFieldsType fieldType;
 
-	InventoryTablesFields(String collumn, String type, TablesFieldsType fieldType) {
-	    this.collumn = collumn;
-	    this.type = type;
-	    this.fieldType = fieldType;
-	}
+        InventoryTablesFields(String collumn, String type, TablesFieldsType fieldType) {
+            this.collumn = collumn;
+            this.type = type;
+            this.fieldType = fieldType;
+        }
 
-	public String getCollumn() {
-	    return collumn;
-	}
+        public String getCollumn() {
+            return collumn;
+        }
 
-	public String getType() {
-	    return type;
-	}
+        public String getType() {
+            return type;
+        }
 
-	public TablesFieldsType getFieldType() {
-	    return fieldType;
-	}
+        public TablesFieldsType getFieldType() {
+            return fieldType;
+        }
     }
 
     public enum DBTables {
-	UserTable("users",
-	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
-	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
-	InvTable("inventories",
-	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
-	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
-	PlayTime("playtime",
-	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
-	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
-	PlayTimeReward("playtimereward",
-	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
-	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);");
+        UserTable("users",
+            "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+            "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
+        InvTable("inventories",
+            "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+            "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
+        PlayTime("playtime",
+            "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+            "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);"),
+        PlayTimeReward("playtimereward",
+            "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+            "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);");
 
-	private String mySQL;
-	private String sQlite;
-	private String tableName;
+        private String mySQL;
+        private String sQlite;
+        private String tableName;
 
-	DBTables(String tableName, String MySQL, String SQlite) {
-	    this.tableName = tableName;
-	    this.mySQL = MySQL;
-	    this.sQlite = SQlite;
-	}
+        DBTables(String tableName, String MySQL, String SQlite) {
+            this.tableName = tableName;
+            this.mySQL = MySQL;
+            this.sQlite = SQlite;
+        }
 
-	private String getQR() {
-	    switch (dbType) {
-	    case MySQL:
-		return this.mySQL.replace("[tableName]", prefix + this.tableName);
-	    case SqLite:
-		return this.sQlite.replace("[tableName]", this.tableName);
-	    }
-	    return "";
-	}
+        private String getQR() {
+            switch (dbType) {
+            case MySQL:
+                return this.mySQL.replace("[tableName]", prefix + this.tableName);
+            case SqLite:
+                return this.sQlite.replace("[tableName]", this.tableName);
+            }
+            return "";
+        }
 
-	public String getQuery() {
-	    return getQR().replace("[fields]", "");
+        public String getQuery() {
+            String rp = "";
+            return getQR().replace("[fields]", rp);
+        }
 
-	}
+        public String getUpdateQuery() {
 
-	public String getUpdateQuery() {
-	    
-	    return "";
-	}
+            return "";
+        }
 
-	public String getInsertQuery() {
-	    
-	    return "";
-	}
+        public String getInsertQuery() {
+            String rp = "";
+            return rp;
+        }
 
-	public String getTableName() {
-	    return prefix + tableName;
-	}
+        public String getTableName() {
+            return prefix + tableName;
+        }
     }
 
     public enum mysqltypes {
-	old, MySQL, MariaDB;
+        old, MySQL, MariaDB;
     }
 
     public static mysqltypes Format = mysqltypes.MySQL;
 
     protected DBDAO(CMI plugin, String driverName, String url, String username, String password, String pr) {
-	
+        this.plugin = plugin;
+        prefix = pr;
+        try {
+            pool = new DBConnectionPool(driverName, url, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            pool.getConnection();
+
+        } catch (Throwable e) {
+            try {
+                pool = new DBConnectionPool(driverName, url.replace("utf8mb4_unicode_ci", "utf-8"), username, password);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        try {
+            CMI.getInstance().consoleMessage(pool.getConnection().getMetaData().getDatabaseProductVersion() + " data base type detected");
+            if (pool.getConnection().getMetaData().getDatabaseProductVersion().toLowerCase().contains("mariadb")) {
+                Format = mysqltypes.MariaDB;
+            }
+        } catch (Error | Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public final synchronized void setUp() throws SQLException {
-	
+
     }
 
     public abstract Statement prepareStatement(String query) throws SQLException;
@@ -352,17 +370,17 @@ public abstract class DBDAO {
     public abstract boolean convertTableRowFormat(DBTables table);
 
     public String getPrefix() {
-	return prefix;
+        return prefix;
     }
 
     // sync
     public void updateUUID(int id, UUID uuid) {
-	
+
     }
 
     // sync
     public void updateUserName(int id, String name) {
-	
+
     }
 
     /**
@@ -371,11 +389,15 @@ public abstract class DBDAO {
      * @throws SQLException
      */
     public void executeSQL(String sql) throws SQLException {
-	
+
     }
 
     public boolean isConnected() {
-	return true;
+        try {
+            return pool.getConnection() != null && !pool.getConnection().isClosed();
+        } catch (Error | Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -384,42 +406,58 @@ public abstract class DBDAO {
      * @throws SQLException 
      */
     protected DBConnection getConnection() {
-	return null;
+        try {
+            return pool.getConnection();
+        } catch (Error | Exception e) {
+            plugin.consoleMessage("&cUnable to connect to the database: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
      * Close all active database handles
      */
     public synchronized void closeConnections() {
-	pool.closeConnection();
+        pool.closeConnection();
     }
 
     public void close(ResultSet res) {
-	
+        if (res != null)
+            try {
+                res.close();
+            } catch (Error | Exception e) {
+                e.printStackTrace();
+            }
     }
 
     public void close(Statement stmt) {
+        if (stmt != null)
+            try {
+                stmt.close();
+            } catch (Error | Exception e) {
+                e.printStackTrace();
+            }
     }
 
     // async
     public boolean updatePlayer(CMIUser user) {
-	
-	return true;
+
+        return true;
     }
 
     // async
     public void updatePlayerPlayTime(CMIUser user) {
-	
+
     }
 
     // async
     public void updatePlayerInventory(CMIUser user, String string) {
-	
+
     }
 
     // async
     public void updatePlayerPlayTimeRewards(CMIUser user) {
-	
+
     }
 
     private PreparedStatement updateBatch = null;
@@ -447,152 +485,144 @@ public abstract class DBDAO {
     private boolean locked = false;
 
     public void setAutoCommit(boolean state) {
-	try {
-//	    if (autoCommit != state) {
-	    getConnection().setAutoCommit(state);
-	    autoCommit = state;
-//	    }
-	} catch (Throwable e) {
-	    e.printStackTrace();
-	}
+
     }
 
     boolean ignoredFirst = false;
 
     public boolean executeTempBatch() {
-	
-	return true;
+        return true;
     }
 
     public void prepareTempBatch() {
-	if (locked) {
-	    return;
-	}
-	setAutoCommit(false);
+        if (locked) {
+            return;
+        }
+        setAutoCommit(false);
     }
 
     // async irelevant child method
     public int getInvId(int iid) {
-	
-	return 1;
+        return 0;
     }
 
     // async irelevant child method
     private int getPlayTimeId(CMIPlayDay playDay, CMIUser user) {
-	
-	return 1;
+        return 0;
     }
 
     // async irelevant child method
     private int getPlayTimeRewardId(CMIUser user) {
-	
-	return 1;
+
+        return 0;
     }
 
     // async irelevant child method
     private int getId(String uuid) {
-	
-	return 1;
+        return 0;
     }
 
     // sync priority
     public String getInv(CMIUser user) {
-	
-	return "";
+        return "";
     }
 
     // sync irelevant
     public void loadUser(UUID uuid) {
-	
+
     }
 
     public void loadUser(int id) {
-	
+
     }
 
     // sync irelevant
     public void loadAllUsers() {
-	
+
     }
 
     // sync irelevant
     public void loadPlayTimes() {
-	
+
     }
 
     // sync irelevant
     public LinkedHashSet<CMIUser> getLastLogOffList(int from, int to) {
-	
-	
-	return null;
+        DBConnection conn = getConnection();
+        LinkedHashSet<CMIUser> users = new LinkedHashSet<>();
+        return users;
     }
 
     // sync irelevant
     public void loadPlayTimes(CMIUser user) {
-	
     }
 
     // sync irelevant
     public void loadPlayerPlayTimeRewards() {
-	
+
     }
 
     // async
     public void getUserIds(HashMap<String, CMIUser> users) {
-	
+
     }
 
     // async
     public void getUserPlayTimeIds(HashMap<CMIPlayDay, CMIUser> getPlayerPlayTimeId) {
-	
+
     }
 
     // async
     public void getUserInvIds(HashMap<Integer, CMIUser> users) {
-	
+
     }
 
     // async
     public void getUserPlayTimeRewardIds(HashMap<Integer, CMIUser> users) {
-	
+
     }
 
     // sync no priority
     public boolean removeUser(int id) {
-	
-	return true;
+
+        return false;
     }
 
     private boolean createDefaultTable(DBTables table) {
-	return false;
+
+        return false;
     }
 
     private boolean checkDefaultUserCollumns() {
-	return true;
+
+        return true;
     }
 
     private boolean checkDefaultInvCollumns() {
-	return true;
+
+        return true;
     }
 
     private boolean checkDefaultPlayTimeCollumns() {
-	return true;
+
+        return true;
     }
 
     private boolean checkDefaultPlayTimeRewardCollumns() {
-	return true;
+
+        return true;
     }
 
     public DataBaseType getDbType() {
-	return dbType;
+        return dbType;
     }
 
     public void setDbType(DataBaseType dabType) {
-	dbType = dabType;
+        dbType = dabType;
     }
 
     public boolean isLocked() {
-	return locked;
+        return locked;
     }
 
 }

@@ -15,6 +15,6 @@ public class AliasTabCompListener_1_14_never implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerChatTabCompleteEvent(TabCompleteEvent event) {
-	
+
     }
 }

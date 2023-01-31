@@ -24,213 +24,210 @@ public class CMISpawner {
     private CreatureSpawner spawner = null;
 
     public CMISpawner(Block block) {
-	this.block = block;
-	this.spawner = (CreatureSpawner) block.getState();
+        this.block = block;
+        this.spawner = (CreatureSpawner) block.getState();
     }
 
     public Block getBlock() {
-	return block;
+        return block;
     }
 
     public BlockData getBlockData() {
-	return block.getBlockData();
+        return block.getBlockData();
     }
 
     public byte getLightLevel() {
-	return spawner.getLightLevel();
+        return spawner.getLightLevel();
     }
 
     public Location getLocation() {
-	return block.getLocation();
+        return block.getLocation();
     }
 
     public Material getType() {
-	return block.getType();
+        return block.getType();
     }
 
     public World getWorld() {
-	return block.getWorld();
+        return block.getWorld();
     }
 
     public int getX() {
-	return block.getX();
+        return block.getX();
     }
 
     public int getY() {
-	return block.getY();
+        return block.getY();
     }
 
     public int getZ() {
-	return block.getZ();
+        return block.getZ();
     }
 
     public void setBlockData(BlockData data) {
-	block.setBlockData(data);
+        block.setBlockData(data);
     }
 
     public boolean update() {
-	return spawner.update();
+        return spawner.update();
     }
 
     public boolean update(boolean arg0) {
-	return spawner.update(arg0);
+        return spawner.update(arg0);
     }
 
     public boolean update(boolean arg0, boolean arg1) {
-	return spawner.update(arg0, arg1);
+        return spawner.update(arg0, arg1);
     }
 
     public List<MetadataValue> getMetadata(String arg0) {
-	return spawner.getMetadata(arg0);
+        return spawner.getMetadata(arg0);
     }
 
     public boolean hasMetadata(String arg0) {
-	return spawner.hasMetadata(arg0);
+        return spawner.hasMetadata(arg0);
     }
 
     public void removeMetadata(String arg0, Plugin arg1) {
-	spawner.removeMetadata(arg0, arg1);
+        spawner.removeMetadata(arg0, arg1);
     }
 
     public void setMetadata(String arg0, MetadataValue arg1) {
-	spawner.setMetadata(arg0, arg1);
+        spawner.setMetadata(arg0, arg1);
     }
 
     @Deprecated
     public String getCreatureTypeName() {
-	return spawner.getCreatureTypeName();
+        return spawner.getCreatureTypeName();
     }
 
     public int getDelay() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getDelay();
-	}
-	return getValue("Delay");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getDelay();
+        }
+        return getValue("Delay");
     }
 
     public int getMaxNearbyEntities() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getMaxNearbyEntities();
-	}
-	return getValue("MaxNearbyEntities");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getMaxNearbyEntities();
+        }
+        return getValue("MaxNearbyEntities");
     }
 
     public int getMaxSpawnDelay() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getMaxSpawnDelay();
-	}
-	return getValue("MaxSpawnDelay");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getMaxSpawnDelay();
+        }
+        return getValue("MaxSpawnDelay");
     }
 
     public int getMinSpawnDelay() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getMinSpawnDelay();
-	}
-	return getValue("MinSpawnDelay");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getMinSpawnDelay();
+        }
+        return getValue("MinSpawnDelay");
     }
 
     public int getRequiredPlayerRange() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getRequiredPlayerRange();
-	}
-	return getValue("RequiredPlayerRange");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getRequiredPlayerRange();
+        }
+        return getValue("RequiredPlayerRange");
     }
 
     public int getSpawnCount() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getSpawnCount();
-	}
-	return getValue("SpawnCount");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getSpawnCount();
+        }
+        return getValue("SpawnCount");
     }
 
     public int getSpawnRange() {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return spawner.getSpawnRange();
-	}
-	return getValue("SpawnRange");
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return spawner.getSpawnRange();
+        }
+        return getValue("SpawnRange");
     }
 
     private int getValue(String path) {
-	Object v = new CMINBT(block).getShort(path);
-	if (v instanceof Short)
-	    return (Short) v;
-	return 0;
+        Object v = new CMINBT(block).getShort(path);
+        if (v instanceof Short)
+            return (Short) v;
+        return 0;
     }
 
     public EntityType getSpawnedType() {
-	return spawner.getSpawnedType();
+        return spawner.getSpawnedType();
     }
 
     @Deprecated
     public void setCreatureTypeByName(String arg0) {
-	spawner.setCreatureTypeByName(arg0);
+        spawner.setCreatureTypeByName(arg0);
     }
 
     public void setDelay(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setDelay(arg0);
-	    return;
-	}
-	updateValue("Delay", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setDelay(arg0);
+            return;
+        }
+        updateValue("Delay", arg0);
     }
 
     public void setMaxNearbyEntities(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setMaxNearbyEntities(arg0);
-	    return;
-	}
-	updateValue("MaxNearbyEntities", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setMaxNearbyEntities(arg0);
+            return;
+        }
+        updateValue("MaxNearbyEntities", arg0);
 
     }
 
     public void setMaxSpawnDelay(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setMaxSpawnDelay(arg0);
-	    return;
-	}
-	updateValue("MaxSpawnDelay", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setMaxSpawnDelay(arg0);
+            return;
+        }
+        updateValue("MaxSpawnDelay", arg0);
     }
 
     public void setMinSpawnDelay(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setMinSpawnDelay(arg0);
-	    return;
-	}
-	updateValue("MinSpawnDelay", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setMinSpawnDelay(arg0);
+            return;
+        }
+        updateValue("MinSpawnDelay", arg0);
     }
 
     public void setRequiredPlayerRange(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setRequiredPlayerRange(arg0);
-	    return;
-	}
-	updateValue("RequiredPlayerRange", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setRequiredPlayerRange(arg0);
+            return;
+        }
+        updateValue("RequiredPlayerRange", arg0);
     }
 
     public void setSpawnCount(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setSpawnCount(arg0);
-	    return;
-	}
-	updateValue("SpawnCount", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setSpawnCount(arg0);
+            return;
+        }
+        updateValue("SpawnCount", arg0);
     }
 
     public void setSpawnRange(int arg0) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    spawner.setSpawnRange(arg0);
-	    return;
-	}
-	updateValue("SpawnRange", arg0);
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            spawner.setSpawnRange(arg0);
+            return;
+        }
+        updateValue("SpawnRange", arg0);
     }
 
     private void updateValue(String type, int val) {
-	Object tag = new CMINBT(block).setShort(type, (short) val);
-	CMILib.getInstance().getReflectionManager().updateTileEntity(this.getLocation(), tag);
-	spawner.update();
     }
 
     public void setSpawnedType(EntityType arg0) {
-	spawner.setSpawnedType(arg0);
+        spawner.setSpawnedType(arg0);
     }
 
 }

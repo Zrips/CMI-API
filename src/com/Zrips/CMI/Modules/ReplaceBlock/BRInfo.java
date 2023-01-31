@@ -28,8 +28,6 @@ public class BRInfo {
 
     private boolean running = false;
 
-//    private int wId = 0;
-//    private short wData = -1;
     private int y = -1;
 
     private long replaced = 0L;
@@ -44,133 +42,133 @@ public class BRInfo {
     }
 
     public void setY(int y) {
-	this.y = y;
+        this.y = y;
     }
 
     public int getY() {
-	if (this.y == -1)
-	    this.y = this.RI.getWorld().getMaxHeight();
-	return this.y;
+        if (this.y == -1)
+            this.y = this.RI.getWorld().getMaxHeight();
+        return this.y;
     }
 
     public void addReplaced() {
-	this.replaced++;
+        this.replaced++;
     }
 
     public long getReplaced() {
-	return this.replaced;
+        return this.replaced;
     }
 
     public void setscheduleId(int id) {
-	this.scheduleId = id;
+        this.scheduleId = id;
     }
 
     public int getScheduleId() {
-	return this.scheduleId;
+        return this.scheduleId;
     }
 
     public void setShowInfo(long time) {
-	this.showedInfo = time;
+        this.showedInfo = time;
     }
 
     public long getShowInfo() {
-	return this.showedInfo;
+        return this.showedInfo;
     }
 
     public void setAutoSpeed(boolean autoSpeed) {
-	this.autoSpeed = autoSpeed;
+        this.autoSpeed = autoSpeed;
     }
 
     public boolean isAutoSpeed() {
-	return this.autoSpeed;
+        return this.autoSpeed;
     }
 
     public void setMessages(boolean messages) {
-	this.messages = messages;
+        this.messages = messages;
     }
 
     public boolean isMessages() {
-	return this.messages;
+        return this.messages;
     }
 
     public void setShowInfo(boolean state) {
-	this.showInfo = state;
+        this.showInfo = state;
     }
 
     public boolean isShowInfo() {
-	return this.showInfo;
+        return this.showInfo;
     }
 
     public void setSpeed(int speed) {
-	this.speed = speed;
+        this.speed = speed;
     }
 
     public int getSpeed() {
-	return this.speed;
+        return this.speed;
     }
 
     public void setRunning(boolean state) {
-	this.running = state;
+        this.running = state;
     }
 
     public boolean isRunning() {
-	return this.running;
+        return this.running;
     }
 
     public void setStartTime() {
-	this.startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
     }
 
     public long getStartTime() {
-	return this.startTime;
+        return this.startTime;
     }
 
     public String getPlayerName() {
-	return this.Playername;
+        return this.Playername;
     }
 
     public Player getPlayer() {
-	    Player p = Bukkit.getPlayer(this.player.getUniqueId());
-	    if (p != null)
-		this.player = p;
-	return this.player;
+        Player p = Bukkit.getPlayer(this.player.getUniqueId());
+        if (p != null)
+            this.player = p;
+        return this.player;
     }
 
     public void setPlayer(Player Player) {
-	this.Playername = Player.getName();
-	this.player = Player;
+        this.Playername = Player.getName();
+        this.player = Player;
     }
 
     public void addItemInfo(itemInfo info) {
-	this.itemIds.add(info);
+        this.itemIds.add(info);
     }
 
     public List<itemInfo> getItemInfo() {
-	return itemIds;
+        return itemIds;
     }
-    
+
     public void addReplaceInfo(itemInfo info) {
-	this.replaceIds.add(info);
+        this.replaceIds.add(info);
     }
-    
+
     public List<itemInfo> getReplaceInfo() {
-	return replaceIds;
+        return replaceIds;
     }
 
     public void setTotal(double d) {
-	this.d = d;
+        this.d = d;
     }
 
     public double getTotal() {
-	return d;
+        return d;
     }
 
     public WorldInfo getRI() {
-	return RI;
+        return RI;
     }
 
     public void setRI(WorldInfo rI) {
-	RI = rI;
+        RI = rI;
     }
 
 }

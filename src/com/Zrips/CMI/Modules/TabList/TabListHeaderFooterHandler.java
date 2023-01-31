@@ -22,6 +22,7 @@ public class TabListHeaderFooterHandler {
     private CMI plugin;
 
     public TabListHeaderFooterHandler(CMI plugin) {
+
     }
 
     public void send(Player receivingPacket, List<String> h, List<String> f) {
@@ -33,34 +34,32 @@ public class TabListHeaderFooterHandler {
     }
 
     private void sendPacket(Player player, Object packet) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-	Object handle = getHandle.invoke(player);
-	Object connection = playerConnection.get(handle);
-	sendPacket.invoke(connection, packet);
+
     }
 
     private String getCraftPlayerClasspath() {
-	return "org.bukkit.craftbukkit." + version + ".entity.CraftPlayer";
+        return "org.bukkit.craftbukkit." + version + ".entity.CraftPlayer";
     }
 
     private String getPlayerConnectionClasspath() {
-	return "net.minecraft.server." + version + ".PlayerConnection";
+        return "net.minecraft.server." + version + ".PlayerConnection";
     }
 
     private String getNMSPlayerClasspath() {
-	return "net.minecraft.server." + version + ".EntityPlayer";
+        return "net.minecraft.server." + version + ".EntityPlayer";
     }
 
     private String getPacketClasspath() {
-	return "net.minecraft.server." + version + ".Packet";
+        return "net.minecraft.server." + version + ".Packet";
     }
 
     private String getChatSerializerClasspath() {
-	if (!Version.isCurrentHigher(Version.v1_8_R2))
-	    return "net.minecraft.server." + version + ".ChatSerializer";
-	return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent
+        if (!Version.isCurrentHigher(Version.v1_8_R2))
+            return "net.minecraft.server." + version + ".ChatSerializer";
+        return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent
     }
 
     private String getPacketPlayOutPlayerListHeaderFooter() {
-	return "net.minecraft.server." + version + ".PacketPlayOutPlayerListHeaderFooter";
+        return "net.minecraft.server." + version + ".PacketPlayOutPlayerListHeaderFooter";
     }
 }

@@ -20,73 +20,69 @@ public class BungeeCordServer {
     private ConcurrentHashMap<String, BungeePlayer> playersMapName = new ConcurrentHashMap<String, BungeePlayer>();
 
     public BungeeCordServer(String name, String ip, Integer port) {
-	this.name = name;
-	this.ip = ip;
-	this.port = port;
+        this.name = name;
+        this.ip = ip;
+        this.port = port;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getIp() {
-	return ip;
+        return ip;
     }
 
     public void setIp(String ip) {
-	this.ip = ip;
+        this.ip = ip;
     }
 
     public int getPort() {
-	return port;
+        return port;
     }
 
     public void setPort(int port) {
-	this.port = port;
+        this.port = port;
     }
 
     public String getMotd() {
-	return motd;
+        return motd;
     }
 
     public void setMotd(String motd) {
-	this.motd = motd;
+        this.motd = motd;
     }
 
     public int getMaxPlayers() {
-	return maxPlayers;
+        return maxPlayers;
     }
 
     public void setMaxPlayers(int maxPlayers) {
-	this.maxPlayers = maxPlayers;
+        this.maxPlayers = maxPlayers;
     }
 
     public int getCurrentPlayers() {
-	int total = 0;
-	Iterator<Entry<String, BungeePlayer>> iter = playersMapUUID.entrySet().iterator();
-	while (iter.hasNext()) {
-	    BungeePlayer user = iter.next().getValue();
-	    if (user.getVanished())
-		continue;
-	    total++;
-	}
-	return total;
+        int total = 0;
+        Iterator<Entry<String, BungeePlayer>> iter = playersMapUUID.entrySet().iterator();
+        while (iter.hasNext()) {
+            BungeePlayer user = iter.next().getValue();
+            if (user.getVanished())
+                continue;
+            total++;
+        }
+        return total;
     }
 
-//    public void setCurrentPlayers(int currentPlayers) {
-//	this.currentPlayers = currentPlayers;
-//    }
-
     public Long getNextCheck() {
-	return nextCheck;
+        return nextCheck;
     }
 
     public void setNextCheck(Long nextCheck) {
-	this.nextCheck = nextCheck;
+        this.nextCheck = nextCheck;
     }
 
     public void update() {
@@ -94,39 +90,40 @@ public class BungeeCordServer {
     }
 
     public boolean isOnline() {
-	return online;
+        return online;
     }
 
     public void setOnline(boolean online) {
-	this.online = online;
+        this.online = online;
     }
 
     public ConcurrentHashMap<String, BungeePlayer> getPlayersMapUUID() {
-	return playersMapUUID;
+        return playersMapUUID;
     }
 
     public BungeePlayer getPlayer(UUID uuid) {
-	return playersMapUUID.get(uuid.toString());
+        return playersMapUUID.get(uuid.toString());
     }
 
     public BungeePlayer getPlayer(String name) {
-	return playersMapName.get(name.toLowerCase());
+        BungeePlayer p = playersMapName.get(name.toLowerCase());
+        return p;
     }
 
     public void addPlayer(BungeePlayer player) {
-	this.playersMapUUID.put(player.getUniqueId().toString(), player);
-	this.playersMapName.put(player.getName().toLowerCase(), player);
+        this.playersMapUUID.put(player.getUniqueId().toString(), player);
+        this.playersMapName.put(player.getName().toLowerCase(), player);
     }
 
     public void removePlayer(UUID uuid, String name) {
-	this.playersMapUUID.remove(uuid.toString());
-	this.playersMapName.remove(name.toLowerCase());
+        this.playersMapUUID.remove(uuid.toString());
+        this.playersMapName.remove(name.toLowerCase());
     }
 
     public void clearPlayers() {
-	if (playersMapUUID != null)
-	    this.playersMapUUID.clear();
-	if (playersMapName != null)
-	    this.playersMapName.clear();
+        if (playersMapUUID != null)
+            this.playersMapUUID.clear();
+        if (playersMapName != null)
+            this.playersMapName.clear();
     }
 }

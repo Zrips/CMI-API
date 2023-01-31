@@ -1,122 +1,91 @@
 package com.Zrips.CMI.Modules.InvRegEditor;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+
 public class RegChestManager {
 
-    private HashMap<String, RegWatcher> WatcherList = new HashMap<String, RegWatcher>();
+    private HashMap<UUID, CMIInvSee> watcherList = new HashMap<UUID, CMIInvSee>();
+    private HashMap<UUID, CMIInvSee> slaveList = new HashMap<UUID, CMIInvSee>();
 
     private CMI plugin;
 
     public RegChestManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public boolean isWatching(Player player) {
-	return WatcherList.containsKey(player.getName());
+        return watcherList.containsKey(player.getUniqueId());
     }
 
-    public RegWatcher getWatcher(Player player) {
-	return WatcherList.get(player.getName());
+    public CMIInvSee getInformation(Player player) {
+        CMIInvSee info = watcherList.get(player.getUniqueId());
+        if (info == null)
+            info = slaveList.get(player.getUniqueId());
+        return info;
     }
 
-    public void ReopenNormalChest(final Player player, final Player Target) {
+    public void remove(Player player) {
     }
 
-    public void removeWatcher(Player player) {
-
+    public CMIInvSee removeWatcher(Player player) {
+        return watcherList.remove(player.getUniqueId());
     }
 
-    public boolean isThisSlave(Player player) {
-
-	return false;
+    public CMIInvSee removeSlave(Player player) {
+        return slaveList.remove(player.getUniqueId());
     }
 
-    public RegWatcher getWatcherInfoBySlave(Player player) {
-
-	return null;
+    public boolean isSlave(Player player) {
+        if (slaveList.isEmpty())
+            return false;
+        return slaveList.containsKey(player.getUniqueId());
     }
 
-    public boolean CheckInvClick(Player player, int slot, String actionName) {
-
-	return false;
+    public boolean openInventory(Player watcher, Player target) {
+        return true;
     }
 
-    public boolean openInventory(Player player, Player Target) {
-	return true;
-    }
-
-    public void UpdateSlaveContents(final Player player, ItemStack[] MasterContents) {
-
-    }
-
-    public void UpdateMaster(Player player) {
+    private void updateWatcherInventory(Player watcher) {
 
     }
 
-    public void UpdateMasterContents(final Player player) {
-	UpdateMasterContents(player, true);
+    enum sectionType {
+        inventory, armor, offhand, cursor, crafting;
     }
 
-    public void UpdateMasterContents(final Player player, boolean delay) {
+    private boolean invClick(GUIClickType type, sectionType sectionType, UUID uuid, int slot, int realSlot) {
 
+        return true;
     }
 
-    private void updateMaster(Player player) {
-
-    }
-
-    public void UpdateMasterCrafting(final Player player) {
+    private void addInventoryButton(CMIGui gui, ItemStack item, int slot, int realSlot) {
 
     }
 
-    @Deprecated
-    public void UpdateSlaveCrafting(final Player player) {
+    private double cleanNumber(double number) {
+        return number * 100 / 100D;
     }
 
-    @Deprecated
-    public void UpdateMasterCraftingResult(final Player player) {
+    public CMIGui createGui(Player watcher, Player target) {
+
+        return null;
     }
 
-    public void UpdateMasterArmor(final Player player) {
+    private ItemStack[] getCraftingInventory(Player player) {
 
+        ItemStack[] targetContents = player.getOpenInventory().getTopInventory().getContents();
+
+        ItemStack[] contents = new ItemStack[5];
+
+        return contents;
     }
-
-    public void UpdateMasterItemInHand(final Player player) {
-
-    }
-
-    public void UpdateSlaveItemInHand(final Player player, ItemStack[] masterContents) {
-
-    }
-
-    public void UpdateMasterOffHand(final Player player) {
-
-    }
-
-    public void UpdateSlaveOffHand(final Player player, ItemStack[] MasterContents) {
-
-    }
-
-    public void UpdateSlaveArmor(final Player player, ItemStack[] MasterContents) {
-
-    }
-
-    @SuppressWarnings("deprecation")
-    public Inventory CreateGui(Player source, Player player) {
-
-	return null;
-    }
-
-    public ItemStack SlaveCraftInv(Player player, int Slot) {
-
-	return null;
-    }
-
 }

@@ -8,14 +8,14 @@ public class JobsManager {
     }
 
     public static boolean isJobCorrect(String name) {
-	return false;
+        return false;
     }
 
     public static String getRealJobName(String name) {
-	return null;
+        return null;
     }
 
     public static int getJobsLevel(Player player, String jobName) {
-	return 0;
+        return 0;
     }
 }

@@ -13,13 +13,13 @@ public class ReplaceBlock {
     private CMI plugin;
 
     public ReplaceBlock(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void start(final BRInfo scan) {
-	if (scan.getStartTime() == 0L)
-	    scan.setShowInfo(System.currentTimeMillis());
-	loadChunk(scan);
+        if (scan.getStartTime() == 0L)
+            scan.setShowInfo(System.currentTimeMillis());
+        loadChunk(scan);
     }
 
     private void loadChunk(final BRInfo scan) {

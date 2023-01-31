@@ -30,7 +30,7 @@ public final class CMIPlayerJailEvent extends Event implements Cancellable {
 	return handlers;
     }
 
-    public CMIUser getUser() {
+    public CMIUser getUser() {		
 	return user;
     }
 

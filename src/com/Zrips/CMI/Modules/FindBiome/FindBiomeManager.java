@@ -14,18 +14,21 @@ public class FindBiomeManager {
 //    private static Integer count = 0;
 
     public FindBiomeManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public boolean stop(Player player) {
-	return false;
+
+        return false;
     }
 
     public void start(FindBiomeInfo scan) {
+
     }
 
     @SuppressWarnings("deprecation")
     private void loadChunk(final FindBiomeInfo scan) {
 
     }
+
 }

@@ -21,7 +21,7 @@ public class SkinManager {
     private long SkinRequestFrequency = 60;
 
     public SkinManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void loadConfig() {
@@ -29,66 +29,65 @@ public class SkinManager {
     }
 
     public void removeSkinFromCache(String playerName) {
+        CMISkin skin = skinCacheByName.remove(playerName);
+        if (skin != null)
+            skinCacheByUUID.remove(skin.getUuid());
     }
 
     public boolean applySkin(Player player, String playerName) {
-	
-	    return false;
+        return false;
     }
 
     public boolean applySkin(final Player player, UUID uuid) {
 
-	return false;
+        return false;
     }
 
     Long lastUpdateRequest = 0L;
 
     public boolean setSkin(GameProfile profile, UUID uuid) {
 
-	    return false;
-	
+        return false;
 
     }
 
     private boolean checkCache(GameProfile profile, UUID uuid) {
-	
-	return false;
+        return false;
     }
 
     public CMISkin getSkin(String name) {
-	
-	return null;
+
+        return null;
     }
 
     boolean saving = false;
 
     public void save(CMISkin skin) {
-	
+
     }
 
-
     public void load() {
-	
+
     }
 
     public boolean isSteveOnOff() {
-	return SteveOnOff;
+        return SteveOnOff;
     }
 
     public void setSteveOnOff(boolean steveOnOff) {
-	SteveOnOff = steveOnOff;
+        SteveOnOff = steveOnOff;
     }
 
     public boolean isRequireSpecificPerm() {
-	return RequireSpecificPerm;
+        return RequireSpecificPerm;
     }
 
     public void setRequireSpecificPerm(boolean requireSpecificPerm) {
-	RequireSpecificPerm = requireSpecificPerm;
+        RequireSpecificPerm = requireSpecificPerm;
     }
 
     public boolean isAutoApply() {
-	return AutoApply;
+        return AutoApply;
     }
 
 }

@@ -12,18 +12,17 @@ public class ChunkPreview {
     private CMI plugin;
 
     public ChunkPreview(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
-    
-    
+
     public void clearCache(UUID uuid) {
-	Info.remove(uuid);
+        Info.remove(uuid);
     }
 
     public void loadRegionFile(ChunkPreviewInfo scan) {
-	if (scan.getStartTime() == 0L)
-	    scan.setShowInfo(System.currentTimeMillis());
-	loadChunk(scan);
+        if (scan.getStartTime() == 0L)
+            scan.setShowInfo(System.currentTimeMillis());
+        loadChunk(scan);
     }
 
     private void loadChunk(final ChunkPreviewInfo scan) {

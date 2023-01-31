@@ -1,7 +1,6 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -25,14 +24,10 @@ public class BungeeCordManager {
     public static final String PortalSetChannel = "CMIPortalSetSubChannel";
     public static final String PortalConfirmedSetChannel = "CMIPortalCSetSubChannel";
     public static final String PortalLocChannel = "CMIPortalLocSubChannel";
-//    public static final String PlayerInfoChannel = "CMIPlayerInfoSubChannel";
-//    public static final String PlayerInfoRequestChannel = "CMIPlayerInfoReqChannel";
     public static final String PlayerListRequest = "CMIPlayerListRequest";
     public static final String PlayerListFeedback = "CMIPlayerListFeedback";
-//    public static final String PlayerRequest = "CMIPlayerRequest";
     public static final String PlayerFeedback = "CMIPlayerFeedback";
     public static final String ServerListRequest = "CMIServerListRequest";
-//    public static final String PlayerCountChangeChannel = "CMIPlayerChangeChannel";
     public static UUID localRangedMessage;
     public static long localRangedMessageTime;
 
@@ -48,12 +43,11 @@ public class BungeeCordManager {
     private CMIBungeeCord bcord = null;
 
     public BungeeCordManager(CMI plugin) {
-	this.plugin = plugin;
-	bcord = CMIBungeeCord.of(plugin);
+        this.plugin = plugin;
+        bcord = CMIBungeeCord.of(plugin);
     }
 
     public void loadConfig() {
-
     }
 
     public void initialize() {
@@ -61,51 +55,56 @@ public class BungeeCordManager {
     }
 
     public boolean isCMIBPresent() {
-	return CMIBPresent;
+        return CMIBPresent;
     }
 
     public void setCMIBPresent(boolean cMIBPresent) {
-	if (cMIBPresent) {
-	    plugin.consoleMessage("CMIB proxy plugin detected");
-	}
-	CMIBPresent = cMIBPresent;
+        if (cMIBPresent) {
+            plugin.consoleMessage("CMIB proxy plugin detected");
+        }
+        CMIBPresent = cMIBPresent;
     }
 
     @Deprecated
     public boolean isBungee() {
-	return isBungeeCord();
+        return isBungeeCord();
     }
 
     public void setBungeeCord(boolean state) {
-	isBungee = state;
+        isBungee = state;
     }
 
     public boolean isBungeeCord() {
-	return isBungee && enabledSupport;
+        return isBungee && enabledSupport;
     }
 
     public void addServer(BungeeCordServer server) {
-	gotServerList = true;
-	servers.put(server.getName().toLowerCase(), server);
-	server.update();
+        gotServerList = true;
+        servers.put(server.getName().toLowerCase(), server);
+        server.update();
     }
 
     Long time = 0L;
 
     public BungeeCordServer getServer(String server) {
-	if (System.currentTimeMillis() > time + 60000L) {
-	    updateServers();
-	}
-	return servers.get(server.toLowerCase());
+        if (System.currentTimeMillis() > time + 60000L) {
+            updateServers();
+        }
+        return servers.get(server.toLowerCase());
     }
 
     public HashMap<String, BungeeCordServer> getServers() {
-
-	return servers;
+        if (System.currentTimeMillis() > time + 60000L) {
+            updateServers();
+            time = System.currentTimeMillis();
+        }
+        return servers;
     }
 
     public void sendServerListRequest() {
-	
+    }
+
+    public void sendPlayerListRequest() {
     }
 
     public void sendPlayerInfoRequest(String serverName) {
@@ -113,81 +112,73 @@ public class BungeeCordManager {
     }
 
     private static Player getFirstPlayer() {
-	Player firstPlayer = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
-	return firstPlayer;
+        Player firstPlayer = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+        return firstPlayer;
     }
 
     public BungeeCordServer getThisServer() {
-	if (thisServer == null) {
-	    if (getThisServerName() != null) {
-		thisServer = this.getServer(getThisServerName());
-	    }
-	}
-	return thisServer;
+        if (thisServer == null) {
+            if (getThisServerName() != null) {
+                thisServer = this.getServer(getThisServerName());
+            }
+        }
+        return thisServer;
     }
 
     public void setThisServer(BungeeCordServer thisServer) {
-	this.thisServer = thisServer;
+        this.thisServer = thisServer;
     }
 
     public String getThisServerName() {
-	if (thisServerName == null && thisServer != null)
-	    thisServerName = thisServer.getName();
-	return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName() : thisServerName;
+        if (thisServerName == null && thisServer != null)
+            thisServerName = thisServer.getName();
+        return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName() : thisServerName;
     }
 
     private static final String spacer = "_20_";
 
     public String getThisServerNameOneWord() {
-	if (thisServerName == null && thisServer != null)
-	    thisServerName = thisServer.getName();
-	return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName().replace(" ", spacer) : thisServerName.replace(" ", spacer);
+        if (thisServerName == null && thisServer != null)
+            thisServerName = thisServer.getName();
+        return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName().replace(" ", spacer) : thisServerName.replace(" ", spacer);
     }
 
     public void setThisServerName(String thisServerName) {
+        this.thisServerName = thisServerName;
+        if (getThisServerName() != null) {
+            thisServer = this.getServer(getThisServerName());
+        }
     }
 
     public BungeePlayer getBungeePlayer(String player) {
-	if (!enabledSupport)
-	    return null;
-	for (Entry<String, BungeeCordServer> one : servers.entrySet()) {
-	    BungeePlayer p = one.getValue().getPlayer(player);
-	    if (p != null)
-		return p;
-	}
-	return null;
+        return null;
     }
 
     public BungeePlayer getBungeePlayer(UUID uuid) {
-
-	return null;
+        return null;
     }
 
     public BungeeCordServer getPlayerServer(UUID uuid) {
-
-	return null;
+        return null;
     }
 
     public BungeeCordServer getPlayerServer(String player) {
-
-	return null;
+        return null;
     }
 
     public boolean anyPlayersOnServer(String serverName) {
-	if (!enabledSupport)
-	    return false;
-	BungeeCordServer server = this.getServer(serverName);
-	if (server == null)
-	    return false;
-	return server.getCurrentPlayers() > 0;
+        if (!enabledSupport)
+            return false;
+        BungeeCordServer server = this.getServer(serverName);
+        if (server == null)
+            return false;
+        return server.getCurrentPlayers() > 0;
     }
 
     public void updateServersInfo() {
-
     }
 
     public void updateServersIp() {
-
     }
 
     public void updateServers() {
@@ -195,19 +186,17 @@ public class BungeeCordManager {
     }
 
     public void connectToServer(Player player, String serverName) {
-
     }
 
     public void connectOther(String playerName, String server) {
-
     }
 
     public void connectToServer(String player, String server) {
-	connectToServer(Bukkit.getPlayer(player), server);
+        connectToServer(Bukkit.getPlayer(player), server);
     }
 
     public int getPlayersInServer(String serverName) {
-	return 0;
+        return 0;
     }
 
     public void sendPublicMessage(String server, String sender, String message) {
@@ -224,7 +213,7 @@ public class BungeeCordManager {
 
     @Deprecated
     public void sendMessage(String sender, String target, String message) {
-	sendPrivateMessage(sender, target, message);
+        sendPrivateMessage(sender, target, message);
     }
 
     public void sendPrivateMessage(String sender, String target, String message) {
@@ -253,7 +242,7 @@ public class BungeeCordManager {
 
     public boolean isPlayerOnAnotherServer(String player) {
 
-	return false;
+        return false;
     }
 
     public void sendNewPlayerInfoToNetwork(Player player) {
@@ -265,10 +254,10 @@ public class BungeeCordManager {
     }
 
     public boolean isEnabledSupport() {
-	return enabledSupport;
+        return enabledSupport;
     }
 
     public CMIBungeeCord getBungeeCord() {
-	return bcord;
+        return bcord;
     }
 }

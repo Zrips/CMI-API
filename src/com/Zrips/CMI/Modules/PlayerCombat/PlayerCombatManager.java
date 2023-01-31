@@ -1,14 +1,11 @@
 package com.Zrips.CMI.Modules.PlayerCombat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -19,17 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import net.Zrips.CMILib.FileHandler.ConfigReader;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-import com.Zrips.CMI.events.CMIPvEEndEventAsync;
-import com.Zrips.CMI.events.CMIPvEStartEventAsync;
-import com.Zrips.CMI.events.CMIPvPEndEventAsync;
-import com.Zrips.CMI.events.CMIPvPStartEventAsync;
-import net.Zrips.CMILib.Version.Version;
-import net.Zrips.CMILib.Container.CMIList;
-import net.Zrips.CMILib.Entities.CMIEntitySubType;
-import net.Zrips.CMILib.Entities.CMIEntityType;
-import net.Zrips.CMILib.Entities.MobHeadInfo;
 
 public class PlayerCombatManager {
 
@@ -68,20 +54,22 @@ public class PlayerCombatManager {
     private double LowerChanceWithEachKill = 50D;
     private int CombatTimer = 15;
 
+    private List<String> PlayerHeadLore = new ArrayList<String>();
+
     Pattern lorePattern = Pattern.compile("(lore\\{(\"|'))(.+)((\"|')\\})");
 
     public PlayerCombatManager(CMI plugin) {
-	this.plugin = plugin;
-	tasker();
+        this.plugin = plugin;
+        tasker();
     }
 
     private int sched = -1;
 
     public void stop() {
-	if (sched != -1) {
-	    Bukkit.getScheduler().cancelTask(sched);
-	    sched = -1;
-	}
+        if (sched != -1) {
+            Bukkit.getScheduler().cancelTask(sched);
+            sched = -1;
+        }
     }
 
     public void loadConfig() {
@@ -89,56 +77,55 @@ public class PlayerCombatManager {
     }
 
     public void loadHeads() {
-	
 
     }
 
     public void removePlayerFromCombat(CMIUser user) {
-	
+
     }
 
     public void addPlayerIntoCombat(CMIUser user) {
-	
+
     }
 
     public void addPlayerIntoMobCombat(CMIUser user) {
-	
+
     }
 
     private void tasker() {
-	
+
     }
 
     public Boolean isDropPlayerHead() {
-	return dropHead;
+        return dropHead;
     }
 
     public Boolean isDropEntityHead() {
-	return dropEntityHead;
+        return dropEntityHead;
     }
 
     public double getLowerChanceWithEachKill() {
-	return LowerChanceWithEachKill;
+        return LowerChanceWithEachKill;
     }
 
     public double getPlayerDropHeadPercentage() {
-	return DropHeadPercentage;
+        return DropHeadPercentage;
     }
 
     public double getEntityDropHeadPercentage(EntityType type) {
-	EntityHeadDrop c = entityHeadDropChance.get(type);
-	return c == null ? 0D : c.getBaseDropChance();
+        EntityHeadDrop c = entityHeadDropChance.get(type);
+        return c == null ? 0D : c.getBaseDropChance();
     }
 
     public double getEntityHeadDropChanceLowering(EntityType type) {
-	EntityHeadDrop c = entityHeadDropChance.get(type);
-	return c == null ? 0D : c.getBaseLowerAmount();
+        EntityHeadDrop c = entityHeadDropChance.get(type);
+        return c == null ? 0D : c.getBaseLowerAmount();
     }
 
     @Deprecated
     public ItemStack tryToGetEntityHead(EntityType type) {
-	EntityHeadDrop c = entityHeadDropChance.get(type);
-	return c == null ? null : c.getHead();
+        EntityHeadDrop c = entityHeadDropChance.get(type);
+        return c == null ? null : c.getHead();
     }
 
 //    public ItemStack tryToGetEntityHead(Entity ent) {
@@ -146,110 +133,123 @@ public class PlayerCombatManager {
 //    }
 
     public ItemStack tryToGetEntityHead(Player player, Entity ent) {
-	EntityHeadDrop c = entityHeadDropChance.get(ent.getType());
-	return c == null ? null : c.getHead(player, ent);
+        EntityHeadDrop c = entityHeadDropChance.get(ent.getType());
+        return c == null ? null : c.getHead(player, ent);
     }
 
     public HashMap<EntityType, EntityHeadDrop> getEntityHeadDropChance() {
-	return entityHeadDropChance;
+        return entityHeadDropChance;
     }
 
     public int getCombatTimer() {
-	return CombatTimer;
+        return CombatTimer;
     }
 
     public void setCombatTimer(int combatTimer) {
-	CombatTimer = combatTimer;
+        CombatTimer = combatTimer;
     }
 
     public Boolean isIncludeVictim() {
-	return IncludeVictim;
+        return IncludeVictim;
     }
 
     public HashMap<Integer, Double> getLootMobBonus() {
-	return lootMobBonus;
+        return lootMobBonus;
     }
 
     public HashMap<Integer, Double> getLootPlayerBonus() {
-	return lootPlayerBonus;
+        return lootPlayerBonus;
     }
 
     public Boolean isPVPNoGodDamage() {
-	return pvpNoGodDamage;
+        return pvpNoGodDamage;
     }
 
     public Boolean isPVPNoGodDamageInform() {
-	return pvpNoGodDamageInform;
+        return pvpNoGodDamageInform;
     }
 
     public Boolean isPVENoGodDamage() {
-	return pveNoGodDamage;
+        return pveNoGodDamage;
     }
 
     public Boolean isPVENoGodDamageInform() {
-	return pveNoGodDamageInform;
+        return pveNoGodDamageInform;
     }
-    
+
     public Boolean isPDisableFlight() {
-	return PDisableFlight;
+        return PDisableFlight;
     }
 
     public Boolean isMDisableFlight() {
-	return MDisableFlight;
+        return MDisableFlight;
     }
 
     public boolean isAllowedPlayerCommand(String command) {
-	for (String one : PlayerAllowedCommands) {
-	    if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
-		return !PlayerMakeBlackList;
-	    }
-	}
-	return PlayerMakeBlackList;
+        for (String one : PlayerAllowedCommands) {
+            if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
+                return !PlayerMakeBlackList;
+            }
+        }
+        return PlayerMakeBlackList;
     }
 
     public boolean isAllowedMobCommand(String command) {
-	for (String one : MobAllowedCommands) {
-	    if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
-		return !MobMakeBlackList;
-	    }
-	}
-	return MobMakeBlackList;
+        for (String one : MobAllowedCommands) {
+            if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
+                return !MobMakeBlackList;
+            }
+        }
+        return MobMakeBlackList;
     }
 
     public boolean isPlayerShowBossBar() {
-	return PlayerShowBossBar;
+        return PlayerShowBossBar;
     }
 
     public boolean isMobShowBossBar() {
-	return MobShowBossBar;
+        return MobShowBossBar;
     }
 
     public boolean isPlayerBlockCommands() {
-	return PlayerBlockCommands;
+        return PlayerBlockCommands;
     }
 
     public boolean isMobBlockCommands() {
-	return MobBlockCommands;
+        return MobBlockCommands;
     }
 
     public boolean isPDisableFallDamage() {
-	return PDisableFallDamage;
+        return PDisableFallDamage;
     }
 
     public boolean isMDisableFallDamage() {
-	return MDisableFallDamage;
+        return MDisableFallDamage;
     }
 
     public List<String> getMobWorlds() {
-	return mobWorlds;
+        return mobWorlds;
     }
 
     public List<String> getPlayerWorlds() {
-	return playerWorlds;
+        return playerWorlds;
     }
 
     public boolean isSafeZoneDamage() {
-	return safeZoneDamage;
+        return safeZoneDamage;
     }
+
+    public List<String> getPlayerHeadLore() {
+        return new ArrayList<String>(PlayerHeadLore);
+    }
+
+//    public boolean isPlayerMakeCMDBlackList() {
+//	return PlayerMakeBlackList;
+//    }
+//
+//    public boolean isMobMakeCMDBlackList() {
+//	return MobMakeBlackList;
+
+//    }
 
 }

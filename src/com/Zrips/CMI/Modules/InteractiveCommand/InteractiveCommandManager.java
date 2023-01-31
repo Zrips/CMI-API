@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -23,76 +22,86 @@ public class InteractiveCommandManager {
     private boolean checkCitizens = false;
 
     public InteractiveCommandManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     HashMap<String, Map<ChunkRef, Set<CMIInteractiveCommand>>> map = new HashMap<String, Map<ChunkRef, Set<CMIInteractiveCommand>>>();
-    HashMap<String, CMIInteractiveCommand> entMap = new HashMap<String, CMIInteractiveCommand>();
+
+    HashMap<UUID, CMIInteractiveCommand> entMap = new HashMap<UUID, CMIInteractiveCommand>();
     HashMap<Integer, CMIInteractiveCommand> citiznesMap = new HashMap<Integer, CMIInteractiveCommand>();
     LinkedHashMap<String, CMIInteractiveCommand> nameMap = new LinkedHashMap<String, CMIInteractiveCommand>();
 
     public Entity getEntityByUUID(UUID uuid) {
-	return null;
+        return null;
     }
 
     public void deleteIC(CMIInteractiveCommand cmib) {
+
     }
 
     public void clearLocationsFromIC(CMIInteractiveCommand cmib) {
+
     }
 
     public void addEntity(UUID uuid, CMIInteractiveCommand cmib) {
+
     }
 
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib) {
-	return addInteractiveCommand(cmib, true);
+        return addInteractiveCommand(cmib, true);
     }
 
-    public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save) {	
-	return cmib;
+    public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save) {
+
+        return cmib;
     }
 
     public Set<CMIInteractiveCommand> getFullList() {
-	Set<CMIInteractiveCommand> ls = new HashSet<CMIInteractiveCommand>();
-
-	return ls;
+        return new HashSet<CMIInteractiveCommand>(nameMap.values());
     }
 
     public Set<CMIInteractiveCommand> getSortedByDistance(Location loc) {
 
-
-	return null;
+        return null;
     }
 
     public CMIInteractiveCommand getByUUID(UUID uuid) {
-	return null;
+        if (this.checkCitizens) {
+            checkCitizens();
+            this.checkCitizens = false;
+        }
+        return entMap.get(uuid);
     }
 
     public CMIInteractiveCommand getByCitizensId(Integer id) {
-	return null;
+        if (id == null)
+            return null;
+        if (this.checkCitizens) {
+            checkCitizens();
+            this.checkCitizens = false;
+        }
+        return citiznesMap.get(id);
     }
 
     private void checkCitizens() {
-	
+
     }
 
     public CMIInteractiveCommand getByName(String name) {
-	return nameMap.get(name.toLowerCase());
+        return nameMap.get(name.toLowerCase());
     }
 
     public CMIInteractiveCommand removeLoc(CMILocation loc) {
-	
-	return null;
+        return null;
     }
 
     public CMIInteractiveCommand removeEntity(UUID uuid) {
-	
-	return null;
+        return null;
     }
 
     public CMIInteractiveCommand getByLoc(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     private int saveId = -1;
@@ -103,7 +112,7 @@ public class InteractiveCommandManager {
     boolean saving = false;
 
     public void forceSave() {
-	
+
     }
 
     public void load() {
@@ -111,6 +120,6 @@ public class InteractiveCommandManager {
     }
 
     public int getSaveId() {
-	return saveId;
+        return saveId;
     }
 }

@@ -45,9 +45,7 @@ public class CMIRayTrace {
     }
 
     public ArrayList<Block> getBlocks(double blocksAway, double accuracy) {
-	ArrayList<Vector> positions = traverse(blocksAway, accuracy);
 	Set<Block> blocks = new LinkedHashSet<Block>();
-
 	return new ArrayList<Block>(blocks);
     }
 

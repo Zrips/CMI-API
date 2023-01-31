@@ -28,7 +28,7 @@ public class checkInfo {
     }
 
     public boolean timeToCheck() {
-	return time + 1000 < System.currentTimeMillis();
+	return time + 400L < System.currentTimeMillis();
     }
 
     public Long getTime() {

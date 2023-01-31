@@ -1,38 +1,20 @@
 package com.Zrips.CMI.Modules.Portals;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import net.Zrips.CMILib.FileHandler.ConfigReader;
-import net.Zrips.CMILib.Effects.CMIEffect;
-import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
-import com.Zrips.CMI.Modules.Worlds.CMIWorldListener;
-import com.Zrips.CMI.Modules.Worlds.UpdateOnWorldLoad;
-import net.Zrips.CMILib.Version.Version;
 
 public class PortalManager {
 
@@ -53,30 +35,37 @@ public class PortalManager {
     private CMI plugin;
 
     public PortalManager(CMI plugin) {
+
     }
 
     private int sched = -1;
 
     public void stop() {
-	if (sched == -1)
-	    return;
-	Bukkit.getScheduler().cancelTask(sched);
-	sched = -1;
+        if (sched == -1)
+            return;
+        Bukkit.getScheduler().cancelTask(sched);
+        sched = -1;
     }
 
     private void tasker() {
-	
+
     }
 
     private static void showParticlesForPortal(CMIPortal portal) {
 
-
     }
 
     public void addPortal(CMIPortal portal) {
+        portals.put(portal.getName().toLowerCase(), portal);
+        recalculateChunks(portal);
     }
 
     public void recalculateChunks() {
+        chunkPortals.clear();
+        chunkPortalsRange1.clear();
+        for (Entry<String, CMIPortal> one : this.portals.entrySet()) {
+            recalculateChunks(one.getValue());
+        }
     }
 
     public void recalculateChunks(CMIPortal portal) {
@@ -84,137 +73,159 @@ public class PortalManager {
     }
 
     public CMIPortal getByName(String name) {
-	if (name == null)
-	    return null;
-	return portals.get(name.toLowerCase());
+        if (name == null)
+            return null;
+        return portals.get(name.toLowerCase());
     }
 
     public CMIPortal getByLoc(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     public Set<CMIPortal> getByLocList(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     public Set<CMIPortal> getByLocExtended(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     public CMIPortal collidesWithPortal(CuboidArea newarea) {
-	
-	return null;
+
+        return null;
     }
 
     private static List<ChunkRef> getChunks(CMIPortal res) {
-	
-	return null;
+        List<ChunkRef> chunks = new ArrayList<>();
+        chunks.addAll(res.getArea().getChunks());
+        return chunks;
     }
 
     private static List<ChunkRef> getChunks(CMIPortal portal, int range) {
-	return null;
+        List<ChunkRef> chunks = new ArrayList<>();
+        chunks.addAll(portal.getArea().getChunks(range));
+        return chunks;
     }
 
     public void loadConfig() {
+
     }
 
     public void load() {
-	
+
     }
 
     public void loadMap(String world, Map<String, Object> root) throws Exception {
-	
+
     }
 
     public void handlePortalVisualizerUpdates() {
-	for (Player one : Bukkit.getOnlinePlayers()) {
-	    handlePortalVisualizerUpdates(one, null, one.getLocation());
-	}
+        for (Player one : Bukkit.getOnlinePlayers()) {
+            handlePortalVisualizerUpdates(one, null, one.getLocation());
+        }
     }
 
     public boolean handlePortalVisualizerUpdates(Player player, Location locfrom, Location locto) {
 
-	boolean success = true;
-
-	return success;
+        return false;
     }
 
     public void savePortals() {
-	
+        if (id != null)
+            return;
+        id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CMI.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                CMI.getInstance().getPortalManager().save();
+                id = null;
+            }
+        }, 20 * 10L);
     }
 
     private Integer id = null;
     private boolean saving = false;
 
     private void save() {
-	
+
     }
 
     public void removeLastPortalInRange(CMIPortal portal, UUID uuid) {
-	
+
     }
 
     public void removeLastPortalInRange(UUID uuid) {
-	
+
     }
 
     public void addLastPortalInRange(CMIPortal portal, UUID uuid) {
-	
+
     }
 
     public SortedMap<String, CMIPortal> getPortals() {
-	return portals;
+        return portals;
     }
 
     public List<CMIPortal> getPortalsByDistance(Location loc) {
 
-	return null;
+        return null;
     }
 
     public void removePortal(CMIPortal portal) {
-	portals.remove(portal.getName().toLowerCase());
-	lastPortalInRange.remove(portal);
-	this.recalculateChunks();
-	this.savePortals();
+        portals.remove(portal.getName().toLowerCase());
+        lastPortalInRange.remove(portal);
+        this.recalculateChunks();
+        this.savePortals();
     }
 
     public int getPortalsCheckInterval() {
-	return PortalsCheckInterval;
+        return PortalsCheckInterval;
     }
 
     public int getPortalsCheckParticleInterval() {
-	return PortalsCheckParticleInterval;
+        return PortalsCheckParticleInterval;
     }
 
     public List<String> getCommandsOnTeleport() {
-	return commandsOnTeleport;
+        return commandsOnTeleport;
     }
 
     public boolean isNearPortal(UUID uuid) {
-	    return false;
+        if (playerNearPortals.isEmpty())
+            return false;
+        if (uuid == null)
+            return false;
+        Set<CMIPortal> ls = playerNearPortals.get(uuid);
+        return ls != null && !ls.isEmpty();
     }
 
     public void addNearPortal(UUID uuid, CMIPortal portal) {
+        Set<CMIPortal> ls = playerNearPortals.get(uuid);
+        if (ls == null)
+            ls = new HashSet<CMIPortal>();
+        ls.add(portal);
+        portal.updateParticleLimitations(Bukkit.getPlayer(uuid));
+        playerNearPortals.put(uuid, ls);
     }
 
     public void removeNearPortal(UUID uuid, CMIPortal portal) {
+
     }
 
     public void removeNearPortal(UUID uuid) {
-	Set<CMIPortal> rem = playerNearPortals.remove(uuid);
-	if (rem != null)
-	    for (CMIPortal one : rem) {
-		one.removeParticleLimitations(uuid);
-	    }
+        Set<CMIPortal> rem = playerNearPortals.remove(uuid);
+        if (rem != null)
+            for (CMIPortal one : rem) {
+                one.removeParticleLimitations(uuid);
+            }
     }
 
     public void forceUpdate(CMIPortal portal) {
-	for (Player one : Bukkit.getOnlinePlayers()) {
-	    forceUpdate(one.getUniqueId(), portal);
-	}
+        for (Player one : Bukkit.getOnlinePlayers()) {
+            forceUpdate(one.getUniqueId(), portal);
+        }
     }
 
     public void forceUpdate(UUID uuid, CMIPortal portal) {

@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.PlayTime.PlayTimeManager.PlaytimeRange;
 
@@ -22,50 +21,54 @@ public class CMIPlayTime {
     Integer dayBack = null;
 
     public CMIPlayTime(CMIUser user) {
-	this.user = user;
+        this.user = user;
     }
 
     public TreeMap<Integer, CMIPlayDay> getDays() {
-	return map;
+        return map;
     }
 
     public CMIPlayDay getPlayDay(Integer date) {
-	return null;
+        CMIPlayDay playDay = map.get(date);
+        if (playDay == null) {
+            playDay = new CMIPlayDay(user, date);
+            map.put(date, playDay);
+        }
+        return playDay;
     }
 
     public CMIPlayDay getPlayDayOfToday() {
-	return null;
+        return null;
     }
 
     private void checkYestarday() {
     }
 
     public void addDayForSave(CMIPlayDay playDay) {
-	forSave.add(playDay);
+        forSave.add(playDay);
     }
 
     public void updatePlayTime() {
-	updatePlayTime(true);
+        updatePlayTime(true);
     }
 
     public void updatePlayTime(boolean checkForOnline) {
-
     }
 
     public Long getPlayTime(PlaytimeRange range) {
 
-	return null;
+        return 0L;
     }
 
     public Long getTotalPlayTime() {
-	Long total = 0L;
-	for (Entry<Integer, CMIPlayDay> one : map.entrySet()) {
-	    total += one.getValue().getTotalTime();
-	}
-	return total;
+        Long total = 0L;
+        for (Entry<Integer, CMIPlayDay> one : map.entrySet()) {
+            total += one.getValue().getTotalTime();
+        }
+        return total;
     }
 
     public Set<CMIPlayDay> getForSave() {
-	return forSave;
+        return forSave;
     }
 }

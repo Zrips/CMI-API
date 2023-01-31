@@ -10,6 +10,7 @@ import com.Zrips.CMI.CMI;
 
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ScavengeManager {
@@ -17,7 +18,7 @@ public class ScavengeManager {
     private CMI plugin;
 
     public ScavengeManager(CMI cmi) {
-	this.plugin = cmi;
+        this.plugin = cmi;
     }
 
     public static Double baseBreakPercentage = 0D;
@@ -42,7 +43,7 @@ public class ScavengeManager {
     public static Set<CMIMaterial> blackList = new HashSet<CMIMaterial>();
 
     public void loadConfig() {
-	
+
     }
 
 //item black list
@@ -53,23 +54,32 @@ public class ScavengeManager {
     }
 
     private void processClick(CMIGuiButton button) {
-	updateExtractor(button.getGui());
+        updateExtractor(button.getGui(), null);
+    }
+
+    private void processClick(CMIGuiButton button, GUIClickType type) {
+        updateExtractor(button.getGui(), type);
     }
 
     private void updateExtractor(CMIGui gui) {
+        updateExtractor(gui, null);
+    }
+
+    private void updateExtractor(CMIGui gui, GUIClickType type) {
 
     }
 
     private double format(double number) {
-	return (int) (number * 100) / 100D;
+        return (int) (number * 100) / 100D;
     }
 
     private boolean isFailed(double failChance) {
-	if (failChance >= 100)
-	    return true;
-	Random random = new Random();
-	double c = random.nextDouble() * 100;
+        if (failChance >= 100)
+            return true;
 
-	return c < failChance;
+        Random random = new Random();
+        double c = random.nextDouble() * 100;
+
+        return c < failChance;
     }
 }

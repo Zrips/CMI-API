@@ -3,17 +3,9 @@ package com.Zrips.CMI.Modules.Particl;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.Location;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
-
-import com.Zrips.CMI.CMI;
 
 public class CMIPEFireWork extends CMIPEAnimation {
 
@@ -28,60 +20,53 @@ public class CMIPEFireWork extends CMIPEAnimation {
     private Boolean trail = null;
 
     public CMIPEFireWork() {
-	this.setDuration(0);
+        this.setDuration(0);
     }
 
     @Override
     public boolean render(List<Player> players) {
-	return true;
-    }
 
-    private static void ShotFirework(Location loc, FireworkEffect fe) throws Exception {
-	
-    }
-
-    private static Method getMethod(Class<?> cl, String method) {	
-	return null;
+        return true;
     }
 
     public Color getFadeFrom() {
-	return fadeFrom;
+        return fadeFrom;
     }
 
     public void setFadeFrom(Color fadeFrom) {
-	this.fadeFrom = fadeFrom;
+        this.fadeFrom = fadeFrom;
     }
 
     public Color getFadeTo() {
-	return fadeTo;
+        return fadeTo;
     }
 
     public void setFadeTo(Color fadeTo) {
-	this.fadeTo = fadeTo;
+        this.fadeTo = fadeTo;
     }
 
     public Type getType() {
-	return type;
+        return type;
     }
 
     public void setType(Type type) {
-	this.type = type;
+        this.type = type;
     }
 
     public Boolean getFlicker() {
-	return flicker;
+        return flicker;
     }
 
     public void setFlicker(Boolean flicker) {
-	this.flicker = flicker;
+        this.flicker = flicker;
     }
 
     public Boolean getTrail() {
-	return trail;
+        return trail;
     }
 
     public void setTrail(Boolean trail) {
-	this.trail = trail;
+        this.trail = trail;
     }
 
 }

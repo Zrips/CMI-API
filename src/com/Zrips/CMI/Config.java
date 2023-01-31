@@ -2,6 +2,7 @@ package com.Zrips.CMI;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -15,15 +16,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.inventory.ItemStack;
 
+import com.Zrips.CMI.Containers.CommandAlias;
 import com.Zrips.CMI.Containers.DamageControl;
 import com.Zrips.CMI.Containers.RandomTeleport;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
 import com.Zrips.CMI.Modules.CustomText.CText;
-import com.Zrips.CMI.Modules.Kits.KitsManager.CMIKitGUILayout;
 import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
 
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -39,6 +40,7 @@ public class Config {
     public boolean CheckForNameChangeOnLogin = true;
     public boolean PerformCommandsOnNewName = false;
     private List<String> OptimizationsNameChangeCommands = new ArrayList<String>();
+    private List<String> signEditBlackList = new ArrayList<String>();
     private HashMap<String, Integer> FlyAboveRoofLimitationsMap = new HashMap<String, Integer>();
     public int CheckForNameChangeAmountToShow = 3;
     public boolean CheckForNameChangeOnInfoShow = true;
@@ -67,6 +69,7 @@ public class Config {
     private List<String> fixWorldsToFix = new ArrayList<String>();
     public boolean hungeroveride = false;
     public String Lang = "EN";
+    public boolean LanguageDownload = true;
 
     public static boolean monochromeConsole = false;
     public static int ImmortalityOnJoin = 3;
@@ -81,9 +84,11 @@ public class Config {
     private List<Material> ItemLoreTypeBlackList = new ArrayList<Material>();
     private boolean ItemNameMarkChanged = false;
     private boolean ItemLoreMarkChanged = false;
+    public static int ItemLoreMaxLength = 64;
     private boolean CMIPlayTimeTracking = false;
 
     public static List<String> PlaytimeTopExclude = new ArrayList<String>();
+    public static long PlaytimeTopOffline = 0;
 
     private boolean RepairShareProtectNormalRepair = false;
     private boolean RepairShareProtectCommandRepair = false;
@@ -106,6 +111,7 @@ public class Config {
     private boolean PreventBedExplosionNether = true;
     private boolean PreventBedExplosionTheEnd = true;
     private boolean PreventPlayersOnNetherRoof = true;
+    private int netherRoofHeight = 0;
     private boolean PreventPlayersBelowBedrock = true;
 
     private boolean PreventIronGolemRoses = false;
@@ -113,6 +119,8 @@ public class Config {
     private boolean PreventHook = false;
     public static int NearDefaultDistance = 200;
     public static boolean NearCommand = false;
+    public static boolean NearHideInvisible = false;
+    public static boolean NearHideObfuscate = false;
     public static boolean NearDirection = true;
     public static int NearCommandCount = 10;
     private boolean MulticraftDisableList = false;
@@ -145,7 +153,10 @@ public class Config {
 
     public int TeleportTpaTime;
     private boolean TeleportSwitchPlaces;
-    private boolean TeleportCurrentLoc;
+
+    private boolean TpaCurrentLoc;
+    private boolean TpahereCurrentLoc;
+
     private int TeleportJumpDefault;
 //    private boolean TeleportVehicleWorkArround;
     public boolean SafeLocationDownThenUp;
@@ -167,8 +178,9 @@ public class Config {
 
     private HashMap<CMIItemStack, String> ItemRenamingPreventMap = new HashMap<CMIItemStack, String>();
     public static boolean ItemRenamingGlobalDisable = false;
+    public static int ItemRenamingMaxLength = 64;
 
-    private HashMap<World, RandomTeleport> randomTeleports = new HashMap<World, RandomTeleport>();
+    private HashMap<String, RandomTeleport> randomTeleports = new HashMap<String, RandomTeleport>();
     private int randomTeleportCooldown = 3;
     private int randomTeleportMaxTries = 10;
     private List<Biome> randomTeleportExcludedBiomes = new ArrayList<Biome>();
@@ -183,10 +195,19 @@ public class Config {
     public boolean LogoutDisabled = false;
     public boolean LoginCustomUse = false;
     public boolean LogoutCustomUse = false;
+    public boolean LogoutServerSwitch = false;
+    public boolean LoginServerSwitch = false;
     public boolean FirstJoinMessageUse = false;
+
+    public static boolean loginNameFilterUse = false;
+    public static boolean logoutNameFilterUse = false;
+
+    public static ChatFilterRule loginLogoutNameFilter = new ChatFilterRule();
+
     private int LogoutAutoHideFrom = -1;
     private int LoginAutoHideFrom = -1;
-    private int DeathMessageAutoHideFrom = -1;
+
+//    private int DeathMessageAutoHideFrom = -1;
 
     private boolean NotesShowOnAlertEvent = true;
     public static long alertTimer = 1440;
@@ -269,6 +290,7 @@ public class Config {
     private List<String> BackBlackList = new ArrayList<String>();
 
     public boolean hatIgnoreLored = false;
+    public boolean hatBlockArmorItems = false;
 
     public boolean RemoveNegative = false;
     public List<String> RemoveNegativeEffects = new ArrayList<String>();
@@ -328,6 +350,7 @@ public class Config {
     private boolean ModifyChatFormat = false;
     private boolean ChatClickHoverMessages = false;
     public static boolean ChatDiscordSRV = false;
+    public static boolean DiscordSRVRanged = true;
     public static String ChatDiscordSRVGlobalChannel = "global";
 //    private boolean ChatDiscordSRVChangeIncomming = false;
     public static String DiscordSRVLabel = "";
@@ -343,10 +366,12 @@ public class Config {
 //    public static boolean SleepingDisableVanillaMessage = false;
     public static boolean SleepingOnlyDurringNight, SleepingSpeedup, SleepingExcludeAfk, SleepingPercentage, SleepingInform;
     public static int SleepingBaseSpeed, SleepingInformDelay,
-	SleepingMinBeforeSpeeding, SleepingMinSpeed;
+        SleepingMinBeforeSpeeding, SleepingMinSpeed;
     private boolean CompassBossBar = false;
-    public static boolean CompassDefaultState = false;
+//    public static boolean CompassDefaultState = false;
     private boolean CompassRequireCompass = false;
+    private boolean recoveryRequireCompass = false;
+    private boolean recoveryAsRegularCompass = false;
     private int CompassUpdateInterval = 200;
     private String CompassShape;
     private String CompassColor;
@@ -365,17 +390,16 @@ public class Config {
     private int PlayerMailExpiresIn = 30;
     private int PlayerMailAllDays = 30;
 
-    private int DisposeUILines = 4;
-
-    private boolean KitsGUI = true;
-    private boolean KitsGUIFillEmptyFields = true;
-    private CMIItemStack GUIEmptyField = null;
+    public int DisposeUILines = 4;
+    public boolean DisposeCustomModelData = true;
+    public boolean DisposeAttachedCommands = true;
 
     private ConfigReader localeFile = null;
     private ConfigReader cfg = null;
 
     public static ChatFilterRule InteractiveCommandsSignRegex = new ChatFilterRule();
     public static boolean InteractiveCommandsSort = true;
+    public static boolean UseFakeOperator = true;
 
     public static boolean ShowSkullOwner = true;
     public static boolean ShowBeeHive = true;
@@ -385,654 +409,628 @@ public class Config {
     public static boolean DisableTeamManagement = false;
     private boolean AutoDownloadGeoIp = true;
     private boolean AutoDownloadGeoLiteCity = true;
-    private boolean ArmorStandsCheckBlockPlace = true;
+
     private String maintenanceMessage = null;
     public static Boolean maintenanceBossbar = null;
     public static Boolean maintenanceAutoKick = null;
 
-    HashMap<CMIKitGUILayout, CMIItemStack> kitButtons = new HashMap<CMIKitGUILayout, CMIItemStack>();
-
     private CMI plugin;
 
     public Config(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void ChangeConfig(String path, Object list) {
-	ChangeConfig(path, list, true);
+        ChangeConfig(path, list, true);
     }
 
     public void ChangeConfig(String path, Object list, boolean load) {
-
     }
 
     private static void newLn(StringBuilder header) {
-	header.append(System.lineSeparator());
+        header.append(System.lineSeparator());
     }
 
     private static StringBuilder formStringBuilder(List<String> list) {
-	StringBuilder header = new StringBuilder();
-	for (String one : list) {
-	    newLn(header);
-	    header.append(one);
-	}
-	return header;
+        StringBuilder header = new StringBuilder();
+        return header;
     }
 
     // Language file
     public boolean LoadLang(String lang) {
-	return LoadLang(lang, false);
+        return LoadLang(lang, false);
     }
 
     public boolean LoadLang(String lang, boolean isReload) {
-	return true;
+
+        return true;
     }
 
     public boolean load() {
-	return load(false);
+        return load(false);
     }
 
-    public boolean load(boolean isReload) {
-	return true;
+    public boolean load(boolean isReload) {       
+        return true;
     }
 
     private void allias(String cmd, String cmiCmd, boolean enabled) {
+        plugin.getAliasManager().addDefault(new CommandAlias(cmd, Arrays.asList("cmi " + cmiCmd + " $1-"), cfg.getC().getBoolean("Alias." + cmd, enabled)));
     }
 
     private static DamageCause getCause(String name) {
-	return null;
+        return null;
     }
 
     public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
-	List<String> result = new ArrayList<String>();
-
-	return result;
+        List<String> result = new ArrayList<String>();
+        return result;
     }
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath, String cleaner) {
-	JarFile jarFile = null;
-	List<String> listOfCommands = new ArrayList<String>();
-
-	return listOfCommands;
+        JarFile jarFile = null;
+        List<String> listOfCommands = new ArrayList<String>();
+       
+        return listOfCommands;
     }
 
-    public void reload(CommandSender player) {
+    public void reload(CommandSender sender) {
+
 
     }
 
     public boolean reloadLanguage() {
-	boolean langLoaded = LoadLang("EN", true);
-	return langLoaded;
+        boolean langLoaded = LoadLang("EN", true);
+        return langLoaded;
     }
 
-//    public Location getSpawnPoint() {
-//	return spawnPoint;
-//    }
-//
-//    public boolean isRespawnLocation() {
-//	return RespawnLocation;
-//    }
-
     public Location getFirstSpawnPoint() {
-	return firstSpawnPoint == null ? null : firstSpawnPoint.clone();
+        return firstSpawnPoint == null ? null : firstSpawnPoint.clone();
     }
 
     public boolean isModifyChatFormat() {
-	return ModifyChatFormat;
+        return ModifyChatFormat;
     }
 
     public boolean isChatClickHoverMessages() {
-	return ChatClickHoverMessages;
+        return ChatClickHoverMessages;
     }
 
     public boolean isColorsPublicMessages() {
-	return ColorsPublicMessages;
+        return ColorsPublicMessages;
     }
 
     public boolean isColorsPrivateMessage() {
-	return ColorsPrivateMessage;
+        return ColorsPrivateMessage;
     }
 
     public ConfigReader getConfig() {
-	return cfg;
+        return cfg;
     }
 
     public long getPlayerNotesExpiresIn() {
-	return PlayerNotesExpiresIn * 24L * 60L * 60L * 1000L;
+        return PlayerNotesExpiresIn * 24L * 60L * 60L * 1000L;
     }
 
     public long getPlayerMailExpiresIn() {
-	return PlayerMailExpiresIn * 24L * 60L * 60L * 1000L;
-    }
-
-    public boolean isKitsGUI() {
-	return KitsGUI;
-    }
-
-    public boolean isKitsGUIFillEmptyFields() {
-	return KitsGUIFillEmptyFields;
+        return PlayerMailExpiresIn * 24L * 60L * 60L * 1000L;
     }
 
     public HashMap<Material, Integer> getBlockedItems() {
-	return blockedItems;
+        return blockedItems;
     }
 
     public Boolean isBlackListedItemsEnabledFor(TpAction action) {
-	if (!BlackListedItemsEnabledFor.containsKey(action))
-	    return false;
-	return BlackListedItemsEnabledFor.get(action);
+        if (!BlackListedItemsEnabledFor.containsKey(action))
+            return false;
+        return BlackListedItemsEnabledFor.get(action);
     }
-
-//    public Boolean isCustomAliasEnabled() {
-//	return customAlias;
-//    }
 
     @Deprecated
     public boolean isDurabilityLossUse() {
-	return isToolDurabilityLossUse();
+        return isToolDurabilityLossUse();
     }
 
     public boolean isToolDurabilityLossUse() {
-	return durabilityLossUse;
+        return durabilityLossUse;
     }
 
     @Deprecated
     public int getDurabilityLossPercentage() {
-	return getToolDurabilityLossPercentage();
+        return getToolDurabilityLossPercentage();
     }
 
     public int getToolDurabilityLossPercentage() {
-	return durabilityLossPercentage;
+        return durabilityLossPercentage;
     }
 
     public HashMap<CMIItemStack, String> getItemRenamingPreventMap() {
-	return ItemRenamingPreventMap;
+        return ItemRenamingPreventMap;
     }
 
     public boolean isTeleportSwitchPlaces() {
-	return TeleportSwitchPlaces;
+        return TeleportSwitchPlaces;
     }
 
     public boolean isOnLimitedItemUseInform() {
-	return OnLimitedItemUseInform;
+        return OnLimitedItemUseInform;
     }
 
     public boolean isRepairShareProtectNormalRepair() {
-	return RepairShareProtectNormalRepair;
+        return RepairShareProtectNormalRepair;
     }
 
     public int getRepairShareDurability() {
-	return RepairShareDurability;
+        return RepairShareDurability;
     }
 
     public boolean isRepairShareAddLore() {
-	return RepairShareAddLore;
+        return RepairShareAddLore;
     }
 
     public boolean isRepairShareCancelEvent() {
-	return RepairShareCancelEvent;
+        return RepairShareCancelEvent;
     }
 
     public boolean isRepairShareInformWithMessage() {
-	return RepairShareInformWithMessage;
+        return RepairShareInformWithMessage;
     }
 
     public boolean isRepairShareProtectCommandRepair() {
-	return RepairShareProtectCommandRepair;
-    }
-
-    public int getDisposeUILines() {
-	return DisposeUILines;
+        return RepairShareProtectCommandRepair;
     }
 
     public int getMaxHp() {
-	return MaxHp > 2048 ? 2048 : MaxHp;
+        return MaxHp > 2048 ? 2048 : MaxHp;
     }
 
     public boolean isNotesShowOnAlertEvent() {
-	return NotesShowOnAlertEvent;
+        return NotesShowOnAlertEvent;
     }
 
     public boolean isRepairShareBypassWithPerm() {
-	return RepairShareBypassWithPerm;
+        return RepairShareBypassWithPerm;
     }
 
     public boolean isPreventExpPortals() {
-	return PreventExpPortals;
+        return PreventExpPortals;
     }
 
     public ConfigReader getLocaleConfig() {
-	return localeFile;
+        return localeFile;
     }
 
     public boolean isDisableWorldChunkCheckInfo() {
-	return DisableWorldChunkCheckInfo;
+        return DisableWorldChunkCheckInfo;
     }
 
     public boolean isPreventEntityBoatEnterAnimals() {
-	return PreventEntityBoatEnterAnimals;
+        return PreventEntityBoatEnterAnimals;
     }
 
     public boolean isPreventEntityBoatEnterMonsters() {
-	return PreventEntityBoatEnterMonsters;
+        return PreventEntityBoatEnterMonsters;
     }
 
     public boolean isPreventBedExplosionNether() {
-	return PreventBedExplosionNether;
+        return PreventBedExplosionNether;
     }
 
     public boolean isPreventIronGolemRoses() {
-	return PreventIronGolemRoses;
+        return PreventIronGolemRoses;
     }
 
     public boolean isMulticraftDisableList() {
-	return MulticraftDisableList;
+        return MulticraftDisableList;
     }
 
     public boolean isPreventBedExplosionTheEnd() {
-	return PreventBedExplosionTheEnd;
+        return PreventBedExplosionTheEnd;
     }
 
     public int getVisualizerSidesCap() {
-	return 1000;
+        return 1000;
     }
 
     public int getVisualizerFrameCap() {
-	return 1000;
+        return 1000;
     }
 
     public CMIParticle getSelectedSpigotSides() {
-	return CMIParticle.COLOURED_DUST;
-//	return null;
+        return CMIParticle.COLOURED_DUST;
     }
 
     public CMIParticle getSelectedSpigotFrame() {
-	return CMIParticle.HAPPY_VILLAGER;
-//	return null;
+        return CMIParticle.HAPPY_VILLAGER;
     }
 
     public long getVisualizerShowFor() {
-	return 60 * 1000L;
+        return 60 * 1000L;
     }
 
     public long getVisualizerUpdateInterval() {
-	return 10L;
+        return 10L;
     }
 
     public CMIItemStack getSelectionTool() {
-	return SelectionTool;
+        return SelectionTool;
     }
 
-    public CMIItemStack getGUIEmptyField() {
-	return GUIEmptyField;
-    }
 
     public boolean isNetherPortalPreventCreation() {
-	return NetherPortalPreventCreation;
+        return NetherPortalPreventCreation;
     }
 
     public boolean isMaintenance() {
-	return maintenance;
+        return maintenance;
     }
 
     public void setMaintenance(boolean maintenance) {
-	ChangeConfig("Optimizations.Maintenance", maintenance, false);
-	this.maintenance = maintenance;
+        ChangeConfig("Optimizations.Maintenance", maintenance, false);
+        this.maintenance = maintenance;
     }
 
     public String getMaintenanceMessage() {
-	return maintenanceMessage;
+        return maintenanceMessage;
     }
 
     public void setMaintenanceMessage(String maintenanceMessage) {
-	this.maintenanceMessage = maintenanceMessage;
+        this.maintenanceMessage = maintenanceMessage;
     }
 
     public boolean isOverrideLoginMessage() {
-	return OverrideLoginMessage;
+        return OverrideLoginMessage;
     }
 
     public CText getMotd() {
-	return Motd;
+        return Motd;
     }
 
     public boolean isPermisionOnError() {
-	return PermisionOnError;
+        return PermisionOnError;
     }
 
     public boolean isChatIgnorePublicMessage() {
-	return ChatIgnorePublicMessage;
+        return ChatIgnorePublicMessage;
     }
 
     public List<String> getFixWorldsToFix() {
-	return fixWorldsToFix;
+        return fixWorldsToFix;
     }
 
     public List<String> getCommandSpyBlackListed() {
-	return CommandSpyBlackListed;
+        return CommandSpyBlackListed;
     }
 
     public int getSpyDelayForTrigger() {
-	return SpyDelayForTrigger;
+        return SpyDelayForTrigger;
     }
 
     public int getTeleportTpaWarmup() {
-	return TeleportTpaWarmup;
+        return TeleportTpaWarmup;
     }
 
     public boolean isTeleportTpaMove() {
-	return TeleportTpaMove;
+        return TeleportTpaMove;
     }
 
     public boolean isOptimizationsCommandSorting() {
-	return OptimizationsCommandSorting;
+        return OptimizationsCommandSorting;
     }
 
     public boolean isPreventPlayersOnNetherRoof() {
-	return PreventPlayersOnNetherRoof;
+        return PreventPlayersOnNetherRoof;
     }
 
     public boolean isPreventPlayersBelowBedrock() {
-	return PreventPlayersBelowBedrock;
+        return PreventPlayersBelowBedrock;
     }
 
     public boolean isBossBarHpBarEnabled() {
-	return BossBarHpBarEnabled;
+        return BossBarHpBarEnabled;
     }
 
     public List<Material> getGroundCleanWhiteList() {
-	return GroundCleanWhiteList;
+        return GroundCleanWhiteList;
     }
 
     public boolean isPartialPlayerName() {
-	return PartialPlayerName;
+        return PartialPlayerName;
     }
 
     public boolean isOptimizationsCommandRemoveLabel() {
-	return OptimizationsCommandRemoveLabel;
+        return OptimizationsCommandRemoveLabel;
     }
 
     public boolean isBlockedSpawnReason(String worldName, SpawnReason reason) {
-	List<SpawnReason> reaons = blockedSpawnReasons.get(worldName);
-	if (reaons == null)
-	    return false;
-	return reaons.contains(reason);
+        List<SpawnReason> reaons = blockedSpawnReasons.get(worldName);
+        if (reaons == null)
+            return false;
+        return reaons.contains(reason);
     }
 
     public boolean isPreventHook() {
-	return PreventHook;
+        return PreventHook;
     }
 
     public List<String> getCleanUpWhiteList() {
-	return cleanUpWhiteList;
+        return cleanUpWhiteList;
     }
 
     public CMIParticle getPointDefaultParticle() {
-	return PointDefaultParticle;
+        return PointDefaultParticle;
     }
 
     public boolean isPermisionInConsole() {
-	return PermisionInConsole;
+        return PermisionInConsole;
     }
 
     public boolean isSellLog() {
-	return SellLog;
+        return SellLog;
     }
 
     public boolean isSpawnersSupportDisabled() {
-	return SpawnersSupportDisabled;
+        return SpawnersSupportDisabled;
     }
 
-    public boolean isTeleportCurrentLoc() {
-	return TeleportCurrentLoc;
+    public boolean isTpaCurrentLoc() {
+        return TpaCurrentLoc;
+    }
+
+    public boolean isTpahereCurrentLoc() {
+        return TpahereCurrentLoc;
     }
 
     public int getTeleportJumpDefault() {
-	return TeleportJumpDefault;
+        return TeleportJumpDefault;
     }
 
     public String getBooksDefaultAuthor() {
-	return BooksDefaultAuthor;
+        return BooksDefaultAuthor;
     }
 
     public boolean isChatReplyToLastMessenger() {
-	return ChatReplyToLastMessenger;
+        return ChatReplyToLastMessenger;
     }
 
     public int getLastMessengerTimeOut() {
-	return LastMessengerTimeOut;
+        return LastMessengerTimeOut;
     }
 
     public List<String> getCommandSpyCommandList() {
-	return CommandSpyCommandList;
+        return CommandSpyCommandList;
     }
 
     public boolean isCMIPlayTimeTracking() {
-	return CMIPlayTimeTracking;
+        return CMIPlayTimeTracking;
     }
 
     public void setCMIPlayTimeTracking(boolean cMIPlayTimeTracking) {
-	CMIPlayTimeTracking = cMIPlayTimeTracking;
+        CMIPlayTimeTracking = cMIPlayTimeTracking;
     }
 
     public int getBackMinDistance() {
-	return BackMinDistance;
+        return BackMinDistance;
     }
 
     public boolean isColorsMe() {
-	return ColorsMe;
+        return ColorsMe;
     }
 
     public int getPlayerMailAllDays() {
-	return PlayerMailAllDays;
+        return PlayerMailAllDays;
     }
 
     public String getElevatorIndicator() {
-	return ElevatorIndicator;
+        return ElevatorIndicator;
     }
 
     public String getElevatorStaticIndicator() {
-	return ElevatorStaticIndicator;
+        return ElevatorStaticIndicator;
     }
 
     public boolean isSpawnersXpDrop() {
-	return SpawnersXpDrop;
+        return SpawnersXpDrop;
     }
 
     public boolean isSafeLocationDownThenUp() {
-	return SafeLocationDownThenUp;
+        return SafeLocationDownThenUp;
     }
 
     public int getLogoutAutoHideFrom() {
-	return LogoutAutoHideFrom;
+        return LogoutAutoHideFrom;
     }
 
     public int getLoginAutoHideFrom() {
-	return LoginAutoHideFrom;
-    }
-
-    public int getDeathMessageAutoHideFrom() {
-	return DeathMessageAutoHideFrom;
+        return LoginAutoHideFrom;
     }
 
     public boolean isAutoDownloadGeoIp() {
-	return AutoDownloadGeoIp;
+        return AutoDownloadGeoIp;
     }
 
     public boolean isAutoDownloadGeoLiteCity() {
-	return AutoDownloadGeoLiteCity;
+        return AutoDownloadGeoLiteCity;
     }
 
     public boolean isChatDynMapChat() {
-	return ChatDynMapChat;
+        return ChatDynMapChat;
     }
 
     public boolean isPreloadTopPlaytime() {
-	return PreloadTopPlaytime;
+        return PreloadTopPlaytime;
     }
 
     public List<String> getOptimizationsNameChangeCommands() {
-	return OptimizationsNameChangeCommands;
+        return OptimizationsNameChangeCommands;
     }
 
     public boolean isElytraPreventSelfDamage() {
-	return ElytraPreventSelfDamage;
+        return ElytraPreventSelfDamage;
     }
 
     public boolean isFlyAboveRoof() {
-	return FlyAboveRoof;
+        return FlyAboveRoof;
     }
 
     public int getOptimizationsSimilarCommandChecker() {
-	return OptimizationsSimilarCommandChecker;
+        return OptimizationsSimilarCommandChecker;
     }
 
     public HashMap<String, Integer> getFlyAboveRoofLimitationsMap() {
-	return FlyAboveRoofLimitationsMap;
+        return FlyAboveRoofLimitationsMap;
     }
 
     public String getLongDateFormat() {
-	return LongDateFormat;
+        return LongDateFormat;
     }
 
     public String getShortDateFormat() {
-	return ShortDateFormat;
+        return ShortDateFormat;
     }
 
     public boolean isAutoTimeSmooth() {
-	return AutoTimeSmooth;
+        return AutoTimeSmooth;
     }
 
     public int getAutoTimeSmoothSpeed() {
-	return AutoTimeSmoothSpeed;
+        return AutoTimeSmoothSpeed;
     }
 
     public boolean isBossBarCompassEnabled() {
-	return CompassBossBar;
-    }
-
-    public CMIItemStack getKitPreviewIcon(CMIKitGUILayout type) {
-	return kitButtons.get(type) == null ? new CMIItemStack(new ItemStack(Material.STONE)) : kitButtons.get(type);
+        return CompassBossBar;
     }
 
     public String getSleepingSpeedupInfoType() {
-	return SleepingSpeedupInfoType;
+        return SleepingSpeedupInfoType;
     }
 
     public List<EntityType> getHpBarBlackList() {
-	return HpBarBlackList;
+        return HpBarBlackList;
     }
 
     public boolean isCompassRequireCompass() {
-	return CompassRequireCompass;
+        return CompassRequireCompass;
     }
 
     public int getCompassUpdateInterval() {
-	return CompassUpdateInterval;
+        return CompassUpdateInterval;
     }
 
     public RandomTeleport getRandomTeleport(World w) {
-	return getRandomTeleport(w, false);
+        return getRandomTeleport(w, false);
     }
 
     public RandomTeleport getRandomTeleport(World w, boolean includeDisabled) {
-	RandomTeleport rt = randomTeleports.get(w);
-	return rt == null ? null : randomTeleports.get(w).isEnabled() ? rt : includeDisabled ? rt : null;
+        RandomTeleport rt = randomTeleports.get(w.getName());
+        return rt == null ? null : rt.isEnabled() && rt.getCenter().getWorld() != null ? rt : includeDisabled ? rt : null;
     }
 
-    public HashMap<World, RandomTeleport> getRandomTeleports() {
-	return randomTeleports;
+    public HashMap<String, RandomTeleport> getRandomTeleports() {
+        return randomTeleports;
     }
 
     public int getRandomTeleportMaxTries() {
-	return randomTeleportMaxTries;
+        return randomTeleportMaxTries;
     }
 
     public int getRandomTeleportCooldown() {
-	return randomTeleportCooldown;
+        return randomTeleportCooldown;
     }
 
     public List<Biome> getRandomTeleportExcludedBiomes() {
-	return randomTeleportExcludedBiomes;
+        return randomTeleportExcludedBiomes;
     }
 
     public List<Material> getItemLoreTypeBlackList() {
-	return ItemLoreTypeBlackList;
+        return ItemLoreTypeBlackList;
     }
 
     public boolean isDisableRiptide() {
-	return disableRiptide;
+        return disableRiptide;
     }
 
     public boolean isOptimizationsSimilarCommandPrevention() {
-	return OptimizationsSimilarCommandPrevention;
+        return OptimizationsSimilarCommandPrevention;
     }
 
     public String getCompassShape() {
-	return CompassShape;
+        return CompassShape;
     }
 
     public String getCompassColor() {
-	return CompassColor;
+        return CompassColor;
     }
 
     public String getCompassHomeIcon() {
-	return CompassHomeIcon;
+        return CompassHomeIcon;
     }
 
     public String getCompassSpawnIcon() {
-	return CompassSpawnIcon;
+        return CompassSpawnIcon;
     }
 
     public String getCompassDeathIcon() {
-	return CompassDeathIcon;
+        return CompassDeathIcon;
     }
 
     public String getCompassTargetIcon() {
-	return CompassTargetIcon;
-    }
-
-    public boolean isArmorStandsCheckBlockPlace() {
-	return ArmorStandsCheckBlockPlace;
+        return CompassTargetIcon;
     }
 
     public List<String> getBackBlackList() {
-	return BackBlackList;
+        return BackBlackList;
     }
 
     public boolean isPotionEffectsDeductWhileOffline() {
-	return PotionEffectsDeductWhileOffline;
+        return PotionEffectsDeductWhileOffline;
     }
 
     public boolean isPreventEntityBoatEnterVillagers() {
-	return PreventEntityBoatEnterVillagers;
+        return PreventEntityBoatEnterVillagers;
     }
 
     public int getArmorDurabilityLossPercentage() {
-	return armorDurabilityLossPercentage;
+        return armorDurabilityLossPercentage;
     }
 
     public void setArmorDurabilityLossPercentage(int armorDurabilityLossPercentage) {
-	this.armorDurabilityLossPercentage = armorDurabilityLossPercentage;
+        this.armorDurabilityLossPercentage = armorDurabilityLossPercentage;
     }
 
     public boolean isArmorDurabilityLossUse() {
-	return armorDurabilityLossUse;
+        return armorDurabilityLossUse;
     }
 
     public void setArmorDurabilityLossUse(boolean armorDurabilityLossUse) {
-	this.armorDurabilityLossUse = armorDurabilityLossUse;
+        this.armorDurabilityLossUse = armorDurabilityLossUse;
     }
 
     public boolean isItemNameMarkChanged() {
-	return ItemNameMarkChanged;
+        return ItemNameMarkChanged;
     }
 
     public boolean isItemLoreMarkChanged() {
-	return ItemLoreMarkChanged;
+        return ItemLoreMarkChanged;
     }
 
     public boolean isShowNewVersion() {
-	return ShowNewVersion;
+        return ShowNewVersion;
+    }
+
+    public boolean isSignEditBlocked(String line) {
+        return signEditBlackList.contains(CMIChatColor.stripColor(line).toLowerCase());
+    }
+
+    public boolean isRecoveryRequireCompass() {
+        return recoveryRequireCompass;
+    }
+
+    public boolean isRecoveryAsRegularCompass() {
+        return recoveryAsRegularCompass;
+    }
+
+    public int getNetherRoofHeight() {
+        return netherRoofHeight;
     }
 }

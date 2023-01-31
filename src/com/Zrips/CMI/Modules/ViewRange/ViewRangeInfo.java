@@ -184,6 +184,18 @@ public class ViewRangeInfo {
     }
 
     public synchronized void removeLoadedChunks(List<ChunkInfo> chunks) {
+	List<ChunkInfo> remove = new ArrayList<ChunkInfo>();
+	for (ChunkInfo oneNew : chunks) {
+	    for (ChunkInfo oneOld : LoadedChunks) {
+		if (oneOld.getX() != oneNew.getX())
+		    continue;
+		if (oneOld.getZ() != oneNew.getZ())
+		    continue;
+		remove.add(oneOld);
+		break;
+	    }
+	}
+	this.LoadedChunks.removeAll(remove);
     }
 
     public void addLoadedChunk(ChunkInfo chunk) {

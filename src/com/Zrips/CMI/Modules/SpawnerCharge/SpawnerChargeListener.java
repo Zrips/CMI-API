@@ -1,31 +1,50 @@
 package com.Zrips.CMI.Modules.SpawnerCharge;
 
+import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
-import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Items.CMIMaterial;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-
-import net.Zrips.CMILib.ActionBar.CMIActionBar;
 
 public class SpawnerChargeListener implements Listener {
     private CMI plugin;
 
     public SpawnerChargeListener(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void BlockBreakEventExpDrop(BlockBreakEvent event) {
+
+    }
+
+    Random rand = new Random();
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void BlockBreakEventFull(BlockBreakEvent event) {
+
+    }
+
+    public static void clearCache(UUID uuid) {
+        breaking.remove(uuid);
+    }
+
+    static HashMap<UUID, Block> breaking = new HashMap<UUID, Block>();
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void blockBreakEventFull(BlockBreakEvent event) {
+
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void BlockPlaceEvent(BlockPlaceEvent event) {
+
+    }
 }

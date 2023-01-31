@@ -11,29 +11,29 @@ public class traveledDistance {
     private Long time = 0L;
 
     traveledDistance(CMIUser user) {
-	this.user = user;
-	if (user.isOnline())
-	    updateLocation();
+        this.user = user;
+        if (user.isOnline())
+            updateLocation();
     }
 
     public boolean toSoonToCheck() {
-	return System.currentTimeMillis() - time < 1000;
+        return System.currentTimeMillis() - time < 1000;
     }
 
     public void updateLocation() {
+
     }
 
     public Double getDistanceTraveled() {
-	
-	return 0D;
+        return 0D;
     }
 
     public Long sinceLastUpdate() {
-	return System.currentTimeMillis() - time;
+        return System.currentTimeMillis() - time;
     }
 
     public CMIUser getUser() {
-	return user;
+        return user;
     }
 
 }

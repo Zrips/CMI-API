@@ -14,8 +14,8 @@ public class CustomNBTManager {
     private CMI plugin;
 
     public enum CustomNBTType {
-	NBTCommands, CMILimitedUseCurrent, CMILimitedUseMax, CMISafeLimitedUse, CMILimitedLeftClick, CMIRepairMan, Add, Clear, Take, MoneyCheque, RandomId, @Deprecated
-	CooldownId, Cooldown, ItemCooldown
+        NBTCommands, CMILimitedUseCurrent, CMILimitedUseMax, CMISafeLimitedUse, CMILimitedLeftClick, CMIRepairMan, Add, Clear, Take, MoneyCheque, RandomId, @Deprecated
+        CooldownId, Cooldown, ItemCooldown
     }
 
     public static final String cdSpliter = ":";
@@ -27,35 +27,33 @@ public class CustomNBTManager {
     public static final String ignoreAction = "!ignore!";
 
     public CustomNBTManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public ItemStack updateUsesLore(ItemStack item) {
-	Integer uses = new CMINBT(item).getInt(CustomNBTType.CMILimitedUseMax.name());
-	if (uses == null)
-	    return item;
-	return updateUsesLore(item, uses);
+        Integer uses = new CMINBT(item).getInt(CustomNBTType.CMILimitedUseMax.name());
+        if (uses == null)
+            return item;
+        return updateUsesLore(item, uses);
     }
 
     public ItemStack clear(ItemStack iih) {
-	
-	return iih;
+        return iih;
     }
 
     public ItemStack updateRepairLore(ItemStack item, UUID uuid) {
 
-
-	return item;
+        return item;
     }
 
     public ItemStack updateUsesLore(ItemStack item, int uses) {
 
-	return item;
+        return item;
     }
 
     public String handleConsoleCommand(Player player, String cmd) {
-	
-	return cmd;
+
+        return cmd;
     }
 
 }

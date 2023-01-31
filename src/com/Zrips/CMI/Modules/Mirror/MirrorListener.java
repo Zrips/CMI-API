@@ -14,7 +14,16 @@ public class MirrorListener implements Listener {
     private CMI plugin;
 
     public MirrorListener(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void BlockPlaceEvent(BlockPlaceEvent event) {
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void BlockBreakEvent(BlockBreakEvent event) {
+
+    }
 }

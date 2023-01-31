@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
@@ -19,132 +20,119 @@ public class WorldInfo {
     private Integer range = null;
 
     @Override
-    public WorldInfo clone(){
-	WorldInfo wi = new WorldInfo(world, center);
-	wi.setRegion(new HashMap<String, List<Boolean>>(regionChunks));
-	wi.setTotalChunks(totalChunks);	
-	return wi;
+    public WorldInfo clone() {
+        WorldInfo wi = new WorldInfo(world, center);
+        wi.setRegion(new HashMap<String, List<Boolean>>(regionChunks));
+        wi.setTotalChunks(totalChunks);
+        return wi;
     }
-    
+
     public WorldInfo(World world, CMIRegion center) {
-	this.world = world;
-	this.center = center;
+        this.world = world;
+        this.center = center;
     }
-    
+
     public void setRegion(Map<String, List<Boolean>> regionChunks) {
-	this.regionChunks = regionChunks;
+        this.regionChunks = regionChunks;
     }
-    
+
     public Map<String, List<Boolean>> getRegion() {
-	return regionChunks;
+        return regionChunks;
     }
 
     private static String toString(CMIRegion cord) {
-	return cord.getX() + ":" + cord.getZ();
+        return cord.getX() + ":" + cord.getZ();
     }
 
     public Boolean getRegionsChunk(CMIRegion region, int place) {
 
-	List<Boolean> chunks = regionChunks.get(toString(region));
-//	for (Entry<SCord, List<Boolean>> one : regionChunks.entrySet()) {
-//	    if (one.getKey().getX() == region.getX() && one.getKey().getZ() == region.getZ())
-//		chunks = one.getValue();
-//	}
-
-	if (chunks == null)
-	    return null;
-	return chunks.get(place);
+        return null;
     }
 
     public List<Boolean> getRegionPlaces(CMIRegion region) {
-//	List<Boolean> chunks = ;
-//	for (Entry<SCord, List<Boolean>> one : regionChunks.entrySet()) {
-//	    if (one.getKey().getX() == region.getX() && one.getKey().getZ() == region.getZ())
-//		chunks = one.getValue();
-//	}
-	return regionChunks.get(toString(region));
+        return null;
     }
 
     public WorldInfo setRegionPlaces(CMIRegion region, List<Boolean> places) {
-	regionChunks.put(toString(region), places);
-	return this;
+        regionChunks.put(toString(region), places);
+        return this;
     }
 
     public CMIRegion getNextChunkLoc(boolean exist) {
-	return CMI.getInstance().getRegionManager().getNextChunkLocation(this, exist);
+        return CMI.getInstance().getRegionManager().getNextChunkLocation(this, exist);
     }
 
     public Chunk getNextChunk(boolean exist) {
-	return CMI.getInstance().getRegionManager().getNextChunk(this, exist);
+        return CMI.getInstance().getRegionManager().getNextChunk(this, exist);
     }
 
     public void setRegionChunks(CMIRegion scord, List<Boolean> list) {
-	this.regionChunks.put(toString(scord), list);
+        this.regionChunks.put(toString(scord), list);
     }
 
     public CMIRegion getCenter() {
-	if (center == null)
-	    center = new CMIRegion(0, 0);
-	return center;
+        if (center == null)
+            center = new CMIRegion(0, 0);
+        return center;
     }
 
     public void setCenter(CMIRegion center) {
-	this.center = center;
+        this.center = center;
     }
 
     public long getTotalChunks() {
-	return totalChunks;
+        return totalChunks;
     }
 
     public void setTotalChunks(long totalChunks) {
-	this.totalChunks = totalChunks;
+        this.totalChunks = totalChunks;
     }
 
     public void addTotalChunks(int chunks) {
-	this.totalChunks += chunks;
+        this.totalChunks += chunks;
     }
 
     public void addTotalChunks() {
-	this.totalChunks++;
+        this.totalChunks++;
     }
 
     public long getLastChecked() {
-	return lastChecked;
+        return lastChecked;
     }
 
     public boolean allChecked() {
-	return lastChecked >= totalChunks;
+        return lastChecked >= totalChunks;
     }
 
     public long getLeftToScan() {
-	return totalChunks - lastChecked < 0L ? 0L : totalChunks - lastChecked;
+        return totalChunks - lastChecked < 0L ? 0L : totalChunks - lastChecked;
     }
 
     public long getNextPlace() {
-	return lastChecked + 1;
+        return lastChecked + 1;
     }
 
     public void setLastChecked(long lastChecked) {
-	this.lastChecked = lastChecked;
+        this.lastChecked = lastChecked;
     }
 
     public void addLastChecked() {
-	this.lastChecked++;
+        this.lastChecked++;
     }
 
     public World getWorld() {
-	return world;
+        return world;
     }
 
     public void setWorld(World world) {
-	this.world = world;
+        this.world = world;
     }
 
     public Integer getRange() {
-	return range;
+        return range;
     }
 
     public void setRange(Integer range) {
-	this.range = range;
+        this.range = range;
     }
 }

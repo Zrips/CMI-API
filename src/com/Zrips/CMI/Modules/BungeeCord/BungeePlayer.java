@@ -10,6 +10,9 @@ public class BungeePlayer {
     private BungeeCordServer bungeeServer;
     private UUID uuid;
     private boolean vanished = false;
+    
+    private String previousServer = null;
+    private Long serverSwitchTime = 0L;
 
     public boolean getVanished() {
 	return vanished;
@@ -65,6 +68,22 @@ public class BungeePlayer {
 
     public void setNickName(String nickName) {
 	this.nickName = nickName;
+    }
+
+    public Long getServerSwitchTime() {
+	return serverSwitchTime;
+    }
+
+    public void setServerSwitchTime(Long serverSwitchTime) {
+	this.serverSwitchTime = serverSwitchTime;
+    }
+
+    public String getPreviousServer() {
+	return previousServer;
+    }
+
+    public void setPreviousServer(String previousServer) {
+	this.previousServer = previousServer;
     }
 
 }

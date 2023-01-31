@@ -42,7 +42,8 @@ public class CMICommand {
     }
 
     public String getTranslatedArgs() {
-	return "";
+	String cmdString = "";
+	return cmdString;
     }
 
     public void setAnottation(CAnnotation anottation) {

@@ -15,52 +15,60 @@ public class CooldownManager {
     CMI plugin;
 
     public CooldownManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public int getCooldownCount() {
-	return cooldowns.size();
+        return cooldowns.size();
     }
 
     @Deprecated
     public void addCD(String cmd, Long seconds) {
-	addCooldown(new CMICmdCooldown(cmd, seconds.intValue()));
+        addCooldown(new CMICmdCooldown(cmd, seconds.intValue()));
     }
 
     public void addCooldown(String cmd, int seconds) {
-	addCooldown(new CMICmdCooldown(cmd, seconds));
+        addCooldown(new CMICmdCooldown(cmd, seconds));
     }
 
     public void addCooldown(CMICmdCooldown cooldown) {
-	cooldowns.put(cooldown.getCommand().toLowerCase(), cooldown);
+        cooldowns.put(cooldown.getCommand().toLowerCase(), cooldown);
     }
 
     private CMICmdCooldown getCooldown(String cmd) {
-	
-	return null;
+        return null;
     }
 
     private static Long getUsedTime(String cmd, CmdCooldown userCooldowns) {
-	return null;
+        return getUsedTime(cmd, userCooldowns, false);
+    }
+
+    private static Long getUsedTime(String cmd, CmdCooldown userCooldowns, boolean exact) {
+
+        return null;
     }
 
     private static String getCommandMatch(String cmd, CmdCooldown userCooldowns) {
-	return null;
+        return getCommandMatch(cmd, userCooldowns, false);
+    }
+
+    private static String getCommandMatch(String cmd, CmdCooldown userCooldowns, boolean exact) {
+        return null;
     }
 
     public boolean removeCooldown(CommandSender sender, String cmd) {
-	
-	return true;
+
+        return true;
     }
 
     public boolean isCmdInCooldown(CommandSender sender, String cmd) {
-	
-	return false;
+
+        return false;
     }
 
     public boolean canUseCmd(CommandSender sender, String cmd) {
 
-	return true;
+        return true;
     }
 
     HashMap<UUID, CmdCooldown> playerCustomCooldowns = new HashMap<UUID, CmdCooldown>();
@@ -69,16 +77,16 @@ public class CooldownManager {
 
     public boolean canUseSpecCommandGlobal(CommandSender sender, SpecCMDCooldown cooldown, boolean inform) {
 
-	return true;
+        return true;
     }
 
     public boolean canUseSpecCommand(Player player, SpecCMDCooldown cooldown, boolean inform) {
-	
-	return true;
+
+        return true;
     }
 
     public HashMap<String, CMICmdCooldown> getCooldowns() {
-	return cooldowns;
+        return cooldowns;
     }
 
 }

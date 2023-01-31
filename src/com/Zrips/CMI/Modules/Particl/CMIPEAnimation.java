@@ -7,16 +7,19 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
-
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class CMIPEAnimation implements CMIPEAnimationInterface {
 
     protected Location center;
     protected boolean fixedLocation = false;
-    protected CMIParticle effect = CMIParticle.COLOURED_DUST;
-    protected Color color = new Color(0, 0, 0);
+
+    protected CMIEffect effect = new CMIEffect(CMIParticle.COLOURED_DUST);
     protected Vector offset = new Vector(0, 0, 0);
+
     protected int updateTimes = 0;
     protected double duration = 5;
     private Player playerMove;
@@ -35,8 +38,12 @@ public class CMIPEAnimation implements CMIPEAnimationInterface {
 	this.playerMove = playerMove;
     }
 
-    public CMIPEAnimation(CMIParticle effect) {
+    public CMIPEAnimation(CMIEffect effect) {
 	this.effect = effect;
+    }
+
+    public CMIPEAnimation(CMIParticle effect) {
+	this.effect.setParticle(effect);
     }
 
     @Override
@@ -62,21 +69,49 @@ public class CMIPEAnimation implements CMIPEAnimationInterface {
 	this.offset = offset;
     }
 
-    public CMIParticle getEffect() {
+    public CMIEffect getCMIEffect() {
 	return effect;
     }
 
-    public void setEffect(CMIParticle effect) {
+    public void setCMIEffect(CMIEffect effect) {
 	this.effect = effect;
     }
 
-    public Color getColor() {
-	return color;
+    @Deprecated
+    public CMIParticle getEffect() {
+	return getParticle();
+    }
+
+    @Deprecated
+    public void setEffect(CMIParticle particle) {
+	setParticle(particle);
+    }
+
+    public CMIParticle getParticle() {
+	return this.effect.getParticle();
+    }
+
+    public void setParticle(CMIParticle particle) {
+	this.effect.setParticle(particle);
+    }
+
+    public org.bukkit.Color getColor() {
+	return this.effect.getColor();
     }
 
     @Override
     public void setColor(Color color) {
-	this.color = color;
+	this.effect.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
+    }
+
+    @Override
+    public void setColor(org.bukkit.Color color) {
+	this.effect.setColor(color);
+    }
+
+    @Override
+    public void setColor(CMIChatColor color) {
+	this.effect.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
     }
 
     @Override

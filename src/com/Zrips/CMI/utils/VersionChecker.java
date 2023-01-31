@@ -10,27 +10,34 @@ public class VersionChecker {
     private CMI plugin;
 
     public VersionChecker(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public Integer convertVersion(String v) {
-	return null;
+
+        return null;
     }
 
     public String deconvertVersion(Integer v) {
 
-	return null;
+        return null;
     }
 
     public void VersionCheck(final Player player) {
+
     }
 
     public String getOfficialVersion() {
-	return getOfficialVersion(resource);
+        return getOfficialVersion(resource);
     }
 
     public String getOfficialVersion(int resource) {
-	return null;
+
+        return null;
     }
+
+    public static String s1 = "%%__USER__%%";
+    public static String s2 = "%%__RESOURCE__%%";
+    public static String s3 = "%%__NONCE__%%";
 
 }

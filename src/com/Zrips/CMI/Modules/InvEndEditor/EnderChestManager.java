@@ -15,37 +15,37 @@ public class EnderChestManager {
     private CMI plugin;
 
     public EnderChestManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void removeWatcher(Player player) {
-	EndWatcher ers = WatcherList.remove(player.getUniqueId());
-	if (ers != null)
-	    WatchedList.remove(ers.getTarget().getUniqueId());
+        EndWatcher ers = WatcherList.remove(player.getUniqueId());
+        if (ers != null)
+            WatchedList.remove(ers.getTarget().getUniqueId());
     }
 
     public boolean isWatching(Player player) {
-	return WatcherList.containsKey(player.getUniqueId());
+        return WatcherList.containsKey(player.getUniqueId());
     }
 
     public boolean isBeingWatched(Player player) {
-	return WatchedList.containsKey(player.getUniqueId());
+        return WatchedList.containsKey(player.getUniqueId());
     }
 
     public EndWatcher getWatcher(Player player) {
-	return WatcherList.get(player.getUniqueId());
+        return WatcherList.get(player.getUniqueId());
     }
 
     public EndWatcher getSlave(Player player) {
-	return WatchedList.get(player.getUniqueId());
+        return WatchedList.get(player.getUniqueId());
     }
 
     public boolean openEnderChest(Player player, Player target) {
-	return false;
+        return false;
     }
 
     public boolean updateTargetEnderChest(Player player) {
-	return false;
+        return true;
     }
 
 }

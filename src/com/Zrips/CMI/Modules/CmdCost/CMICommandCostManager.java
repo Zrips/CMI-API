@@ -1,10 +1,22 @@
 package com.Zrips.CMI.Modules.CmdCost;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Locale.CMILC;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+import com.Zrips.CMI.commands.CommandsHandler;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class CMICommandCostManager {
     private HashMap<String, CMICommandCost> costs = new HashMap<String, CMICommandCost>();
@@ -12,41 +24,38 @@ public class CMICommandCostManager {
     CMI plugin;
 
     public CMICommandCostManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public int getCommandCostCount() {
-	return costs.size();
+        return costs.size();
     }
 
     public void addCost(String cmd, double cost) {
-	costs.put(cmd.toLowerCase(), new CMICommandCost(cmd, cost));
+        costs.put(cmd.toLowerCase(), new CMICommandCost(cmd, cost));
     }
 
     public CMICommandCost getCost(String cmd) {
-	return null;
+        return null;
     }
 
     public CMICommandCostUsage canUseCmd(CommandSender sender, String cmd) {
 
-	    return CMICommandCostUsage.Can;
-
+        return CMICommandCostUsage.Can;
     }
 
     public boolean isContinueCommand(CommandSender sender, String cmd) {
 
-	return true;
+        return true;
     }
 
     public boolean loadConfig(boolean isReload) {
-	
-	return true;
+
+        return true;
     }
 
     private static CMICommandCost get(String line) {
-	String[] split = line.split(":");
-	CMICommandCost cost = null;
-	
-	return cost;
+
+        return null;
     }
 }

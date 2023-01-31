@@ -1,8 +1,6 @@
 package com.Zrips.CMI.Modules.Scan;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -25,64 +23,35 @@ public class Scan {
     private CMI plugin;
 
     public Scan(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void start(final ScanInfo scan) {
-	if (scan.getStartTime() == 0L)
-	    scan.setShowInfo(System.currentTimeMillis());
-	loadChunk(scan);
+        if (scan.getStartTime() == 0L)
+            scan.setShowInfo(System.currentTimeMillis());
+        loadChunk(scan);
     }
 
     private void loadChunk(final ScanInfo scan) {
 
     }
 
-    private static void RemoveItemsFromBlock(List<ItemStack> toRemove, Block block) {
-
-    }
-
-    private void RemoveItemsFromEntity(List<ItemStack> toRemove, Entity ent) {
-
-    }
-
     public boolean isValidContainer(Block block) {
-	return block.getState() instanceof InventoryHolder;
+        return block.getState() instanceof InventoryHolder;
     }
 
-    private static ScanResultLocations checkArmorStand(ScanResultLocations ScanResult, Entity oneEnt) {
-	
-	return null;
-    }
+    public List<ItemStack> CheckContent(ScanInfo scan, ScanResultLocations scanResult, Block block, Entity ent) {
 
-    private static void removeFromArmorStand(List<ItemStack> toRemove, Entity oneEnt) {
-	
-    }
-
-    public List<ItemStack> CheckContent(ScanInfo scan, ScanResultLocations ScanResult, Block block, Entity ent) {
-
-	return null;
+        return null;
     }
 
     @SuppressWarnings("incomplete-switch")
     public Location findLocation(Location loc, BlockFace oldDir, boolean checkDouble, int rotate) {
 
-	return null;
+        return null;
     }
 
     public void setCheckedPlace(Player player, int id) {
-	ScanInfo scan = ScanInfo.get(player.getUniqueId());
-	if (scan == null)
-	    return;
-
-	base: for (Entry<Integer, ArrayList<ScanResultLocations>> one : scan.getLocations().entrySet()) {
-	    for (ScanResultLocations oneLoc : one.getValue()) {
-		if (oneLoc.getId() == id) {
-		    oneLoc.setChecked(true);
-		    break base;
-		}
-	    }
-	}
 
     }
 }

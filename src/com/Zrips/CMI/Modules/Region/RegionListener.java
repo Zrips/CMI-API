@@ -8,7 +8,7 @@ public class RegionListener implements Listener {
     private CMI plugin;
 
     public RegionListener(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
 }

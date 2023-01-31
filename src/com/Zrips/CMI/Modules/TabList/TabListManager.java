@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
@@ -17,7 +16,7 @@ public class TabListManager {
     private CMI plugin;
 
     public TabListManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     private int sched = -1;
@@ -47,101 +46,88 @@ public class TabListManager {
     private int SortingAutoUpdate = 1;
 
     public void stop() {
-	if (sched != -1) {
-	    Bukkit.getScheduler().cancelTask(sched);
-	    sched = -1;
-	}
-	if (sortSched != -1) {
-	    Bukkit.getScheduler().cancelTask(sortSched);
-	    sortSched = -1;
-	}
+
     }
 
     public void loadConfig() {
-	
+
     }
 
     private void tasker() {
-	
+
     }
 
-
     public TabList getTL(Player player) {
-	
-	return null;
+        return null;
     }
 
     public void updateTabList(int delay) {
     }
 
     public void updateTabList() {
-	
     }
 
     public void updateTablistName(Player player) {
-	
     }
 
     public void updateTabList(Player player) {
-	
+
     }
 
-
     public void updateTabListSync(Player player) {
-	
 
     }
 
     public void updateTabListAsync(final Player player) {
-	
+
     }
 
     public boolean isUpdatesOnJoin() {
-	return UpdatesOnJoin;
+        return UpdatesOnJoin;
     }
 
     public boolean isUpdatesOnLeave() {
-	return UpdatesOnLeave;
+        return UpdatesOnLeave;
     }
 
     public boolean isUpdatesOnWorldChange() {
-	return UpdatesOnWorldChange;
+        return UpdatesOnWorldChange;
     }
 
     public boolean isUpdatesOnPlayerDeath() {
-	return UpdatesOnPlayerDeath;
+        return UpdatesOnPlayerDeath;
     }
 
     public boolean isUpdatesOnPlayerTeleport() {
-	return UpdatesOnPlayerTeleport;
+        return UpdatesOnPlayerTeleport;
     }
 
     public boolean isUpdatesOnNickChange() {
-	return UpdatesOnNickChange;
+        return UpdatesOnNickChange;
     }
 
     public boolean isUpdatesOnAfkStateChange() {
-	return UpdatesOnAfkStateChange;
+        return UpdatesOnAfkStateChange;
     }
 
     public boolean isEnabled() {
-	return CMIModule.tablist.isEnabled();
+        return CMIModule.tablist.isEnabled();
     }
 
     public boolean isUpdateTabListNames() {
-	return UpdateTabListNames;
+        return UpdateTabListNames;
     }
 
     public boolean isSortingEnabled() {
-	return sortingEnabled;
+        return sortingEnabled;
     }
 
     public CMITabSortingType getSortingType() {
-	return sortingType;
+        return sortingType;
     }
 
     public CMITabSortingOrder getSortingOrder() {
-	return sortingOrder;
+        return sortingOrder;
     }
 
 }

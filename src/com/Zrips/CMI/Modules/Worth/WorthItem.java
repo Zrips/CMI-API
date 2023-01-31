@@ -1,20 +1,10 @@
 package com.Zrips.CMI.Modules.Worth;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-
-import com.Zrips.CMI.CMI;
-
-import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class WorthItem {
 
@@ -27,99 +17,101 @@ public class WorthItem {
     private Recipe exploitRecipe = null;
     private Set<Recipe> recipesFor;
     private Set<Recipe> recipesFrom;
+    private Integer modelData;
 
     @Deprecated
     public WorthItem(ItemStack item, Integer data, double price) {
-	this.item = item;
-	material = item.getType();
-	this.data = data;
-	this.sellPrice = price;
+        this.item = item;
+        material = item.getType();
+        this.data = data;
+        this.sellPrice = price;
     }
 
     public WorthItem(ItemStack item, double price) {
-	this.item = item;
-	material = item.getType();
-	this.sellPrice = price;
+        this.item = item;
+        material = item.getType();
+        this.sellPrice = price;
     }
 
     public WorthItem(ItemStack item) {
-	this(item, 0D);
+        this(item, 0D);
     }
-//    public Material getMaterial() {
-//	return material;
-//    }
-//
-//    public void setMaterial(Material material) {
-//	this.material = material;
-//    }
 
     public Integer getData() {
-	return data;
+        return data;
     }
 
     public void setData(Integer data) {
-	this.data = data;
+        this.data = data;
     }
 
     public Double getSellPrice() {
-	return sellPrice;
+        return sellPrice;
     }
 
     public Double getPlayerSellPrice(ItemStack item, boolean includeEnchants, boolean includeDurability) {
-	return null;
+
+        return null;
     }
 
     public static double getEnchantSellPrice(ItemStack item) {
-	    return 0D;
+
+        return 0D;
+
     }
 
     public void setSellPrice(double price) {
+
+        this.sellPrice = Math.round(price * 100) / 100D;
+
+        if (this.sellPrice < 0D)
+            this.sellPrice = 0D;
     }
 
     public ItemStack getItem() {
-	return null;
+        return item;
     }
 
     public void setItem(ItemStack item) {
-	if (this.item == null)
-	    this.item = item.clone();
+        if (this.item == null)
+            this.item = item.clone();
     }
 
     public Double getBuyPrice() {
-	return buyPrice == null ? sellPrice : buyPrice;
+        return buyPrice == null ? sellPrice : buyPrice;
     }
 
     public boolean isBuyPriceSet() {
-	return buyPrice != null;
+        return buyPrice != null;
     }
 
     public void setBuyPrice(Double buyPrice) {
 
-	this.buyPrice = buyPrice == null ? null : Math.round(buyPrice * 100) / 100D;
+        this.buyPrice = buyPrice == null ? null : Math.round(buyPrice * 100) / 100D;
 
-	if (this.buyPrice != null && this.buyPrice < 0D)
-	    this.buyPrice = null;
+        if (this.buyPrice != null && this.buyPrice < 0D)
+            this.buyPrice = null;
     }
 
     public Recipe getExploitRecipe() {
-	return exploitRecipe;
+        return exploitRecipe;
     }
 
     public Recipe updateExploitRecipe() {
 
-	return null;
+        return null;
     }
 
     public void resetRecipes() {
-	this.exploitRecipe = null;
-	this.recipe = null;
+        this.exploitRecipe = null;
+        this.recipe = null;
 
-	this.recipesFor = null;
-	this.recipesFrom = null;
+        this.recipesFor = null;
+        this.recipesFrom = null;
     }
 
     public void setExploitRecipe(Recipe exploitRecipe) {
-	this.exploitRecipe = exploitRecipe;
+        this.exploitRecipe = exploitRecipe;
     }
 
     public void updateRecipes() {
@@ -127,10 +119,18 @@ public class WorthItem {
     }
 
     public Recipe getRecipe() {
-	return recipe;
+        return recipe;
     }
 
     public void setRecipe(Recipe recipe) {
-	this.recipe = recipe;
+        this.recipe = recipe;
+    }
+
+    public void setModelData(Integer modelData) {
+        this.modelData = modelData;
+    }
+
+    public Integer getModelData() {
+        return modelData;
     }
 }

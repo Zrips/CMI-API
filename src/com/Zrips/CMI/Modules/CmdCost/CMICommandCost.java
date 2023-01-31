@@ -3,7 +3,7 @@ package com.Zrips.CMI.Modules.CmdCost;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.commands.CommandsHandler;
 
 public class CMICommandCost {
 
@@ -32,7 +32,7 @@ public class CMICommandCost {
     }
 
     public String getSubCommand() {
-	return command.startsWith(CMI.getInstance().getCommandManager().getLabel() + " ") ? command.substring(CMI.getInstance().getCommandManager().getLabel().length() + 1) : command;
+	return command.startsWith(CommandsHandler.getLabel() + " ") ? command.substring(CommandsHandler.getLabel().length() + 1) : command;
     }
 
     public void setCost(double cost) {

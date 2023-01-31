@@ -14,63 +14,62 @@ public class FlightCharge {
     }
 
     public Double getCharge() {
-	return charge;
+        return charge;
     }
 
     public Double getSafeCharge() {
-	return charge == null ? 0D : charge;
+        return charge == null ? 0D : charge;
     }
 
     public void setCharge(Double charge) {
+
     }
 
     public void addCharge(Double charge) {
+
     }
 
     public void takeCharge(Double charge) {
+
     }
 
     public Integer getMax() {
-	return CMI.getInstance().getFlightChargeManager().getMaxChargeLevel();
+        return CMI.getInstance().getFlightChargeManager().getMaxChargeLevel();
     }
 
-//    public void setMax(Integer max) {
-//	this.max = max;
-//    }
-
     public Double getLastChange() {
-	return lastChange;
+        return lastChange;
     }
 
     public boolean isEnabled() {
-	return enabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
+        this.enabled = enabled;
     }
 
     public Boolean isAutoRecharge() {
-	return autoRecharge == null ? false : autoRecharge; 
+        return autoRecharge == null ? false : autoRecharge;
     }
 
     public void setAutoRecharge(Boolean autoRecharge) {
-	this.autoRecharge = autoRecharge;
+        this.autoRecharge = autoRecharge;
     }
 
     public void setAutoMoneyRecharge() {
-	moneyRecharge = true;
+        moneyRecharge = true;
     }
 
     public void setAutoExpRecharge() {
-	moneyRecharge = false;
+        moneyRecharge = false;
     }
 
     public boolean isMoneyAutoRecharge() {
-	return moneyRecharge == null || moneyRecharge;
+        return moneyRecharge == null || moneyRecharge;
     }
 
     public boolean isExpAutoRecharge() {
-	return moneyRecharge != null && !moneyRecharge;
+        return moneyRecharge != null && !moneyRecharge;
     }
 }

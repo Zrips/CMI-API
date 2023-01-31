@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.bukkit.TreeType;
 
 public enum CMITreeType {
-    
+
     ACACIA("Acacia"),
     AZALEA("Azalea"),
     BIG_TREE("Large oak", "bigoak", "big", "bigtree"),
@@ -25,7 +25,8 @@ public enum CMITreeType {
     TALL_BIRCH("Tall birch"),
     TALL_REDWOOD("Tall spruce", "bigspruce", "tallredwood", "tallsequoia", "tallsequoioideae"),
     TREE("Oak", "tree", "regular"),
-    WARPED_FUNGUS("Warped fungus");
+    WARPED_FUNGUS("Warped fungus"),
+    MANGROVE("Mangrove");
 
     private String name;
     private String[] identifiers;
@@ -37,24 +38,20 @@ public enum CMITreeType {
 
     static HashMap<String, CMITreeType> map = new HashMap<String, CMITreeType>();
 
-    static {
-	
-    }
-
     public static CMITreeType getType(String name) {
-	
-	return null;
+
+        return null;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public String[] getIdentifiers() {
-	return identifiers;
+        return identifiers;
     }
 
     public TreeType getType() {
-	return type;
+        return type;
     }
 }

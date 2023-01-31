@@ -17,65 +17,65 @@ public class ShulkerBoxManager {
     private CMI plugin;
 
     public ShulkerBoxManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public final static String identifier = "CMIBackPack";
 
     public boolean stillHaveItem(Player player) {
-	
-	return false;
+
+        return false;
     }
 
     public void closeAll() {
-	
+
     }
 
     public boolean isEditing(Player player) {
-	if (map.isEmpty())
-	    return false;
-	return map.containsKey(player.getUniqueId());
+        if (map.isEmpty())
+            return false;
+        return map.containsKey(player.getUniqueId());
     }
 
     private Inventory getExisting(Player player) {
-	
-	return null;
+
+        return null;
     }
 
     private boolean PreventInCombat = true;
 
     public void loadConfig() {
+
     }
 
     public void openShulkerBox(Player player, ItemStack item) {
-	
+
     }
 
-
     public void updateShulkerItem(Player player) {
-	
+
     }
 
     public void remove(Player player) {
-	map.remove(player.getUniqueId());
+        map.remove(player.getUniqueId());
     }
 
     public boolean isShulkerBox(ItemStack OneItem) {
-	
-	return true;
+
+        return true;
     }
 
     public List<ItemStack> getShulkerBoxContents(ItemStack OneItem) {
-	
-	return null;
+
+        return null;
     }
 
     public void updateEntireShulkerInv(Player player, ItemStack[] cont) {
-	
+
     }
 
     public void setShulkerInv(ItemStack shulkerBox, ItemStack[] cont) {
-	
+
     }
 
 }

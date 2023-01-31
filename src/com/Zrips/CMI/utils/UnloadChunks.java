@@ -1,14 +1,9 @@
 package com.Zrips.CMI.utils;
 
 import java.util.concurrent.ConcurrentHashMap;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.UCInfo;
-
-import net.Zrips.CMILib.ActionBar.CMIActionBar;
 
 public class UnloadChunks {
 
@@ -16,13 +11,13 @@ public class UnloadChunks {
     private CMI plugin;
 
     public UnloadChunks(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void loadRegionFile(final UCInfo scan) {
-	if (scan.getStartTime() == 0L)
-	    scan.setShowInfo(System.currentTimeMillis());
-	loadChunk(scan);
+        if (scan.getStartTime() == 0L)
+            scan.setShowInfo(System.currentTimeMillis());
+        loadChunk(scan);
     }
 
     private void loadChunk(final UCInfo scan) {

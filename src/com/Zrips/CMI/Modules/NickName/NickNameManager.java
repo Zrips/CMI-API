@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.NickName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +42,8 @@ public class NickNameManager {
     }
 
     public List<String> getNickNamesStartingWith(Player player, String nick) {
-	return null;
+	List<String> ls = new ArrayList<String>();
+	return ls;
     }
 
     private String NickNameFormat;
@@ -53,6 +55,7 @@ public class NickNameManager {
     private String NickNamePrefix;
     private Boolean PrefixWhenDifferent;
     private Boolean IncludeInTabComplete;
+    private Boolean IncludeRealName;
     private Boolean ColorsNickName;
 
     public void load() {
@@ -104,5 +107,9 @@ public class NickNameManager {
 
     public boolean isIncludeNickNameInTabComplete() {
 	return IncludeInTabComplete;
+    }
+
+    public Boolean isIncludeRealNameInTabComplete() {
+	return IncludeRealName;
     }
 }

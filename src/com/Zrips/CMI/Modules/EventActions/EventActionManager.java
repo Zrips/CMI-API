@@ -1,11 +1,17 @@
 package com.Zrips.CMI.Modules.EventActions;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.Snd;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import com.Zrips.CMI.events.CMIEventCommandEvent;
 
 public class EventActionManager {
 
@@ -29,6 +35,7 @@ public class EventActionManager {
 	playerPreWorldChange,
 	playerGameModeChange,
 	playerKick,
+	playerBan,
 	playerLevelChange,
 	voidFall,
 	elytraStartGlide,
@@ -72,8 +79,6 @@ public class EventActionManager {
 	    return secondary;
 	}
     }
-
-//bossbar still shows after finish
 
     public void performCommands(eventAction action, Player player) {
 	performCommands(action, player, null);

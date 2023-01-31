@@ -1,8 +1,6 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -32,30 +30,30 @@ public class BungeeCordListener implements PluginMessageListener, Listener {
     String lastPrivateMessage = "";
 
     class bungeePortal {
-	private Location loc;
-	private List<String> cmds = new ArrayList<String>();
+        private Location loc;
+//        private List<String> cmds = new ArrayList<String>();
+        private long time = 0L;
 
-	public Location getLoc() {
-	    return loc;
-	}
+        public bungeePortal() {
+            time = System.currentTimeMillis();
+        }
 
-	public bungeePortal setLoc(Location loc) {
-	    this.loc = loc;
-	    return this;
-	}
+        public Location getLoc() {
+            return loc;
+        }
 
-	public List<String> getCmds() {
-	    return cmds;
-	}
+        public bungeePortal setLoc(Location loc) {
+            this.loc = loc;
+            return this;
+        }
 
-	public bungeePortal setCmds(List<String> cmds) {
-	    this.cmds = cmds;
-	    return this;
-	}
-
+        public long getTime() {
+            return time;
+        }
     }
 
     public BungeeCordListener(CMI plugin) {
+
     }
 
     @Override
@@ -65,10 +63,11 @@ public class BungeeCordListener implements PluginMessageListener, Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-	
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
+
     }
 }

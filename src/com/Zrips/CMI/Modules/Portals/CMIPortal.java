@@ -6,18 +6,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.Snd;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
-import com.Zrips.CMI.events.CMIPortalUseEvent;
 
-import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 
 public class CMIPortal {
@@ -43,7 +39,8 @@ public class CMIPortal {
     private int percentToHide = 0;
     private int activationRange = 16;
 
-    private CMIParticle effect = CMIParticle.COLOURED_DUST;
+    private CMIEffect cmiEffect = null;
+
     private List<String> commands = null;
 
     private String name;
@@ -52,236 +49,253 @@ public class CMIPortal {
     private Set<UUID> particleForPlayers = new HashSet<UUID>();
 
     public CMIPortal() {
-	area = new CuboidArea(null);
+        area = new CuboidArea(null);
     }
 
     public boolean containsLoc(Location loc) {
-	return area.containsLoc(loc);
+        return area.containsLoc(loc);
     }
 
     public boolean containsLoc(Location loc, int range) {
-	return area.containsLoc(loc, range);
+        return area.containsLoc(loc, range);
     }
 
     public CuboidArea getArea() {
-	return area;
+        return area;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public World getWorld() {
-	if (world == null && this.getWorldName() != null)
-	    return CMI.getInstance().getUtilManager().getWorld(this.worldName);
-	return world;
+        if (world == null && this.getWorldName() != null)
+            return CMI.getInstance().getUtilManager().getWorld(this.worldName);
+        return world;
     }
 
     public void setWorld(World world) {
-	this.world = world;
-	if (world != null)
-	    this.worldName = world.getName();
+        this.world = world;
+        if (world != null)
+            this.worldName = world.getName();
     }
 
     public boolean checkCollision(CuboidArea area) {
-	if (this.area != null) {
-	    if (this.area.checkCollision(area)) {
-		return true;
-	    }
-	}
-	return false;
+        if (this.area != null) {
+            if (this.area.checkCollision(area)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean teleport(Player player) {
-	
-	    return false;
-
+        return false;
     }
 
     public Location loadTpLoc(Object root) throws Exception {
-	tpLoc = (Location) root;
-	return tpLoc;
+        return null;
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
 
-	return null;
+        return null;
     }
 
     public Location getTpLoc() {
-	return tpLoc;
+        return tpLoc;
     }
 
     public void setTpLoc(Location tpLoc) {
-	this.tpLoc = tpLoc;
+        this.tpLoc = tpLoc;
     }
 
     public void setArea(CuboidArea area, boolean recalculatePart) {
     }
 
     public boolean isEnabled() {
-	return enabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
+        this.enabled = enabled;
     }
 
     public boolean isShowParticles() {
-	return showParticles;
+        return showParticles;
     }
 
     public void setShowParticles(boolean showParticles) {
-	this.showParticles = showParticles;
+        this.showParticles = showParticles;
     }
 
     public int getParticleAmount() {
-	return particleAmount;
+        return particleAmount;
     }
 
     public void setParticleAmount(int particleAmount) {
     }
 
     public int getPercentToHide() {
-	return percentToHide;
+        return percentToHide;
     }
 
     public void setPercentToHide(int percentToHide) {
     }
 
     public int getActivationRange() {
-	return activationRange;
+        return activationRange;
     }
 
     public void setActivationRange(int activationRange) {
     }
 
-    public CMIParticle getEffect() {
-	if (effect == null)
-	    effect = CMIParticle.COLOURED_DUST;
-	return effect;
-    }
-
-    public void setEffect(CMIParticle effect) {
-	this.effect = effect;
-    }
-
     public List<String> getCommands() {
-	return null;
+        return null;
     }
 
     public List<String> getCommands(Player player) {
-	return null;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
+        if (this.commands == null)
+            this.commands = new ArrayList<String>();
+        this.commands.addAll(commands);
     }
 
     public boolean getPerformCommandsWithoutTp() {
-	return performCommandsWithoutTp;
+        return performCommandsWithoutTp;
     }
 
     public void setPerformCommandsWithoutTp(boolean performCommandsWithoutTp) {
-	this.performCommandsWithoutTp = performCommandsWithoutTp;
+        this.performCommandsWithoutTp = performCommandsWithoutTp;
     }
 
     public String getBungeeServer() {
-	return bungeeServer;
+        return bungeeServer;
     }
 
     public void setBungeeServer(String bungeeServer) {
-	this.bungeeServer = bungeeServer;
+        this.bungeeServer = bungeeServer;
     }
 
     public String getBungeeLocation() {
-	return bungeeLocation;
+        return bungeeLocation;
     }
 
     public void setBungeeLocation(String bungeeLocation) {
-	this.bungeeLocation = bungeeLocation;
+        this.bungeeLocation = bungeeLocation;
     }
 
     public Location getSafeLoc() {
-	return safeLoc;
+        return safeLoc;
     }
 
     public void setSafeLoc(Location safeLoc) {
-	this.safeLoc = safeLoc;
+        this.safeLoc = safeLoc;
     }
 
     public boolean isToExactBungeeLocation() {
-	return toExactBungeeLocation;
+        return toExactBungeeLocation;
     }
 
     public void setToExactBungeeLocation(boolean toExactBungeeLocation) {
-	this.toExactBungeeLocation = toExactBungeeLocation;
+        this.toExactBungeeLocation = toExactBungeeLocation;
     }
 
     public boolean isRequiresPermission() {
-	return requiresPermission;
+        return requiresPermission;
     }
 
     public void setRequiresPermission(boolean requiresPermission) {
-	this.requiresPermission = requiresPermission;
+        this.requiresPermission = requiresPermission;
     }
 
     public boolean isInformOnMissingPerm() {
-	return informOnMissingPerm;
+        return informOnMissingPerm;
     }
 
     public void setInformOnMissingPerm(boolean informOnMissingPerm) {
-	this.informOnMissingPerm = informOnMissingPerm;
+        this.informOnMissingPerm = informOnMissingPerm;
     }
 
     public String getWorldName() {
-	if (worldName == null && world != null)
-	    return world.getName();
-	return worldName;
+        if (worldName == null && world != null)
+            return world.getName();
+        return worldName;
     }
 
     public void setWorldName(String worldName) {
-	this.worldName = worldName;
-	this.world = CMI.getInstance().getUtilManager().getWorld(worldName);
+        this.worldName = worldName;
+        this.world = CMI.getInstance().getUtilManager().getWorld(worldName);
     }
 
     public Set<UUID> getParticleForPlayers() {
-	return particleForPlayers;
+        return particleForPlayers;
     }
 
     public void setParticleForPlayers(Set<UUID> particleForPlayers) {
-	this.particleForPlayers = particleForPlayers;
+        this.particleForPlayers = particleForPlayers;
     }
 
     public Set<UUID> removeParticleLimitations(Player player) {
-	return removeParticleLimitations(player.getUniqueId());
+        return removeParticleLimitations(player.getUniqueId());
     }
 
     public Set<UUID> removeParticleLimitations(UUID uuid) {
-	particleForPlayers.remove(uuid);
-	return particleForPlayers;
+        particleForPlayers.remove(uuid);
+        return particleForPlayers;
     }
 
     public Set<UUID> updateParticleLimitations(Player player) {
-	return null;
+        return null;
     }
 
     public boolean isParticlesByPermission() {
-	return particlesByPermission;
+        return particlesByPermission;
     }
 
     public void setParticlesByPermission(boolean particlesByPermission) {
-	this.particlesByPermission = particlesByPermission;
+        this.particlesByPermission = particlesByPermission;
     }
 
     public boolean isKickBack() {
-	return this.kickBack;
+        return this.kickBack;
     }
 
     public void setKickBack(boolean kickBack) {
-	this.kickBack = kickBack;
+        this.kickBack = kickBack;
     }
+
+    @Deprecated
+    public CMIParticle getEffect() {
+        return getCMIEffect().getParticle();
+    }
+
+    public void setEffect(CMIParticle effect) {
+        getCMIEffect().setParticle(effect);
+    }
+
+    public CMIEffect getCMIEffect() {
+        if (cmiEffect == null) {
+            cmiEffect = new CMIEffect(CMIParticle.COLOURED_DUST);
+            cmiEffect.setColor(org.bukkit.Color.fromRGB(125, 125, 125));
+        }
+        return cmiEffect;
+    }
+
+    public void setCMIEffect(CMIEffect cmiEffect) {
+        this.cmiEffect = cmiEffect;
+    }
+
+    public CMIPortal setEffectColor(Color color) {
+        getCMIEffect().setColor(color);
+        return this;
+    }
+
 }

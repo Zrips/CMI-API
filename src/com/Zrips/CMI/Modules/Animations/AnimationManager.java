@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
+import com.Zrips.CMI.Containers.CMIUser;
 
 public class AnimationManager {
 
@@ -42,7 +43,7 @@ public class AnimationManager {
     private HashMap<UUID, UUID> riding = new HashMap<UUID, UUID>();
 
     public AnimationManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void clearCache(UUID uuid) {
@@ -60,37 +61,37 @@ public class AnimationManager {
     List<CMIInventorySlot> armorTypes = new ArrayList<CMIInventorySlot>(Arrays.asList(CMIInventorySlot.Helmet, CMIInventorySlot.ChestPlate, CMIInventorySlot.Pants, CMIInventorySlot.Boots));
 
     public enum LeatherAnimationType {
-	Rainbow(1), Health(2), Biome(3), Day(4);
+        Rainbow(1), Health(2), Biome(3), Day(4);
 
-	private Integer id;
+        private Integer id;
 
-	LeatherAnimationType(Integer id) {
-	    this.id = id;
-	}
+        LeatherAnimationType(Integer id) {
+            this.id = id;
+        }
 
-	public Integer getId() {
-	    return id;
-	}
+        public Integer getId() {
+            return id;
+        }
 
-	public void setId(Integer id) {
-	    this.id = id;
-	}
+        public void setId(Integer id) {
+            this.id = id;
+        }
 
-	public static LeatherAnimationType getById(int id) {
-	    for (LeatherAnimationType one : values()) {
-		if (one.getId() == id)
-		    return one;
-	    }
-	    return null;
-	}
+        public static LeatherAnimationType getById(int id) {
+            for (LeatherAnimationType one : values()) {
+                if (one.getId() == id)
+                    return one;
+            }
+            return null;
+        }
 
-	public static LeatherAnimationType getByName(String name) {
-	    for (LeatherAnimationType one : values()) {
-		if (one.name().equalsIgnoreCase(name))
-		    return one;
-	    }
-	    return null;
-	}
+        public static LeatherAnimationType getByName(String name) {
+            for (LeatherAnimationType one : values()) {
+                if (one.name().equalsIgnoreCase(name))
+                    return one;
+            }
+            return null;
+        }
 
     }
 
@@ -101,23 +102,38 @@ public class AnimationManager {
     private int autoTimerBukkitId = 0;
 
     public void stopLeatherUpdate() {
-	if (autoTimerBukkitId != 0) {
-	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
-	    autoTimerBukkitId = 0;
-	}
+    }
+
+    private Runnable autoTimer = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                checkLeatherArmors();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void checkLeatherArmors() {
+
+    }
+
+    private static void setColor(CMIUser user, LeatherAnimationType type, List<CMIInventorySlot> slot, LeatherAnimation anim) {
+
     }
 
     public static int getIntFromColor(int Red, int Green, int Blue) {
-	Red = (Red << 16) & 0x00FF0000;
-	Green = (Green << 8) & 0x0000FF00;
-	Blue = Blue & 0x000000FF;
+        Red = (Red << 16) & 0x00FF0000;
+        Green = (Green << 8) & 0x0000FF00;
+        Blue = Blue & 0x000000FF;
 
-	return 0xFF000000 | Red | Green | Blue;
+        return 0xFF000000 | Red | Green | Blue;
     }
 
     public boolean isDoubleClickWait(Player player) {
 
-	return false;
+        return false;
     }
 
     public void loadConfig() {
@@ -125,90 +141,90 @@ public class AnimationManager {
     }
 
     public class Chair {
-	private Entity ent = null;
-	private Location ChairBlockLoc = null;
-	private Location armorStandLoc = null;
-	private long lastCheck = 0L;
-	private boolean persistent = false;
+        private Entity ent = null;
+        private Location ChairBlockLoc = null;
+        private Location armorStandLoc = null;
+        private long lastCheck = 0L;
+        private boolean persistent = false;
 
-	public Entity getEnt() {
-	    return ent;
-	}
+        public Entity getEnt() {
+            return ent;
+        }
 
-	public Chair setEnt(Entity ent) {
-	    this.ent = ent;
-	    return this;
-	}
+        public Chair setEnt(Entity ent) {
+            this.ent = ent;
+            return this;
+        }
 
-	public Location getChairLoc() {
-	    return ChairBlockLoc;
-	}
+        public Location getChairLoc() {
+            return ChairBlockLoc;
+        }
 
-	public Chair setChairLoc(Location chairLoc) {
-	    this.ChairBlockLoc = chairLoc;
-	    return this;
-	}
+        public Chair setChairLoc(Location chairLoc) {
+            this.ChairBlockLoc = chairLoc;
+            return this;
+        }
 
-	public Location getArmorStandLoc() {
-	    return armorStandLoc;
-	}
+        public Location getArmorStandLoc() {
+            return armorStandLoc;
+        }
 
-	public Chair setArmorStandLoc(Location armorStandLoc) {
-	    this.armorStandLoc = armorStandLoc;
-	    return this;
-	}
+        public Chair setArmorStandLoc(Location armorStandLoc) {
+            this.armorStandLoc = armorStandLoc;
+            return this;
+        }
 
-	public long getLastCheck() {
-	    return lastCheck;
-	}
+        public long getLastCheck() {
+            return lastCheck;
+        }
 
-	public void setLastCheck(long lastCheck) {
-	    this.lastCheck = lastCheck;
-	}
+        public void setLastCheck(long lastCheck) {
+            this.lastCheck = lastCheck;
+        }
 
-	public boolean isPersistent() {
-	    return persistent;
-	}
+        public boolean isPersistent() {
+            return persistent;
+        }
 
-	public void setPersistent(boolean persistent) {
-	    this.persistent = persistent;
-	}
+        public void setPersistent(boolean persistent) {
+            this.persistent = persistent;
+        }
 
     }
 
     public boolean isValidChairBlock(Block block) {
 
-	return true;
+        return true;
     }
 
     public void sit(Player player) {
-	sit(player, false);
+        sit(player, false);
     }
 
     public void sit(Player player, boolean persistent) {
-	sit(player, player.getLocation(), persistent);
+        sit(player, player.getLocation(), persistent);
     }
 
     public void sit(Player player, Location location, boolean persistent) {
-	Chair chair = new Chair().setArmorStandLoc(location.clone().add(0.0D, -1.7D, 0.0D)).setChairLoc(location.clone().add(0, -1, 0));
-	chair.setPersistent(persistent);
-	if (sit(player, chair)) {
-	    chairLoc.put(plugin.getUtilManager().convertLocToStringShort(location.clone().add(0, -1, 0)), player.getUniqueId());
-	}
+        Chair chair = new Chair().setArmorStandLoc(location.clone().add(0.0D, -1.7D, 0.0D)).setChairLoc(location.clone().add(0, -1, 0));
+        chair.setPersistent(persistent);
+        if (sit(player, chair)) {
+            chairLoc.put(plugin.getUtilManager().convertLocToStringShort(location.clone().add(0, -1, 0)), player.getUniqueId());
+        }
     }
 
     public boolean isSomeOneSittingHere(Block block) {
-	UUID who = chairLoc.get(plugin.getUtilManager().convertLocToStringShort(block.getLocation().clone()));
-	return who != null;
+        UUID who = chairLoc.get(plugin.getUtilManager().convertLocToStringShort(block.getLocation().clone()));
+        return who != null;
     }
 
     private static Vector getStairLedgeDirection(Block block) {
 
-	return new Vector(0, 0, 0);
+        return new Vector(0, 0, 0);
     }
 
     public void sit(Player player, Block block) {
-	sit(player, block, false);
+        sit(player, block, false);
     }
 
     public void sit(Player player, Block block, boolean persistent) {
@@ -216,16 +232,16 @@ public class AnimationManager {
     }
 
     public boolean isSitting(Player player) {
-	if (map.isEmpty())
-	    return false;
-	return map.containsKey(player.getUniqueId());
+        if (map.isEmpty())
+            return false;
+        return map.containsKey(player.getUniqueId());
     }
 
     public Entity getChair(Player player) {
-	if (map.isEmpty())
-	    return null;
-	Chair chair = map.get(player.getUniqueId());
-	return chair == null ? null : chair.getEnt();
+        if (map.isEmpty())
+            return null;
+        Chair chair = map.get(player.getUniqueId());
+        return chair == null ? null : chair.getEnt();
     }
 
     public void sitOnPlayer(Player player, Player target) {
@@ -234,38 +250,38 @@ public class AnimationManager {
 
     private boolean sit(Player player, Chair chair) {
 
-	return true;
+        return true;
     }
 
     @Deprecated
     public void removePlayer(UUID uuid) {
-	Player player = Bukkit.getPlayer(uuid);
-	if (player != null)
-	    removePlayer(player);
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null)
+            removePlayer(player);
     }
 
     @Deprecated
     public void removePlayer(final Player player) {
-	removePlayer(player, true);
+        removePlayer(player, true);
     }
 
     @Deprecated
     public void removePlayer(final Player player, boolean delay) {
-	removePlayerFromChair(player, delay, false);
+        removePlayerFromChair(player, delay, false);
     }
 
     public void removePlayerFromChair(UUID uuid) {
-	Player player = Bukkit.getPlayer(uuid);
-	if (player != null)
-	    removePlayerFromChair(player);
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null)
+            removePlayerFromChair(player);
     }
 
     public void removePlayerFromChair(final Player player) {
-	removePlayerFromChair(player, true);
+        removePlayerFromChair(player, true);
     }
 
     public void removePlayerFromChair(final Player player, boolean delay) {
-	removePlayerFromChair(player, delay, false);
+        removePlayerFromChair(player, delay, false);
     }
 
     public void removePlayerFromChair(final Player player, boolean delay, boolean center) {
@@ -281,72 +297,72 @@ public class AnimationManager {
     }
 
     public boolean isSitOnStairs() {
-	return SitOnStairs;
+        return SitOnStairs;
     }
 
     public void setSitOnStairs(boolean sitOnStairs) {
-	SitOnStairs = sitOnStairs;
+        SitOnStairs = sitOnStairs;
     }
 
     public boolean isSlabsAsChairs() {
-	return SlabsAsChairs;
+        return SlabsAsChairs;
     }
 
     public boolean isStairsAsChairs() {
-	return StairsAsChairs;
+        return StairsAsChairs;
     }
 
     public UUID removeRiding(UUID uuid) {
-	return riding.remove(uuid);
+        return riding.remove(uuid);
     }
 
     public boolean isRiding(UUID uuid) {
-	return riding.containsKey(uuid);
+        return riding.containsKey(uuid);
     }
 
     public UUID isBeingRiden(UUID uuid) {
-	for (Entry<UUID, UUID> one : riding.entrySet()) {
-	    if (one.getValue().equals(uuid))
-		return one.getKey();
-	}
-	return null;
+        for (Entry<UUID, UUID> one : riding.entrySet()) {
+            if (one.getValue().equals(uuid))
+                return one.getKey();
+        }
+        return null;
     }
 
     public void addRiding(UUID riding, UUID vehicle) {
-	this.riding.put(riding, vehicle);
+        this.riding.put(riding, vehicle);
     }
 
     public boolean isDoubleClick() {
-	return DoubleClick;
+        return DoubleClick;
     }
 
     public int getChairRange() {
-	return chairRange;
+        return chairRange;
     }
 
     public boolean isRemoveFromChairOnDamage() {
-	return RemoveFromChairOnDamage;
+        return RemoveFromChairOnDamage;
     }
 
     private class RotateStand extends BukkitRunnable {
-	private BukkitTask id = null;
+        private BukkitTask id = null;
 
-	public void stop() {
-	    if (id != null)
-		id.cancel();
-	}
+        public void stop() {
+            if (id != null)
+                id.cancel();
+        }
 
-	public RotateStand() {
-	    id = runTaskTimerAsynchronously(plugin, 0L, 1L);
-	}
+        public RotateStand() {
+            id = runTaskTimerAsynchronously(plugin, 0L, 1L);
+        }
 
-	private Method method = null;
-	private Field field = null;
+        private Method method = null;
+        private Field field = null;
 
-	@Override
-	public void run() {
+        @Override
+        public void run() {
 
-	}
+        }
     }
 
 }

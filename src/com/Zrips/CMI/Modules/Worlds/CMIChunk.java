@@ -2,13 +2,11 @@ package com.Zrips.CMI.Modules.Worlds;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 
 import com.Zrips.CMI.Modules.Worlds.WorldManager.CMIBiome;
 
@@ -25,101 +23,106 @@ public class CMIChunk {
     private List<CMIBiome> biomes = new ArrayList<CMIBiome>();
 
     public CMIChunk(Chunk chunk) {
-	this(chunk.getWorld(), chunk.getX(), chunk.getZ());
-	this.setGenerated(true);
-	recheckBiomes(chunk);
+        this(chunk.getWorld(), chunk.getX(), chunk.getZ());
+        this.setGenerated(true);
+        recheckBiomes(chunk);
     }
 
     public CMIChunk(World world, int x, int z) {
-	this.x = x;
-	this.z = z;
-	this.world = world;
+        this.x = x;
+        this.z = z;
+        this.world = world;
     }
 
     public int getRelativeX() {
-	return this.x - ((this.x >> 5) * 32);
+        return this.x - ((this.x >> 5) * 32);
     }
 
     public int getRelativeZ() {
-	return this.z - ((this.z >> 5) * 32);
+        return this.z - ((this.z >> 5) * 32);
     }
 
     public Integer getPlace() {
-	return getRelativeX() + (getRelativeZ() * 32);
+        return getRelativeX() + (getRelativeZ() * 32);
     }
 
     private static Integer convertBiomePlace(int x, int z) {
-	return x + (z * 16);
+        return x + (z * 16);
     }
 
     public Integer getX() {
-	return x;
+        return x;
     }
 
     public Integer getZ() {
-	return z;
+        return z;
     }
 
     public CMIChunk recheckBiomes(Chunk chunk) {
-	return this;
+
+        return this;
     }
 
     public CMIChunk recheckBiomes() {
-	return this;
+
+        return this;
     }
 
     public World getWorld() {
-	return world;
+        return world;
     }
 
     public ChunkSnapshot getEmptyChunkSnapshot() {
-	return this.world.getEmptyChunkSnapshot(x, z, true, false);
+        return this.world.getEmptyChunkSnapshot(x, z, true, false);
     }
 
     public boolean isGenerated() {
-	return generated;
+        return generated;
     }
 
     public CMIChunk setGenerated(boolean generated) {
-	this.generated = generated;
-	return this;
+        this.generated = generated;
+        return this;
     }
 
     public Chunk getChunk() {
-	return this.getWorld().getChunkAt(x, z);
+        return this.getWorld().getChunkAt(x, z);
     }
 
     public CMIBiome getBiome() {
-	for (CMIBiome one : biomes) {
-	    return one;
-	}
-	return CMIBiome.PLAINS;
+        for (CMIBiome one : biomes) {
+            return one;
+        }
+        return CMIBiome.PLAINS;
     }
 
     public List<CMIBiome> getBiomes() {
-	return biomes;
+        return biomes;
     }
 
     public String getBiomeColorCodes() {
-	return null;
+        String b = "";
+
+        return b;
     }
 
     public Color getUnbluredColor() {
-	
-	return null;
+
+        return null;
     }
 
     public Color getColor() {
-	return null;
+
+        return null;
     }
 
     private static Color blend(Color c0, Color c1) {
-	
-	return null;
+
+        return null;
     }
 
     public void setBiomes(List<CMIBiome> biomes) {
-	this.biomes = new ArrayList<CMIBiome>(biomes);
+        this.biomes = new ArrayList<CMIBiome>(biomes);
     }
 
 }

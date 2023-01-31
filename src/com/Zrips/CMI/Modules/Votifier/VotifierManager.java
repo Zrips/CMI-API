@@ -1,25 +1,16 @@
 package com.Zrips.CMI.Modules.Votifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.bukkit.Bukkit;
-
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Containers.Snd;
-import net.Zrips.CMILib.FileHandler.ConfigReader;
-import net.Zrips.CMILib.Time.CMITimeManager;
-
-import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 public class VotifierManager {
 
@@ -36,38 +27,38 @@ public class VotifierManager {
     private HashMap<UUID, voteReminder> voteReminder = new HashMap<UUID, voteReminder>();
 
     private class voteReminder {
-	private int times = 0;
-	private long last = 0L;
+        private int times = 0;
+        private long last = 0L;
 
-	public voteReminder() {
-	    last = System.currentTimeMillis();
-	}
+        public voteReminder() {
+            last = System.currentTimeMillis();
+        }
 
-	public void recordNotified() {
-	    times++;
-	    last = System.currentTimeMillis();
-	}
+        public void recordNotified() {
+            times++;
+            last = System.currentTimeMillis();
+        }
 
-	public int getTimes() {
-	    return times;
-	}
+        public int getTimes() {
+            return times;
+        }
 
-	public long getLast() {
-	    return last;
-	}
+        public long getLast() {
+            return last;
+        }
     }
 
     public void removeVoteReminder(UUID uuid) {
-	voteReminder.remove(uuid);
+        voteReminder.remove(uuid);
     }
 
     public void addToVoteReminder(UUID uuid) {
 
-	voteReminder.put(uuid, new voteReminder());
+        voteReminder.put(uuid, new voteReminder());
     }
 
     public VotifierManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void loadConfig() {
@@ -76,7 +67,7 @@ public class VotifierManager {
 
     @Deprecated
     public void processVote(CMIUser user, String service) {
-	processVote(user, service, null);
+        processVote(user, service, null);
     }
 
     public void processVote(CMIUser user, String service, String ip) {
@@ -87,10 +78,10 @@ public class VotifierManager {
     private Set<CMIUser> withVotes = new HashSet<CMIUser>();
 
     public void updateVoteCountList(CMIUser user) {
-	if (user.getVotifierVotes() <= 0)
-	    withVotes.remove(user);
-	else
-	    withVotes.add(user);
+        if (user.getVotifierVotes() <= 0)
+            withVotes.remove(user);
+        else
+            withVotes.add(user);
     }
 
     Long lastUpdate = 0L;
@@ -98,9 +89,11 @@ public class VotifierManager {
     int updateDelay = 5;
 
     private void delayUpdate() {
+
     }
 
     public void updateTopList() {
+
     }
 
     boolean calculating = false;
@@ -110,12 +103,12 @@ public class VotifierManager {
     }
 
     public ConcurrentSkipListMap<Double, CMIUser> getTop() {
-	if (lastUpdate == 0)
-	    recalculate();
-	return Top;
+        if (lastUpdate == 0)
+            recalculate();
+        return Top;
     }
 
     public int getMaxVotesInADay() {
-	return MaxVotesInADay;
+        return MaxVotesInADay;
     }
 }

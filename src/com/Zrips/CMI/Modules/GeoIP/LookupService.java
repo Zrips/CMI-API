@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.concurrent.ConcurrentHashMap;
@@ -113,101 +115,15 @@ public class LookupService {
 
     private static final int FULL_RECORD_LENGTH = 60;
 
-    private static final String[] countryCode = { "--", "AP", "EU", "AD", "AE",
-	"AF", "AG", "AI", "AL", "AM", "CW", "AO", "AQ", "AR", "AS", "AT",
-	"AU", "AW", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI",
-	"BJ", "BM", "BN", "BO", "BR", "BS", "BT", "BV", "BW", "BY", "BZ",
-	"CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN",
-	"CO", "CR", "CU", "CV", "CX", "CY", "CZ", "DE", "DJ", "DK", "DM",
-	"DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "FI", "FJ",
-	"FK", "FM", "FO", "FR", "SX", "GA", "GB", "GD", "GE", "GF", "GH",
-	"GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW",
-	"GY", "HK", "HM", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IN",
-	"IO", "IQ", "IR", "IS", "IT", "JM", "JO", "JP", "KE", "KG", "KH",
-	"KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC",
-	"LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD",
-	"MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS",
-	"MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF",
-	"NG", "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE",
-	"PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW",
-	"PY", "QA", "RE", "RO", "RU", "RW", "SA", "SB", "SC", "SD", "SE",
-	"SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "ST",
-	"SV", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TM",
-	"TN", "TO", "TL", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM",
-	"US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF",
-	"WS", "YE", "YT", "RS", "ZA", "ZM", "ME", "ZW", "A1", "A2", "O1",
-	"AX", "GG", "IM", "JE", "BL", "MF", "BQ", "SS", "O1" };
+    private static final String[] countryCode = { "--" };
 
-    private static final String[] countryName = { "N/A", "Asia/Pacific Region",
-	"Europe", "Andorra", "United Arab Emirates", "Afghanistan",
-	"Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Curacao",
-	"Angola", "Antarctica", "Argentina", "American Samoa", "Austria",
-	"Australia", "Aruba", "Azerbaijan", "Bosnia and Herzegovina",
-	"Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria",
-	"Bahrain", "Burundi", "Benin", "Bermuda", "Brunei Darussalam",
-	"Bolivia", "Brazil", "Bahamas", "Bhutan", "Bouvet Island",
-	"Botswana", "Belarus", "Belize", "Canada",
-	"Cocos (Keeling) Islands", "Congo, The Democratic Republic of the",
-	"Central African Republic", "Congo", "Switzerland",
-	"Cote D'Ivoire", "Cook Islands", "Chile", "Cameroon", "China",
-	"Colombia", "Costa Rica", "Cuba", "Cape Verde", "Christmas Island",
-	"Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark",
-	"Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia",
-	"Egypt", "Western Sahara", "Eritrea", "Spain", "Ethiopia",
-	"Finland", "Fiji", "Falkland Islands (Malvinas)",
-	"Micronesia, Federated States of", "Faroe Islands", "France",
-	"Sint Maarten (Dutch part)", "Gabon", "United Kingdom", "Grenada",
-	"Georgia", "French Guiana", "Ghana", "Gibraltar", "Greenland",
-	"Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece",
-	"South Georgia and the South Sandwich Islands", "Guatemala",
-	"Guam", "Guinea-Bissau", "Guyana", "Hong Kong",
-	"Heard Island and McDonald Islands", "Honduras", "Croatia",
-	"Haiti", "Hungary", "Indonesia", "Ireland", "Israel", "India",
-	"British Indian Ocean Territory", "Iraq",
-	"Iran, Islamic Republic of", "Iceland", "Italy", "Jamaica",
-	"Jordan", "Japan", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati",
-	"Comoros", "Saint Kitts and Nevis",
-	"Korea, Democratic People's Republic of", "Korea, Republic of",
-	"Kuwait", "Cayman Islands", "Kazakhstan",
-	"Lao People's Democratic Republic", "Lebanon", "Saint Lucia",
-	"Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania",
-	"Luxembourg", "Latvia", "Libya", "Morocco", "Monaco",
-	"Moldova, Republic of", "Madagascar", "Marshall Islands",
-	"Macedonia", "Mali", "Myanmar", "Mongolia", "Macau",
-	"Northern Mariana Islands", "Martinique", "Mauritania",
-	"Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico",
-	"Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger",
-	"Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway",
-	"Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru",
-	"French Polynesia", "Papua New Guinea", "Philippines", "Pakistan",
-	"Poland", "Saint Pierre and Miquelon", "Pitcairn Islands",
-	"Puerto Rico", "Palestinian Territory", "Portugal", "Palau",
-	"Paraguay", "Qatar", "Reunion", "Romania", "Russian Federation",
-	"Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan",
-	"Sweden", "Singapore", "Saint Helena", "Slovenia",
-	"Svalbard and Jan Mayen", "Slovakia", "Sierra Leone", "San Marino",
-	"Senegal", "Somalia", "Suriname", "Sao Tome and Principe",
-	"El Salvador", "Syrian Arab Republic", "Swaziland",
-	"Turks and Caicos Islands", "Chad", "French Southern Territories",
-	"Togo", "Thailand", "Tajikistan", "Tokelau", "Turkmenistan",
-	"Tunisia", "Tonga", "Timor-Leste", "Turkey", "Trinidad and Tobago",
-	"Tuvalu", "Taiwan", "Tanzania, United Republic of", "Ukraine",
-	"Uganda", "United States Minor Outlying Islands", "United States",
-	"Uruguay", "Uzbekistan", "Holy See (Vatican City State)",
-	"Saint Vincent and the Grenadines", "Venezuela",
-	"Virgin Islands, British", "Virgin Islands, U.S.", "Vietnam",
-	"Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte",
-	"Serbia", "South Africa", "Zambia", "Montenegro", "Zimbabwe",
-	"Anonymous Proxy", "Satellite Provider", "Other", "Aland Islands",
-	"Guernsey", "Isle of Man", "Jersey", "Saint Barthelemy",
-	"Saint Martin", "Bonaire, Saint Eustatius and Saba", "South Sudan",
-	"Other" };
+    private static final String[] countryName = { "N/A" };
 
     /* init the hashmap once at startup time */
     static {
-	if (countryCode.length != countryName.length) {
-	    throw new AssertionError("countryCode.length!=countryName.length");
-	}
+        if (countryCode.length != countryName.length) {
+            throw new AssertionError("countryCode.length!=countryName.length");
+        }
     }
 
     /**
@@ -225,7 +141,11 @@ public class LookupService {
      */
 
     public LookupService(File databaseFile, int options) throws IOException {
-	this.databaseFile = null;
+        this.databaseFile = databaseFile;
+        if (databaseFile.isFile())
+            file = new RandomAccessFile(databaseFile, "r");
+        dboptions = options;
+        init();
     }
 
     /**
@@ -250,24 +170,104 @@ public class LookupService {
     }
 
     public IPLocation getLocation(InetAddress addr) {
-	return null;
+        if (!this.databaseFile.isFile()) {
+            return getEmpty();
+        }
+        return getLocation(bytesToLong(addr.getAddress()));
     }
 
     public IPLocation getLocation(String str) {
-	return null;
+
+        return null;
+
     }
 
     private synchronized IPLocation getLocation(long ipnum) {
-	return null;
+        int seekCountry;
+
+        if (!this.databaseFile.isFile()) {
+            return getEmpty();
+        }
+
+        try {
+            seekCountry = seekCountry(ipnum);
+            return readCityRecord(seekCountry);
+        } catch (IOException e) {
+        }
+
+        return getEmpty();
     }
 
     private static IPLocation getEmpty() {
-	return null;
+        IPLocation record = new IPLocation();
+        record.setCountryCode("--");
+        record.setCountryName("N/A");
+        return record;
     }
 
     private IPLocation readCityRecord(int seekCountry) throws IOException {
-	
-	return null;
+
+        return null;
     }
 
+    private ByteBuffer readRecordBuf(int seek, int maxLength) throws IOException {
+
+        return null;
+    }
+
+    private String readString(ByteBuffer buffer) throws CharacterCodingException {
+        int start = buffer.position();
+        int oldLimit = buffer.limit();
+
+        while (buffer.hasRemaining() && buffer.get() != 0) {
+        }
+
+        int end = buffer.position() - 1;
+        String str = null;
+        if (end > start) {
+            buffer.position(start);
+            buffer.limit(end);
+            str = charsetDecoder.decode(buffer).toString();
+            buffer.limit(oldLimit);
+        }
+        buffer.position(end + 1);
+        return str;
+    }
+
+    /**
+     * Finds the country index value given an IP address.
+     *
+     * @param ipAddress
+     *            the ip address to find in long format.
+     * @return the country index.
+     */
+    private synchronized int seekCountry(long ipAddress) {
+        return 0;
+    }
+
+    private void readNode(byte[] buf, int[] x, int offset) {
+    }
+
+    /**
+     * Returns the long version of an IP address given an InetAddress object.
+     *
+     * @param address
+     *            the InetAddress.
+     * @return the long form of the IP address.
+     */
+    private static long bytesToLong(byte[] address) {
+        long ipnum = 0;
+        for (int i = 0; i < 4; ++i) {
+            long y = address[i];
+            if (y < 0) {
+                y += 256;
+            }
+            ipnum += y << ((3 - i) * 8);
+        }
+        return ipnum;
+    }
+
+    private static int unsignedByteToInt(byte b) {
+        return (int) b & 0xFF;
+    }
 }

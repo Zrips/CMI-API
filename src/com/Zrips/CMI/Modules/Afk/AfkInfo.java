@@ -2,6 +2,8 @@ package com.Zrips.CMI.Modules.Afk;
 
 import com.Zrips.CMI.events.CMIAfkEnterEvent.AfkType;
 
+import net.Zrips.CMILib.Container.CMIVectorInt3D;
+
 public class AfkInfo {
 
     private Long afkFrom = null;
@@ -9,62 +11,72 @@ public class AfkInfo {
     private AfkType type;
     private String reason;
     private Long playtimeAtAfkStart;
-    
+
+    private CMIVectorInt3D afkAt = null;
+
     private int kickOutIn = 0;
 
     public AfkInfo() {
     }
 
     public Long getAfkFrom() {
-	return afkFrom;
+        return afkFrom;
     }
 
     public void setAfkFrom(Long afkFrom) {
-	this.afkFrom = afkFrom;
+        this.afkFrom = afkFrom;
     }
 
     public int getKicksPerformed() {
-	return kicksPerformed;
+        return kicksPerformed;
     }
 
     public void setKicksPerformed(int kicksPerformed) {
-	this.kicksPerformed = kicksPerformed;
+        this.kicksPerformed = kicksPerformed;
     }
 
     public void addKicksPerformed() {
-	this.kicksPerformed++;
+        this.kicksPerformed++;
     }
 
     public AfkType getType() {
-	return type == null ? AfkType.auto : type;
+        return type == null ? AfkType.auto : type;
     }
 
     public void setType(AfkType type) {
-	this.type = type;
+        this.type = type;
     }
 
     public String getReason() {
-	return reason;
+        return reason;
     }
 
     public void setReason(String reason) {
-	this.reason = reason;
+        this.reason = reason;
     }
 
     public Long getPlaytimeAtAfkStart() {
-	return playtimeAtAfkStart == null ? 0L : playtimeAtAfkStart;
+        return playtimeAtAfkStart == null ? 0L : playtimeAtAfkStart;
     }
 
     public void setPlaytimeAtAfkStart(Long playtimeAtAfkStart) {
-	this.playtimeAtAfkStart = playtimeAtAfkStart;
+        this.playtimeAtAfkStart = playtimeAtAfkStart;
     }
 
     public int getKickOutInSec() {
-	return kickOutIn;
+        return kickOutIn;
     }
 
     public void setKickOutInSec(int kickOutIn) {
-	this.kickOutIn = kickOutIn;
+        this.kickOutIn = kickOutIn;
+    }
+
+    public CMIVectorInt3D getAfkAt() {
+        return afkAt;
+    }
+
+    public void setAfkAt(CMIVectorInt3D afkAt) {
+        this.afkAt = afkAt;
     }
 
 }

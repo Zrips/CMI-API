@@ -14,7 +14,7 @@ public class TagManager {
     private CMI plugin;
 
     public TagManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     private boolean ChatTagEnabled;
@@ -28,28 +28,32 @@ public class TagManager {
 
     }
 
+    @Deprecated
     public String tag(Player player, String msg, String format) {
+        return tag(player, msg, format, true);
+    }
 
-	return "";
+    public String tag(Player player, String msg, String format, boolean performCmds) {
+        return "";
     }
 
     public String getChatTagColor() {
-	return CMIChatColor.translate(ChatTagColor);
+        return CMIChatColor.translate(ChatTagColor);
     }
 
     public boolean isChatTagRemoveEta() {
-	return ChatTagRemoveEta;
+        return ChatTagRemoveEta;
     }
 
     public boolean isChatTagEnabled() {
-	return ChatTagEnabled;
+        return ChatTagEnabled;
     }
 
     public boolean isHardCoreMode() {
-	return HardCoreMode;
+        return HardCoreMode;
     }
 
     public void setHardCoreMode(boolean hardCoreMode) {
-	HardCoreMode = hardCoreMode;
+        HardCoreMode = hardCoreMode;
     }
 }

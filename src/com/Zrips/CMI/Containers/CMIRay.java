@@ -36,7 +36,7 @@ public class CMIRay {
 	    return 0;
 	}
     }
-
+    
     public double direction(int i) {
 	switch (i) {
 	case 0:

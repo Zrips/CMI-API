@@ -6,14 +6,14 @@ public enum CMINBTListType {
     private int id;
 
     CMINBTListType(int id) {
-	this.id = id;
+        this.id = id;
     }
 
     public int getId() {
-	return id;
+        return id;
     }
 
     public static String getType(int id) {
-	return null;
+        return null;
     }
 }

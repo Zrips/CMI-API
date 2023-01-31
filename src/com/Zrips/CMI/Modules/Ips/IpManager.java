@@ -15,24 +15,26 @@ public class IpManager {
     private static final Pattern ALTPATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\_){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 
     public boolean ipIsOk(final String ip) {
-	return PATTERN.matcher(ip).matches();
+        return PATTERN.matcher(ip).matches();
     }
 
     public boolean alternateIpIsOk(final String ip) {
-	return ALTPATTERN.matcher(ip).matches();
+        return ALTPATTERN.matcher(ip).matches();
     }
 
     public IpManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void addIp(HashMap<String, Integer> map, CMIUser user) {
+
     }
 
     public void addIp(String ip, CMIUser user) {
+
     }
 
     public Set<CMIUser> getUsers(String ip) {
-	return ips.get(ip);
+        return ips.get(ip);
     }
 }

@@ -2,7 +2,6 @@ package com.Zrips.CMI.Containers;
 
 import java.util.HashMap;
 
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.commands.list.vanishedit.VanishAction;
 
 public class CMIVanish {
@@ -12,62 +11,74 @@ public class CMIVanish {
     private HashMap<VanishAction, Boolean> map = new HashMap<VanishAction, Boolean>();
 
     private Boolean wasCollidable = null;
-    
+
     private Long vanishedFrom = null;
 
+    private Long playtimeAtVanishStart = null;
+
     public void fromString(String line) {
+
     }
 
     @Override
     public String toString() {
-	String line = "";
-	return line;
+        String line = "";
+
+        return line;
     }
 
     private static String to(boolean state) {
-	return state ? "1" : "0";
+        return state ? "1" : "0";
     }
 
     private static boolean from(String state) {
-	return state.equals("1") ? true : false;
+        return state.equals("1") ? true : false;
     }
 
     public CMIVanish(CMIUser user) {
-	this.user = user;
+        this.user = user;
     }
 
     public CMIUser getUser() {
-	return user;
+        return user;
     }
 
     public void setUser(CMIUser user) {
-	this.user = user;
+        this.user = user;
     }
 
     public boolean is(VanishAction action) {
-	if (!map.containsKey(action) || map.get(action) == null) {
-	    return action.isEnabled();
-	}
-	return map.get(action);
+        if (!map.containsKey(action) || map.get(action) == null) {
+            return action.isEnabled();
+        }
+        return map.get(action);
     }
 
     public void set(VanishAction action, boolean state) {
-	map.put(action, state);
+        map.put(action, state);
     }
 
     public Boolean getWasCollidable() {
-	return wasCollidable == null ? true : wasCollidable;
+        return wasCollidable == null ? true : wasCollidable;
     }
 
     public void setWasCollidable(Boolean wasCollidable) {
-	this.wasCollidable = wasCollidable;
+        this.wasCollidable = wasCollidable;
     }
 
     public Long getVanishedFrom() {
-	return vanishedFrom;
+        return vanishedFrom;
     }
 
     public void setVanishedFrom(Long vanishedFrom) {
-	this.vanishedFrom = vanishedFrom;
+        this.vanishedFrom = vanishedFrom;
+    }
+
+    public Long getPlaytimeAtVanishStart() {
+        return playtimeAtVanishStart == null ? 0L : playtimeAtVanishStart;
+    }
+
+    public void setPlaytimeAtVanishStart(Long playtimeAtAfkStart) {
+        this.playtimeAtVanishStart = playtimeAtAfkStart;
     }
 }

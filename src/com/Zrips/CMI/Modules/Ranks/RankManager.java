@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -21,28 +22,50 @@ public class RankManager {
 
     private LinkedHashMap<String, CMIRank> ranks = new LinkedHashMap<String, CMIRank>();
     private HashMap<UUID, Long> nextCheck = new HashMap<UUID, Long>();
+    private HashMap<UUID, Long> nextAutoRecalculate = new HashMap<UUID, Long>();
     private HashMap<UUID, InformTimer> nextInform = new HashMap<UUID, InformTimer>();
     private CMI plugin;
     BukkitScheduler scheduler;
 
     public RankManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     private boolean isNextCheck(UUID uuid) {
-	return false;
+        return false;
+    }
+
+    private boolean isNextAutoRecalculate(UUID uuid) {
+        return false;
     }
 
     private boolean isNextInform(UUID uuid) {
-	return false;
+        return false;
     }
 
     public void removeFromCheck(UUID uuid) {
+        nextCheck.remove(uuid);
+        nextAutoRecalculate.remove(uuid);
+        nextInform.remove(uuid);
     }
 
     int sched = -1;
+    int recSched = -1;
 
     public void stop() {
+        if (sched != -1) {
+            Bukkit.getScheduler().cancelTask(sched);
+            sched = -1;
+        }
+        if (recSched != -1) {
+            Bukkit.getScheduler().cancelTask(recSched);
+            recSched = -1;
+        }
+        percentCache.clear();
+    }
+
+    public void autoRecheck() {
+
     }
 
     public void run() {
@@ -54,46 +77,46 @@ public class RankManager {
     }
 
     public HashMap<String, CMIRank> getRanks() {
-	return ranks;
+        return ranks;
     }
 
     public CMIRank getRank(String name) {
-	if (name == null)
-	    return null;
-	return ranks.get(name.toLowerCase());
+        if (name == null)
+            return null;
+        return ranks.get(name.toLowerCase());
     }
 
     public CMIRank getDefaultRank(Player player) {
 
-	return null;
+        return null;
     }
 
     public enum rankupFailType {
-	Money, Exp, Stats, McMMO, Jobs, Perm, None, NoRank, Items, Votes, SameRank
+        Money, Exp, Stats, McMMO, Aurelium, Jobs, Perm, None, NoRank, Items, Votes, SameRank
     }
 
     public enum rankupType {
-	Money, Exp, Stats, McMMO, Jobs, Perm, Items, Votes;
+        Money, Exp, Stats, McMMO, Aurelium, Jobs, Perm, Items, Votes;
     }
 
     public boolean canRankUpAuto(CMIUser user) {
 
-	return false;
+        return true;
+
     }
 
     public rankupFailType canRankUp(CMIUser user, CMIRank rank) {
 
-	return null;
+        return rankupFailType.None;
     }
 
     private static HashMap<String, CMIItemStack> getInvContentsAmounts(Player player) {
-
-	return null;
+        HashMap<String, CMIItemStack> map = new HashMap<String, CMIItemStack>();
+        return map;
     }
 
     public boolean removeContents(Player player, LinkedHashMap<CMIItemStack, Integer> map) {
-
-	return true;
+        return true;
     }
 
     public void listStatsRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
@@ -101,114 +124,121 @@ public class RankManager {
     }
 
     public class rankCurrentRequirement {
-	private Long need;
-	private Long have;
+        private Long need;
+        private Long have;
 
-	public rankCurrentRequirement(Long need, Long have) {
-	    this.have = have;
-	    this.need = need;
-	}
+        public rankCurrentRequirement(Long need, Long have) {
+            this.have = have;
+            this.need = need;
+        }
 
-	public Long getNeed() {
-	    return need;
-	}
+        public Long getNeed() {
+            return need;
+        }
 
-	public void setNeed(Long need) {
-	    this.need = need;
-	}
+        public void setNeed(Long need) {
+            this.need = need;
+        }
 
-	public Long getHave() {
-	    return have;
-	}
+        public Long getHave() {
+            return have;
+        }
 
-	public void setHave(Long have) {
-	    this.have = have;
-	}
+        public void setHave(Long have) {
+            this.have = have;
+        }
 
     }
 
     public HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>> getStatsRequirements(CMIUser user, CMIRank rank) {
+        HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>> haveMap = new HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>>();
 
-	return null;
+        return haveMap;
     }
 
     public Double getStatsDonePercentage(CMIUser user, CMIRank rank) {
-
-	return null;
+        return null;
     }
 
     private static String firstCap(String msg) {
-	return msg.substring(0, 1).toUpperCase() + msg.substring(1);
+        return msg.substring(0, 1).toUpperCase() + msg.substring(1);
     }
 
     public Double getOverallDonePercentage(CMIUser user, CMIRank rank) {
 
-	return null;
+        return null;
     }
 
     public Double getMoneyDonePercentage(CMIUser user, CMIRank rank) {
-
-	return null;
+        return null;
     }
 
     public void listMoneyRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
-
     }
 
     public Double getExpDonePercentage(CMIUser user, CMIRank rank) {
-
-	return null;
+        return null;
     }
 
     public void listExpRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
-
     }
 
     public Double getVoteDonePercentage(CMIUser user, CMIRank rank) {
-
-	return null;
+        if (rank.getVotes() <= 0 || !plugin.isVotifierEnabled())
+            return null;
+        int have = user.getVotifierVotes();
+        if (have > rank.getVotes())
+            return 100D;
+        return (have * 100D) / ((double) rank.getVotes());
     }
 
     public void listVoteRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
-
     }
 
     public void listPermRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
-
     }
 
     public class rankCache {
-	HashMap<rankupType, Double> percentage = new HashMap<rankupType, Double>();
-	HashMap<rankupType, Long> nextPercentageCheck = new HashMap<rankupType, Long>();
+        HashMap<rankupType, Double> percentage = new HashMap<rankupType, Double>();
+        HashMap<rankupType, Long> nextPercentageCheck = new HashMap<rankupType, Long>();
 
-	public rankCache() {
+        public rankCache() {
 
-	}
+        }
 
-	public boolean timeToCheck(rankupType type) {
-	    return !nextPercentageCheck.containsKey(type) || nextPercentageCheck.get(type) < System.currentTimeMillis();
-	}
+        public boolean timeToCheck(rankupType type) {
+            return !nextPercentageCheck.containsKey(type) || nextPercentageCheck.get(type) < System.currentTimeMillis();
+        }
 
-	public Double getCache(rankupType type) {
-	    return percentage.get(type);
-	}
+        public Double getCache(rankupType type) {
+            return percentage.get(type);
+        }
 
-	public void setCache(rankupType type, Double percent) {
-	    percentage.put(type, percent);
-	    nextPercentageCheck.put(type, System.currentTimeMillis() + 5000L);
-	}
+        public void setCache(rankupType type, Double percent) {
+            percentage.put(type, percent);
+            nextPercentageCheck.put(type, System.currentTimeMillis() + 5000L);
+        }
     }
 
     HashMap<UUID, rankCache> percentCache = new HashMap<UUID, rankCache>();
 
     public Double getPermDonePercentage(CMIUser user, CMIRank rank) {
 
-	return null;
+        return null;
+    }
+
+    public Double getAureliumDonePercentage(CMIUser user, CMIRank rank) {
+
+        return null;
+    }
+
+    public void listAureliumRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getMcMMODonePercentage(CMIUser user, CMIRank rank) {
 
-	return null;
+        return null;
     }
 
     public void listMcmmoRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
@@ -217,7 +247,7 @@ public class RankManager {
 
     public Double getJobsDonePercentage(CMIUser user, CMIRank rank) {
 
-	return null;
+        return null;
     }
 
     public void listJobsRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
@@ -226,7 +256,7 @@ public class RankManager {
 
     public Double getItemDonePercentage(CMIUser user, CMIRank rank) {
 
-	return null;
+        return null;
     }
 
     public void listItemRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
@@ -235,14 +265,14 @@ public class RankManager {
 
     public String translateValue(CMIStatistic stat, Long value) {
 
-	return null;
+        return null;
     }
 
     NumberFormat formatter = new DecimalFormat("#0.00");
 
     private String convertDistance(long distance) {
 
-	return null;
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -251,16 +281,11 @@ public class RankManager {
     }
 
     private void calculateWeight(CMIRank rank, int weight) {
-	weight++;
-	if (weight > 1000)
-	    return;
-	rank.setWeight(weight);
-	for (CMIRank one : rank.getNextRanks()) {
-	    calculateWeight(one, weight);
-	}
+
     }
 
     private int Delay = 30;
+    private int Recalculation = 0;
     private boolean OnlyHours = false;
     private boolean includeMinutes = false;
     private boolean async = false;
@@ -276,22 +301,22 @@ public class RankManager {
     }
 
     public boolean isProgressBar() {
-	return progressBar;
+        return progressBar;
     }
 
     public boolean isListSamePathOnly() {
-	return ListSamePathOnly;
+        return ListSamePathOnly;
     }
 
     public CMIPresetAnimations getRankEffect() {
-	return RanksEffect;
+        return RanksEffect;
     }
 
     public boolean isPermissionCheck() {
-	return permissionCheck;
+        return permissionCheck;
     }
 
     public boolean isStrictPermissionCheck() {
-	return strictPermissionCheck;
+        return strictPermissionCheck;
     }
 }

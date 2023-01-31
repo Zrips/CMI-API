@@ -19,6 +19,7 @@ import com.Zrips.CMI.Modules.Animations.AnimationColoredArmorListener;
 import com.Zrips.CMI.Modules.Animations.AnimationRideListener;
 import com.Zrips.CMI.Modules.Animations.AnimationSitListener;
 import com.Zrips.CMI.Modules.Anvil.AnvilColorRenameListener;
+import com.Zrips.CMI.Modules.ArmorEffects.ArmorEffectListener;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTListener;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTListener1_8;
 import com.Zrips.CMI.Modules.ChatTag.TagListener;
@@ -58,7 +59,6 @@ import com.Zrips.CMI.Modules.TabList.TabListListener;
 import com.Zrips.CMI.Modules.TimedCommands.TimedCommandListener;
 import com.Zrips.CMI.Modules.Totems.ResurectionListener;
 import com.Zrips.CMI.Modules.Vanish.VanishListener;
-import com.Zrips.CMI.Modules.Votifier.VotifierListener;
 
 import net.Zrips.CMILib.Version.Version;
 
@@ -80,6 +80,7 @@ public enum CMIModule {
     warmup("Handling of command warmups", new CMIModuleClass(WarmUpListener.class)),
     interactiveCommands("Handling of interactive commands", new CMIModuleClass(InteractiveCommandListener.class), new CMIModuleClass(InteractiveCommandListener1_8.class, Version.v1_8_R1)),
     attachedCommands("Handling of attached commands", new CMIModuleClass(CustomNBTListener.class), new CMIModuleClass(CustomNBTListener1_8.class, Version.v1_8_R1)),
+    armorEffects("Handling of armor effects", new CMIModuleClass(ArmorEffectListener.class)),
     playerChatTag("Handling of player tagging in chat and tabcomplete with @", new CMIModuleClass(TagListener.class)),
     tablist("Handling of tablist", new CMIModuleClass(TabListListener.class)),
     paintingEditor("Handling of painting editing with shift+right click", new CMIModuleClass(PaintingListener.class)),
@@ -94,7 +95,7 @@ public enum CMIModule {
     coloredArmor("Handles leather armor which has dynamic colors", new CMIModuleClass(AnimationColoredArmorListener.class)),
     noTarget("Handles entity target prevention on player /cmi notarget", new CMIModuleClass(NoTargetListener.class)),
     ranks("Handles rankup system"),
-    votifier("Handles votifier system", new CMIModuleClass(VotifierListener.class)),
+    votifier("Handles votifier system"),
     playerCombat("Handles player combat system", new CMIModuleClass(PlayerCombatListener.class)),
     headDrop("Handles head drops system", new CMIModuleClass(HeadDropListener.class)),
     kits("Handles kit listener, mainly to give out new player kit", new CMIModuleClass(KitListener.class)),
@@ -107,7 +108,7 @@ public enum CMIModule {
     selection("Handles selection areas. While this is disabled, command can still be used", new CMIModuleClass(SelectionListener.class)),
     hpBossBar("Handles mob and player hp bars as boss bar", new CMIModuleClass(HpBarListener.class, Version.v1_9_R1)),
     afk("Handling of afk feature. This will disable any checks related to afk and players will never get into afk mode", new CMIModuleClass(AfkListener.class), new CMIModuleClass(AfkListener1_8.class,
-	Version.v1_8_R1)),
+        Version.v1_8_R1)),
     timedCommands("Handling timed commands like tfly and tgod", new CMIModuleClass(TimedCommandListener.class)),
     eventCommands("Handling of eventCommands.yml feature ", new CMIModuleClass(EventActionListener.class), new CMIModuleClass(EventActionListener19.class, Version.v1_9_R1)),
     disabledEnchants("Handling of disabled enchants in inventory", new CMIModuleClass(EnchantListener.class)),
@@ -130,49 +131,49 @@ public enum CMIModule {
     private String desc;
 
     CMIModule(String desc, CMIModuleClass... listener) {
-	this.desc = desc;
-	this.listeners = listener;
+        this.desc = desc;
+        this.listeners = listener;
     }
 
     public static CMIModule getByName(String name) {
-	return null;
+        return null;
     }
 
     public static boolean isEnabled(String name) {
-	return true;
+        return true;
     }
 
     public Version getFromVersion() {
-	Version from = Version.v1_7_R4;
-	return from;
+        Version from = Version.v1_7_R4;
+        return from;
     }
 
     public Version getToVersion() {
-	Version to = null;
-	return to;
+        Version to = null;
+        return to;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
+        this.enabled = enabled;
     }
 
     public boolean isEnabled() {
-	return enabled;
+        return enabled;
     }
 
     public void registerListener() {
-	
+
     }
 
     public String getDesc() {
-	return desc;
+        return desc;
     }
 
     public void setDesc(String desc) {
-	this.desc = desc;
+        this.desc = desc;
     }
 
     public CMIModuleClass[] getListeners() {
-	return listeners;
+        return listeners;
     }
 }

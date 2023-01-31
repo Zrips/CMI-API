@@ -20,85 +20,93 @@ public class CMIJail {
     private HashMap<Integer, CMIJailCell> cells = new HashMap<Integer, CMIJailCell>();
 
     public CMIJail() {
-	area = new CuboidArea(null);
+        area = new CuboidArea(null);
     }
 
     public boolean containsLoc(Location loc) {
-	return area.containsLoc(loc);
+        return area.containsLoc(loc);
     }
 
     public boolean containsLoc(Location loc, int range) {
-	return area.containsLoc(loc, range);
+        return area.containsLoc(loc, range);
     }
 
     public CuboidArea getArea() {
-	return area;
+        return area;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public boolean checkCollision(CuboidArea area) {
-	if (this.area != null && area != null) {
-	    if (this.area.checkCollision(area)) {
-		return true;
-	    }
-	}
-	return false;
+        if (this.area != null && area != null) {
+            if (this.area.checkCollision(area)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
-	return null;
+
+        return null;
     }
 
     public void setArea(CuboidArea area) {
-	this.area = area;
+        this.area = area;
     }
 
     public Location getOutsideLocation() {
-	return safeLoc;
+        return safeLoc;
     }
 
     @Deprecated
     public void setOutsideLocation(Location safeLoc) {
-	if (safeLoc != null)
-	    this.safeLoc = new CMILocation(safeLoc);
+        if (safeLoc != null)
+            this.safeLoc = new CMILocation(safeLoc);
     }
 
     public void setOutsideLocation(CMILocation safeLoc) {
-	this.safeLoc = safeLoc;
+        this.safeLoc = safeLoc;
     }
 
     public HashMap<Integer, CMIJailCell> getCells() {
-	return cells;
+        return cells;
     }
 
     public void setCells(HashMap<Integer, CMIJailCell> cells) {
-	this.cells = cells;
+        this.cells = cells;
     }
 
     public void addCell(CMIJailCell cell) {
-	if (cell.getId() == null)
-	    cell.setId(this.getNextCellId());
-	this.cells.put(cell.getId(), cell);
+        if (cell.getId() == null)
+            cell.setId(this.getNextCellId());
+        this.cells.put(cell.getId(), cell);
     }
 
     public int getCountInCells() {
-	if (this.cells.isEmpty())
-	    return 0;
-	int i = 0;
-	return i;
+        if (this.cells.isEmpty())
+            return 0;
+        int i = 0;
+        for (Entry<Integer, CMIJailCell> one : this.cells.entrySet()) {
+            i += one.getValue().getJailed().size();
+        }
+        return i;
     }
 
     public int getNextCellId() {
-	if (this.cells.isEmpty())
-	    return 1;
-	int i = 1;
-	return i;
+        if (this.cells.isEmpty())
+            return 1;
+        int i = 1;
+        for (Entry<Integer, CMIJailCell> one : this.cells.entrySet()) {
+            if (one.getKey() >= i)
+                i = one.getKey() + 1;
+        }
+        return i;
     }
 }

@@ -14,7 +14,7 @@ public class AnvilUnlimitedListener implements Listener {
     HashMap<UUID, ItemStack> instaBuild = new HashMap<UUID, ItemStack>();
 
     public AnvilUnlimitedListener(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
-    
+
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -26,41 +25,41 @@ public class WorthManager {
 
     private CMI plugin;
 
-//    private HashMap<CMIUser, Double> soldFor = new HashMap<CMIUser, Double>();
-//    private boolean reset = false;
-
     public WorthManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     private LinkedHashMap<CMIMaterial, List<WorthItem>> map = new LinkedHashMap<CMIMaterial, List<WorthItem>>();
     private HashMap<Enchantment, HashMap<Integer, WorthEnchantment>> enchantMap = new HashMap<Enchantment, HashMap<Integer, WorthEnchantment>>();
 
     public Double getEnchantSellPrice(Enchantment enchant, int level) {
-	return null;
+
+        return null;
     }
 
     public WorthEnchantment getEnchantWorth(Enchantment enchant, int level) {
-	return null;
+
+        return null;
     }
 
     public void addEnchantWorth(WorthEnchantment worth) {
+
     }
 
     public void load() {
-	
+
     }
 
     public void loadEnchtWorth() {
-	
+
     }
 
-    private void addSellPriceButton(CMIGui gui, WorthItem worth, int slot, CMIMaterial material, double change) {
-	
+    private void addSellPriceButton(CMIGui gui, CMIItemStack iih, WorthItem worth, int slot, CMIMaterial material, double change) {
+
     }
 
-    private void addBuyPriceButton(CMIGui gui, WorthItem worth, int slot, CMIMaterial material, double change) {
-	
+    private void addBuyPriceButton(CMIGui gui, CMIItemStack iih, WorthItem worth, int slot, CMIMaterial material, double change) {
+
     }
 
     public void openWorthGui(Player player, CMIItemStack iih) {
@@ -68,7 +67,7 @@ public class WorthManager {
     }
 
     private void priceLore(CMIGuiButton button, WorthItem worth) {
-	
+
     }
 
     File file = null;
@@ -76,7 +75,7 @@ public class WorthManager {
     boolean checkedOldFile = false;
 
     public void closeStream() {
-	
+
     }
 
     public void sellLog(Player player, HashMap<WorthItem, Integer> total) {
@@ -84,107 +83,100 @@ public class WorthManager {
     }
 
     public void updatePriceInFile() {
-	updateWorthInFile(null, null);
+        updateWorthInFile(null, null);
     }
 
     public void updatePriceInFile(WorthItem worth) {
-	updatePriceInFile(worth, null);
+        updatePriceInFile(worth, null);
     }
 
     public void updatePriceInFile(WorthEnchantment enchantWorth) {
-	updatePriceInFile(null, enchantWorth);
+        updatePriceInFile(null, enchantWorth);
     }
 
     public void updatePriceInFile(final WorthItem worth, final WorthEnchantment enchantWorth) {
-	HashSet<WorthItem> worths = new HashSet<WorthItem>();
-	if (worth != null)
-	    worths.add(worth);
-	HashSet<WorthEnchantment> enchantWorths = new HashSet<WorthEnchantment>();
-	if (enchantWorth != null)
-	    enchantWorths.add(enchantWorth);
-	updateWorthInFile(worths, enchantWorths);
+
     }
 
     private void updateWorthInFile(final Set<WorthItem> worths, final Set<WorthEnchantment> enchantWorths) {
 
-
     }
 
     public WorthItem getWorth(ItemStack item) {
-	return getWorth(item, false);
+        return getWorth(item, false);
     }
 
     public boolean containsBlockedLore(CMIItemStack citem) {
-	for (String one : citem.getLore()) {
-	    String o = CMIChatColor.stripColor(one).toLowerCase();
-	    for (String oneBad : badLore) {
-		if (o.contains(oneBad))
-		    return true;
-	    }
-	}
+        for (String one : citem.getLore()) {
+            String o = CMIChatColor.stripColor(one).toLowerCase();
+            for (String oneBad : badLore) {
+                if (o.contains(oneBad))
+                    return true;
+            }
+        }
 
-	return false;
+        return false;
     }
 
     public boolean isRepairBeforeSell(ItemStack item) {
-	CMIItemStack citem = CMILib.getInstance().getItemManager().getItem(item);
-	return requireFullDurability && citem.getMaxDurability() > 2 && citem.getDurability() > 0;
+        CMIItemStack citem = CMILib.getInstance().getItemManager().getItem(item);
+        return requireFullDurability && citem.getMaxDurability() > 2 && citem.getDurability() > 0;
     }
 
     public double damagePercentage(ItemStack item) {
 
-	    return 0;
+        return 0;
     }
 
     public double getWorthByDurability(ItemStack item, double amount) {
-	if (!devalueByDurability)
-	    return amount;
+        if (!devalueByDurability)
+            return amount;
 
-	CMIItemStack citem = CMILib.getInstance().getItemManager().getItem(item);
+        CMIItemStack citem = CMILib.getInstance().getItemManager().getItem(item);
 
-	if (citem.getMaxDurability() < 2)
-	    return amount;
+        if (citem.getMaxDurability() < 2)
+            return amount;
 
-	double percent = (citem.getMaxDurability() - citem.getDurability()) / (double) citem.getMaxDurability();
+        double percent = (citem.getMaxDurability() - citem.getDurability()) / (double) citem.getMaxDurability();
 
-	return (int) ((amount * percent) * 10000) / 10000D;
+        return (int) ((amount * percent) * 10000) / 10000D;
     }
 
     public WorthItem getWorth(ItemStack item, boolean includeFree) {
-	
-	return null;
+
+        return null;
     }
 
     public enum worthType {
-	all, hand, blocks, same, material;
+        all, hand, blocks, same, material, gui;
 
-	public static worthType getByname(String name) {
-	    for (worthType one : worthType.values()) {
-		if (one.name().equalsIgnoreCase(name))
-		    return one;
-	    }
-	    return null;
-	}
+        public static worthType getByName(String name) {
+            for (worthType one : worthType.values()) {
+                if (one.name().equalsIgnoreCase(name))
+                    return one;
+            }
+            return null;
+        }
     }
 
     public List<ItemStack> getItems(Player player, worthType type) {
-	return getItems(player, type, null);
+        return getItems(player, type, null);
     }
 
     public List<ItemStack> getItems(Player player, worthType type, CMIMaterial material) {
-	return getItems(player, type, material, 0);
+        return getItems(player, type, material, 0);
     }
 
     public List<ItemStack> getItems(Player player, worthType type, CMIMaterial material, int amount) {
 
-	return null;
+        return null;
     }
 
     public boolean isShulkerWithItems(ItemStack item) {
-	if (!CMIMaterial.isShulkerBox(item.getType()))
-	    return false;
-	List<ItemStack> items = plugin.getShulkerBoxManager().getShulkerBoxContents(item);
-	return !items.isEmpty();
+        if (!CMIMaterial.isShulkerBox(item.getType()))
+            return false;
+        List<ItemStack> items = plugin.getShulkerBoxManager().getShulkerBoxContents(item);
+        return !items.isEmpty();
     }
 
     List<String> badLore = new ArrayList<String>();
@@ -195,28 +187,28 @@ public class WorthManager {
     private boolean customNameBlocking = false;
 
     public void loadConfig() {
-	
+
     }
 
     public HashMap<CMIMaterial, List<WorthItem>> getMap() {
-	return map;
+        return map;
     }
 
     public WorthItem addWorth(WorthItem worth) {
-	return null;
+
+        return null;
     }
 
     @Deprecated
     public void openWorthListGui(Player player, int page) {
-	openWorthListGui(player, page, false);
+        openWorthListGui(player, page, false);
     }
 
     public void openWorthListGui(Player player, int page, boolean missing) {
-	
+
     }
 
-
     public int getAutoGeneratePriceIncrease() {
-	return autoGeneratePriceIncrease;
+        return autoGeneratePriceIncrease;
     }
 }

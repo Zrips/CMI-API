@@ -11,6 +11,7 @@ public enum CMIDeathType {
     FallingBlocks,
     Fire,
     FireBall,
+    EndCrystal,
     FireworkRockets,
     Lava,
     Lightning,
@@ -27,5 +28,6 @@ public enum CMIDeathType {
     SplashPotion,
     Void,
     WitherEffect,
-    Custom;
+    Custom,
+    Suicide;
 }

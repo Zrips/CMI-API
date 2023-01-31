@@ -4,9 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Config;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class SleepStats {
 
@@ -18,7 +16,6 @@ public class SleepStats {
     private int online;
 
     public SleepStats(World world) {
-
     }
 
     public World getWorld() {
@@ -43,6 +40,11 @@ public class SleepStats {
 
     public int needToBeSleeping() {
 	int min = Config.SleepingMinBeforeSpeeding;
+	if (Config.SleepingPercentage) {
+	    double perc = min / 100D;
+	    int needed = (int) Math.ceil(getTotal() * perc);
+	    return needed;
+	}
 	return min;
     }
 
@@ -71,6 +73,12 @@ public class SleepStats {
 
     public int getWorldOnline() {
 	int count = 0;
+	for (Player one : Bukkit.getOnlinePlayers()) {
+//	    if (CMIPerm.sleepignore.hasSetPermission(one))
+//		continue;
+	    if (one.getWorld().equals(world))
+		count++;
+	}
 	return count;
     }
 

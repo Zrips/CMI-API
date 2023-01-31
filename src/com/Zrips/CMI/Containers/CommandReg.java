@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Containers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -18,69 +19,72 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
     private CommandAlias alias;
 
     public CommandReg(String command, CommandAlias alias) {
-	this.alias = alias;
-	this.command = command.toLowerCase();
+        this.alias = alias;
+        this.command = command.toLowerCase();
     }
 
     public boolean register() {
-	return register(null);
+        return register(null);
     }
 
     private static void unRegisterBukkitCommand(Command cmd) {
-
     }
 
     public boolean register(String permission) {
-
-	return false;
+        return true;
     }
 
     final static CommandMap getCommandMap() {
-	return cmap;
+        return cmap;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	return true;
+        return true;
 
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!alias.isTabComplete())
+            return new ArrayList<String>();
 
-	return CMI.getInstance().getTab().get(sender, command, "cmi", args);
+        if (alias.getType() == CommandAliasType.subbase) {
+            return CMI.getInstance().getTab().get(sender, alias.getCmiCommandName(), "cmi", args);
+        }
+
+        return CMI.getInstance().getTab().get(sender, command, "cmi", args);
     }
 
     private final class ReflectCommand extends BukkitCommand {
-	private CommandReg exe = null;
-	private CommandAlias alias;
+        private CommandReg exe = null;
+        private CommandAlias alias;
 
-	protected ReflectCommand(String command, String permission, CommandAlias alias) {
-	    super(command);
-	    this.alias = alias;
-	    if (permission != null) {
-		this.setPermission(permission);
-	    }
-	}
+        protected ReflectCommand(String command, String permission, CommandAlias alias) {
+            super(command);
+            this.alias = alias;
+            if (permission != null) {
+                this.setPermission(permission);
+            }
+        }
 
-	@Deprecated
-	protected ReflectCommand(String command) {
-	    super(command);
-	}
+        @Deprecated
+        protected ReflectCommand(String command) {
+            super(command);
+        }
 
-	public void setExecutor(CommandReg exe) {
-	    this.exe = exe;
-	}
+        public void setExecutor(CommandReg exe) {
+            this.exe = exe;
+        }
 
-	@Override
-	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        @Override
+        public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+            return true;
+        }
 
-	    return true;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
-	    return null;
-	}
+        @Override
+        public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
+            return null;
+        }
     }
 }

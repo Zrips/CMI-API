@@ -1,6 +1,7 @@
 package com.Zrips.CMI.Modules.tp;
 
 import org.bukkit.Location;
+
 import com.Zrips.CMI.Modules.tp.Teleportations.TpCondition;
 
 public class SafeTeleport {
@@ -13,74 +14,62 @@ public class SafeTeleport {
     private boolean forceDisableFly;
 
     public SafeTeleport(Location old, Location safeLoc, Location lastCheckedLoc, TpCondition TpCondition) {
-	this(old, safeLoc, lastCheckedLoc, TpCondition, false);
+        this(old, safeLoc, lastCheckedLoc, TpCondition, false);
     }
 
     public SafeTeleport(Location old, Location safeLoc, TpCondition TpCondition) {
-	this(old, safeLoc, TpCondition, false);
+        this(old, safeLoc, TpCondition, false);
     }
 
     public SafeTeleport(Location old, Location safeLoc, TpCondition TpCondition, boolean enableFly) {
-	this(old, safeLoc, null, TpCondition, enableFly);
+        this(old, safeLoc, null, TpCondition, enableFly);
     }
 
     public SafeTeleport(Location old, Location safeLoc, Location lastCheckedLoc, TpCondition TpCondition, boolean enableFly) {
-	this.old = old;
-	this.safeLoc = safeLoc;
-	this.TpCond = TpCondition;
-	this.enableFly = enableFly;
-	this.lastCheckedLoc = lastCheckedLoc;
+        this.old = old;
+        this.safeLoc = safeLoc;
+        this.TpCond = TpCondition;
+        this.enableFly = enableFly;
+        this.lastCheckedLoc = lastCheckedLoc;
     }
 
     public Location getOld() {
-	return old;
+        return old;
     }
-
-//    public void setOld(Location old) {
-//	this.old = old;
-//    }
 
     public Location getSafeLoc() {
-	if (safeLoc == null)
-	    return old;
-	return safeLoc;
+        if (safeLoc == null)
+            return old;
+        return safeLoc;
     }
-
-//    public void setSafeLoc(Location safeLoc) {
-//	this.safeLoc = safeLoc;
-//    }
 
     public TpCondition getTpCondition() {
-	return TpCond;
+        return TpCond;
     }
 
-//    public void setTpCondition(TpCondition tpCondition) {
-//	TpCondition = tpCondition;
-//    }
-
     public boolean isEnableFly() {
-	return enableFly;
+        return enableFly;
     }
 
     public SafeTeleport setEnableFly(boolean enableFly) {
-	this.enableFly = enableFly;
-	return this;
+        this.enableFly = enableFly;
+        return this;
     }
 
     public boolean isForceDisableFly() {
-	return forceDisableFly;
+        return forceDisableFly;
     }
 
     public void setForceDisableFly(boolean forceDisableFly) {
-	this.forceDisableFly = forceDisableFly;
+        this.forceDisableFly = forceDisableFly;
     }
 
     public Location getLastCheckedLoc() {
-	return lastCheckedLoc;
+        return lastCheckedLoc;
     }
 
     public void setLastCheckedLoc(Location lastCheckedLoc) {
-	this.lastCheckedLoc = lastCheckedLoc;
+        this.lastCheckedLoc = lastCheckedLoc;
     }
 
 }

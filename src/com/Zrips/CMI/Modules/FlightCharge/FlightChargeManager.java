@@ -12,7 +12,7 @@ public class FlightChargeManager {
     CMI plugin;
 
     public FlightChargeManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
 //    private boolean Enabled = false;
@@ -34,11 +34,16 @@ public class FlightChargeManager {
     private double autoRechargeAmount = 0;
 
     public void load() {
-	
 
     }
 
     public void process(Player player, Integer take) {
+        traveledDistance dinfo = FlightListener.distanceMap.get(player.getUniqueId());
+        if (dinfo == null) {
+            dinfo = new traveledDistance(plugin.getPlayerManager().getUser(player));
+            FlightListener.distanceMap.put(player.getUniqueId(), dinfo);
+        }
+        process(dinfo, take);
     }
 
     public void process(traveledDistance dinfo, Integer take) {
@@ -52,7 +57,7 @@ public class FlightChargeManager {
     public static final String flightChargeBossBar = "CMIFlightChargeBossBar";
 
     public void updateBossBar(CMIUser user) {
-	
+
     }
 
     private void updateBossBar(traveledDistance dinfo) {
@@ -60,95 +65,95 @@ public class FlightChargeManager {
     }
 
     public double getExpRechargeCost() {
-	return ExpRechargeCost;
+        return ExpRechargeCost;
     }
 
     public void setExpRechargeCost(double expRechargeCost) {
-	ExpRechargeCost = expRechargeCost;
+        ExpRechargeCost = expRechargeCost;
     }
 
     public double getMoneyRechargeCost() {
-	return MoneyRechargeCost;
+        return MoneyRechargeCost;
     }
 
     public void setMoneyRechargeCost(double moneyRechargeCost) {
-	MoneyRechargeCost = moneyRechargeCost;
+        MoneyRechargeCost = moneyRechargeCost;
     }
 
     public int getMaxChargeLevel() {
-	return MaxChargeLevel;
+        return MaxChargeLevel;
     }
 
     public void setMaxChargeLevel(int maxChargeLevel) {
-	MaxChargeLevel = maxChargeLevel;
+        MaxChargeLevel = maxChargeLevel;
     }
 
     public int getDeductOnFallMulti() {
-	return DeductOnFallMulti;
+        return DeductOnFallMulti;
     }
 
     public void setDeductOnFallMulti(int deductOnFallMulti) {
-	DeductOnFallMulti = deductOnFallMulti;
+        DeductOnFallMulti = deductOnFallMulti;
     }
 
     public boolean isDamageOnFall() {
-	return DamageOnFall;
+        return DamageOnFall;
     }
 
     public void setDamageOnFall(boolean damageOnFall) {
-	DamageOnFall = damageOnFall;
+        DamageOnFall = damageOnFall;
     }
 
     public boolean isDamageOnToggle() {
-	return DamageOnToggle;
+        return DamageOnToggle;
     }
 
     public void setDamageOnToggle(boolean damageOnToggle) {
-	DamageOnToggle = damageOnToggle;
+        DamageOnToggle = damageOnToggle;
     }
 
     public boolean isKillOnFall() {
-	return KillOnFall;
+        return KillOnFall;
     }
 
     public void setKillOnFall(boolean killOnFall) {
-	KillOnFall = killOnFall;
+        KillOnFall = killOnFall;
     }
 
     public double getDeductOnIdling() {
-	return DeductOnIdling;
+        return DeductOnIdling;
     }
 
     public void setDeductOnIdling(int deductOnIdling) {
-	DeductOnIdling = deductOnIdling;
+        DeductOnIdling = deductOnIdling;
     }
 
     public boolean isFlightChargeEnabledByDefault() {
-	return FlightChargeEnabledByDefault;
+        return FlightChargeEnabledByDefault;
     }
 
     public void setFlightChargeEnabledByDefault(boolean flightChargeEnabledByDefault) {
-	FlightChargeEnabledByDefault = flightChargeEnabledByDefault;
+        FlightChargeEnabledByDefault = flightChargeEnabledByDefault;
     }
 
     public boolean isFlightChargeAutoSwitch() {
-	return FlightChargeAutoSwitch;
+        return FlightChargeAutoSwitch;
     }
 
     public CMIChatColor getGlowColor() {
-	return GlowColor;
+        return GlowColor;
     }
 
     public void setGlowColor(CMIChatColor glowColor) {
-	GlowColor = glowColor;
+        GlowColor = glowColor;
     }
 
     public double getAutoRechargeFrom() {
-	return autoRechargeFrom;
+        return autoRechargeFrom;
     }
 
     public double getAutoRechargeAmount() {
-	return autoRechargeAmount;
+        return autoRechargeAmount;
     }
 
 }

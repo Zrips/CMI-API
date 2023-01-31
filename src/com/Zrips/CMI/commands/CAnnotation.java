@@ -19,19 +19,25 @@ public @interface CAnnotation {
     @Deprecated
     String[] tab() default {};
 
+    
+    // ! in front prevents repeatable suggestions
+    // |number| to repeat suggestions for specified tab complete amount
     String[] multiTab() default {};
 
     int[] regVar() default { -666 };
 
     int[] consoleVar() default { -666 };
 
-    boolean alias() default false;
+    boolean alias() default true;
 
     boolean hidden() default false;
 
     boolean test() default false;
 
     boolean ignoreHelpPage() default false;
+    
+    // only in cases where usage of ? in first variable results in help page, otherwise performs command
+    boolean subIgnoreHelpPage() default false;
 
     String[] customAlias() default {};
 

@@ -1,9 +1,11 @@
 package com.Zrips.CMI.commands;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.jar.JarFile;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,131 +26,161 @@ public class CommandsHandler implements CommandExecutor {
     protected CMI plugin;
 
     public CommandsHandler(CMI plugin) {
+
     }
 
     public Boolean performCMICommand(CommandSender sender, Class<?> command, String... args) {
-	CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
-	if (cmd == null)
-	    return false;
-	return performCMICommand(sender, cmd, args);
+        CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
+        if (cmd == null)
+            return false;
+        return performCMICommand(sender, cmd, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String[] args) {
-	if (cmd == null)
-	    return false;
-	return cmd.getCmdClass().perform(plugin, sender, args);
+        if (cmd == null)
+            return false;
+        return cmd.getCmdClass().perform(plugin, sender, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, Class<?> command, String args) {
-	CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
-	if (cmd == null)
-	    return false;
-	return performCMICommand(sender, cmd, args);
+        CMICommand cmd = this.getCommands().get(command.getSimpleName().toLowerCase());
+        if (cmd == null)
+            return false;
+        return performCMICommand(sender, cmd, args);
     }
 
     public Boolean performCMICommand(CommandSender sender, CMICommand cmd, String args) {
-	if (cmd == null)
-	    return false;
-	String[] ar = { args };
-	return cmd.getCmdClass().perform(plugin, sender, args.contains(" ") ? args.split(" ") : args.isEmpty() ? new String[0] : ar);
+        if (cmd == null)
+            return false;
+        String[] ar = { args };
+        return cmd.getCmdClass().perform(plugin, sender, args.contains(" ") ? args.split(" ") : args.isEmpty() ? new String[0] : ar);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String l, String[] args) {
 
-	return true;
+        return true;
     }
 
     public static boolean hasCommandPermission(CommandSender sender, String cmd, Long delay) {
-	return false;
+        return true;
     }
 
     private String getUsage(String cmd) {
-	return "";
+        String cmdString = plugin.getLM().getMessage("command.help.output.cmdFormat");
+        return cmdString;
+    }
+
+    private String getCommandRoot(String cmd) {
+        return cmd;
     }
 
     public void sendUsage(CommandSender sender, String cmd) {
-	sendUsage(sender, cmd, true);
+        sendUsage(sender, cmd, true);
     }
 
     public void sendUsage(CommandSender sender, String cmd, boolean explanation) {
-	
     }
 
     protected boolean help(CommandSender sender, int page) {
 
-	return true;
+        return true;
     }
 
     public static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
-	List<String> result = new ArrayList<String>();
-	
-	return result;
+        List<String> result = new ArrayList<String>();
+
+        return result;
+    }
+
+    private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
+        JarFile jarFile = null;
+        List<String> listOfCommands = new ArrayList<String>();
+
+        return listOfCommands;
     }
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
-	Map<String, Integer> temp = new TreeMap<String, Integer>();
-	
-	return temp;
+        Map<String, Integer> temp = new TreeMap<String, Integer>();
+
+        return temp;
     }
 
     public void fillCommands() {
-	return;
+    }
+
+    private static Class<?> getClass(String cmd) {
+        Class<?> nmsClass = null;
+        return nmsClass;
+    }
+
+    private Cmd getCmdClass(String cmdName) {
+        return null;
+    }
+
+    private Cmd getBestCmdmatch(String cmdName) {
+        return null;
     }
 
     public static int distance(String a, String b) {
-	a = a.toLowerCase();
-	b = b.toLowerCase();
-	int[] costs = new int[b.length() + 1];
-	for (int j = 0; j < costs.length; j++)
-	    costs[j] = j;
-	for (int i = 1; i <= a.length(); i++) {
-	    costs[0] = i;
-	    int nw = i - 1;
-	    for (int j = 1; j <= b.length(); j++) {
-		int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
-		nw = costs[j];
-		costs[j] = cj;
-	    }
-	}
-	return costs[b.length()];
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        int[] costs = new int[b.length() + 1];
+        for (int j = 0; j < costs.length; j++)
+            costs[j] = j;
+        for (int i = 1; i <= a.length(); i++) {
+            costs[0] = i;
+            int nw = i - 1;
+            for (int j = 1; j <= b.length(); j++) {
+                int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+                nw = costs[j];
+                costs[j] = cj;
+            }
+        }
+        return costs[b.length()];
+    }
+
+    private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+
+        return sortedMap;
     }
 
     public Map<String, CMICommand> getCommands() {
-	return this.commands;
+        return this.commands;
     }
 
     public static String getLabel() {
-	return label;
+        return label;
     }
 
     public boolean isTestServer() {
-	return testServer;
+        return testServer;
     }
 
     public static String getCommandPrefix(String command) {
 
-
-	return "";
+        return null;
     }
 
     public void setBaseCommandState(String command, boolean state) {
-	CMICommand cmd = this.getCommands().get(command.toLowerCase());
-	if (cmd != null)
-	    cmd.setBaseEnabled(state);
-	if (!state)
-	    addDisabledBase(command.toLowerCase());
+        CMICommand cmd = this.getCommands().get(command.toLowerCase());
+        if (cmd != null)
+            cmd.setBaseEnabled(state);
+        if (!state)
+            addDisabledBase(command.toLowerCase());
     }
 
     public List<String> getDisabledBase() {
-	return disabledBase;
+        return disabledBase;
     }
 
     public void clearDisabledBase() {
-	this.disabledBase.clear();
+        this.disabledBase.clear();
     }
 
     public void addDisabledBase(String disabledBase) {
-	this.disabledBase.add(disabledBase);
+        this.disabledBase.add(disabledBase);
     }
 }

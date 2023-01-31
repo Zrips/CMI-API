@@ -10,21 +10,20 @@ public class DynMapManager {
     private CMI plugin;
 
     public DynMapManager(CMI plugin) {
-	
     }
 
     public boolean enabled() {
-	return false;
+        return false;
     }
 
     public void processPlayer(Player player) {
-	processPlayer(plugin.getPlayerManager().getUser(player));
+        processPlayer(plugin.getPlayerManager().getUser(player));
     }
 
     public void processPlayer(CMIUser user) {
+
     }
 
     public void sentMessage(Player player, String message) {
-	
     }
 }

@@ -50,7 +50,7 @@ public interface NMS {
 
     Player getPlayer(CMIUser user);
 
-    ItemStack addAttributes(List<Attribute> ls, ItemStack item);
+//    ItemStack addAttributes(List<Attribute> ls, ItemStack item);
 
     void updateCollisions(Player player, boolean collision, boolean onlyTarget);
 
@@ -61,6 +61,8 @@ public interface NMS {
     int getTickLived(UUID uuid);
 
     public void showResurection(Player player);
+
+//    boolean changeGameModePlayerSide(Player player, int state);
 
     boolean changeGodMode(Player player, boolean state);
 
@@ -108,7 +110,7 @@ public interface NMS {
 
     boolean forceTeleport(Player player, Location location);
 
-    HashMap<BlockStateType, String> getBlockStates(Block block);
+//    HashMap<BlockStateType, String> getBlockStates(Block block);
 
     CMIHitBox getBlockHitBox(CMIHitBox hb);
 
@@ -130,5 +132,8 @@ public interface NMS {
 
     void setEntityTag(Entity entity, String path, Object value);
 
+//    TreeMap<Long, CMIIpBanEntry> getIpBans();
+
+//    void printEntityTag(Entity object, Player player);
 
 }

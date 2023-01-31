@@ -1,17 +1,21 @@
 package com.Zrips.CMI.Modules.Holograms;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Particl.CMIPEAnimationInterface;
+import com.Zrips.CMI.Modules.Portals.CMIVector3D;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
 
 public class HologramManager {
@@ -23,7 +27,44 @@ public class HologramManager {
 
     private static Map<UUID, Set<CMIHologram>> playerNearHoloUpdate;
     private static Map<UUID, Set<CMIHologram>> playerNearHoloExtra;
-//    private Map<UUID, Set<CMIHologram>> playerNearSticky;
+
+    private ConcurrentHashMap<UUID, CMIAiming> aimingAt = new ConcurrentHashMap<UUID, CMIAiming>();
+
+    class CMIAiming {
+        private String name;
+        private CMIVector3D pos;
+        private CMIPEAnimationInterface eff;
+
+        public CMIAiming(String name, CMIVector3D pos) {
+            this.name = name;
+            this.pos = pos;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public CMIVector3D getPos() {
+            return pos;
+        }
+
+        public void setPos(CMIVector3D pos) {
+            this.pos = pos;
+        }
+
+        public CMIPEAnimationInterface getEff() {
+            return eff;
+        }
+
+        public void setEff(CMIPEAnimationInterface eff) {
+            this.eff = eff;
+        }
+
+    }
 
     private int HoloRangeCheckInterval = 1000;
 
@@ -32,29 +73,21 @@ public class HologramManager {
     private CMI plugin;
 
     public void clearCache(UUID uuid) {
-	playerNearHoloUpdate.remove(uuid);
-	playerNearHoloExtra.remove(uuid);
-//	playerNearSticky.remove(uuid);
     }
 
     public HologramManager(CMI plugin) {
     }
 
-    private int sched = -1;
-
     public void stop() {
-	if (saveId != null) {
-	    Bukkit.getScheduler().cancelTask(saveId);
-	    this.saveHolograms();
-	}
-	if (sched == -1)
-	    return;
-	Bukkit.getScheduler().cancelTask(sched);
-	sched = -1;
+        if (saveId != null) {
+            Bukkit.getScheduler().cancelTask(saveId);
+            this.saveHolograms();
+        }
+
     }
 
     public void addHologram(CMIHologram holo) {
-	addHologram(holo, true);
+        addHologram(holo, true);
     }
 
     public void addHologram(CMIHologram holo, boolean checkForPlayers) {
@@ -62,53 +95,55 @@ public class HologramManager {
     }
 
     public void recalculateChunks() {
-	
+
     }
 
     public void removeChunkRecords(CMIHologram holo) {
-	
+
     }
 
     public void recalculateChunks(CMIHologram holo) {
-	
+
     }
 
     public void recalculateChunksExtra(CMIHologram holo) {
-	
+
     }
 
     public CMIHologram getByName(String name) {
-	if (name == null)
-	    return null;
-	return holograms.get(name.toLowerCase());
+        if (name == null)
+            return null;
+        return holograms.get(name.toLowerCase());
     }
 
     public CMIHologram getByLoc(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     public CMIHologram getByLocExtra(Location loc) {
-	
-	return null;
+
+        return null;
     }
 
     public Set<CMIHologram> getAllInRangeByLoc(Location loc) {
-	
-	return null;
+        Set<CMIHologram> holo = new HashSet<CMIHologram>();
+        return holo;
     }
 
     public Set<CMIHologram> getAllInRangeByLocExtra(Location loc) {
-	
-	return null;
+        Set<CMIHologram> holo = new HashSet<CMIHologram>();
+        if (loc == null)
+            return holo;
+        return holo;
     }
 
     public void handleHoloUpdates(Player player, Location locto) {
-	
+
     }
 
     public void handleHoloRangeUpdates(Player player, Location locto) {
-	
+
     }
 
     public static int defaultViewRange = 8;
@@ -118,91 +153,82 @@ public class HologramManager {
     public static boolean defaultsPlaceUp = true;
 
     public void loadConfig() {
-	
 
     }
 
     public void load() {
-	
+
     }
 
     public void save() {
-	if (saveId != null)
-	    return;
-	saveId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		saveHolograms();
-		saveId = null;
-	    }
-	}, 20L * 15);
+
     }
 
     private void saveHolograms() {
-	
+
     }
 
     public void removeLastHologramInRange(UUID uuid) {
-	
+
     }
 
     public void hideHoloForAllPlayers(CMIHologram holo) {
-	
+
     }
 
     public void resetHoloForAllPlayers(CMIHologram holo) {
-	
+
     }
 
     public void addPlayersNearHolo(CMIHologram holo, boolean forceUpdate) {
-	
+
     }
 
     public void addPlayersNearHoloExtra(CMIHologram holo, boolean forceUpdate) {
-	
+
     }
 
     public HashMap<String, CMIHologram> getHolograms() {
-	return holograms;
+        return holograms;
     }
 
     public List<CMIHologram> getHologramsByDistance(Location loc) {
 
-	return null;
+        return null;
     }
 
     public void removeHolo(CMIHologram holo) {
-	
+
     }
 
     public int getHoloCheckInterval() {
-	return HoloRangeCheckInterval;
+        return HoloRangeCheckInterval;
     }
 
     public boolean isNearHolo(UUID uuid) {
-	Set<CMIHologram> ls = playerNearHoloUpdate.get(uuid);
-	return ls != null && !ls.isEmpty();
+        Set<CMIHologram> ls = playerNearHoloUpdate.get(uuid);
+        return ls != null && !ls.isEmpty();
     }
 
     public boolean rechecInteractableHolograms(UUID uuid) {
-	return recheckInteractableHolograms(Bukkit.getPlayer(uuid));
+        return recheckInteractableHolograms(Bukkit.getPlayer(uuid));
     }
 
     public boolean recheckInteractableHolograms(Player player) {
-	
-	return true;
+
+        return true;
     }
 
     public void addNearHolo(UUID uuid, CMIHologram holo) {
-	
+
     }
 
     public void removeNearHolo(UUID uuid, CMIHologram holo) {
-	
+
     }
 
     public void addNearHoloExtra(UUID uuid, CMIHologram holo) {
-	
+
     }
 
     public void removeNearHoloExtra(UUID uuid, CMIHologram holo) {
@@ -214,16 +240,25 @@ public class HologramManager {
     }
 
     public void hideAllHolograms() {
-	for (Entry<String, CMIHologram> one : HologramManager.holograms.entrySet()) {
-	    this.hideHoloForAllPlayers(one.getValue());
-	}
+        for (Entry<String, CMIHologram> one : HologramManager.holograms.entrySet()) {
+            this.hideHoloForAllPlayers(one.getValue());
+        }
     }
 
     public Set<CMIHologram> getPlayerActiveHolograms(UUID uuid) {
-	return playerNearHoloUpdate.get(uuid);
+        return playerNearHoloUpdate.get(uuid);
     }
 
-//    public Map<Integer, Map<UUID, CMIHologram>> getFakeEntities() {
-//	return fakeEntities;
-//    }
+    public void addAimAt(UUID uuid, String name, CMIVector3D pos) {
+        aimingAt.put(uuid, new CMIAiming(name, pos));
+    }
+
+    public CMIAiming getAimAt(UUID uuid) {
+        return aimingAt.get(uuid);
+    }
+
+    public void removeAimAt(UUID uuid) {
+        CMIAiming removed = aimingAt.remove(uuid);
+    }
+
 }

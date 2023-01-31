@@ -7,6 +7,7 @@ public class FakeInfo {
     private int id = -1;
     private Player player;
     private Object obj;
+    private Object entity;
 
     public Player getPlayer() {
 	return player;
@@ -33,6 +34,14 @@ public class FakeInfo {
     public FakeInfo setId(int id) {
 	this.id = id;
 	return this;
+    }
+
+    public Object getEntity() {
+	return entity;
+    }
+
+    public void setEntity(Object entity) {
+	this.entity = entity;
     }
 
 }

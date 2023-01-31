@@ -8,14 +8,14 @@ public class McMMOManager {
     }
 
     public static boolean isSkillCorrect(String name) {
-	return false;
+        return false;
     }
 
     public static String getRealSkillName(String name) {
-	return null;
+        return null;
     }
 
     public static int getSkillLevel(Player player, String skill) {
-	return 0;
+        return 0;
     }
 }

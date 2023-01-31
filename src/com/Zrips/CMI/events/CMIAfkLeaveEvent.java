@@ -11,14 +11,24 @@ public final class CMIAfkLeaveEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private List<String> leaveTrigerCommands = new ArrayList<String>();
     private Player player;
+    private long time;
+    private String reason;
 
     public CMIAfkLeaveEvent(Player player) {
 	this.player = player;
     }
 
+    @Deprecated
     public CMIAfkLeaveEvent(Player player, List<String> leaveTrigerCommands) {
 	this.player = player;
 	this.leaveTrigerCommands = leaveTrigerCommands;
+    }
+
+    public CMIAfkLeaveEvent(Player player, List<String> leaveTrigerCommands, long time, String reason) {
+	this.player = player;
+	this.leaveTrigerCommands = leaveTrigerCommands;
+	this.time = time;
+	this.reason = reason;
     }
 
     public Player getPlayer() {
@@ -41,5 +51,13 @@ public final class CMIAfkLeaveEvent extends Event {
 
     public void setLeaveTrigerCommands(List<String> leaveTrigerCommands) {
 	this.leaveTrigerCommands = leaveTrigerCommands;
+    }
+
+    public long getTime() {
+	return time;
+    }
+
+    public String getReason() {
+	return reason;
     }
 }

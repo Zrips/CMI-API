@@ -32,7 +32,7 @@ public class Reflections {
     private Class<?> CEntity;
     private Class<?> nbtTagCompound;
     private Class<?> nbtTagList;
-    private Class<?> NBTBase;
+//    private Class<?> NBTBase;
     private Class<?> EnumHand;
     private Class<?> CraftBeehive;
     private Class<?> TileEntityBeehive;
@@ -48,21 +48,20 @@ public class Reflections {
     private CMI plugin;
 
     public Reflections(CMI plugin) {
-	this.plugin = plugin;
-	initialize();
+        this.plugin = plugin;
+        initialize();
     }
 
     private void initialize() {
+
     }
 
     private static Class<?> getBukkitClass(String nmsClassString) {
-	
-	return null;
+        return null;
     }
 
     public Class<?> getMinecraftClass(String nmsClassString) {
-	
-	return null;
+        return null;
     }
 
     public void exitBed(Player p) {
@@ -70,69 +69,92 @@ public class Reflections {
     }
 
     public void setOnGround(Player p, boolean state) {
-	
+     
     }
 
     public void changePlayerLimit(int amount) {
-	
+      
     }
 
     @SuppressWarnings("deprecation")
     public void setGameMode(Player player, GameMode mode) {
-	
+      
     }
 
     @SuppressWarnings({ "unchecked", "deprecation" })
     public void manageEnchantment(Enchantment enchant, boolean disable) {
-	
+       
     }
 
     public void setMotd(String motd) {
-	
+       
     }
 
     public int getPing(Player player) {
-	
-	return 999;
+       
+        return 999;
     }
 
     public int getHoneyLevel(Block block) {
-	
-	return 0;
+      
+        return 0;
     }
 
     public int getBeesInside(Block block) {
-	
-	return 0;
+       
+        return 0;
+    }
+
+    public boolean openCartographyTable(Player player) {
+      
+        return false;
+    }
+
+    public boolean openGrindstone(Player player) {
+       
+        return false;
+    }
+
+    public boolean openLoom(Player player) {
+       
+        return false;
+    }
+
+    public boolean openSmithingTable(Player player) {
+
+        return false;
+    }
+
+    public boolean openStonecutter(Player player) {
+      
+        return false;
     }
 
     public boolean openSignUI(Player player, Sign sign) {
-	
-	return false;
+      
+        return false;
     }
 
     public void respawn(Player player) {
-	
+
     }
 
     public void openBook(ItemStack i, Player p) {
-	
+      
     }
 
     public void printItemNBT(ItemStack item, CommandSender sender) {
-	
+       
     }
 
     public void printEntityNBT(Entity entity, CommandSender sender) {
-	
     }
 
     public void printNBT(Object t, int level, CommandSender sender, List<String> path) {
-	
+       
     }
 
-    public ItemStack tryToMakeShulkerBox(ItemStack item) {
-	    return null;
+    public ItemStack tryToMakeShulkerBox(ItemStack item) {       
+        return item;
     }
-
 }

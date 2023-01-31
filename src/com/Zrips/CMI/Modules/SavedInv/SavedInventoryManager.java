@@ -21,114 +21,117 @@ public class SavedInventoryManager {
     private CMI plugin;
 
     public SavedInventoryManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     private SavedInventories getInventories(UUID uuid) {
-	return map.get(uuid);
+        return map.get(uuid);
     }
 
     public void addInventory(CMIUser user, CMIInventory inventory) {
-	addInventory(user, inventory, null);
+        addInventory(user, inventory, null);
     }
 
     public void addInventory(CMIUser user, CMIInventory inventory, Integer id) {
     }
 
     private void checkInvLimit(SavedInventories inventories) {
-	
     }
 
     public CMIInventory getInvById(CMIUser user, int id) {
-	return null;
+
+        return null;
     }
 
     public CMIInventory getFirstInv(CMIUser user) {
-	return getFirstInv(getInventories(user));
+        return getFirstInv(getInventories(user));
     }
 
     public CMIInventory getFirstInv(SavedInventories inventories) {
-	return null;
+        return null;
     }
 
     public CMIInventory getLastInv(CMIUser user) {
-	return null;
+        return null;
     }
 
     public CMIInventory getNextInv(CMIUser user, int id) {
-	
-	return null;
+
+        return null;
     }
 
     public CMIInventory getPrevInv(CMIUser user, int id) {
-	
-	return null;
+
+        return null;
     }
 
     public SavedInventories getInventories(CMIUser user) {
-	
-	return null;
+
+        return null;
     }
 
     public void loadInventories(CMIUser user) {
-	
     }
 
     public void loadInventories(CMIUser user, String invString) {
-	
+
     }
 
     public boolean saveAllInventories(UUID uuid) {
-	
-	return true;
+
+        return true;
     }
 
     public CMIInventory saveInv(Player player, Entity killer, DamageCause cause) {
-	return saveInv(player, killer, cause, null);
+        return saveInv(player, killer, cause, null);
     }
 
     public CMIInventory saveInv(Player player, Entity killer, DamageCause cause, Integer id) {
 
-	return null;
+        CMIUser user = plugin.getPlayerManager().getUser(player);
+        if (user == null)
+            return null;
+
+        return saveInv(generateCMIInventory(player, killer, cause), id);
 
     }
 
     public CMIInventory saveInv(CMIInventory inv, Integer id) {
-	
-	return null;
+
+        return null;
 
     }
 
     public CMIInventory generateCMIInventory(Player player, Entity killer, DamageCause cause) {
-	return generateCMIInventory(new CMIInventory(player.getName(), player.getUniqueId()), killer, cause);
+        return generateCMIInventory(new CMIInventory(player.getName(), player.getUniqueId()), killer, cause);
     }
 
     @SuppressWarnings("deprecation")
     public CMIInventory generateCMIInventory(CMIInventory cmiI, Entity killer, DamageCause cause) {
 
-	return null;
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     public CMIInventory generateInvFromMap(HashMap<String, Object> map) {
 
-	return null;
+        return null;
     }
 
     public HashMap<String, Object> generateMapFromPlayerInv(CMIInventory inv) {
-	
-	return null;
+
+        return null;
     }
 
     private static String serialize(HashMap<String, Object> map) {
-	
-	return null;
+
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     private static HashMap<String, Object> deserialize(String string) {
-	
-	return null;
+
+        return null;
     }
 
     private void fillFields(CMIGui gui, CMIInventory inv) {
@@ -140,31 +143,30 @@ public class SavedInventoryManager {
     }
 
     public void openSavedInv(Player player, CMIInventory inv, boolean preview) {
-	
+
     }
 
     public void InvList(CommandSender sender, Player player) {
+        CMIUser user = plugin.getPlayerManager().getUser(player);
+        InvList(sender, user);
     }
 
     public void InvList(CommandSender sender, CMIUser user) {
-	
     }
 
     @SuppressWarnings("deprecation")
     public boolean loadInv(CommandSender sender, CMIUser user, CMIInventory inv) {
 
-
-	return true;
+        return true;
     }
 
     public boolean removeInventory(CMIUser user, int id) {
-	
-	return true;
+
+        return true;
     }
 
     public int showTimer(Player player, int current, int found, int total, int skipped, int currentplace) {
-	
-	return 1;
+        return 1;
     }
 
     private Boolean restoreHP = true;
@@ -179,26 +181,26 @@ public class SavedInventoryManager {
     private int SavedInventorys = 10;
 
     public void loadConfig() {
-	
+
     }
 
     public Boolean isSaveOnDeath() {
-	return SaveOnDeath;
+        return SaveOnDeath;
     }
 
     public Boolean isSaveOnDeathRequiresPermission() {
-	return SaveOnDeathRequiresPermission;
+        return SaveOnDeathRequiresPermission;
     }
 
     public int getMaxSavedInventorys() {
-	return SavedInventorys;
+        return SavedInventorys;
     }
 
     public ConcurrentHashMap<UUID, SavedInventories> getMap() {
-	return map;
+        return map;
     }
 
     public void clearAll() {
-	map.clear();
+        map.clear();
     }
 }

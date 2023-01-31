@@ -98,11 +98,6 @@ public class CMIRegion {
 	return c;
     }
 
-//    public CMIChunk addChunk(CMIChunk chunk) {
-//	chunks.put(chunk.getPlace(), chunk);
-//	return chunk;
-//    }
-
     public World getWorld() {
 	return world;
     }

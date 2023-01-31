@@ -21,11 +21,15 @@ public class DBConnectionPool {
     }
     
     public synchronized DBConnection getConnection() throws SQLException {
-      
         return connection;
     }
     
     public synchronized void closeConnection() {
-
+        if (connection != null) {
+            try {
+                connection.closeConnection();
+            } catch (SQLException e) {
+            }
+        }
     }
 }

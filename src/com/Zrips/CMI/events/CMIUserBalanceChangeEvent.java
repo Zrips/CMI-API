@@ -63,7 +63,7 @@ public final class CMIUserBalanceChangeEvent extends Event {
     }
 
     /**
-    * Only indicates player from or to who money got transfered if posible
+    * Only indicates player from or to who money got transferred if possible
     */
     public CMIUser getSource() {
 	return source;

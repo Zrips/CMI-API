@@ -13,55 +13,62 @@ public class CMIPlayDay {
     private Integer id = 0;
 
     public CMIPlayDay(CMIUser user, int date) {
-	this.user = user;
-	this.date = date;
+        this.user = user;
+        this.date = date;
     }
 
     public Long getLastUpdate() {
-	return lastUpdate;
+        return lastUpdate;
     }
 
     public Long getTotalTime() {
-	Long total = 0L;
-	for (int i = 0; i < 24; i++) {
-	    total += getHourPlaytime(i);
-	}
-	return total;
+        Long total = 0L;
+        for (int i = 0; i < 24; i++) {
+            total += getHourPlaytime(i);
+        }
+        return total;
     }
 
     public void setLastUpdate(Long lastUpdate) {
-	this.lastUpdate = lastUpdate;
+        this.lastUpdate = lastUpdate;
     }
 
     private final static Long maxValue = 3600000L;
 
     public void updatePlayTime() {
+
     }
 
     public void checkPreviousHour(int hour) {
+
     }
 
     public Long getCurrentHourPlaytime() {
-	return getHourPlaytime(PlaytimeRange.thishour.getStartTime());
+        return getHourPlaytime(PlaytimeRange.thishour.getStartTime());
     }
 
     public Long getHourPlaytime(int hour) {
-	return null;
+        Long current = map[hour];
+        return current == null ? 0L : current;
     }
 
     public void setHourPlaytime(int hour, Long playTime, boolean overTime) {
+        if (!overTime)
+            playTime = playTime > maxValue ? maxValue : playTime;
+        playTime = playTime <= 0 ? null : playTime;
+        map[hour] = playTime;
     }
 
     public int getDate() {
-	return date;
+        return date;
     }
 
     public Integer getId() {
-	return id;
+        return id;
     }
 
     public void setId(Integer id) {
-	this.id = id;
+        this.id = id;
     }
 
 }

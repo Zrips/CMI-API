@@ -8,7 +8,7 @@ public class PlayTimeRewardsListener implements Listener {
     private CMI plugin;
 
     public PlayTimeRewardsListener(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
 }

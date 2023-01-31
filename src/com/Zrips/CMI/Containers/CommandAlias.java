@@ -1,15 +1,12 @@
 package com.Zrips.CMI.Containers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.Zrips.CMI.CMI;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 
@@ -22,10 +19,10 @@ public class CommandAlias {
     private boolean requiresPerm = false;
     private boolean tabComplete = true;
     private CommandAliasType type;
-    
+
     private boolean overrideTab = false;
     private boolean addTabs = false;
-    
+
     private boolean disableBase = false;
 
     private List<String> customTabList = null;
@@ -33,180 +30,217 @@ public class CommandAlias {
 
     private Boolean containsDynamic = null;
 
-//    public CommandAlias(String command, boolean state) {
-//	this.commands.add(command);
-//	this.state = state;
-//    }
+    private String fileName = null;
 
+    private Set<String> alternatives = new HashSet<String>();
+    private boolean alternative = false;
+
+    @Deprecated
     public CommandAlias(String alias, List<String> commands, boolean state) {
-	this(alias, commands, state, null);
+        this(alias, commands, state, null);
     }
 
+    @Deprecated
     public CommandAlias(String alias, List<String> commands, boolean state, CommandAliasType type) {
-	this(alias, commands, state, type, null);
+        this(alias, commands, state, type, null);
     }
 
+    @Deprecated
     public CommandAlias(String alias, List<String> commands, boolean state, CommandAliasType type, String cmiCommandName) {
-	this.commands.addAll(commands);
-	this.state = state;
-	this.alias = CMIChatColor.stripColor(CMIChatColor.deColorize(alias));
-	this.type = type;
-	this.cmiCommandName = cmiCommandName;
+        this.commands.addAll(commands);
+        this.state = state;
+        this.alias = CMIChatColor.stripColor(CMIChatColor.deColorize(alias));
+        this.type = type;
+        this.cmiCommandName = cmiCommandName;
+    }
+
+    public CommandAlias(String alias, String fileName, List<String> commands, boolean state) {
+        this(alias, fileName, commands, state, null);
+    }
+
+    public CommandAlias(String alias, String fileName, List<String> commands, boolean state, CommandAliasType type) {
+        this(alias, fileName, commands, state, type, null);
+    }
+
+    public CommandAlias(String alias, String fileName, List<String> commands, boolean state, CommandAliasType type, String cmiCommandName) {
+        this.commands.addAll(commands);
+        this.state = state;
+        this.alias = CMIChatColor.stripColor(CMIChatColor.deColorize(alias));
+        this.type = type;
+        this.cmiCommandName = cmiCommandName;
+        this.fileName = fileName;
     }
 
     public boolean getState() {
-	return state;
+        return state;
     }
 
     public void setState(boolean state) {
-	this.state = state;
+        this.state = state;
     }
 
     public String getCommand() {
-	if (commands.isEmpty())
-	    return "";
-	return commands.get(0);
+        if (commands.isEmpty())
+            return "";
+        return commands.get(0);
     }
 
     public String getCleanCommand() {
-	    return "";
+        return "";
     }
 
     public String getCommand(CommandSender sender, List<String> args) {
 
-	    return "";
-	
+        return "";
+
     }
 
     public List<String> getCommands() {
-	return commands;
+        return commands;
     }
 
     public String getCommandsForLore() {
-
-	String lore = "";
-	return lore;
+        String lore = "";
+        return lore;
     }
 
     public String getAlias() {
-	return alias;
+        return alias;
     }
 
     Pattern patern = Pattern.compile("[$?][\\d][-]?");
 
     public boolean containsDynamicVariables() {
-	if (containsDynamic == null) {
-	    recalculateDynamicVariables();
-	}
-	return containsDynamic == null ? false : containsDynamic;
+        if (containsDynamic == null) {
+            recalculateDynamicVariables();
+        }
+        return containsDynamic == null ? false : containsDynamic;
     }
 
     public void recalculateDynamicVariables() {
-	containsDynamic = null;
-	for (String one : commands) {
-	    Matcher match = patern.matcher(one);
-	    if (match.find()) {
-		containsDynamic = true;
-		break;
-	    }
-	}
-	if (containsDynamic == null)
-	    containsDynamic = false;
     }
 
     public String getAliasBaseCommand() {
-	return alias.contains(" ") ? alias.split(" ")[0] : alias;
+        return alias.contains(" ") ? alias.split(" ")[0] : alias;
     }
 
     public String getAliasAsOneWord() {
-	return alias.replace(" ", "__");
+        return alias.replace(" ", "__");
     }
 
     public String getAliasAsOneWordNS() {
-	return alias.replace(" ", "");
+        return alias.replace(" ", "");
     }
 
     public void setAlias(String alias) {
-	this.alias = alias;
+        this.alias = alias;
     }
 
     public void setCommands(List<String> commands) {
-	this.commands = commands;
+        this.commands = commands;
     }
 
     public boolean isRequiresPerm() {
-	return requiresPerm;
+        return requiresPerm;
     }
 
     public void setRequiresPerm(boolean requiresPerm) {
-	this.requiresPerm = requiresPerm;
+        this.requiresPerm = requiresPerm;
     }
 
     public CommandAliasType getType() {
-	return type == null ? CommandAliasType.custom : type;
+        return type == null ? CommandAliasType.custom : type;
     }
 
     public String getCmiCommandName() {
-	return cmiCommandName;
-    } 
+        return cmiCommandName;
+    }
 
     public boolean isTabComplete() {
-	return tabComplete;
+        return tabComplete;
     }
 
     public void setTabComplete(boolean tabComplete) {
-	this.tabComplete = tabComplete;
+        this.tabComplete = tabComplete;
     }
 
     public List<String> getCustomTabRawList() {
-	return customTabList;
+        return customTabList;
     }
 
     public CMITabComplete getCustomTab() {
-	return customTab;
+        return customTab;
     }
 
     public List<Object> getTabCompleteList(String[] args) {
-	if (customTab == null)
-	    return new ArrayList<Object>();
-	return customTab.getTabCompleteList(args);
+        if (customTab == null)
+            return new ArrayList<Object>();
+        return customTab.getTabCompleteList(args);
     }
 
     public void recheckTabCompletes() {
-	this.customTab = new CMITabComplete();
-	for (String tab : this.customTabList) {
-	    this.customTab.addTabComplete(tab);
-	}
+        this.customTab = new CMITabComplete();
+        for (String tab : this.customTabList) {
+            this.customTab.addTabComplete(tab);
+        }
     }
 
     public void setCustomTab(List<String> customTab) {
-	this.customTab = new CMITabComplete();
-	this.customTabList = customTab;
-	recheckTabCompletes();
+        this.customTab = new CMITabComplete();
+        this.customTabList = customTab;
+        recheckTabCompletes();
     }
 
     public boolean isDisableBase() {
-	return disableBase;
+        return disableBase;
     }
 
     public void setDisableBase(boolean disableBase) {
-	this.disableBase = disableBase;
+        this.disableBase = disableBase;
     }
 
     public boolean isOverrideTab() {
-	return overrideTab;
+        return overrideTab;
     }
 
     public void setOverrideTab(boolean overrideTab) {
-	this.overrideTab = overrideTab;
+        this.overrideTab = overrideTab;
     }
 
     public boolean isAddTabs() {
-	return addTabs;
+        return addTabs;
     }
 
     public void setAddTabs(boolean addTabs) {
-	this.addTabs = addTabs;
+        this.addTabs = addTabs;
+    }
+
+    public String getFileName() {
+        return fileName == null ? "CustomAlias" : fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Set<String> getAlternatives() {
+        return alternatives;
+    }
+
+    public void setAlternatives(Set<String> alternatives) {
+        this.alternatives = alternatives;
+    }
+
+    public void addAlternative(String alternative) {
+        this.alternatives.add(alternative);
+    }
+
+    public boolean isAlternative() {
+        return alternative;
+    }
+
+    public void setAlternative(boolean alternative) {
+        this.alternative = alternative;
     }
 
 }

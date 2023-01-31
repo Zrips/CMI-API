@@ -1,5 +1,7 @@
 package com.Zrips.CMI.Modules.Portals;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 public class CMIVector3D {
@@ -28,7 +30,7 @@ public class CMIVector3D {
     }
 
     public CMIVector3D minus(Vector v) {
-	return new CMIVector3D(x - v.getX(), y - v.getY(), z - v.getBlockZ());
+	return new CMIVector3D(x - v.getX(), y - v.getY(), z - v.getZ());
     }
 
     public CMIVector3D times(double s) {
@@ -48,23 +50,30 @@ public class CMIVector3D {
 	return x;
     }
 
-    public void setX(double x) {
+    public CMIVector3D setX(double x) {
 	this.x = x;
+	return this;
     }
 
     public double getY() {
 	return y;
     }
 
-    public void setY(double y) {
+    public CMIVector3D setY(double y) {
 	this.y = y;
+	return this;
     }
 
     public double getZ() {
 	return z;
     }
 
-    public void setZ(double z) {
+    public CMIVector3D setZ(double z) {
 	this.z = z;
+	return this;
+    }
+
+    public Location toLocation(World world) {
+	return new Location(world, this.getX(), this.getY(), this.getZ());
     }
 }

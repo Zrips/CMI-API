@@ -2,7 +2,6 @@ package com.Zrips.CMI.Modules.Enchants;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.enchantments.Enchantment;
 
@@ -19,59 +18,77 @@ public class EnchantManager {
     private boolean enchantLimitEnabled = false;
 
     public EnchantManager(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void loadConfig() {
-	
+
     }
 
-
     public Integer getMaxLevel(Enchantment enchant) {
-	
-	return 0;
+        return 0;
     }
 
     public void reEnableEnchantsOnDisable() {
-	for (Entry<String, Enchantment> one : disabled.entrySet()) {
-	    plugin.getRef().manageEnchantment(one.getValue(), false);
-	}
     }
 
     public void disableEnchantsOnLoad() {
-	for (Entry<String, Enchantment> one : disabled.entrySet()) {
-	    plugin.getRef().manageEnchantment(one.getValue(), true);
-	}
     }
 
     public HashMap<String, Enchantment> getDisabled() {
-	return disabled;
+        return disabled;
+    }
+
+    public boolean isDisabled(Enchantment disabled) {
+        String name = disabled.getName();
+        if (name == null)
+            return false;
+        if (name.isEmpty())
+            return false;
+        if (name == " ")
+            return false;
+        return this.disabled.containsKey(disabled.getName());
     }
 
     public void addDisabled(Enchantment disabled) {
-	
+        String name = disabled.getName();
+        if (name == null)
+            return;
+        if (name.isEmpty())
+            return;
+        if (name == " ")
+            return;
+        this.disabled.put(disabled.getName(), disabled);
     }
 
     public void removeDisabled(Enchantment disabled) {
+        String name = disabled.getName();
+        if (name == null)
+            return;
+        if (name.isEmpty())
+            return;
+        if (name == " ")
+            return;
+        this.disabled.remove(disabled.getName());
     }
 
     private void loadDisabledEnchants() {
-	
+
     }
 
     public void updateConfig() {
-	
+
     }
 
     public boolean isRequireSpecificPermission() {
-	return RequireSpecificPermission;
+        return RequireSpecificPermission;
     }
 
     public boolean isPermissionLevelLimit() {
-	return PermissionLevelLimit;
+        return PermissionLevelLimit;
     }
 
     public boolean isEnchantLimitEnabled() {
-	return enchantLimitEnabled;
+        return enchantLimitEnabled;
     }
 }
