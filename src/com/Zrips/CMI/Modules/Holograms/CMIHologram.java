@@ -333,16 +333,16 @@ public class CMIHologram {
         return l;
     }
 
+    public void moveTo(Location loc) {
+
+    }
+
+    public void superficialMoveTo(Location loc) {
+
+    }
+
     ConcurrentHashMap<Integer, String> changed = new ConcurrentHashMap<Integer, String>();
     List<Integer> changedPages = new ArrayList<Integer>();
-
-    private void recalcualteChangedLines() {
-
-    }
-
-    private void recalcualteChangedPages() {
-
-    }
 
     public void update(final Player player) {
         update(player, false);
@@ -350,11 +350,6 @@ public class CMIHologram {
 
     ConcurrentHashMap<UUID, Long> nextUpdate = new ConcurrentHashMap<UUID, Long>();
     List<UUID> stillUpdating = Collections.synchronizedList(new ArrayList<>());
-
-    private List<CMIVector3D> getLocation(Player player, int parts) {
-
-        return null;
-    }
 
     public void checkHoverPosition(Player player) {
 
