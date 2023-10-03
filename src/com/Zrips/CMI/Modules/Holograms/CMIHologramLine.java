@@ -39,16 +39,6 @@ public class CMIHologramLine {
     @Override
     public CMIHologramLine clone() {
         CMIHologramLine clone = new CMIHologramLine();
-        clone.type = type;
-        if (item != null)
-            clone.item = item.clone();
-        clone.itemInHand = itemInHand;
-        clone.staticText = staticText;
-        clone.enchanted = enchanted;
-        clone.modelData = modelData;
-        clone.randomU = randomU;
-        clone.hoverText = hoverText;
-        clone.command = command;
         return clone;
     }
 
@@ -69,7 +59,6 @@ public class CMIHologramLine {
     }
 
     public CMIItemStack getItem(Player player, CMIAsyncHead ahead) {
-
         return null;
     }
 
@@ -102,7 +91,6 @@ public class CMIHologramLine {
     }
 
     private String checkText(Player player, String copy) {
-
         return null;
     }
 

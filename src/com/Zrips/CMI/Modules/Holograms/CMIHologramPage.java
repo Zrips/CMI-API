@@ -1,17 +1,14 @@
 package com.Zrips.CMI.Modules.Holograms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import com.Zrips.CMI.CMI;
-
-import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class CMIHologramPage {
 
     private int page = -1;
-    private List<CMIHologramLine> lines = new ArrayList<CMIHologramLine>();
-    private List<String> commands = new ArrayList<String>();
+    private List<CMIHologramLine> lines = Collections.synchronizedList(new ArrayList<CMIHologramLine>());
+    private List<String> commands = Collections.synchronizedList(new ArrayList<String>());
     private double height = 0D;
     private int width = 0;
 

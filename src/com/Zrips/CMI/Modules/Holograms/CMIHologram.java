@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -17,11 +16,15 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIInteractType;
+import com.Zrips.CMI.Modules.Display.CMIBillboard;
+import com.Zrips.CMI.Modules.Display.CMITextAlignment;
 import com.Zrips.CMI.Modules.Packets.FakeInfo;
 import com.Zrips.CMI.Modules.Portals.CMIVector3D;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 
@@ -34,6 +37,10 @@ public class CMIHologram {
 
     private boolean enabled = true;
     private boolean saveToFile = false;
+    private boolean showWhenNotPersistent = false;
+
+    private Player playerToShowFor = null;
+    private int selfDestructIn = 0;
 
     private boolean sticky = false;
 //    private boolean checkLOS = false;
@@ -53,7 +60,7 @@ public class CMIHologram {
 
     private int updateRange = HologramManager.defaultUpdateRange;
     private int showRange = HologramManager.defaultViewRange;
-    private double spacing = 0.25;
+    private double spacing = 0.24;
     private double iconSpacing = 0.5D;
 
     private boolean downOrder = HologramManager.defaultsPlaceUp;
@@ -76,6 +83,7 @@ public class CMIHologram {
     static Pattern pagePatern = Pattern.compile("(?i)(!nextpage!)");
 
     private List<String> lines = new ArrayList<String>();
+    private int lineCount = 0;
     private List<String> oldLines = new ArrayList<String>();
     private boolean changedLines = false;
     private ConcurrentHashMap<UUID, Integer> inPage = new ConcurrentHashMap<UUID, Integer>();
@@ -95,6 +103,28 @@ public class CMIHologram {
     private double extraInteractionHeight = 0D;
     private double extraInteractionWidth = 0D;
 
+    // Display text approach
+    private boolean newDisplayMethod = false;
+    private CMIBillboard billboard = null;
+    private CMIBillboard iconBillboard = null;
+    private CMITextAlignment textAlignment = null;
+    private int yaw = 0;
+    private int pitch = 0;
+    private CMIChatColor backgroundColor = CMIChatColor.BLACK;
+    private int backgroundAlpha = 125;
+    private int textAlpha = 230;
+    private boolean doubleSided = false;
+    private boolean shadowed = true;
+    private double scaleW = 1;
+    private double scaleH = 1;
+
+    private double iconScale = 1;
+    private int iconPitch = 0;
+    private int iconYaw = 0;
+
+    private int skyLevel = -1;
+    private int blockLevel = -1;
+
     //Particles    
     private short particlePosition = 0;
     private double particleSpacing = 0D;
@@ -109,17 +139,17 @@ public class CMIHologram {
     private double particleOffsetX = 0D;
     private double particleOffsetY = 0D;
 
-    @Deprecated
     public CMIHologram(String name, Location loc) {
-        this.name = name;
-        this.loc = new CMILocation(loc);
-        updatePages();
+        this(name, new CMILocation(loc));
+    }
+
+    public CMIHologram(String name, Location loc, Player playerToShowFor) {
+    }
+
+    public CMIHologram(Location loc, Player playerToShowFor, List<String> lines) {
     }
 
     public CMIHologram(String name, CMILocation loc) {
-        this.name = name;
-        this.loc = loc;
-        updatePages();
     }
 
     /**
@@ -137,6 +167,7 @@ public class CMIHologram {
     }
 
     public void goToNextPage(UUID uuid) {
+
     }
 
     Set<UUID> skipPageChange = new HashSet<UUID>();
@@ -162,30 +193,16 @@ public class CMIHologram {
 
     }
 
-    private List<String> getCommandsByPlayerPage(UUID uuid) {
+    private double getLineHeight() {
+        return 0.25D * this.getScaleH();
+    }
 
+    private List<String> getCommandsByPlayerPage(UUID uuid) {
         return null;
     }
 
     private List<CMIHologramLine> getLinesByPlayerPage(Player player) {
-        Integer page = inPage.get(player.getUniqueId());
-
-        if (page == null) {
-            page = 1;
-        }
-
-        page = pages.size() < page ? 1 : page;
-
-        if (pages.isEmpty())
-            return null;
-
-        CMIHologramPage p = pages.get(page);
-
-        // Fallback to first page
-        if (p == null)
-            return pages.values().iterator().next().getLines();
-
-        return p.getLines();
+        return null;
     }
 
     public void updatePages() {
@@ -193,10 +210,7 @@ public class CMIHologram {
     }
 
     public List<String> getCommands(Player player, CMIInteractType type) {
-
-        List<String> cmd = new ArrayList<String>();
-
-        return cmd;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
@@ -239,15 +253,7 @@ public class CMIHologram {
     }
 
     public void setLine(int place, String line) {
-        oldLines.clear();
-        oldLines.addAll(lines);
 
-        while (lines.size() <= place) {
-            lines.add("");
-        }
-
-        lines.set(place, line);
-        recheckLines();
     }
 
     public void removeLine(int line) {
@@ -263,18 +269,11 @@ public class CMIHologram {
     }
 
     public CuboidArea getArea() {
-        if (area == null) {
-            area = new CuboidArea(getLoc().clone().add(-updateRange, -updateRange, -updateRange), getLoc().clone().add(updateRange, updateRange, updateRange));
-        }
-        return area;
+        return null;
     }
 
     public CuboidArea getAreaExtra() {
-        if (areaExtra == null) {
-            areaExtra = new CuboidArea(getLoc().clone().add(-this.showRange, -this.showRange, -this.showRange),
-                getLoc().clone().add(this.showRange, this.showRange, this.showRange));
-        }
-        return areaExtra;
+        return null;
     }
 
     public void setArea(CuboidArea area) {
@@ -291,7 +290,6 @@ public class CMIHologram {
 
     @Deprecated
     public void hide(Player player) {
-
     }
 
     public void refresh() {
@@ -308,7 +306,6 @@ public class CMIHologram {
 
     public double getHeight() {
         double offset = 0;
-
         return offset;
     }
 
@@ -319,18 +316,28 @@ public class CMIHologram {
     }
 
     public Vector getCenterVector() {
-        if (this.centerLocation != null)
-            return this.centerLocation.clone();
-        this.centerLocation = getCenterLocation().toVector();
-        return this.centerLocation.clone();
+
+        return null;
     }
 
     public Location getCenterLocation() {
+        return null;
+    }
 
-        double h = getHeight();
-        Location l = this.getLocation().clone();
+    ConcurrentHashMap<Integer, String> changed = new ConcurrentHashMap<Integer, String>();
+    List<Integer> changedPages = new ArrayList<Integer>();
 
-        return l;
+    private void recalcualteChangedLines() {
+
+    }
+
+    @Deprecated
+    private void recalcualteChangedPages() {
+        recalculateChangedPages();
+    }
+
+    private void recalculateChangedPages() {
+
     }
 
     public void moveTo(Location loc) {
@@ -338,11 +345,20 @@ public class CMIHologram {
     }
 
     public void superficialMoveTo(Location loc) {
+        move(this.getLocation().clone().toVector(), loc, false);
+    }
+
+    private void move(Vector oldVector, Location moveToLoc, boolean update) {
 
     }
 
-    ConcurrentHashMap<Integer, String> changed = new ConcurrentHashMap<Integer, String>();
-    List<Integer> changedPages = new ArrayList<Integer>();
+    private void moveHologramFor(UUID uuid, Location moveToLoc, double offset) {
+
+    }
+
+    private void moveHologramFor(UUID uuid, Location moveToLoc, Vector oldVector, boolean update) {
+
+    }
 
     public void update(final Player player) {
         update(player, false);
@@ -351,12 +367,18 @@ public class CMIHologram {
     ConcurrentHashMap<UUID, Long> nextUpdate = new ConcurrentHashMap<UUID, Long>();
     List<UUID> stillUpdating = Collections.synchronizedList(new ArrayList<>());
 
+    private List<CMIVector3D> getLocation(Player player, int parts) {
+
+        return null;
+    }
+
     public void checkHoverPosition(Player player) {
 
     }
 
-    public void update(final Player player, boolean oneTime) {
+    ConcurrentHashMap<UUID, CMIHologramBatch> playerDisplays = new ConcurrentHashMap<UUID, CMIHologramBatch>();
 
+    public void update(final Player player, boolean oneTime) {
     }
 
     ConcurrentHashMap<UUID, List<CMIDataWatcher>> cache = new ConcurrentHashMap<UUID, List<CMIDataWatcher>>();
@@ -364,6 +386,10 @@ public class CMIHologram {
     ConcurrentHashMap<UUID, FakeInfo> clickableByPlayer = new ConcurrentHashMap<UUID, FakeInfo>();
 
     public void removeFromCache(UUID uuid) {
+
+    }
+
+    public void clearFakeEntities() {
 
     }
 
@@ -380,14 +406,8 @@ public class CMIHologram {
     }
 
     private CMIDataWatcher getCache(UUID uuid, int place) {
-        List<CMIDataWatcher> old = cache.get(uuid);
 
-        if (old == null) {
-            old = new ArrayList<CMIDataWatcher>();
-            cache.put(uuid, old);
-        }
-
-        return old.size() - 1 < place ? null : old.get(place);
+        return null;
     }
 
     public double getUpdateIntervalSec() {
@@ -397,7 +417,7 @@ public class CMIHologram {
     public void setUpdateIntervalSec(double d) {
         this.updateIntervalSec = Math.ceil((int) (d * 100D)) / 100D;
         if (this.updateIntervalSec <= 0)
-            this.updateIntervalSec = -1;
+            this.updateIntervalSec = 0;
     }
 
     public int getUpdateRange() {
@@ -406,13 +426,6 @@ public class CMIHologram {
     }
 
     public void setUpdateRange(int activationRange) {
-        this.updateRange = activationRange;
-        if (this.updateRange < 1)
-            this.updateRange = 1;
-        if (this.updateRange > 64)
-            this.updateRange = 64;
-        if (this.updateRange > showRange)
-            updateRange = this.showRange;
     }
 
     public String getName() {
@@ -429,13 +442,6 @@ public class CMIHologram {
     }
 
     public void setShowRange(int showRange) {
-        this.showRange = showRange;
-        if (this.showRange < 1)
-            this.showRange = 1;
-        if (this.showRange > 64)
-            this.showRange = 64;
-        if (this.showRange < updateRange)
-            showRange = this.updateRange;
     }
 
     public Double getIconSpacing() {
@@ -499,7 +505,6 @@ public class CMIHologram {
     }
 
     public void stop() {
-
     }
 
     private void tasker() {
@@ -529,12 +534,17 @@ public class CMIHologram {
         return lastHoloInRange;
     }
 
-    public void addLastHoloInRange(UUID uuid) {
+    public void recheckTaskers() {
+        tasker();
+        lineOfSightTasker();
+        pageTasker();
+        hoverOverTasker();
+    }
 
+    public void addLastHoloInRange(UUID uuid) {
     }
 
     public void removeLastHoloInRange(UUID uuid) {
-
     }
 
     public Set<UUID> getLastHoloInRangeExtra() {
@@ -542,15 +552,9 @@ public class CMIHologram {
     }
 
     public void addLastHoloInRangeExtra(UUID uuid) {
-        this.lastHoloInRangeExtra.add(uuid);
-        lineOfSightTasker();
-        update(Bukkit.getPlayer(uuid));
     }
 
     public void removeLastHoloInRangeExtra(UUID uuid) {
-        this.lastHoloInRangeExtra.remove(uuid);
-        lineOfSightTasker();
-        hide(uuid);
     }
 
     public boolean isuSync() {
@@ -608,14 +612,6 @@ public class CMIHologram {
     }
 
     public void setPageChangeIntervalSec(double pageChangeIntervalSec) {
-        boolean update = false;
-        if (this.pageChangeIntervalSec != pageChangeIntervalSec)
-            update = true;
-        this.pageChangeIntervalSec = Math.ceil((int) (pageChangeIntervalSec * 100D)) / 100D;
-        if (this.pageChangeIntervalSec <= 0)
-            this.pageChangeIntervalSec = 0;
-        if (update)
-            pageTasker();
     }
 
     public void remove() {
@@ -772,4 +768,208 @@ public class CMIHologram {
     public void setStabilizedHoverParticles(boolean stabilizedHoverParticles) {
         this.stabilizedHoverParticles = stabilizedHoverParticles;
     }
+
+    public boolean isShowWhenNotPersistent() {
+        return showWhenNotPersistent;
+    }
+
+    public void setShowWhenNotPersistent(boolean showWhenNotPersistent) {
+        this.showWhenNotPersistent = showWhenNotPersistent;
+    }
+
+    public boolean isNewDisplayMethod() {
+        return newDisplayMethod;
+    }
+
+    public CMIHologram setNewDisplayMethod(boolean newDisplayMethod) {
+        this.newDisplayMethod = newDisplayMethod;
+        return this;
+    }
+
+    public CMIBillboard getBillboard() {
+        if (billboard == null)
+            return CMIBillboard.VERTICAL;
+        return billboard;
+    }
+
+    public CMIHologram setBillboard(CMIBillboard billboard) {
+        this.billboard = billboard;
+        return this;
+    }
+
+    public CMIBillboard getIconBillboard() {
+        return iconBillboard;
+    }
+
+    public CMIHologram setIconBillboard(CMIBillboard billboard) {
+        this.iconBillboard = billboard;
+        return this;
+    }
+
+    public int getYaw() {
+        return yaw;
+    }
+
+    public CMIHologram setYaw(int angle) {
+        this.yaw = angle;
+        return this;
+    }
+
+    public int getPitch() {
+        return pitch;
+    }
+
+    public CMIHologram setPitch(int angle) {
+        this.pitch = CMINumber.clamp(angle, -180, 180);
+        return this;
+    }
+
+    public CMITextAlignment getTextAlignment() {
+        if (textAlignment == null)
+            return CMITextAlignment.CENTER;
+        return textAlignment;
+    }
+
+    public CMIHologram setTextAlignment(CMITextAlignment textAlignment) {
+        this.textAlignment = textAlignment;
+        return this;
+    }
+
+    public CMIChatColor getBackgroundColor() {
+        if (backgroundColor == null)
+            backgroundColor = CMIChatColor.BLACK;
+        return backgroundColor;
+    }
+
+    public CMIHologram setBackgroundColor(CMIChatColor backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        return this;
+    }
+
+    public int getBackgroundAlpha() {
+        return backgroundAlpha;
+    }
+
+    public CMIHologram setBackgroundAlpha(int alpha) {
+        this.backgroundAlpha = CMINumber.clamp(alpha, 0, 255);
+        return this;
+    }
+
+    public int getTextAlpha() {
+        return textAlpha;
+    }
+
+    public CMIHologram setTextAlpha(int alpha) {
+        this.textAlpha = CMINumber.clamp(alpha, 0, 255);
+        return this;
+    }
+
+    public boolean isDoubleSided() {
+        return doubleSided;
+    }
+
+    public CMIHologram setDoubleSided(boolean doubleSided) {
+        this.doubleSided = doubleSided;
+        return this;
+    }
+
+    public boolean isShadowed() {
+        return shadowed;
+    }
+
+    public CMIHologram setShadowed(boolean shadowed) {
+        this.shadowed = shadowed;
+        return this;
+    }
+
+    public double getScaleW() {
+        return scaleW;
+    }
+
+    public CMIHologram setScaleW(double scale) {
+        scale = (int) (scale * 100) / 100D;
+        this.scaleW = CMINumber.clamp(scale, 0.001, 9999);
+        return this;
+    }
+
+    public double getScaleH() {
+        return scaleH;
+    }
+
+    public CMIHologram setScaleH(double scale) {
+        scale = (int) (scale * 100) / 100D;
+        this.scaleH = CMINumber.clamp(scale, 0.001, 9999);
+        return this;
+    }
+
+    public double getIconScale() {
+        return iconScale;
+    }
+
+    public CMIHologram setIconScale(double iconScale) {
+        this.iconScale = CMINumber.clamp(iconScale, 0.001, 9999);
+        return this;
+    }
+
+    public int getIconPitch() {
+        return iconPitch;
+    }
+
+    public CMIHologram setIconPitch(int iconPitch) {
+        this.iconPitch = iconPitch;
+        return this;
+    }
+
+    public int getIconYaw() {
+        return iconYaw;
+    }
+
+    public CMIHologram setIconYaw(int iconYaw) {
+        this.iconYaw = iconYaw;
+        return this;
+    }
+
+    public int getSkyLevel() {
+        return skyLevel;
+    }
+
+    public CMIHologram setSkyLevel(int skyLevel) {
+        this.skyLevel = skyLevel;
+        return this;
+    }
+
+    public int getBlockLevel() {
+        return blockLevel;
+    }
+
+    public CMIHologram setBlockLevel(int blockLevel) {
+        this.blockLevel = blockLevel;
+        return this;
+    }
+
+    public String getWorldName() {
+        return this.loc.getWorldName();
+    }
+
+    public Player getPlayerToShowFor() {
+        return playerToShowFor;
+    }
+
+    public CMIHologram setPlayerToShowFor(Player playerToShowFor) {
+        this.playerToShowFor = playerToShowFor;
+        return this;
+    }
+
+    public int getSelfDestructIn() {
+        return selfDestructIn;
+    }
+
+    public CMIHologram setSelfDestructIn(int selfDestructIn) {
+        this.selfDestructIn = selfDestructIn;
+        return this;
+    }
+
+    public void showToPlayer() {
+    }
+
 }

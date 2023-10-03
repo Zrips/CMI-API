@@ -1,8 +1,10 @@
 package com.Zrips.CMI.Modules.Holograms;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.CMI;
 import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class CMIDataWatcher {
@@ -17,16 +19,9 @@ public class CMIDataWatcher {
     private boolean updatingHead = false;
 
     public CMIDataWatcher(Integer id, Object stand, CMIHoloLineType type) {
-        this.stand = stand;
-        this.id = id;
-        this.type = type;
     }
 
     public CMIDataWatcher(Integer id, Integer secid, Object stand, CMIHoloLineType type) {
-        this.stand = stand;
-        this.id = id;
-        this.secId = secid;
-        this.type = type;
     }
 
     public Object getStand() {

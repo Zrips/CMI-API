@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -27,6 +26,8 @@ public class HologramManager {
 
     private static Map<UUID, Set<CMIHologram>> playerNearHoloUpdate;
     private static Map<UUID, Set<CMIHologram>> playerNearHoloExtra;
+
+    private static Set<UUID> inPacketListener = new HashSet<UUID>();
 
     private ConcurrentHashMap<UUID, CMIAiming> aimingAt = new ConcurrentHashMap<UUID, CMIAiming>();
 
@@ -66,6 +67,8 @@ public class HologramManager {
 
     }
 
+//    private Map<UUID, Set<CMIHologram>> playerNearSticky;
+
     private int HoloRangeCheckInterval = 1000;
 
     private Integer saveId = null;
@@ -79,11 +82,6 @@ public class HologramManager {
     }
 
     public void stop() {
-        if (saveId != null) {
-            Bukkit.getScheduler().cancelTask(saveId);
-            this.saveHolograms();
-        }
-
     }
 
     public void addHologram(CMIHologram holo) {
@@ -91,59 +89,60 @@ public class HologramManager {
     }
 
     public void addHologram(CMIHologram holo, boolean checkForPlayers) {
+        addHologram(holo, checkForPlayers, true);
+    }
+
+    public void addHologram(CMIHologram holo, boolean checkForPlayers, boolean recalculateChunks) {
 
     }
 
     public void recalculateChunks() {
-
+      
     }
 
     public void removeChunkRecords(CMIHologram holo) {
-
+     
     }
 
     public void recalculateChunks(CMIHologram holo) {
-
+     
     }
 
     public void recalculateChunksExtra(CMIHologram holo) {
-
+      
     }
 
     public CMIHologram getByName(String name) {
-        if (name == null)
-            return null;
-        return holograms.get(name.toLowerCase());
+       
+        return null;
     }
 
     public CMIHologram getByLoc(Location loc) {
-
+      
         return null;
     }
 
     public CMIHologram getByLocExtra(Location loc) {
-
+       
         return null;
     }
 
     public Set<CMIHologram> getAllInRangeByLoc(Location loc) {
-        Set<CMIHologram> holo = new HashSet<CMIHologram>();
-        return holo;
+      
+        return null;
     }
 
     public Set<CMIHologram> getAllInRangeByLocExtra(Location loc) {
-        Set<CMIHologram> holo = new HashSet<CMIHologram>();
-        if (loc == null)
-            return holo;
-        return holo;
+       
+        return null;
     }
 
     public void handleHoloUpdates(Player player, Location locto) {
-
+       
     }
 
     public void handleHoloRangeUpdates(Player player, Location locto) {
-
+       
     }
 
     public static int defaultViewRange = 8;
@@ -153,15 +152,17 @@ public class HologramManager {
     public static boolean defaultsPlaceUp = true;
 
     public void loadConfig() {
-
+      
     }
 
-    public void load() {
+    private String fileName = "Holograms.yml";
 
+    public void load() {
+       
     }
 
     public void save() {
-
+      
     }
 
     private void saveHolograms() {
@@ -169,23 +170,23 @@ public class HologramManager {
     }
 
     public void removeLastHologramInRange(UUID uuid) {
-
+      
     }
 
     public void hideHoloForAllPlayers(CMIHologram holo) {
-
+       
     }
 
     public void resetHoloForAllPlayers(CMIHologram holo) {
-
+       
     }
 
     public void addPlayersNearHolo(CMIHologram holo, boolean forceUpdate) {
-
+       
     }
 
     public void addPlayersNearHoloExtra(CMIHologram holo, boolean forceUpdate) {
-
+        
     }
 
     public HashMap<String, CMIHologram> getHolograms() {
@@ -198,7 +199,7 @@ public class HologramManager {
     }
 
     public void removeHolo(CMIHologram holo) {
-
+     
     }
 
     public int getHoloCheckInterval() {
@@ -211,10 +212,11 @@ public class HologramManager {
     }
 
     public boolean rechecInteractableHolograms(UUID uuid) {
-        return recheckInteractableHolograms(Bukkit.getPlayer(uuid));
+        return true;
     }
 
     public boolean recheckInteractableHolograms(Player player) {
+
 
         return true;
     }
@@ -224,19 +226,20 @@ public class HologramManager {
     }
 
     public void removeNearHolo(UUID uuid, CMIHologram holo) {
-
+       
     }
 
     public void addNearHoloExtra(UUID uuid, CMIHologram holo) {
-
+       
     }
 
     public void removeNearHoloExtra(UUID uuid, CMIHologram holo) {
-
+        
     }
+      
 
     public void openGui(Player player, CMIHologram holo) {
-
+        HologramGUIEditor.openGui(player, holo);
     }
 
     public void hideAllHolograms() {
@@ -260,5 +263,5 @@ public class HologramManager {
     public void removeAimAt(UUID uuid) {
         CMIAiming removed = aimingAt.remove(uuid);
     }
-
+        
 }
