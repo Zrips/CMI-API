@@ -7,13 +7,35 @@ import org.bukkit.OfflinePlayer;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class Purge {
 
-    private int purgeId = -1;
+    private CMITask purgeId = null;
     public boolean running = false;
     private CMI plugin;
 
     HashMap<PurgeType, Integer> map = new HashMap<PurgeType, Integer>();
+
+    private boolean CleanOnStart;
+    private int OfflineDays;
+    private boolean PlayerDataEnabled;
+    private String PlayerDataSourceFolder;
+    private boolean PlayerDataDeleteFiles;
+    private String PlayerDataDestinationFolder;
+    private boolean PlayerStatsEnabled;
+    private String PlayerStatsSourceFolder;
+    private boolean PlayerStatsDeleteFiles;
+    private String PlayerStatsDestinationFolder;
+    private boolean PlayerAdvancementsEnabled;
+    private String PlayerAdvancementsSourceFolder;
+    private boolean PlayerAdvancementsDeleteFiles;
+    private String PlayerAdvancementsDestinationFolder;
+    private boolean EssentialsEnabled;
+    private String EssentialsSourceFolder;
+    private boolean EssentialsDeleteFiles;
+    private String EssentialsDestinationFolder;
+    private boolean LwcEnabled;
 
     public enum PurgeType {
         PlayerData, PlayerStat, PlayerAdvancements, Essentials, Lwc
@@ -22,6 +44,10 @@ public class Purge {
     public Purge(CMI plugin) {
         this.plugin = plugin;
         fillZero();
+    }
+
+    public void loadConfig() {
+
     }
 
     public void initialize() {
@@ -71,5 +97,18 @@ public class Purge {
     }
 
     public void purgeLWC(UUID uuid) {
+
+    }
+
+    public boolean isCleanOnStart() {
+        return CleanOnStart;
+    }
+
+    public boolean isPlayerDataEnabled() {
+        return PlayerDataEnabled;
+    }
+
+    public boolean isPlayerStatsEnabled() {
+        return PlayerStatsEnabled;
     }
 }

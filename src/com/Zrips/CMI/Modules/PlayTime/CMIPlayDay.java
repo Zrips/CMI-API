@@ -6,23 +6,23 @@ import com.Zrips.CMI.Modules.PlayTime.PlayTimeManager.PlaytimeRange;
 public class CMIPlayDay {
 
     Long[] map = new Long[24];
-    private Long lastUpdate = null;
+    private long lastUpdate = 0;
     private CMIUser user;
 
     private int date;
-    private Integer id = 0;
+    private int id = 0;
 
     public CMIPlayDay(CMIUser user, int date) {
         this.user = user;
         this.date = date;
     }
 
-    public Long getLastUpdate() {
+    public long getLastUpdate() {
         return lastUpdate;
     }
 
     public Long getTotalTime() {
-        Long total = 0L;
+        long total = 0L;
         for (int i = 0; i < 24; i++) {
             total += getHourPlaytime(i);
         }
@@ -30,7 +30,7 @@ public class CMIPlayDay {
     }
 
     public void setLastUpdate(Long lastUpdate) {
-        this.lastUpdate = lastUpdate;
+        this.lastUpdate = lastUpdate == null ? 0 : lastUpdate;
     }
 
     private final static Long maxValue = 3600000L;
@@ -53,10 +53,6 @@ public class CMIPlayDay {
     }
 
     public void setHourPlaytime(int hour, Long playTime, boolean overTime) {
-        if (!overTime)
-            playTime = playTime > maxValue ? maxValue : playTime;
-        playTime = playTime <= 0 ? null : playTime;
-        map[hour] = playTime;
     }
 
     public int getDate() {

@@ -5,9 +5,11 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.Region.WorldInfo;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class FindBiomeInfo {
 
-    private int scheduleId = -1;
+    private CMITask task = null;
 
     private long showedInfo = 0L;
     private boolean showInfo = false;
@@ -42,12 +44,12 @@ public class FindBiomeInfo {
 	this.currentId = id;
     }
 
-    public void setscheduleId(int id) {
-	this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+	this.task = task;
     }
 
-    public int getScheduleId() {
-	return this.scheduleId;
+    public CMITask getScheduleTask() {
+	return this.task;
     }
 
     public void setShowInfo(long time) {

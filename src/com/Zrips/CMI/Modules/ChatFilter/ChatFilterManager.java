@@ -40,7 +40,7 @@ public class ChatFilterManager {
 
     private List<String> capsWhiteList;
 
-    public final static String StringchatFilterFile = "chatfilter.yml";
+    public final static String StringchatFilterFile = "ChatFilter.yml";
 
     public void clearCache(UUID uuid) {
         spamMessages.remove(uuid);
@@ -62,9 +62,7 @@ public class ChatFilterManager {
 
     public RuleResponce getCorrectMessage(Player player, String message, boolean privateMessage) {
 
-        RuleResponce responce = new RuleResponce(message);
-
-        return responce;
+        return null;
     }
 
     public boolean isSpamedCommand(Player player, String message) {
@@ -122,7 +120,10 @@ public class ChatFilterManager {
     }
 
     private static ChatFilterBlockType getBlockType(String type) {
-
+        for (ChatFilterBlockType one : ChatFilterBlockType.values()) {
+            if (one.name().equalsIgnoreCase(type))
+                return one;
+        }
         return ChatFilterBlockType.None;
     }
 

@@ -45,7 +45,6 @@ public class WorldInfo {
     }
 
     public Boolean getRegionsChunk(CMIRegion region, int place) {
-
         return null;
     }
 

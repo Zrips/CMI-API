@@ -7,9 +7,11 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class ChunkPreviewInfo {
 
-    private int scheduleId = -1;
+    private CMITask scheduleTask = null;
     private int currentId = 1;
 
     private File[] regionFiles;
@@ -74,12 +76,12 @@ public class ChunkPreviewInfo {
 	return this.range;
     }
 
-    public void setscheduleId(int id) {
-	this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+	this.scheduleTask = task;
     }
 
-    public int getScheduleId() {
-	return this.scheduleId;
+    public CMITask getScheduleTask() {
+	return this.scheduleTask;
     }
 
     public void setShowInfo(long time) {

@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
+import com.Zrips.CMI.Modules.Teleportations.TeleportManager.TpAction;
 
 public final class CMIPlayerTeleportRequestEvent extends Event implements Cancellable {
 

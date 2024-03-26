@@ -2,13 +2,12 @@ package com.Zrips.CMI.Modules.PlayerCombat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -17,10 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class PlayerCombatManager {
 
-    private Set<UUID> playerCombat = new HashSet<UUID>();
-    private Set<UUID> entityCombat = new HashSet<UUID>();
+    private HashMap<CombatDamageType, Set<UUID>> combatMap = new HashMap<CombatDamageType, Set<UUID>>();
+
+    private HashMap<UUID, CMIPlayerCombat> playerCombatMap = new HashMap<UUID, CMIPlayerCombat>();
+
+    private HashMap<UUID, HashMap<UUID, PlayerKillCount>> playerKills = new HashMap<UUID, HashMap<UUID, PlayerKillCount>>();
+    private HashMap<UUID, HashMap<EntityType, EntityKillCount>> entityKills = new HashMap<UUID, HashMap<EntityType, EntityKillCount>>();
+
     private HashMap<EntityType, EntityHeadDrop> entityHeadDropChance = new HashMap<EntityType, EntityHeadDrop>();
     private HashMap<Integer, Double> lootMobBonus = new HashMap<Integer, Double>();
     private HashMap<Integer, Double> lootPlayerBonus = new HashMap<Integer, Double>();
@@ -29,7 +35,12 @@ public class PlayerCombatManager {
     private boolean dropHead = false;
     private boolean IncludeVictim = false;
     private boolean PlayerShowBossBar = false;
+    private boolean PlayerShowDamageNumbers = false;
+    private String PlayerDamageNumbersFormat = "";
     private boolean MobShowBossBar = false;
+    private boolean MobIncludeEnvironment = false;
+    private boolean MobShowDamageNumbers = false;
+    private String MobDamageNumbersFormat = "";
     private boolean PDisableFlight = false;
     private boolean PDisableFallDamage = false;
     private boolean MDisableFallDamage = false;
@@ -58,42 +69,59 @@ public class PlayerCombatManager {
 
     Pattern lorePattern = Pattern.compile("(lore\\{(\"|'))(.+)((\"|')\\})");
 
-    public PlayerCombatManager(CMI plugin) {
-        this.plugin = plugin;
-        tasker();
+    public HashMap<UUID, PlayerKillCount> getKills(UUID uuid) {
+        return playerKills.computeIfAbsent(uuid, k -> new HashMap<UUID, PlayerKillCount>());
     }
 
-    private int sched = -1;
+    public HashMap<EntityType, EntityKillCount> getEntityKills(UUID uuid) {
+        return entityKills.computeIfAbsent(uuid, k -> new HashMap<EntityType, EntityKillCount>());
+    }
+
+    public PlayerCombatManager(CMI plugin) {
+        this.plugin = plugin; 
+    }
+
+    public void clearCache(UUID uuid) {
+       
+    }
+
+    private CMITask sched = null;
 
     public void stop() {
-        if (sched != -1) {
-            Bukkit.getScheduler().cancelTask(sched);
-            sched = -1;
+        if (sched != null) {
+            sched.cancel();
+            sched = null;
         }
     }
 
     public void loadConfig() {
-
+ 
     }
 
-    public void loadHeads() {
+    private String fileName = "CustomHeads.yml";
 
+    public void loadHeads() {
+        
+    }
+
+    private Set<UUID> get(CombatDamageType type) {
+        return combatMap.get(type);
     }
 
     public void removePlayerFromCombat(CMIUser user) {
-
+      
     }
 
     public void addPlayerIntoCombat(CMIUser user) {
-
+        
     }
 
     public void addPlayerIntoMobCombat(CMIUser user) {
-
+ 
     }
 
     private void tasker() {
-
+       
     }
 
     public Boolean isDropPlayerHead() {
@@ -126,11 +154,7 @@ public class PlayerCombatManager {
     public ItemStack tryToGetEntityHead(EntityType type) {
         EntityHeadDrop c = entityHeadDropChance.get(type);
         return c == null ? null : c.getHead();
-    }
-
-//    public ItemStack tryToGetEntityHead(Entity ent) {
-//	return tryToGetEntityHead(null, ent);
-//    }
+    } 
 
     public ItemStack tryToGetEntityHead(Player player, Entity ent) {
         EntityHeadDrop c = entityHeadDropChance.get(ent.getType());
@@ -243,12 +267,91 @@ public class PlayerCombatManager {
         return new ArrayList<String>(PlayerHeadLore);
     }
 
-//    public boolean isPlayerMakeCMDBlackList() {
-//	return PlayerMakeBlackList;
-//    }
-//
-//    public boolean isMobMakeCMDBlackList() {
-//	return MobMakeBlackList;
+    public void showDamageNumber(Player player, Double damage, Location loc, boolean isPlayer) {
+ 
+    }
+
+    public void show(Player player, String text, Location loc) {
+       
+    }
+
+    public boolean isPlayerShowDamageNumbers() {
+        return PlayerShowDamageNumbers;
+    }
+
+    public boolean isMobShowDamageNumbers() {
+        return MobShowDamageNumbers;
+    }
+
+    public Long getGotLastDamageAt(UUID uuid) {
+        CMIPlayerCombat data = playerCombatMap.get(uuid);
+        return data == null ? null : data.getGotLastDamageAt();
+    }
+
+    private CMIPlayerCombat getCombatRecord(UUID uuid) {
+        return playerCombatMap.computeIfAbsent(uuid, k -> new CMIPlayerCombat());
+    }
+
+    public void setGotLastDamageAt(UUID uuid, Long gotLastDamageAt) {
+        getCombatRecord(uuid).setGotLastDamageAt(gotLastDamageAt);
+    }
+
+    public boolean isInCombatWithPlayer(UUID uuid) {
+        if (!playerCombatMap.containsKey(uuid))
+            return false;
+        return playerCombatMap.get(uuid).isInCombatWithPlayer();
+    }
+
+    public Long getGotLastDamageFromPlayer(UUID uuid) {
+        CMIPlayerCombat data = playerCombatMap.get(uuid);
+        return data == null ? 0L : data.getGotLastDamageFromPlayer();
+    }
+
+    public void setGotLastDamageFromPlayer(UUID uuid, Long gotLastDamageFromPlayer) {
+        if (!isInCombatWithPlayer(uuid))
+            addPlayerIntoCombat(CMIUser.getUser(uuid));
+        getCombatRecord(uuid).setGotLastDamageFromPlayer(gotLastDamageFromPlayer);
+    }
+
+    public void setDidLastDamageToPlayer(UUID uuid, Long didLastDamageToPlayer) {
+        if (!isInCombatWithPlayer(uuid))
+            addPlayerIntoCombat(CMIUser.getUser(uuid));
+        getCombatRecord(uuid).setDidLastDamageToPlayer(didLastDamageToPlayer);
+    }
+
+    public boolean isInCombatWithMob(UUID uuid) {
+        if (!playerCombatMap.containsKey(uuid))
+            return false;
+        return playerCombatMap.get(uuid).isInCombatWithMob();
+    }
+
+    public Long getGotLastDamageFromMob(UUID uuid) {
+        CMIPlayerCombat data = playerCombatMap.get(uuid);
+        return data == null ? 0L : data.getGotLastDamageFromMob();
+    }
+
+    public void setGotLastDamageFromMob(UUID uuid, Long gotLastDamageFromMob) {
+        if (!isInCombatWithMob(uuid))
+            CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(CMIUser.getUser(uuid));
+        getCombatRecord(uuid).setGotLastDamageFromMob(gotLastDamageFromMob);
+    }
+
+    public void setDidLastDamageToEntity(UUID uuid, Long didLastDamageToMob) {
+        if (!isInCombatWithMob(uuid)) {
+            CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(CMIUser.getUser(uuid));
+        }
+        getCombatRecord(uuid).setDidLastDamageToMob(didLastDamageToMob);
+    }
+
+    public long getLeftCombatTime(UUID uuid) {
+        if (!playerCombatMap.containsKey(uuid))
+            return 0L;
+        return playerCombatMap.get(uuid).getLeftCombatTime();
+    } 
+
+    public boolean isMobIncludeEnvironment() {
+        return MobIncludeEnvironment;
+    }
 
 //    }
 

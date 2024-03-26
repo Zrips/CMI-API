@@ -1,26 +1,24 @@
 package com.Zrips.CMI.Modules.Economy;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
-
-import org.bukkit.scheduler.BukkitTask;
+import java.util.concurrent.CompletableFuture;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.Hooks.CMIHookType;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class EconomyManager {
 
@@ -33,6 +31,8 @@ public class EconomyManager {
     private Double MaxChequeValue;
     private boolean ChequePaper;
     private boolean ChequePermission;
+    private boolean ChequeInCreative;
+    private boolean ChequeAcceptNotEncoded;
     private boolean BalTopIncludeFakes;
     private long ExcludeInactive;
     private boolean BalTopDisplayWithShorts;
@@ -40,7 +40,6 @@ public class EconomyManager {
     private List<String> BalTopExcludeStartingWith;
     private HashMap<String, Double> shortAmountValues = new HashMap<String, Double>();
 
-    private boolean townyPresent = false;
     private String townyTownPrefix = "town-";
     private String townyNationPrefix = "nation-";
     private String townyDebtPrefix = "[DEBT]-";
@@ -85,7 +84,7 @@ public class EconomyManager {
 
     class baltopUpdateCache {
         private long time = 0;
-        private int shedID = -1;
+        private CMITask task = null;
 
         public long getTime() {
             return time;
@@ -96,12 +95,12 @@ public class EconomyManager {
             return this;
         }
 
-        public int getShedID() {
-            return shedID;
+        public CMITask getTask() {
+            return task;
         }
 
-        public baltopUpdateCache setShedID(int shedID) {
-            this.shedID = shedID;
+        public baltopUpdateCache setTask(CMITask task) {
+            this.task = task;
             return this;
         }
     }
@@ -122,7 +121,7 @@ public class EconomyManager {
 
     }
 
-    BukkitTask recTask = null;
+    CompletableFuture<Void> recTask = null;
 
     public void recalculateBalTop() {
 
@@ -139,7 +138,7 @@ public class EconomyManager {
 
     public SortedMap<Double, UUID> getBalTopMap() {
 
-        return balTop;
+        return null;
     }
 
     public int getBalTopPlace(UUID uuid) {
@@ -152,36 +151,15 @@ public class EconomyManager {
     }
 
     public Set<WorldGroup> getWorldGroups() {
-        Set<WorldGroup> groups = new HashSet<WorldGroup>();
-        for (Entry<String, WorldGroup> one : this.groups.entrySet()) {
-            if (this.CustomWorldsEnabled && one.getKey().equals(CMIDefaultWorld))
-                continue;
-            groups.add(one.getValue());
-        }
-        return groups;
+        return null;
     }
 
     public Set<String> getWorlds(WorldGroup worldGroup) {
-        Set<String> groups = new HashSet<String>();
-        for (Entry<String, WorldGroup> one : this.groups.entrySet()) {
-            if (!one.getValue().getName().equals(worldGroup.getName()))
-                continue;
-            groups.add(one.getKey());
-        }
-        return groups;
+        return null;
     }
 
     public WorldGroup getWorldGroup(String name) {
-        if (name == null)
-            return groups.get(CMIDefaultWorld);
-        if (!groups.containsKey(name)) {
-            for (Entry<String, WorldGroup> one : groups.entrySet()) {
-                if (one.getValue().getName().equals(name))
-                    return one.getValue();
-            }
-            return groups.get(CMIDefaultWorld);
-        }
-        return groups.get(name);
+        return null;
     }
 
     public DecimalFormat getMoneyFormat() {
@@ -190,7 +168,7 @@ public class EconomyManager {
 
     public Double translateMoney(String value) {
 
-        return 0D;
+        return null;
     }
 
     DecimalFormat defaultFormat;
@@ -202,20 +180,8 @@ public class EconomyManager {
     }
 
     public DecimalFormat getMoneyFormat(String worldName) {
-        if (defaultFormat != null)
-            return defaultFormat;
-        //	Update for multiworld
-//	WorldGroup group = CMI.getInstance().getEconomyManager().getWorldGroup(worldName);
-        WorldGroup group = getDefaultGroup();
-        try {
-            if (group.isSwitchPlaces())
-                defaultFormat = new DecimalFormat(group.getCurrencyFormat(), new DecimalFormatSymbols(Locale.GERMANY));
-            else
-                defaultFormat = new DecimalFormat(group.getCurrencyFormat(), new DecimalFormatSymbols(Locale.ENGLISH));
-        } catch (Exception e) {
-        }
-        defaultFormat.setRoundingMode(RoundingMode.FLOOR);
-        return defaultFormat;
+
+        return null;
     }
 
     public void loadConfig() {
@@ -445,7 +411,18 @@ public class EconomyManager {
     Writer writer = null;
 
     public void closeStream() {
-
+        if (writer != null) {
+            try {
+                writer.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public enum CMIMoneyLogType {
@@ -472,10 +449,6 @@ public class EconomyManager {
 
     }
 
-    public boolean isTownyPresent() {
-        return townyPresent;
-    }
-
     public String getTownyTownPrefix() {
         return townyTownPrefix;
     }
@@ -500,7 +473,7 @@ public class EconomyManager {
         if (playerName == null)
             return false;
 
-        return plugin.getEconomyManager().isTownyPresent() && (playerName.startsWith(plugin.getEconomyManager().getTownyTownPrefix()) ||
+        return CMIHookType.Towny.isPresent() && (playerName.startsWith(plugin.getEconomyManager().getTownyTownPrefix()) ||
             playerName.startsWith(plugin.getEconomyManager().getTownyNationPrefix()) ||
             playerName.startsWith(plugin.getEconomyManager().getTownyDebtPrefix()) ||
             playerName.equalsIgnoreCase(plugin.getEconomyManager().getTownyClosedEconomyName()));
@@ -528,5 +501,13 @@ public class EconomyManager {
 
     public boolean isChequeRequiresPermission() {
         return ChequePermission;
+    }
+
+    public boolean isChequeInCreative() {
+        return ChequeInCreative;
+    }
+
+    public boolean isChequeAcceptNotEncoded() {
+        return ChequeAcceptNotEncoded;
     }
 }

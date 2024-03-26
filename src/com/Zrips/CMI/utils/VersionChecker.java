@@ -35,9 +35,4 @@ public class VersionChecker {
 
         return null;
     }
-
-    public static String s1 = "%%__USER__%%";
-    public static String s2 = "%%__RESOURCE__%%";
-    public static String s3 = "%%__NONCE__%%";
-
 }

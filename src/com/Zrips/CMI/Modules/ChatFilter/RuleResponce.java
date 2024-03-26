@@ -3,6 +3,9 @@ package com.Zrips.CMI.Modules.ChatFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+
+import org.bukkit.entity.Player;
 
 import net.Zrips.CMILib.Chat.ChatFilterBlockType;
 
@@ -31,19 +34,31 @@ public class RuleResponce {
 
     public String getRulesNamesAsString() {
         String n = "";
+        for (Entry<String, ChatFilterRule> one : rules.entrySet()) {
+            if (!n.isEmpty())
+                n += ", ";
+            n += one.getKey();
+        }
         return n;
     }
 
     public void addRule(ChatFilterRule rule) {
+        if (rule != null && !this.rules.containsKey(rule.getRuleName()))
+            this.rules.put(rule.getRuleName(), rule);
     }
 
     public ChatFilterBlockType getMaxFilterBlockType() {
-        ChatFilterBlockType type = ChatFilterBlockType.None;
-        return type;
+        return null;
     }
 
     public boolean isInformConsole() {
         boolean inform = false;
+        for (Entry<String, ChatFilterRule> one : rules.entrySet()) {
+            if (isBypass(one.getValue().getGroup()))
+                continue;
+            if (one.getValue().isInformConsole())
+                inform = true;
+        }
         return inform;
     }
 
@@ -66,4 +81,9 @@ public class RuleResponce {
         this.updatedMessage = updatedMessage;
     }
 
+    public void informStaff(Player player) {
+    }
+
+    public void performCommands(Player player) {
+    }
 }

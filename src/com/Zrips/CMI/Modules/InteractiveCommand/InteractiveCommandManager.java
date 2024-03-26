@@ -15,6 +15,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
 
 import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class InteractiveCommandManager {
 
@@ -36,24 +37,26 @@ public class InteractiveCommandManager {
     }
 
     public void deleteIC(CMIInteractiveCommand cmib) {
-
     }
 
     public void clearLocationsFromIC(CMIInteractiveCommand cmib) {
-
     }
 
     public void addEntity(UUID uuid, CMIInteractiveCommand cmib) {
-
     }
 
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib) {
         return addInteractiveCommand(cmib, true);
     }
 
+    @Deprecated
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save) {
+        return addInteractiveCommand(cmib, save, null);
+    }
 
-        return cmib;
+    public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save, Location addedLocation) {
+
+        return null;
     }
 
     public Set<CMIInteractiveCommand> getFullList() {
@@ -74,13 +77,8 @@ public class InteractiveCommandManager {
     }
 
     public CMIInteractiveCommand getByCitizensId(Integer id) {
-        if (id == null)
-            return null;
-        if (this.checkCitizens) {
-            checkCitizens();
-            this.checkCitizens = false;
-        }
-        return citiznesMap.get(id);
+
+        return null;
     }
 
     private void checkCitizens() {
@@ -92,10 +90,12 @@ public class InteractiveCommandManager {
     }
 
     public CMIInteractiveCommand removeLoc(CMILocation loc) {
+
         return null;
     }
 
     public CMIInteractiveCommand removeEntity(UUID uuid) {
+
         return null;
     }
 
@@ -104,9 +104,10 @@ public class InteractiveCommandManager {
         return null;
     }
 
-    private int saveId = -1;
+    private CMITask saveTask = null;
 
     public void save() {
+
     }
 
     boolean saving = false;
@@ -115,11 +116,13 @@ public class InteractiveCommandManager {
 
     }
 
+    private String fileName = "InteractiveCommands.yml";
+
     public void load() {
 
     }
 
-    public int getSaveId() {
-        return saveId;
+    public CMITask getSaveTask() {
+        return saveTask;
     }
 }

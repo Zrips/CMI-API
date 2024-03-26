@@ -1,10 +1,9 @@
 package com.Zrips.CMI.Locale;
 
-import java.io.File;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,14 +13,13 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.Snd;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Locale.YmlMaker;
-
 public class Language {
-    public FileConfiguration enlocale;
-    public FileConfiguration Customlocale;
+//    public FileConfiguration enlocale;
+//    public FileConfiguration Customlocale;
 
     private CMI plugin;
+
+    private HashMap<String, FileConfiguration> locales = new HashMap<String, FileConfiguration>();
 
     public Language(CMI plugin) {
         this.plugin = plugin;
@@ -31,21 +29,21 @@ public class Language {
      * Reloads the config
      */
     public void reload() {
-        try {
-            Customlocale = new YmlMaker(plugin, "Translations" + File.separator + "Locale_" + plugin.getConfigManager().Lang + ".yml").getConfig();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     private FileConfiguration getEN() {
-        if (enlocale == null)
-            try {
-                enlocale = new YmlMaker(plugin, "Translations" + File.separator + "Locale_EN.yml").getConfig();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        return enlocale;
+
+        return null;
+    }
+
+    public FileConfiguration getCustom() {
+
+        return null;
+    }
+
+    private FileConfiguration getLocale(String locale) {
+
+        return null;
     }
 
     /**
@@ -54,31 +52,36 @@ public class Language {
      * @return the message
      */
 
+    @Deprecated
     public String getMessage(String key, Object... variables) {
-        return CMIChatColor.translate("");
+        return getLMessage(plugin.getConfigManager().Lang, key, variables);
     }
 
-    public String filterNewLine(String msg) {
+    public String getLMessage(String locale, String key, Object... variables) {
 
-        return msg;
+        return null;
+    }
+
+    static Pattern patern = Pattern.compile("(\\\\n)");
+
+    public String filterNewLine(String msg) {
+        return null;
     }
 
     public List<String> updateSnd(Snd snd, List<String> msg) {
-        for (int i = 0, l = msg.size(); i < l; ++i) {
-            msg.set(i, updateSnd(snd, msg.get(i)));
-        }
-        return msg;
+
+        return null;
     }
 
     public String updateSnd(Snd snd, String msg) {
 
-        return msg;
+        return null;
     }
 
     @SuppressWarnings("deprecation")
     public String replacePlayer(String type, Player player, Player whoGets, String msg) {
 
-        return msg;
+        return null;
     }
 
     public String replaceUser(String type, CMIUser user, String msg) {
@@ -87,38 +90,22 @@ public class Language {
 
     public String replaceUser(String type, CMIUser user, Player whoGets, String msg) {
 
-        return msg;
+        return null;
     }
 
     public String replacePlayer(String type, Location loc, String msg) {
 
-        return msg;
+        return null;
     }
 
     public String replacePlayer(Location loc, String msg) {
 
-        return msg;
-    }
-
-    private static String outReplace(String msg, Object what, Object with) {
-        if (what == null)
-            return msg;
-        if (with == null)
-            with = "";
-        return msg.replace(String.valueOf(what), String.valueOf(with));
-    }
-
-    private static String replace(String msg, Object what, Object with) {
-        if (what == null)
-            return msg;
-        if (with == null)
-            with = "";
-        return msg.replaceAll(String.valueOf("(?i)(\\[" + what + "\\])"), Matcher.quoteReplacement(String.valueOf(with)));
+        return null;
     }
 
     public String getDefaultMessage(String key) {
 
-        return CMIChatColor.translate("");
+        return null;
     }
 
     /**
@@ -126,17 +113,28 @@ public class Language {
      * @param key - the key of the message
      * @return the message
      */
+    @Deprecated
     public List<String> getMessageList(String key, Object... variables) {
-        String missing = "Missing locale for " + key + " ";
-
-        List<String> ls = null;
-
-        return ls;
+        return getMessageLList(plugin.getConfigManager().Lang, key, variables);
     }
 
+    public List<String> getMessageLList(String locale, String key, Object... variables) {
+
+        return null;
+    }
+
+    @Deprecated
     public boolean isList(String key) {
-        if (Customlocale != null && Customlocale.contains(key))
-            return Customlocale.isList(key);
+        return isLList(plugin.getConfigManager().Lang, key);
+    }
+
+    public boolean isLList(String locale, String key) {
+        locale = locale == null ? plugin.getConfigManager().Lang.toLowerCase() : locale.toLowerCase();
+
+        FileConfiguration l = getLocale(locale);
+
+        if (l != null && l.contains(key))
+            return l.isList(key);
         if (getEN().contains(key))
             return getEN().isList(key);
         return false;
@@ -147,8 +145,15 @@ public class Language {
      * @param key - the key of the message
      * @return true/false
      */
+    @Deprecated
     public boolean containsKey(String key) {
-        if (Customlocale != null && Customlocale.contains(key))
+        return containsLKey(plugin.getConfigManager().Lang, key);
+    }
+
+    public boolean containsLKey(String locale, String key) {
+        locale = locale == null ? plugin.getConfigManager().Lang.toLowerCase() : locale.toLowerCase();
+        FileConfiguration l = getLocale(locale);
+        if (l != null && l.contains(key))
             return true;
         return getEN().contains(key);
     }
@@ -157,14 +162,12 @@ public class Language {
         return getEN().isString(key);
     }
 
+    @Deprecated
     public Set<String> getKeys(String path) {
-        if (!plugin.getConfigManager().Lang.equalsIgnoreCase("EN") && Customlocale != null && Customlocale.isConfigurationSection(path)) {
-            return Customlocale.getConfigurationSection(path).getKeys(false);
-        }
-        if (getEN() != null && getEN().isConfigurationSection(path)) {
-            return getEN().getConfigurationSection(path).getKeys(false);
-        }
+        return getLKeys(plugin.getConfigManager().Lang, path);
+    }
 
-        return new HashSet<String>();
+    public Set<String> getLKeys(String locale, String path) {
+        return null;
     }
 }

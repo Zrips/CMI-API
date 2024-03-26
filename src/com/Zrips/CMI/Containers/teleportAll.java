@@ -2,18 +2,18 @@ package com.Zrips.CMI.Containers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 public class teleportAll {
 
     private String targetFolder = null;
     private String targetWorld = null;
     private Location destination = null;
-    private BukkitTask id = null;
+    private CompletableFuture<Void> id = null;
     private int teleported = 0;
     private List<String> names = new ArrayList<String>();
     private Player player;
@@ -22,60 +22,60 @@ public class teleportAll {
     }
 
     public void setTargetFolder(String targetFolder) {
-	this.targetFolder = targetFolder;
+        this.targetFolder = targetFolder;
     }
 
     public String getTargetFolder() {
-	if (this.targetFolder == null)
-	    return Bukkit.getWorlds().get(0).getName();
-	return this.targetFolder;
+        if (this.targetFolder == null)
+            return Bukkit.getWorlds().get(0).getName();
+        return this.targetFolder;
     }
 
     public void setTargetWorld(String targetWorld) {
-	this.targetWorld = targetWorld;
+        this.targetWorld = targetWorld;
     }
 
     public String getTargetWorld() {
-	return this.targetWorld;
+        return this.targetWorld;
     }
 
     public void setDestination(Location destination) {
-	this.destination = destination;
+        this.destination = destination;
     }
 
     public Location getDestination() {
-	return this.destination;
+        return this.destination;
     }
 
-    public void setTask(BukkitTask id) {
-	this.id = id;
+    public void setTask(CompletableFuture<Void> task) {
+        this.id = task;
     }
 
     public Player getPlayer() {
-	return this.player;
+        return this.player;
     }
 
     public void setPlayer(Player Player) {
-	this.player = Player;
+        this.player = Player;
     }
 
-    public BukkitTask getTask() {
-	return this.id;
+    public CompletableFuture<Void> getTask() {
+        return this.id;
     }
 
     public void addName(String name) {
-	this.names.add(name);
+        this.names.add(name);
     }
 
     public List<String> getNames() {
-	return this.names;
+        return this.names;
     }
 
     public int getTeleportedCount() {
-	return teleported;
+        return teleported;
     }
 
     public void addTeleported() {
-	this.teleported++;
+        this.teleported++;
     }
 }

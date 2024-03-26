@@ -37,7 +37,6 @@ public class WorldManager {
 
     public WorldManager(final CMI plugin) {
         this.plugin = plugin;
-
     }
 
     public void removeWorldInfo(World world) {
@@ -65,17 +64,14 @@ public class WorldManager {
     }
 
     public CMIRegion getNextChunkLocation(WorldInfo info, boolean existing) {
-
         return null;
     }
 
     public Chunk getNextChunk(WorldInfo info, boolean existing) {
         return null;
-
     }
 
     public WorldInfo getWorldInfo(World world, CMIRegion center, Integer range) {
-
         return null;
     }
 

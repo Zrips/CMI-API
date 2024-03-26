@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -14,8 +15,23 @@ public class WarningManager {
     private CMI plugin;
 
     private LinkedHashMap<Integer, List<String>> commands = new LinkedHashMap<Integer, List<String>>();
-
     private HashMap<String, CMIWarningCategory> Categories = new HashMap<String, CMIWarningCategory>();
+
+    private HashMap<UUID, List<CMIPlayerWarning>> warnings = new HashMap<UUID, List<CMIPlayerWarning>>();
+
+    public List<CMIPlayerWarning> getWarnings(UUID uuid) {
+        List<CMIPlayerWarning> w = warnings.computeIfAbsent(uuid, k -> new ArrayList<CMIPlayerWarning>());
+        if (w != null)
+            w.removeIf(one -> one.getGivenAt() + one.getCategory().getLifeTime() < System.currentTimeMillis());
+        return w;
+    }
+
+    public void setWarnings(UUID uuid, List<CMIPlayerWarning> warnings) {
+        if (warnings == null || warnings.isEmpty())
+            this.warnings.remove(uuid);
+        else
+            this.warnings.put(uuid, warnings);
+    }
 
     public WarningManager(CMI plugin) {
         this.plugin = plugin;

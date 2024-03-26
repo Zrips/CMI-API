@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Containers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,23 +12,38 @@ public class CMITabComplete {
 
     public List<Object> getTabCompleteList(String[] args) {
 
-        StringBuilder str = new StringBuilder();
-        for (int z = 0; z < args.length - 1; z++) {
-            if (!str.toString().isEmpty())
-                str.append(" ");
-            str.append(args[z]);
-        }
+        return null;
+    }
 
-        String comlpStr = getTabComplete(str.toString());
-        List<Object> argsList = new ArrayList<Object>();
-        return argsList;
+    private static boolean notRepeating(String word, String[] args) {
+
+        for (String one : args) {
+            if (one.equalsIgnoreCase(word))
+                return false;
+        }
+        return true;
     }
 
     public String getTabComplete(String tab) {
-        return "";
+
+        return null;
+    }
+
+    private Object getTab(String tab, HashMap<String, Object> map) {
+
+        return null;
     }
 
     public void addTabComplete(String tab) {
         tab = tab.replace(internalSeparator, externalSeparator);
+        addTab(tab, tabs);
+    }
+
+    private Object addTab(String tab, HashMap<String, Object> map) {
+      
+        return null;
+    }
+
+    private static void generalAdd(String tab, HashMap<String, Object> map) {
     }
 }

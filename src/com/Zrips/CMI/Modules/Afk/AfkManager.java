@@ -2,9 +2,11 @@ package com.Zrips.CMI.Modules.Afk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,11 +14,37 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Locale.CMILC;
+
+import net.Zrips.CMILib.TitleMessages.CMITitleMessage;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class AfkManager {
 
     private HashMap<CMIUser, Long> lastAction = new HashMap<CMIUser, Long>();
-    private Set<CMIUser> afkPlayers = new HashSet<CMIUser>();
+//    private Set<CMIUser> afkPlayers = new HashSet<CMIUser>();
+
+    private HashMap<UUID, AfkInfo> afkPlayersMap = new HashMap<UUID, AfkInfo>();
+
+    public boolean isAfk(UUID uuid) {
+        if (!afkPlayersMap.containsKey(uuid))
+            return false;
+        return getAfkInfo(uuid).getAfkFrom() > 0;
+    }
+
+    public AfkInfo getAfkInfo(UUID uuid) {
+        return afkPlayersMap.get(uuid);
+//        return afkPlayersMap.computeIfAbsent(uuid, k -> new AfkInfo());
+    }
+
+    public AfkInfo createAfkInfo(UUID uuid) {
+//        return afkPlayersMap.get(uuid);
+        return afkPlayersMap.computeIfAbsent(uuid, k -> new AfkInfo());
+    }
+
+    public void removeAfkInfo(UUID uuid) {
+        afkPlayersMap.remove(uuid);
+    }
 
     private CMI plugin;
 
@@ -24,7 +52,7 @@ public class AfkManager {
         this.plugin = plugin;
     }
 
-    private int sched = -1;
+    private CMITask sched = null;
     private long awayTrigerTime = 3000;
     private List<String> awayTrigerCommands = new ArrayList<String>();
     private List<String> manualAwayTrigerCommands = new ArrayList<String>();
@@ -61,10 +89,19 @@ public class AfkManager {
     private boolean PreventMobVillageDefence = true;
 
     private boolean PreventPushing = true;
+    private boolean PreventHook = true;
 
     private boolean disableExpPickup = false;
 
     public void stop() {
+        if (sched != null) {
+            sched.cancel();
+            sched = null;
+        }
+        if (afkSched != null) {
+            afkSched.cancel();
+            afkSched = null;
+        }
     }
 
     public void loadConfig() {
@@ -72,6 +109,8 @@ public class AfkManager {
     }
 
     private void loadAfk() {
+        afkSubTitle = CMILC.getIML("afk", "afkSubTitle");
+        messageSize = afkSubTitle.size();
     }
 
     int messageSize = -1;
@@ -82,13 +121,31 @@ public class AfkManager {
     }
 
     public void showTitle(CMIUser user, boolean fade) {
+        if (!TitleMessage || !user.isAfk() || !user.isOnline())
+            return;
+
+        CMITitleMessage.send(user.getPlayer(), getTitle(user), getSubtitle(user), fade ? 20 : 0, (interval * 20) + 3, 0);
 
     }
 
     public void hideTitle(CMIUser user) {
+        if (!TitleMessage || !user.isOnline())
+            return;
+
+        CMITitleMessage.send(user.getPlayer(), getTitle(user), getSubtitle(user), 0, 0, 20);
+    }
+
+    private String getTitle(CMIUser user) {
+        return null;
+    }
+
+    private String getSubtitle(CMIUser user) {
+
+        return null;
     }
 
     public void setUserToAfk(CMIUser user, List<String> cmds) {
+
     }
 
     public void removeUserFromAfk(CMIUser user, List<String> cmds) {
@@ -96,7 +153,12 @@ public class AfkManager {
     }
 
     public void removeUser(CMIUser user) {
-
+        this.lastAction.remove(user);
+//        afkPlayers.remove(user);
+        if (lastAction.isEmpty() && sched != null) {
+            sched.cancel();
+            sched = null;
+        }
     }
 
     public void updateUser(CMIUser user) {
@@ -104,6 +166,10 @@ public class AfkManager {
     }
 
     public void setLastAction(CMIUser user, long time) {
+        if (this.sched == null) {
+            this.tasker();
+        }
+        this.lastAction.put(user, time);
     }
 
     public Long getLastAction(CMIUser user) {
@@ -191,7 +257,7 @@ public class AfkManager {
         StopPlayTime = stopPlayTime;
     }
 
-    private int afkSched = -1;
+    private CMITask afkSched = null;
 
     List<CMIUser> afkList = new ArrayList<CMIUser>();
 
@@ -200,6 +266,11 @@ public class AfkManager {
     }
 
     public void AddToAfkTimePreventer(CMIUser user) {
+//	if (user.isOnline() && this.isDisabledWorld(user.getLocation().getWorld())) {
+//	    return;
+//	}
+        afkList.add(user);
+        AfkTimePreventer();
     }
 
     @SuppressWarnings("deprecation")
@@ -221,10 +292,11 @@ public class AfkManager {
 
     public boolean nearActivePlayer(Location loc, SpawnReason reason) {
 
-        return false;
+        return true;
     }
 
     public static Boolean isNear(Location loc1, Location loc2) {
+
         return true;
     }
 
@@ -269,10 +341,28 @@ public class AfkManager {
     }
 
     public Set<CMIUser> getAfkPlayers() {
-        return afkPlayers;
+        return afkPlayersMap
+            .keySet()
+            .stream()
+            .map(CMIUser::getUser)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+    }
+
+    public HashMap<UUID, AfkInfo> getAfkPlayersMap() {
+        return afkPlayersMap;
+    }
+
+    public int getAfkPlayerCount() {
+        return afkPlayersMap.size();
     }
 
     public boolean isDisableOnLookAround() {
         return disableOnLookAround;
     }
+
+    public boolean isPreventHook() {
+        return PreventHook;
+    }
+
 }

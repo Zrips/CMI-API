@@ -12,66 +12,67 @@ import net.Zrips.CMILib.Container.CMILocation;
 
 public class CMIJailCell {
 
-    private Integer id;
+    private int id = 0;
     private CMILocation teleportInLocation;
     private World world;
     private Set<UUID> jailedOnes = new LinkedHashSet<UUID>();
     private CMIJail jail;
 
     public CMIJailCell(CMIJail jail) {
-        this.jail = jail;
+	this.jail = jail;
     }
 
     public Integer getId() {
-        return id;
+	return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+	this.id = id;
     }
 
     public void loadJailed(String root) throws Exception {
+	
     }
 
     public CMILocation getTeleportInLocation() {
-        return teleportInLocation;
+	return teleportInLocation;
     }
 
     @Deprecated
     public void setTeleportInLocation(Location safeLoc) {
-        if (safeLoc != null)
-            this.teleportInLocation = new CMILocation(safeLoc);
+	if (safeLoc != null)
+	    this.teleportInLocation = new CMILocation(safeLoc);
     }
 
     public void setTeleportInLocation(CMILocation safeLoc) {
-        this.teleportInLocation = safeLoc;
+	this.teleportInLocation = safeLoc;
     }
 
     public World getWorld() {
-        return world;
+	return world;
     }
 
     public void setWorld(World world) {
-        this.world = world;
+	this.world = world;
     }
 
     public Set<UUID> getJailed() {
-        return jailedOnes;
+	return jailedOnes;
     }
 
     public void setJailed(HashSet<UUID> jailedOnes) {
-        this.jailedOnes = jailedOnes;
+	this.jailedOnes = jailedOnes;
     }
 
     public void addJailed(UUID uuid) {
-        this.jailedOnes.add(uuid);
+	this.jailedOnes.add(uuid);
     }
 
     public void removeJailed(UUID uuid) {
-        this.jailedOnes.remove(uuid);
+	this.jailedOnes.remove(uuid);
     }
 
     public CMIJail getJail() {
-        return jail;
+	return jail;
     }
 }

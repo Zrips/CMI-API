@@ -28,7 +28,6 @@ public class ShulkerBoxManager {
     }
 
     public void closeAll() {
-
     }
 
     public boolean isEditing(Player player) {
@@ -43,9 +42,9 @@ public class ShulkerBoxManager {
     }
 
     private boolean PreventInCombat = true;
+    private double CostToOpen = 0;
 
     public void loadConfig() {
-
     }
 
     public void openShulkerBox(Player player, ItemStack item) {

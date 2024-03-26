@@ -3,12 +3,14 @@ package com.Zrips.CMI.Modules.PlayTimeRewards;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class PlayTimeRewardsManager {
 
@@ -22,7 +24,7 @@ public class PlayTimeRewardsManager {
         this.plugin = plugin;
     }
 
-    private int sched = -1;
+    private CMITask sched = null;
 
     private int interval = 1;
     private int OneTimeAmount = 1;
@@ -32,10 +34,10 @@ public class PlayTimeRewardsManager {
     public static boolean RequiresPermission = false;
 
     public void stop() {
-        if (sched == -1)
+        if (sched == null)
             return;
-        Bukkit.getScheduler().cancelTask(sched);
-        sched = -1;
+        sched.cancel();
+        sched = null;
     }
 
     public void loadConfig() {
@@ -63,10 +65,24 @@ public class PlayTimeRewardsManager {
     HashMap<UUID, Long> informMap = new HashMap<UUID, Long>();
 
     public void informPlayer(Player player, String rewardName) {
+
     }
+
+    private String fileName = "PlayTimeRewards.yml";
 
     public void load() {
 
+    }
+
+    ConcurrentHashMap<UUID, PlaytimeClaimCache> cache = new ConcurrentHashMap<UUID, PlaytimeClaimCache>();
+
+    public void clearCache(UUID uuid) {
+        cache.remove(uuid);
+    }
+
+    public int getClaimableRewardCount(CMIUser user) {
+
+        return 0;
     }
 
     public HashMap<String, PTRRepeat> getRepeatableRewards() {
@@ -103,5 +119,9 @@ public class PlayTimeRewardsManager {
 
     public boolean isExcludeAfk() {
         return ExcludeAfk;
+    }
+
+    public boolean isEnabled() {
+        return Enabled;
     }
 }

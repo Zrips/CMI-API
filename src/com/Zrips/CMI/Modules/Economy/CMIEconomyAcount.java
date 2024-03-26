@@ -27,23 +27,20 @@ public class CMIEconomyAcount {
 
     public WorldGroup getCurrentWorldGroup() {
         World world = user.getWorld();
-        WorldGroup group = world == null ? CMI.getInstance().getEconomyManager().getWorldGroup(EconomyManager.CMIDefaultWorld) : CMI.getInstance().getEconomyManager().getWorldGroup(world.getName());
-        return group;
+        return world == null ? CMI.getInstance().getEconomyManager().getWorldGroup(EconomyManager.CMIDefaultWorld) : CMI.getInstance().getEconomyManager().getWorldGroup(world.getName());
     }
 
     public String getCurrentWorldGroupName() {
         World world = user.getWorld();
-        String name = world == null ? EconomyManager.CMIDefaultWorld : world.getName();
-        return name;
+        return world == null ? EconomyManager.CMIDefaultWorld : world.getName();
     }
 
     public Double setBalance(double amount) {
-        WorldGroup defaultGroup = CMI.getInstance().getEconomyManager().getDefaultGroup();
-        return setBalance(defaultGroup, amount);
+        return setBalance(CMI.getInstance().getEconomyManager().getDefaultGroup(), amount, true, false);
     }
 
     public Double setBalance(WorldGroup defaultGroup, double amount) {
-        return setBalance(defaultGroup, amount, true);
+        return setBalance(defaultGroup, amount, true, false);
     }
 
     public Double setBalance(WorldGroup defaultGroup, double amount, boolean save) {
@@ -64,20 +61,23 @@ public class CMIEconomyAcount {
     }
 
     public Double getBalance() {
-        return getBalance(null);
+        return null;
     }
 
     public Double getBalance(String worldName) {
 
-        return 0D;
-
+        return null;
     }
 
     public String getFormatedBalance() {
+//	Update for multiworld
+//	return getFormatedBalance(getCurrentWorldGroupName());
         return getFormatedBalance(null);
     }
 
     public String getFormatedBalance(boolean shorts) {
+//	Update for multiworld
+//	return getFormatedBalance(getCurrentWorldGroupName());
         return getFormatedBalance(null, shorts);
     }
 
@@ -86,14 +86,18 @@ public class CMIEconomyAcount {
     }
 
     public String getFormatedBalance(String worldName, boolean shorts) {
-        return "";
+
+        return null;
     }
 
     public static String format(double number, HashMap<Double, String> hashMap, String worldName) {
-        return "";
+
+        return null;
     }
 
     public Double deposit(double amount) {
+        // Update for multiworld support
+//	return deposit(getCurrentWorldGroupName(), amount);
         return deposit(null, amount);
     }
 
@@ -106,10 +110,13 @@ public class CMIEconomyAcount {
     * @param source only used to indicate from who money is deposited but doesn't deduct from it
     */
     public Double deposit(String worldName, double amount, CMIUser source) {
-        return 0D;
+
+        return null;
     }
 
     public Double withdraw(double amount) {
+        // Update for multiworld support
+//	return withdraw(getCurrentWorldGroupName(), amount);
         return withdraw(null, amount);
     }
 
@@ -122,15 +129,19 @@ public class CMIEconomyAcount {
     * @param target only used to indicate who gets money but doesn't actually transfer to target player
     */
     public Double withdraw(String worldName, double amount, CMIUser target) {
-        return 0D;
+
+        return null;
     }
 
     public boolean has(double amount) {
+        // Update for multiworld support
+//	return has(getCurrentWorldGroupName(), amount);
         return has(null, amount);
     }
 
     public boolean has(String worldName, double amount) {
-        return true;
+
+        return false;
     }
 
     public Map<WorldGroup, Double> getBalances() {
@@ -138,8 +149,7 @@ public class CMIEconomyAcount {
     }
 
     public HashMap<String, Double> getWorldGroupBalancesRounded() {
-        HashMap<String, Double> map = new HashMap<String, Double>();
-        return map;
+        return null;
     }
 
     public HashMap<String, Double> getWorldGroupBalances() {

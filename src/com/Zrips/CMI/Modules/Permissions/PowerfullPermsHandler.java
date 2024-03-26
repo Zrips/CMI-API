@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 public class PowerfullPermsHandler implements PermissionInterface {
 
     public PowerfullPermsHandler() {
-
     }
 
     @Override

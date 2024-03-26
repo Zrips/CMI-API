@@ -7,15 +7,12 @@ import com.Zrips.CMI.CMI;
 public class DiscordSRVManager {
 
     private CMI plugin;
-    private DiscordSRVListener discordsrvListener = new DiscordSRVListener();
+
     private String channelName = null;
 
     public DiscordSRVManager(CMI plugin) {
+        this.plugin = plugin;
 
-    }
-
-    public boolean enabled() {
-        return false;
     }
 
     public void sendDiscordDeathMessage(Player player, String deathMessage) {

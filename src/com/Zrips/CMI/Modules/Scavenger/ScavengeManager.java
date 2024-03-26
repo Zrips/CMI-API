@@ -46,7 +46,6 @@ public class ScavengeManager {
 
     }
 
-//item black list
     private static final int slotOfItem = 13;
 
     public void openExtractor(Player player) {

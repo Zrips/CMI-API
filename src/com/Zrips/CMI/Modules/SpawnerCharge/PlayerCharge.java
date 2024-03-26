@@ -1,5 +1,7 @@
 package com.Zrips.CMI.Modules.SpawnerCharge;
 
+import java.util.UUID;
+
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
@@ -8,7 +10,7 @@ public class PlayerCharge {
     private int charges = 0;
     private long lastGive = 0L;
     private SCharges SCharge;
-    private CMIUser user;
+    private UUID uuid;
     private long lastChecked = 0L;
 
     public PlayerCharge(CMIUser user, boolean update) {
@@ -16,6 +18,7 @@ public class PlayerCharge {
     }
 
     private void updateSpawnerCharge() {
+
     }
 
     public void reset() {
@@ -23,7 +26,11 @@ public class PlayerCharge {
     }
 
     public void reset(boolean update) {
-
+        charges = 0;
+        lastGive = 0L;
+        SCharge = null;
+        if (update)
+            updateSpawnerCharge();
     }
 
     public int getCharges() {
@@ -37,7 +44,7 @@ public class PlayerCharge {
     }
 
     public boolean haveLeftCharge() {
-        if (!CMI.getInstance().getConfigManager().ChargesUse)
+        if (!CMI.getInstance().getSpawnerChargesManager().isChargesUse())
             return true;
         updateSpawnerCharge();
         return charges > 0;
@@ -57,6 +64,7 @@ public class PlayerCharge {
     }
 
     public boolean lowerCd() {
+
         return true;
     }
 
@@ -65,6 +73,18 @@ public class PlayerCharge {
     }
 
     private void updateChargeTimer() {
+        if (SCharge == null)
+            return;
+        if (lastGive == 0L)
+            lastGive = System.currentTimeMillis();
+        long cd = SCharge.getCooldown() * 1000;
+        long dif = System.currentTimeMillis() - lastGive;
+        int times = (int) (dif / cd);
+        if (times > 0) {
+            addCharge(times);
+            long c = cd * times;
+            lastGive = lastGive + c;
+        }
     }
 
     public String getLeftTime() {
@@ -92,7 +112,6 @@ public class PlayerCharge {
     }
 
     public boolean takeCharge(int amount, boolean force) {
-
         return true;
     }
 

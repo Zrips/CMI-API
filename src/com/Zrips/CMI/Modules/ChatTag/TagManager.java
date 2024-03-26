@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.CMI;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class TagManager {
 
@@ -24,7 +25,7 @@ public class TagManager {
     private boolean ChatTagRemoveEta;
     List<String> commands = new ArrayList<String>();
 
-    public void load() {
+    public void load(ConfigReader cfg) {
 
     }
 
@@ -34,7 +35,8 @@ public class TagManager {
     }
 
     public String tag(Player player, String msg, String format, boolean performCmds) {
-        return "";
+
+        return null;
     }
 
     public String getChatTagColor() {

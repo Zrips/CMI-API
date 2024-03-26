@@ -15,23 +15,19 @@ public class Lag implements Runnable {
     }
 
     public double getTPS(int seconds) {
+
         return 0;
     }
 
     public List<Long> getLastTimes(int range) {
-
         return null;
     }
 
     @Override
     public void run() {
-        TicksList.add(System.currentTimeMillis());
-        if (TicksList.size() > 1800)
-            TicksList.remove(0);
     }
 
     public static double getProcessCpuLoad() throws Exception {
-
         return 0.0;
     }
 }

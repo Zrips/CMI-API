@@ -14,6 +14,10 @@ public enum CMITextAlignment {
     }
 
     public static CMITextAlignment getByName(String name) {
+        for (CMITextAlignment one : CMITextAlignment.values()) {
+            if (one.toString().equalsIgnoreCase(name))
+                return one;
+        }
         return null;
     }
     

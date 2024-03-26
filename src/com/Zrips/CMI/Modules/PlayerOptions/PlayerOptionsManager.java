@@ -2,6 +2,8 @@ package com.Zrips.CMI.Modules.PlayerOptions;
 
 import java.util.List;
 
+import org.bukkit.entity.Player;
+
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
@@ -31,6 +33,10 @@ public class PlayerOptionsManager {
     }
 
     public void openOptionGUI(CMIUser user) {
+        openOptionGUI(user.getPlayer(), user);
+    }
+
+    public void openOptionGUI(Player sender, CMIUser user) {
 
     }
 }

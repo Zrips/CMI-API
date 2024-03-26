@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -16,10 +15,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -27,15 +26,12 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.itemInfo;
-import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
+import com.Zrips.CMI.Modules.Teleportations.TeleportManager.TpAction;
 import com.google.common.base.Charsets;
 
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Container.CMIWorld;
-import net.Zrips.CMILib.Items.CMIItemStack;
-import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class Util {
 
@@ -55,6 +51,25 @@ public class Util {
         for (World one : Bukkit.getWorlds()) {
             worldCache.put(one.getUID(), one.getName());
         }
+    }
+
+    public static enum SignSide {
+        FRONT,
+        BACK
+    }
+
+    public static Player getAttacker(EntityDamageEvent event) {
+
+        return null;
+    }
+
+    public static Entity getDamager(EntityDamageEvent event) {
+
+        return null;
+    }
+
+    public static SignSide getSignSide(Block sign, Location loc) {
+        return null;
     }
 
     public String serializePotionEffect(PotionEffect effect) {
@@ -136,12 +151,6 @@ public class Util {
     }
 
     public void removeMessageReplyTo(String sender) {
-        replyResponder removed = replyMapByReceiver.remove(sender);
-        if (removed != null) {
-            replyResponder got = replyMapBySender.get(removed.getName());
-            if (got != null && got.getName().equalsIgnoreCase(sender))
-                replyMapBySender.remove(removed.getName());
-        }
     }
 
     public double getDistance(Location loc1, Location loc2) {
@@ -156,7 +165,6 @@ public class Util {
     }
 
     public int getMaxWorldHeight(World world) {
-
         return 256;
     }
 
@@ -184,28 +192,14 @@ public class Util {
     }
 
     public String getMessageReplyTo(String sender) {
-
         return null;
     }
 
-    public String createTextProbgressBar(int bars, int total, int current) {
-
+    public String createTextProbgressBar(int bars, float total, float current) {
         return null;
     }
 
     public Block getHighestBlockAt(Location loc, boolean includeSolids) {
-
-        for (int y = loc.getWorld().getMaxHeight(); y > CMIWorld.getMinHeight(loc.getWorld()); y--) {
-            Block b = loc.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ());
-
-            if (b == null || b.getType().equals(Material.AIR))
-                continue;
-
-            if (includeSolids && !b.getType().isSolid())
-                continue;
-
-            return b;
-        }
 
         return null;
     }
@@ -264,20 +258,11 @@ public class Util {
     }
 
     public itemInfo getItemInfo(String text) {
-        CMIItemStack ci = CMILib.getInstance().getItemManager().getItem(text);
-        if (ci != null)
-            return new itemInfo(ci.getCMIType());
-        return new itemInfo(CMIMaterial.get(text));
+        return null;
     }
 
     public int getItemData(ItemStack item) {
-        if (item.getType().toString().contains("_EGG"))
-            return CMILib.getInstance().getReflectionManager().getEggId(item);
-        else if (item.getType().equals(CMIMaterial.SPAWNER.getMaterial()))
-            return new CMIItemStack(item).getEntityType().getTypeId();
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1))
-            return 0;
-        return item.getData().getData();
+        return 0;
     }
 
     public String translateDamageCause(String cause) {
@@ -338,7 +323,7 @@ public class Util {
     }
 
     public void resendBlockInfo(final Player player, final Block block) {
-
+        CMIScheduler.runTaskLater(() -> player.sendBlockChange(block.getLocation(), block.getType(), (byte) 0), 10L);
     }
 
     public boolean isFullInv(ItemStack[] cn, List<ItemStack> list) {
@@ -347,10 +332,6 @@ public class Util {
 
     public List<ItemStack> ConvertInvToList(Inventory inv) {
         return null;
-    }
-
-    public boolean isOnline(String name) {
-        return Bukkit.getPlayer(name) != null;
     }
 
     public boolean canRepair(ItemStack item) {
@@ -369,12 +350,7 @@ public class Util {
     }
 
     public boolean hasSilkTouch(ItemStack is, int lvl) {
-        if (is == null)
-            return false;
-        for (Entry<Enchantment, Integer> one : is.getEnchantments().entrySet()) {
-            if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH") && one.getValue() >= lvl)
-                return true;
-        }
+
         return false;
     }
 
@@ -415,11 +391,14 @@ public class Util {
     public boolean validName(String regex, String name) {
 
         return false;
+
     }
 
     public String getWorldName(UUID uuid) {
-
-        return null;
+        World w = Bukkit.getWorld(uuid);
+        if (w != null)
+            return w.getName();
+        return this.worldCache.get(uuid);
     }
 
     public CMIChatColor getTpsColor(Double tps) {

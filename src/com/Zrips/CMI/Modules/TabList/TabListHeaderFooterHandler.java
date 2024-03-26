@@ -34,7 +34,9 @@ public class TabListHeaderFooterHandler {
     }
 
     private void sendPacket(Player player, Object packet) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
+        Object handle = getHandle.invoke(player);
+        Object connection = playerConnection.get(handle);
+        sendPacket.invoke(connection, packet);
     }
 
     private String getCraftPlayerClasspath() {

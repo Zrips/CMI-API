@@ -59,13 +59,11 @@ public class CMIChunk {
     }
 
     public CMIChunk recheckBiomes(Chunk chunk) {
-
-        return this;
+        return null;
     }
 
     public CMIChunk recheckBiomes() {
-
-        return this;
+        return null;
     }
 
     public World getWorld() {
@@ -101,23 +99,14 @@ public class CMIChunk {
     }
 
     public String getBiomeColorCodes() {
-        String b = "";
-
-        return b;
+        return null;
     }
 
     public Color getUnbluredColor() {
-
         return null;
     }
 
     public Color getColor() {
-
-        return null;
-    }
-
-    private static Color blend(Color c0, Color c1) {
-
         return null;
     }
 

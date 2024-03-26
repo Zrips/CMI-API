@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.Portals.CMIPortal;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class Visualizer {
     private Player player;
     private long start;
     private List<CuboidArea> areas = new ArrayList<CuboidArea>();
     private List<CuboidArea> errorAreas = new ArrayList<CuboidArea>();
-    private int id = -1;
-    private int errorId = -1;
+    private CMITask id = null;
+    private CMITask errorId = null;
     private boolean once = false;
     private int starting = 0;
 
@@ -33,16 +34,24 @@ public class Visualizer {
     }
 
     public void cancelAll() {
-        if (id != -1) {
-            Bukkit.getScheduler().cancelTask(id);
+        if (id != null) {
+            id.cancel();
         }
-        if (errorId != -1) {
-            Bukkit.getScheduler().cancelTask(errorId);
+        if (errorId != null) {
+            errorId.cancel();
         }
         loc = null;
     }
 
     public boolean isSameLoc() {
+        if (loc == null)
+            return false;
+        if (loc.getWorld() != player.getWorld())
+            return false;
+        if (!errorAreas.isEmpty() && errorLocations.isEmpty())
+            return false;
+        if (loc.distance(player.getLocation()) > 1)
+            return false;
 
         return true;
     }
@@ -106,19 +115,19 @@ public class Visualizer {
         this.errorAreas.add(errorArea);
     }
 
-    public int getId() {
+    public CMITask getTask() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setTask(CMITask id) {
         this.id = id;
     }
 
-    public int getErrorId() {
+    public CMITask getErrorTask() {
         return errorId;
     }
 
-    public void setErrorId(int errorId) {
+    public void setErrorTask(CMITask errorId) {
         this.errorId = errorId;
     }
 

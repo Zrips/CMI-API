@@ -10,7 +10,7 @@ public class Clickery {
 	this.time = System.currentTimeMillis();
     }
 
-    private void addClick() {	
+    private void addClick() { 
     }
 
     public int getSpeed() {

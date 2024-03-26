@@ -15,10 +15,6 @@ public class CMIPlayTimeFormat {
     static String minutesFormat = "";
     static String secondsFormat = "";
 
-    public static void update() {
-
-    }
-
     public static String formatPlaytimePlaceholder(long ticks) {
 
         return null;

@@ -6,11 +6,11 @@ import net.Zrips.CMILib.Container.CMIVectorInt3D;
 
 public class AfkInfo {
 
-    private Long afkFrom = null;
+    private long afkFrom = 0;
     private int kicksPerformed = 0;
     private AfkType type;
     private String reason;
-    private Long playtimeAtAfkStart;
+    private long playtimeAtAfkStart = 0;
 
     private CMIVectorInt3D afkAt = null;
 
@@ -19,12 +19,12 @@ public class AfkInfo {
     public AfkInfo() {
     }
 
-    public Long getAfkFrom() {
+    public long getAfkFrom() {
         return afkFrom;
     }
 
     public void setAfkFrom(Long afkFrom) {
-        this.afkFrom = afkFrom;
+        this.afkFrom = afkFrom == null ? 0 : afkFrom;
     }
 
     public int getKicksPerformed() {
@@ -55,12 +55,12 @@ public class AfkInfo {
         this.reason = reason;
     }
 
-    public Long getPlaytimeAtAfkStart() {
-        return playtimeAtAfkStart == null ? 0L : playtimeAtAfkStart;
+    public long getPlaytimeAtAfkStart() {
+        return playtimeAtAfkStart;
     }
 
     public void setPlaytimeAtAfkStart(Long playtimeAtAfkStart) {
-        this.playtimeAtAfkStart = playtimeAtAfkStart;
+        this.playtimeAtAfkStart = playtimeAtAfkStart == null ? 0 : playtimeAtAfkStart;
     }
 
     public int getKickOutInSec() {

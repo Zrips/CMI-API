@@ -42,27 +42,27 @@ public enum CMIDamageCause {
     private DamageCause cause = null;
 
     CMIDamageCause() {
-        this(null, null);
+	this(null, null);
     }
 
     CMIDamageCause(String name, String secondaryName) {
-        this.name = name;
-        this.secondaryName = secondaryName;
+	this.name = name;
+	this.secondaryName = secondaryName;
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public String getSecondaryName() {
-        return secondaryName;
+	return secondaryName;
     }
 
     public static CMIDamageCause getByName(String name) {
-        return byName.get(name.toLowerCase().replace("_", ""));
+	return byName.get(name.toLowerCase().replace("_", ""));
     }
 
     public DamageCause getCause() {
-        return cause;
+	return cause;
     }
 }

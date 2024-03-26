@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -17,14 +16,14 @@ import com.Zrips.CMI.Containers.CMITimeRate;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Time.TimeInfo;
 import net.Zrips.CMILib.Time.timeState;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class TimeManager {
 
     double tPHour = 1000d;
     double tPMin = 1000d / 60d;
     double tPSec = 1000d / 60d / 60d;
-    private int schedID = -1;
-    private HashMap<World, Integer> daySchedID = new HashMap<World, Integer>();
+    private HashMap<World, CMITask> daySchedID = new HashMap<World, CMITask>();
 
     private HashMap<World, HashMap<timeState, CMITimeRate>> dayTimeDurations = new HashMap<World, HashMap<timeState, CMITimeRate>>();
 
@@ -48,7 +47,6 @@ public class TimeManager {
     }
 
     public void runTimer() {
-
     }
 
     public void loadConfig() {
@@ -58,9 +56,9 @@ public class TimeManager {
     public void stopDayTimer(World world) {
         if (world == null)
             return;
-        Integer oldId = daySchedID.get(world);
-        if (oldId != null) {
-            Bukkit.getScheduler().cancelTask(oldId);
+        CMITask task = daySchedID.remove(world);
+        if (task != null) {
+            task.cancel();
         }
     }
 //    Long time = System.currentTimeMillis();
@@ -97,6 +95,7 @@ public class TimeManager {
 
     public long setTime(World world, TimeInfo tInfo, boolean smooth) {
         return -1L;
+
     }
 
     public long setPTime(Player player, TimeInfo tInfo, boolean smooth) {

@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.DataBase;
 
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,6 +22,19 @@ public class DBConnectionPool {
     }
     
     public synchronized DBConnection getConnection() throws SQLException {
+        if (connection != null && (connection.isClosed() || !connection.isValid(1))) {
+            try {
+                connection.closeConnection();
+            } catch (SQLException e) {}
+            connection = null;
+        }
+        
+        if (connection == null) {
+            @SuppressWarnings("resource")
+	    Connection conn = DriverManager.getConnection(url, username, password);
+            connection = new DBConnection(conn);
+        }
+        
         return connection;
     }
     
@@ -29,6 +43,7 @@ public class DBConnectionPool {
             try {
                 connection.closeConnection();
             } catch (SQLException e) {
+//                e.printStackTrace();
             }
         }
     }

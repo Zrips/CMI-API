@@ -18,6 +18,7 @@ public enum CMIDeathType {
     MagmaBlock,
     Player,
     Block,
+    Tnt,
     Mob,
     PotionsOfHarming,
     Projectile,

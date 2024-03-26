@@ -19,9 +19,15 @@ public class CMIPlaneIntersection {
 
     }
 
+    private static CMIVector3D intersectPoint(CMIVector3D rayVector, CMIVector3D rayPoint, CMIVector3D planeNormal, CMIVector3D planePoint) {
+
+        return null;
+    }
+
     private final static double _HPI = Math.PI / 180;
 
     public static CMIVector3D rotateAroundCenter(double lx, double ly, double yaw, double pitch) {
+
         return null;
     }
 
@@ -38,10 +44,12 @@ public class CMIPlaneIntersection {
     }
 
     private static CMIVector3D rotateX(CMIVector3D v, double a) {
+
         return null;
     }
 
     private static CMIVector3D rotateY(CMIVector3D v, double a) {
+
         return null;
     }
 

@@ -19,7 +19,6 @@ public class SavedItemManager {
     }
 
     public void addSavedItem(SavedItem savedItem) {
-
     }
 
     public boolean removeSavedItem(SavedItem savedItem) {
@@ -28,12 +27,11 @@ public class SavedItemManager {
 
     public boolean removeSavedItem(String category, String name) {
 
-            return false;
-
+        return false;
     }
 
     public SavedItem getSavedItem(String category, String name) {
-       
+
         return null;
     }
 
@@ -42,12 +40,14 @@ public class SavedItemManager {
     }
 
     public Set<SavedItem> getSavedItems(String category) {
-       
+
         return null;
     }
 
+    private String fileName = "SavedItems.yml";
+
     public void load() {
-      
+
     }
 
     public int savedItemCount() {
@@ -59,7 +59,7 @@ public class SavedItemManager {
     }
 
     public void save() {
-       
+
     }
 
     public ItemStack getUpatedItemClone(Player player, SavedItem savedItem) {
@@ -68,7 +68,7 @@ public class SavedItemManager {
     }
 
     public String processText(String text, Player player, SavedItem savedItem) {
-      
+
         return null;
     }
 }

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Steerable;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -21,6 +21,9 @@ import org.bukkit.util.Vector;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
 import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class AnimationManager {
 
@@ -41,12 +44,20 @@ public class AnimationManager {
     HashMap<String, UUID> chairLoc = new HashMap<String, UUID>();
 
     private HashMap<UUID, UUID> riding = new HashMap<UUID, UUID>();
+    private ConcurrentHashMap<UUID, Location> ridingNonSteerable = new ConcurrentHashMap<UUID, Location>();
+    private HashMap<UUID, UUID> beingRidden = new HashMap<UUID, UUID>();
+
+//    Set<UUID> sleeping = new HashSet<UUID>();
+
+//    private DeadBodies deadmanager;
 
     public AnimationManager(CMI plugin) {
         this.plugin = plugin;
+//	this.deadmanager = new DeadBodies();
     }
 
     public void clearCache(UUID uuid) {
+
     }
 
     private boolean SitOnStairs = true;
@@ -99,9 +110,13 @@ public class AnimationManager {
 
     }
 
-    private int autoTimerBukkitId = 0;
+    private CMITask autoTimerBukkitId = null;
 
     public void stopLeatherUpdate() {
+        if (autoTimerBukkitId != null) {
+            autoTimerBukkitId.cancel();
+            autoTimerBukkitId = null;
+        }
     }
 
     private Runnable autoTimer = new Runnable() {
@@ -117,6 +132,13 @@ public class AnimationManager {
 
     private void checkLeatherArmors() {
 
+    }
+
+    private static double getMaxHealth(Player player) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+            return player.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+        }
+        return player.getMaxHealth();
     }
 
     private static void setColor(CMIUser user, LeatherAnimationType type, List<CMIInventorySlot> slot, LeatherAnimation anim) {
@@ -206,11 +228,7 @@ public class AnimationManager {
     }
 
     public void sit(Player player, Location location, boolean persistent) {
-        Chair chair = new Chair().setArmorStandLoc(location.clone().add(0.0D, -1.7D, 0.0D)).setChairLoc(location.clone().add(0, -1, 0));
-        chair.setPersistent(persistent);
-        if (sit(player, chair)) {
-            chairLoc.put(plugin.getUtilManager().convertLocToStringShort(location.clone().add(0, -1, 0)), player.getUniqueId());
-        }
+
     }
 
     public boolean isSomeOneSittingHere(Block block) {
@@ -220,7 +238,7 @@ public class AnimationManager {
 
     private static Vector getStairLedgeDirection(Block block) {
 
-        return new Vector(0, 0, 0);
+        return null;
     }
 
     public void sit(Player player, Block block) {
@@ -232,6 +250,8 @@ public class AnimationManager {
     }
 
     public boolean isSitting(Player player) {
+        if (player == null)
+            return false;
         if (map.isEmpty())
             return false;
         return map.containsKey(player.getUniqueId());
@@ -255,7 +275,7 @@ public class AnimationManager {
 
     @Deprecated
     public void removePlayer(UUID uuid) {
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = CMIUser.getOnlinePlayer(uuid);
         if (player != null)
             removePlayer(player);
     }
@@ -271,7 +291,7 @@ public class AnimationManager {
     }
 
     public void removePlayerFromChair(UUID uuid) {
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = CMIUser.getOnlinePlayer(uuid);
         if (player != null)
             removePlayerFromChair(player);
     }
@@ -293,7 +313,15 @@ public class AnimationManager {
     }
 
     private void updateSitTask() {
-
+        if (task == null && !map.isEmpty()) {
+            task = new RotateStand();
+            return;
+        }
+        if (task != null && map.isEmpty()) {
+            task.stop();
+            task = null;
+            return;
+        }
     }
 
     public boolean isSitOnStairs() {
@@ -313,23 +341,61 @@ public class AnimationManager {
     }
 
     public UUID removeRiding(UUID uuid) {
-        return riding.remove(uuid);
+        UUID removed = riding.remove(uuid);
+        ridingNonSteerable.remove(uuid);
+
+        if (removed != null)
+            beingRidden.remove(removed);
+
+        return removed;
+    }
+
+    public List<Entity> removePassengers(Player player, String playerName) {
+
+        return null;
     }
 
     public boolean isRiding(UUID uuid) {
         return riding.containsKey(uuid);
     }
 
-    public UUID isBeingRiden(UUID uuid) {
-        for (Entry<UUID, UUID> one : riding.entrySet()) {
-            if (one.getValue().equals(uuid))
-                return one.getKey();
-        }
-        return null;
+    public HashMap<UUID, UUID> getRidingList() {
+        return riding;
     }
 
+    public boolean isBeingRiden(UUID uuid) {
+        return beingRidden.containsKey(uuid);
+    }
+
+    public boolean isRidingNonSteerable(UUID uuid) {
+        return ridingNonSteerable.containsKey(uuid);
+    }
+
+    public UUID getBeingRiden(UUID uuid) {
+        return beingRidden.get(uuid);
+    }
+
+    @Deprecated
     public void addRiding(UUID riding, UUID vehicle) {
         this.riding.put(riding, vehicle);
+        this.beingRidden.put(vehicle, riding);
+    }
+
+    CMITask ridingTask = null;
+
+    public void addRiding(Player player, Entity vehicle) {
+
+        if (!(vehicle instanceof Steerable)) {
+            ridingNonSteerable.put(player.getUniqueId(), player.getLocation());
+            runRidingTasker();
+        }
+
+        this.riding.put(player.getUniqueId(), vehicle.getUniqueId());
+        this.beingRidden.put(vehicle.getUniqueId(), player.getUniqueId());
+    }
+
+    private void runRidingTasker() {
+
     }
 
     public boolean isDoubleClick() {

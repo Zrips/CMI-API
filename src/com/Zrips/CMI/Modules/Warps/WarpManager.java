@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.Warps;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,11 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class WarpManager {
 
@@ -26,19 +27,15 @@ public class WarpManager {
     }
 
     public void onDisable() {
-
+        if (saveId != null) {
+            saveId.cancel();
+            saveId = null;
+            save();
+        }
     }
 
     public HashMap<String, CmiWarp> getWarps() {
         return warps;
-    }
-
-    public List<CmiWarp> getWarps(Player player, String group) {
-        return getWarps(player, null, group, true);
-    }
-
-    public List<CmiWarp> getWarps(Player player) {
-        return getWarps(player, null, null, true);
     }
 
     public int getWarpCount(Player player) {
@@ -52,11 +49,21 @@ public class WarpManager {
     }
 
     public int getMaxWarps(Player player) {
-        return 0;
+
+        return 9999;
+
+    }
+
+    public List<CmiWarp> getWarps(Player player, String group) {
+        return getWarps(player, null, group, true, false);
+    }
+
+    public List<CmiWarp> getWarps(Player player) {
+        return getWarps(player, null, null, true, false);
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group) {
-        return getWarps(player, page, group, true);
+        return getWarps(player, page, group, true, false);
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group, boolean includeHidden) {
@@ -102,8 +109,8 @@ public class WarpManager {
     }
 
     public List<CmiWarp> getWarps(int page, String group) {
-
-        return null;
+        List<CmiWarp> ls = new ArrayList<CmiWarp>();
+        return ls;
     }
 
     public int getPageCountFrom(int page, String group) {
@@ -121,7 +128,6 @@ public class WarpManager {
     }
 
     public List<CmiWarp> getWarps(int page, Integer slot, String group) {
-
         return null;
     }
 
@@ -130,8 +136,7 @@ public class WarpManager {
     }
 
     public CMIGui openComplexGUI(Player player, int page, String group) {
-        HashMap<Integer, HashMap<Integer, CmiWarp>> w = getPagedWarps(player, group, false, false);
-        return openComplexGUI(player, page, w);
+        return null;
     }
 
     public CMIGui openComplexGUI(Player player, int page, HashMap<Integer, HashMap<Integer, CmiWarp>> warpMap) {
@@ -157,18 +162,9 @@ public class WarpManager {
     }
 
     public void addWarp(CmiWarp warp, boolean save) {
-
     }
 
     public CmiWarp getWarp(Player player, String name) {
-        if (name == null)
-            return null;
-        CmiWarp warp = warps.get(name.toLowerCase());
-        if (warp != null) {
-            if (warp.isReqPerm() && !CMIPerm.command_warp_$1.hasPermission(player, warp.getName().toLowerCase()))
-                return null;
-            return warp;
-        }
         return null;
     }
 
@@ -205,20 +201,20 @@ public class WarpManager {
         return warpGUI;
     }
 
+    private String fileName = "Warps.yml";
+
     public void load() {
 
     }
 
     boolean saving = false;
 
-    private int saveId = -1;
+    private CMITask saveId = null;
 
     public void safeSave() {
-
     }
 
     public void asyncSave() {
-
     }
 
     public void save() {

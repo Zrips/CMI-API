@@ -13,7 +13,7 @@ class CMIDeathMsgInfo {
 
     private String basePath = null;
     
-    private String message = null;
+    private String message = "";
 
     public CMIDeathMsgInfo(UUID uuid, CMIKillerInfo killerInfo) {
 	this.uuid = uuid;

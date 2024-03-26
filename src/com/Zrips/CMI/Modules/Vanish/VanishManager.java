@@ -1,23 +1,39 @@
 package com.Zrips.CMI.Modules.Vanish;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.CMIVanish;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class VanishManager {
 
     private CMI plugin;
 
     private Set<UUID> vanishedOnlineList = new HashSet<UUID>();
-    Set<UUID> vanishedList = new HashSet<UUID>();
+    private Set<UUID> vanishedList = new HashSet<UUID>();
+
+    private HashMap<UUID, CMIVanish> vanishedCache = new HashMap<UUID, CMIVanish>();
+
+    public CMIVanish getVanish(UUID uuid) {
+        return vanishedCache.computeIfAbsent(uuid, k -> new CMIVanish(CMIUser.getUser(uuid)));
+    }
+
+    public @Nullable CMIVanish getVanishRaw(UUID uuid) {
+        return vanishedCache.get(uuid);
+    }
 
     public VanishManager(CMI plugin) {
         this.plugin = plugin;
@@ -40,14 +56,13 @@ public class VanishManager {
     }
 
     public void addPlayer(UUID uuid) {
-
     }
 
     private static final String vanishBossBar = "CMIVanishBossBar";
 
     public boolean nearActivePlayer(Location loc) {
 
-        return false;
+        return true;
     }
 
     public void applyVanish(CMIUser user) {
@@ -81,11 +96,12 @@ public class VanishManager {
     }
 
     public void removePlayer(CMIUser user) {
-
+        if (user == null)
+            return;
+        removePlayer(user.getUniqueId(), true);
     }
 
     public void removePlayer(Player player) {
-
     }
 
     public void removePlayer(UUID uuid) {
@@ -93,14 +109,13 @@ public class VanishManager {
     }
 
     public void removePlayer(UUID uuid, boolean showForOthers) {
-
     }
 
     public Set<UUID> getVanishedOnlineList() {
         return vanishedOnlineList;
     }
 
-    private int playtimeSched = -1;
+    private CMITask playtimeSched = null;
 
     List<CMIUser> playtimeList = new ArrayList<CMIUser>();
 
@@ -114,7 +129,6 @@ public class VanishManager {
         playTimePreventer();
     }
 
-    @SuppressWarnings("deprecation")
     private void playTimePreventer() {
 
     }

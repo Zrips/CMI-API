@@ -3,15 +3,17 @@ package com.Zrips.CMI.Modules.ReplaceBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Containers.itemInfo;
 import com.Zrips.CMI.Modules.Region.WorldInfo;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class BRInfo {
 
-    private int scheduleId = -1;
+    private CMITask task = null;
 
     private long showedInfo = 0L;
     private boolean showInfo = false;
@@ -28,6 +30,8 @@ public class BRInfo {
 
     private boolean running = false;
 
+//    private int wId = 0;
+//    private short wData = -1;
     private int y = -1;
 
     private long replaced = 0L;
@@ -59,12 +63,12 @@ public class BRInfo {
         return this.replaced;
     }
 
-    public void setscheduleId(int id) {
-        this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+        this.task = task;
     }
 
-    public int getScheduleId() {
-        return this.scheduleId;
+    public CMITask getScheduleTask() {
+        return this.task;
     }
 
     public void setShowInfo(long time) {
@@ -128,7 +132,7 @@ public class BRInfo {
     }
 
     public Player getPlayer() {
-        Player p = Bukkit.getPlayer(this.player.getUniqueId());
+        Player p = CMIUser.getOnlinePlayer(this.player.getUniqueId());
         if (p != null)
             this.player = p;
         return this.player;

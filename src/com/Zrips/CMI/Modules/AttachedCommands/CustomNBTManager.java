@@ -14,8 +14,23 @@ public class CustomNBTManager {
     private CMI plugin;
 
     public enum CustomNBTType {
-        NBTCommands, CMILimitedUseCurrent, CMILimitedUseMax, CMISafeLimitedUse, CMILimitedLeftClick, CMIRepairMan, Add, Clear, Take, MoneyCheque, RandomId, @Deprecated
-        CooldownId, Cooldown, ItemCooldown
+        NBTCommands,
+        CMILimitedUseCurrent,
+        CMILimitedUseMax,
+        CMISafeLimitedUse,
+        CMILimitedLeftClick,
+        CMIRepairMan,
+        Add,
+        Clear,
+        Take,
+        CMICheque,
+        @Deprecated
+        MoneyCheque,
+        RandomId,
+        @Deprecated
+        CooldownId,
+        Cooldown,
+        ItemCooldown
     }
 
     public static final String cdSpliter = ":";
@@ -38,22 +53,30 @@ public class CustomNBTManager {
     }
 
     public ItemStack clear(ItemStack iih) {
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.CMILimitedUseMax.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.CMISafeLimitedUse.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.CMILimitedUseCurrent.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.Cooldown.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.RandomId.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.CooldownId.name(), null);
+        iih = (ItemStack) new CMINBT(iih).setInt(CustomNBTType.ItemCooldown.name(), null);
+        iih = plugin.getNMS().setNBTList(iih, CustomNBTType.NBTCommands.name(), null);
         return iih;
     }
 
     public ItemStack updateRepairLore(ItemStack item, UUID uuid) {
 
-        return item;
+        return null;
     }
 
     public ItemStack updateUsesLore(ItemStack item, int uses) {
 
-        return item;
+        return null;
     }
 
     public String handleConsoleCommand(Player player, String cmd) {
 
-        return cmd;
+        return null;
     }
 
 }

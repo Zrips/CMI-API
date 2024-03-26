@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
 import com.google.common.collect.Iterables;
 
 import net.Zrips.CMILib.CMILib;
@@ -18,16 +19,26 @@ public class BungeeCordManager {
     public static final String GetServer = "GetServer";
     public static final String GetServers = "GetServers";
     public static final String MessageChannel = "CMIMessageSubChannel";
+    public static final String ServersPlayerCountsChannel = "CMIServersPlayerCounts";
+    public static final String ServerPlayerCountsChannel = "CMIServerPlayerCounts";
     public static final String BroadcastChannel = "CMIBroadcastSubChannel";
     public static final String PublicChatChannel = "CMIChatSubChannel";
     public static final String StaffChatChannel = "CMIStaffSubChannel";
     public static final String PortalSetChannel = "CMIPortalSetSubChannel";
     public static final String PortalConfirmedSetChannel = "CMIPortalCSetSubChannel";
-    public static final String PortalLocChannel = "CMIPortalLocSubChannel";
+    public static final String TeleportChannel = "CMITeleportChannel";
+    public static final String TalksWithChannel = "CMITalksWith";
+    public static final String TalksWithRecordChannel = "CMITalksWithRecord";
+
     public static final String PlayerListRequest = "CMIPlayerListRequest";
     public static final String PlayerListFeedback = "CMIPlayerListFeedback";
+
+    public static final String NetworkInformation = "CMINetworkInfo";
+    public static final String ServerInformation = "CMIServerInfo";
+
     public static final String PlayerFeedback = "CMIPlayerFeedback";
     public static final String ServerListRequest = "CMIServerListRequest";
+
     public static UUID localRangedMessage;
     public static long localRangedMessageTime;
 
@@ -39,8 +50,11 @@ public class BungeeCordManager {
     private BungeeCordServer thisServer;
     private String thisServerName;
     private boolean enabledSupport = true;
-    public static boolean NamesInTabComplete = true;
+    private boolean backToPreviousServer = true;
+    private boolean namesInTabComplete = true;
     private CMIBungeeCord bcord = null;
+
+    private CMIBungeeType type = CMIBungeeType.Unknown;
 
     public BungeeCordManager(CMI plugin) {
         this.plugin = plugin;
@@ -48,6 +62,7 @@ public class BungeeCordManager {
     }
 
     public void loadConfig() {
+
     }
 
     public void initialize() {
@@ -60,7 +75,8 @@ public class BungeeCordManager {
 
     public void setCMIBPresent(boolean cMIBPresent) {
         if (cMIBPresent) {
-            plugin.consoleMessage("CMIB proxy plugin detected");
+            plugin.consoleMessage("CMI proxy plugin detected");
+            sendNetworkInfoUpdate();
         }
         CMIBPresent = cMIBPresent;
     }
@@ -87,24 +103,35 @@ public class BungeeCordManager {
     Long time = 0L;
 
     public BungeeCordServer getServer(String server) {
-        if (System.currentTimeMillis() > time + 60000L) {
+        if (System.currentTimeMillis() > time + 600L) {
             updateServers();
         }
         return servers.get(server.toLowerCase());
     }
 
     public HashMap<String, BungeeCordServer> getServers() {
-        if (System.currentTimeMillis() > time + 60000L) {
+        if (System.currentTimeMillis() > time + 600L) {
+            sendNetworkInfoUpdate();
             updateServers();
             time = System.currentTimeMillis();
         }
         return servers;
     }
 
+    public void sendNetworkInfoUpdate() {
+
+    }
+
+    public void sendServerInformationToBungee() {
+
+    }
+
     public void sendServerListRequest() {
+
     }
 
     public void sendPlayerListRequest() {
+
     }
 
     public void sendPlayerInfoRequest(String serverName) {
@@ -130,9 +157,7 @@ public class BungeeCordManager {
     }
 
     public String getThisServerName() {
-        if (thisServerName == null && thisServer != null)
-            thisServerName = thisServer.getName();
-        return thisServerName == null ? CMILib.getInstance().getReflectionManager().getServerName() : thisServerName;
+        return null;
     }
 
     private static final String spacer = "_20_";
@@ -176,9 +201,11 @@ public class BungeeCordManager {
     }
 
     public void updateServersInfo() {
+
     }
 
     public void updateServersIp() {
+
     }
 
     public void updateServers() {
@@ -186,17 +213,21 @@ public class BungeeCordManager {
     }
 
     public void connectToServer(Player player, String serverName) {
+
     }
 
     public void connectOther(String playerName, String server) {
+
     }
 
     public void connectToServer(String player, String server) {
-        connectToServer(Bukkit.getPlayer(player), server);
+        connectToServer(CMIUser.getOnlinePlayer(player), server);
     }
 
     public int getPlayersInServer(String serverName) {
+
         return 0;
+
     }
 
     public void sendPublicMessage(String server, String sender, String message) {
@@ -224,7 +255,7 @@ public class BungeeCordManager {
 
     }
 
-    public void sendPortalSetLocation(String setter, String targetServer, String portalName, Location loc) {
+    public void sendPortalSetLocationToBungee(String setter, String targetServer, String portalName, Location loc) {
 
     }
 
@@ -232,12 +263,27 @@ public class BungeeCordManager {
 
     }
 
-    public void sendPortalLoginLocation(String targetServer, UUID uuid, String loc, String cmds) {
+    public void recordBackLocation(String targetServer, UUID uuid, Location from) {
+        teleporToLocation(targetServer, uuid, "", from, "");
+    }
+
+    public void teleporToLocation(String targetServer, UUID uuid, String loc, Location from) {
+        teleporToLocation(targetServer, uuid, loc, from, "");
+    }
+
+    public void teleporToLocation(String targetServer, UUID uuid, String loc, Location from, String cmds) {
+
+    }
+
+    public void withWhomHeTalks(String playerName) {
+
+    }
+
+    public void talksWith(String who, String with) {
 
     }
 
     public void forward(String server, String channelName, byte[] data) {
-
     }
 
     public boolean isPlayerOnAnotherServer(String player) {
@@ -259,5 +305,21 @@ public class BungeeCordManager {
 
     public CMIBungeeCord getBungeeCord() {
         return bcord;
+    }
+
+    public CMIBungeeType getNetworkType() {
+        return type;
+    }
+
+    public void setNetworkType(CMIBungeeType type) {
+        this.type = type;
+    }
+
+    public boolean isNamesInTabComplete() {
+        return namesInTabComplete;
+    }
+
+    public boolean isBackToPreviousServer() {
+        return backToPreviousServer;
     }
 }

@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class VotifierManager {
 
     private CMI plugin;
@@ -85,7 +87,7 @@ public class VotifierManager {
     }
 
     Long lastUpdate = 0L;
-    int sched = 0;
+    CMITask sched = null;
     int updateDelay = 5;
 
     private void delayUpdate() {

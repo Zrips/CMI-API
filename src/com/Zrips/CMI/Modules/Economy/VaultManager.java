@@ -23,7 +23,8 @@ public class VaultManager {
     }
 
     public EconomySetupResponse setupVault() {
-        return economy != null ? EconomySetupResponse.Vault : EconomySetupResponse.NoVaultEconomy;
+
+        return null;
     }
 
     public Economy getVaultEconomy() {

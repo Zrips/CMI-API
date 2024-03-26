@@ -15,10 +15,11 @@ import java.util.function.BiFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.google.common.collect.Iterables;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 public class CMIBungeeCord {
 
@@ -62,9 +63,6 @@ public class CMIBungeeCord {
 
         this.messageListener = this::onPluginMessageReceived;
 
-        Messenger messenger = Bukkit.getServer().getMessenger();
-        messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
-        messenger.registerIncomingPluginChannel(plugin, "BungeeCord", messageListener);
     }
 
     /**
@@ -102,11 +100,15 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<Integer> getPlayerCount(String serverName) {
-        Player player = getFirstPlayer();
+        return null;
+    }
 
-        CompletableFuture<Integer> future = new CompletableFuture<>();
+    public CompletableFuture<String> getServerPlayerCount(String serverName) {
+        return null;
+    }
 
-        return future;
+    public CompletableFuture<List<String>> getServersPlayerCount() {
+        return null;
     }
 
     /**
@@ -118,11 +120,7 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<List<String>> getPlayerList(String serverName) {
-        Player player = getFirstPlayer();
-
-        CompletableFuture<List<String>> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -133,11 +131,7 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<List<String>> getServers() {
-        Player player = getFirstPlayer();
-
-        CompletableFuture<List<String>> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -147,6 +141,10 @@ public class CMIBungeeCord {
      * @param serverName the name of server to connect to, as defined in BungeeCord config.yml.
      */
     public void connect(Player player, String serverName) {
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeUTF("Connect");
+        output.writeUTF(serverName);
+        player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
     /**
@@ -166,9 +164,7 @@ public class CMIBungeeCord {
      * @return A {@link CompletableFuture} that, when completed, will return the (real) IP of {@code player}.
      */
     public CompletableFuture<InetSocketAddress> getIp(Player player) {
-        CompletableFuture<InetSocketAddress> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -189,10 +185,7 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<String> getServer() {
-        Player player = getFirstPlayer();
-        CompletableFuture<String> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -202,9 +195,7 @@ public class CMIBungeeCord {
      * @return A {@link CompletableFuture} that, when completed, will return the UUID of {@code player}.
      */
     public CompletableFuture<String> getUUID(Player player) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -215,10 +206,7 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<String> getUUID(String playerName) {
-        Player player = getFirstPlayer();
-        CompletableFuture<String> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -229,10 +217,7 @@ public class CMIBungeeCord {
      * @throws IllegalArgumentException if there is no players online.
      */
     public CompletableFuture<InetSocketAddress> getServerIp(String serverName) {
-        Player player = getFirstPlayer();
-        CompletableFuture<InetSocketAddress> future = new CompletableFuture<>();
-
-        return future;
+        return null;
     }
 
     /**
@@ -280,6 +265,7 @@ public class CMIBungeeCord {
      * Unregister message channels.
      */
     public void unregister() {
+
     }
 
     private BiFunction<String, Queue<CompletableFuture<?>>, Queue<CompletableFuture<?>>> computeQueueValue(CompletableFuture<?> queueValue) {

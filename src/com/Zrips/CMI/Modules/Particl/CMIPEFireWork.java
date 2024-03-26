@@ -4,7 +4,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class CMIPEFireWork extends CMIPEAnimation {
@@ -27,6 +29,19 @@ public class CMIPEFireWork extends CMIPEAnimation {
     public boolean render(List<Player> players) {
 
         return true;
+    }
+
+    private static void ShotFirework(Location loc, FireworkEffect fe) throws Exception {
+
+    }
+
+    private static Method getMethod(Class<?> cl, String method) {
+        for (Method m : cl.getMethods()) {
+            if (m.getName().equals(method)) {
+                return m;
+            }
+        }
+        return null;
     }
 
     public Color getFadeFrom() {

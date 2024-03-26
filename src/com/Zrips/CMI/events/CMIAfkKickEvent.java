@@ -5,49 +5,44 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
-public final class CMIAfkKickEvent extends Event  implements Cancellable {
+public final class CMIAfkKickEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
     private boolean cancel;
     private List<String> kickTrigerCommands = new ArrayList<String>();
 
     public CMIAfkKickEvent(Player player, List<String> kickTrigerCommands) {
-	this.player = player;
-	this.kickTrigerCommands = kickTrigerCommands;
-    }
-
-    public Player getPlayer() {
-	return this.player;
+        super(player);
+        this.kickTrigerCommands = kickTrigerCommands;
     }
 
     @Override
     @EventAnnotation(info = "Fired when player should be kicked from server after being afk")
     public HandlerList getHandlers() {
-	return handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-	return handlers;
+        return handlers;
     }
 
     @Override
     public final void setCancelled(final boolean cancel) {
-	this.cancel = cancel;
+        this.cancel = cancel;
     }
 
     @Override
     public final boolean isCancelled() {
-	return cancel;
+        return cancel;
     }
 
     public List<String> getKickTrigerCommands() {
-	return kickTrigerCommands;
+        return kickTrigerCommands;
     }
 
     public void setKickTrigerCommands(List<String> kickTrigerCommands) {
-	this.kickTrigerCommands = kickTrigerCommands;
+        this.kickTrigerCommands = kickTrigerCommands;
     }
 }

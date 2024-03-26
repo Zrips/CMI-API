@@ -27,10 +27,7 @@ public class RegChestManager {
     }
 
     public CMIInvSee getInformation(Player player) {
-        CMIInvSee info = watcherList.get(player.getUniqueId());
-        if (info == null)
-            info = slaveList.get(player.getUniqueId());
-        return info;
+        return null;
     }
 
     public void remove(Player player) {
@@ -51,7 +48,16 @@ public class RegChestManager {
     }
 
     public boolean openInventory(Player watcher, Player target) {
+
         return true;
+    }
+
+    public void tempLockWatcher(Player target) {
+
+    }
+
+    public void recheckPlayerInventory(Player target) {
+
     }
 
     private void updateWatcherInventory(Player watcher) {
@@ -75,6 +81,11 @@ public class RegChestManager {
         return number * 100 / 100D;
     }
 
+    private static ItemStack[] hideItems(ItemStack[] items) {
+
+        return null;
+    }
+
     public CMIGui createGui(Player watcher, Player target) {
 
         return null;
@@ -82,10 +93,6 @@ public class RegChestManager {
 
     private ItemStack[] getCraftingInventory(Player player) {
 
-        ItemStack[] targetContents = player.getOpenInventory().getTopInventory().getContents();
-
-        ItemStack[] contents = new ItemStack[5];
-
-        return contents;
+        return null;
     }
 }

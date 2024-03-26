@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class ViewRangeManager {
 
@@ -24,14 +22,7 @@ public class ViewRangeManager {
     }
 
     public int getRangeFromPerm(Player player) {
-        int range = Bukkit.getViewDistance();
-        if (!CMIPerm.viewrange.hasPermission(player))
-            return range;
-        for (int i = 15; i > range; i--) {
-            if (CMIPerm.viewrange_$1.hasPermission(player, i))
-                return i;
-        }
-        return range;
+        return 1;
     }
 
     public void FillOnMove(final ViewRangeInfo scan) {

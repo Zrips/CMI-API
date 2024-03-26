@@ -1,17 +1,24 @@
 package com.Zrips.CMI.Modules.InvRegEditor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class CMIInvSee {
     Player watcher = null;
     Player target = null;
-    private int schedID;
     private ItemStack[] contents;
     private ItemStack[] armor;
     private ItemStack offHand;
     private ItemStack cursor;
+    private CMITask task;
+    private CMITask lockTask;
+
+    private boolean tempLocked = false;
 
     public CMIInvSee(Player watcher, Player target) {
         this.watcher = watcher;
@@ -28,22 +35,14 @@ public class CMIInvSee {
     }
 
     public Player getTarget() {
-        if (Bukkit.getPlayer(target.getUniqueId()) != null)
-            return Bukkit.getPlayer(target.getUniqueId());
+        if (CMIUser.getOnlinePlayer(target.getUniqueId()) != null)
+            return CMIUser.getOnlinePlayer(target.getUniqueId());
         return this.target;
     }
 
     public CMIInvSee setTarget(Player target) {
         this.target = target;
         return this;
-    }
-
-    public void setSchedId(int scheduleSyncRepeatingTask) {
-        this.schedID = scheduleSyncRepeatingTask;
-    }
-
-    public int getSchedID() {
-        return schedID;
     }
 
     public void setTargetContents(ItemStack[] contents) {
@@ -76,5 +75,20 @@ public class CMIInvSee {
 
     public void setCursor(ItemStack cursor) {
         this.cursor = cursor;
+    }
+
+    public void setTask(CMITask task) {
+        this.task = task;
+    }
+
+    public CMITask getTask() {
+        return this.task;
+    }
+
+    public boolean isTempLocked() {
+        return tempLocked;
+    }
+
+    public void setTempLocked(boolean tempLocked) {
     }
 }

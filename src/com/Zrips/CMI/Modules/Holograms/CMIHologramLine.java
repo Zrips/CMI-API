@@ -38,8 +38,7 @@ public class CMIHologramLine {
 
     @Override
     public CMIHologramLine clone() {
-        CMIHologramLine clone = new CMIHologramLine();
-        return clone;
+        return null;
     }
 
     public CMIHologramLine(String text) {
@@ -59,6 +58,7 @@ public class CMIHologramLine {
     }
 
     public CMIItemStack getItem(Player player, CMIAsyncHead ahead) {
+
         return null;
     }
 
@@ -91,6 +91,7 @@ public class CMIHologramLine {
     }
 
     private String checkText(Player player, String copy) {
+
         return null;
     }
 

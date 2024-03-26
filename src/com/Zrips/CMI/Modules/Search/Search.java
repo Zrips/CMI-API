@@ -52,15 +52,17 @@ public class Search {
     }
 
     public HashMap<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
+
         return null;
     }
 
     public HashMap<Integer, ArrayList<ScanResultLocations>> sortByKey(HashMap<Integer, ArrayList<ScanResultLocations>> list2) {
+
         return null;
     }
 
     @SuppressWarnings("deprecation")
-    private boolean isThisItemOk(SearchInfo SI, ItemStack OneItem, Player player) {
+    private boolean isThisItemOk(SearchInfo SI, ItemStack checkingItem, Player player) {
 
         return false;
     }

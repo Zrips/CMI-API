@@ -1,14 +1,13 @@
 package com.Zrips.CMI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,6 +24,8 @@ import com.Zrips.CMI.Modules.Anvil.AnvilManager;
 import com.Zrips.CMI.Modules.ArmorEffects.ArmorEffectManager;
 import com.Zrips.CMI.Modules.AttachedCommands.CustomNBTManager;
 import com.Zrips.CMI.Modules.BungeeCord.BungeeCordManager;
+import com.Zrips.CMI.Modules.Chat.ChatBubbleManager;
+import com.Zrips.CMI.Modules.Chat.ChatManager;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterManager;
 import com.Zrips.CMI.Modules.ChatFormat.ChatFormatManager;
 import com.Zrips.CMI.Modules.ChatTag.TagManager;
@@ -40,6 +41,7 @@ import com.Zrips.CMI.Modules.DiscordSRV.DiscordSRVManager;
 import com.Zrips.CMI.Modules.DynMap.DynMapManager;
 import com.Zrips.CMI.Modules.DynamicSigns.SignManager;
 import com.Zrips.CMI.Modules.Economy.EconomyManager;
+import com.Zrips.CMI.Modules.Elytra.ElytraManager;
 import com.Zrips.CMI.Modules.Enchants.EnchantManager;
 import com.Zrips.CMI.Modules.EventActions.EventActionManager;
 import com.Zrips.CMI.Modules.FindBiome.FindBiomeManager;
@@ -57,11 +59,11 @@ import com.Zrips.CMI.Modules.Kits.KitsManager;
 import com.Zrips.CMI.Modules.LightFix.LightFix;
 import com.Zrips.CMI.Modules.Mirror.MirrorManager;
 import com.Zrips.CMI.Modules.NickName.NickNameManager;
+import com.Zrips.CMI.Modules.Packets.PacketInjector;
 import com.Zrips.CMI.Modules.Painting.PaintingManager;
 import com.Zrips.CMI.Modules.Particl.ParticleManager;
 import com.Zrips.CMI.Modules.Patrol.PatrolManager;
 import com.Zrips.CMI.Modules.Permissions.PermissionsManager;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 import com.Zrips.CMI.Modules.Placeholders.Placeholder;
 import com.Zrips.CMI.Modules.PlayTime.PlayTimeManager;
 import com.Zrips.CMI.Modules.PlayTimeRewards.PlayTimeRewardsManager;
@@ -71,6 +73,7 @@ import com.Zrips.CMI.Modules.Portals.PortalManager;
 import com.Zrips.CMI.Modules.Ranks.RankManager;
 import com.Zrips.CMI.Modules.Recipes.RecipeManager;
 import com.Zrips.CMI.Modules.Region.WorldManager;
+import com.Zrips.CMI.Modules.Repair.RepairManager;
 import com.Zrips.CMI.Modules.ReplaceBlock.ReplaceBlock;
 import com.Zrips.CMI.Modules.SavedInv.SavedInventoryManager;
 import com.Zrips.CMI.Modules.SavedItems.SavedItemManager;
@@ -86,6 +89,9 @@ import com.Zrips.CMI.Modules.SpecializedCommands.SpecializedCommandManager;
 import com.Zrips.CMI.Modules.Statistics.StatsManager;
 import com.Zrips.CMI.Modules.TabList.TabListHeaderFooterHandler;
 import com.Zrips.CMI.Modules.TabList.TabListManager;
+import com.Zrips.CMI.Modules.Teleportations.RandomTeleportationManager;
+import com.Zrips.CMI.Modules.Teleportations.TeleportHandler;
+import com.Zrips.CMI.Modules.Teleportations.TeleportManager;
 import com.Zrips.CMI.Modules.TimedCommands.TimedCommandManager;
 import com.Zrips.CMI.Modules.Totems.TotemManager;
 import com.Zrips.CMI.Modules.Vanish.VanishManager;
@@ -94,47 +100,39 @@ import com.Zrips.CMI.Modules.Votifier.VotifierManager;
 import com.Zrips.CMI.Modules.Warnings.WarningManager;
 import com.Zrips.CMI.Modules.Warps.WarpManager;
 import com.Zrips.CMI.Modules.Worth.WorthManager;
-import com.Zrips.CMI.Modules.tp.Teleportations;
-import com.Zrips.CMI.Modules.tp.TpManager;
 import com.Zrips.CMI.NBT.NMS;
 import com.Zrips.CMI.commands.CommandsHandler;
 import com.Zrips.CMI.utils.ChunkFix;
 import com.Zrips.CMI.utils.Lag;
-import com.Zrips.CMI.utils.PrevNamesFetcher;
 import com.Zrips.CMI.utils.Purge;
 import com.Zrips.CMI.utils.TimeManager;
 import com.Zrips.CMI.utils.UnloadChunks;
 import com.Zrips.CMI.utils.Util;
 import com.Zrips.CMI.utils.VersionChecker;
 
-import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.GUI.GUIManager;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Util.Sorting;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 import net.milkbowl.vault.permission.Permission;
 
 public class CMI extends JavaPlugin {
 
-    public static final String configFolderName = "Settings";
+    public static final String settingsFolderName = "Settings";
     public static final String savesFolderName = "Saves";
+    public static final String kitsFolderName = "Kits";
+    public static final String translationsFolderName = "Translations";
+    public static final String deathMessagesFolderName = "DeathMessages";
 
     private boolean fullyLoaded = false;
+    private boolean serverLoaded = false;
     protected NMS nms;
     protected Reflections ref;
-    private boolean useProtocollib = false;
-    private boolean VaultPermEnabled = false;
-    private boolean PlayerVaultXEnabled = false;
-    private boolean PlayerVaultEnabled = false;
-    private boolean PlayerVaultNBTEnabled = false;
-    private boolean PlaceholderAPIEnabled = false;
-    private boolean MVdWPlaceholderAPIEnabled = false;
-    private boolean VotifierEnabled = false;
-    private boolean CitizensEnabled = false;
-    private boolean NCPEnabled = false;
 
     private Placeholder Placeholder;
 
-    private Permission perms = null;
+    private Permission vaultPerm = null;
 
     public static String bugReportLink = "https://github.com/Zrips/CMI/issues/new?assignees=&labels=bug+report&template=bug_report.md&title=";
     private long serverStartupTime = 0L;
@@ -153,6 +151,8 @@ public class CMI extends JavaPlugin {
     protected ChunkFix ChunkFixManager;
     protected ReplaceBlock replaceblock;
     protected UnloadChunks unloadchunks;
+    protected ElytraManager ElytraManager;
+    protected RepairManager RepairManager;
 
     protected SkinManager SkinManager;
     protected Util UtilManager;
@@ -163,12 +163,13 @@ public class CMI extends JavaPlugin {
     protected VersionChecker versionCheckManager;
     protected PlayTimeRewardsManager PlayTimeRewardsManager;
     protected TimeManager TimeManager;
-    protected PrevNamesFetcher NamesChecker;
     protected MirrorManager mirror;
     protected KitsManager kits;
     protected SpawnerChargeManager charges;
     protected ParticleManager ParticleManager;
     protected FlightChargeManager FlightChargeManager;
+    protected ChatBubbleManager ChatBubbleManager;
+    protected ChatManager ChatManager;
 
     private ArmorEffectManager armorEffectManager;
 
@@ -182,6 +183,7 @@ public class CMI extends JavaPlugin {
     protected DynMapManager DynMapManager;
     protected WorthManager WorthManager;
     protected JailManager JailManager;
+    protected TeleportHandler TeleportHandler;
     protected WarningManager WarningManager;
     protected com.Zrips.CMI.Modules.PlayerCombat.PlayerCombatManager PlayerCombatManager;
 
@@ -212,6 +214,7 @@ public class CMI extends JavaPlugin {
 
     protected TotemManager totemManager;
     protected AnimationManager AnimationManager;
+    protected RandomTeleportationManager RandomTeleportationManager;
 
     protected ChatFormatManager ChatFormatManager;
 
@@ -232,9 +235,8 @@ public class CMI extends JavaPlugin {
     protected HomeManager homeManager;
     protected WarpManager warpManager;
     protected IpManager ipManager;
-    protected TpManager tpManager;
+    protected TeleportManager TeleportManager;
 
-    protected Teleportations teleportations;
     protected StatsManager statsManager;
     protected AliasManager aliasManager;
     protected CTextManager cTextManager;
@@ -255,10 +257,6 @@ public class CMI extends JavaPlugin {
 
     private Lag lagMeter;
 
-//    protected ActionBarManager ActionBar;
-//    protected ActionBar legacyActionBar;
-//    protected TitleMessageManager titleMessageManager;
-
     protected PlayerManager PM;
     protected Sorting Sorting;
 
@@ -266,20 +264,25 @@ public class CMI extends JavaPlugin {
 
     private long timer = 0L;
 
-    private boolean mcmmoexpmodulepresent = false;
-    private boolean jobsPresent = false;
-
     protected HashMap<String, List<String>> preFetchNames = new HashMap<String, List<String>>();
     protected HashMap<String, UUID> preFetchUUIDs = new HashMap<String, UUID>();
     private static final UUID ServerUUID = new UUID(0, 0);
 
     protected static CMI instance;
 
-    public String prefix = ChatColor.GOLD + "[CMI] " + ChatColor.DARK_AQUA;
+    public String prefix = CMIChatColor.GOLD + "[CMI] " + CMIChatColor.DARK_AQUA;
 
     protected Scoreboard scoreboard = null;
 
+    private PacketInjector injector;
+
+    public PacketInjector getPacketInjector() {
+        return injector;
+    }
+
     protected String getWorldFolderPath() {
+        if (worldFolderPath == null)
+            worldFolderPath = Bukkit.getWorldContainer().getAbsolutePath() + File.separator + Bukkit.getWorlds().get(0).getName() + File.separator;
         return worldFolderPath;
     }
 
@@ -325,245 +328,377 @@ public class CMI extends JavaPlugin {
     }
 
     public LookupService getLookupService() {
-        return null;
+        return LookupService;
     }
 
     public void defaultLocaleDownloader() {
     }
 
     public DiscordSRVManager getDiscordSRVManager() {
+        if (DiscordSRVManager == null)
+            DiscordSRVManager = new DiscordSRVManager(this);
         return DiscordSRVManager;
     }
 
     public ArmorStandManager getArmorStandManager() {
+        if (ArmorStandManager == null)
+            ArmorStandManager = new ArmorStandManager(this);
         return ArmorStandManager;
     }
 
     public PlayerCombatManager getPlayerCombatManager() {
+        if (PlayerCombatManager == null)
+            PlayerCombatManager = new PlayerCombatManager(this);
         return PlayerCombatManager;
     }
 
     public DynMapManager getDynMapManager() {
+        if (DynMapManager == null)
+            DynMapManager = new DynMapManager(this);
         return DynMapManager;
     }
 
     public WarningManager getWarningManager() {
+        if (WarningManager == null)
+            WarningManager = new WarningManager(this);
         return WarningManager;
     }
 
     public EnchantManager getEnchantManager() {
+        if (EnchantManager == null)
+            EnchantManager = new EnchantManager(this);
         return EnchantManager;
     }
 
+    public ChatBubbleManager getChatBubbleManager() {
+        if (ChatBubbleManager == null)
+            ChatBubbleManager = new ChatBubbleManager(this);
+        return ChatBubbleManager;
+    }
+
     public VotifierManager getVotifierManager() {
+        if (VotifierManager == null)
+            VotifierManager = new VotifierManager(this);
         return VotifierManager;
     }
 
+    public ChatManager getChatManager() {
+        if (ChatManager == null)
+            ChatManager = new ChatManager(this);
+        return ChatManager;
+    }
+
     public CitizensManager getCitizensManager() {
+        if (CitizensManager == null)
+            CitizensManager = new CitizensManager(this);
         return CitizensManager;
     }
 
     public SpecializedCommandManager getSpecializedCommandManager() {
+        if (SpecializedCommandManager == null)
+            SpecializedCommandManager = new SpecializedCommandManager(this);
         return SpecializedCommandManager;
     }
 
     public InteractiveCommandManager getInteractiveCommandManager() {
+        if (InteractiveCommandManager == null)
+            InteractiveCommandManager = new InteractiveCommandManager(this);
         return InteractiveCommandManager;
     }
 
     public ChatFormatManager getChatFormatManager() {
+        if (ChatFormatManager == null)
+            ChatFormatManager = new ChatFormatManager(this);
+
         return ChatFormatManager;
     }
 
     public KitsManager getKitsManager() {
+        if (kits == null)
+            kits = new KitsManager(this);
         return kits;
     }
 
     public SpawnerChargeManager getSpawnerChargesManager() {
+        if (charges == null)
+            charges = new SpawnerChargeManager();
         return charges;
     }
 
     public SkinManager getSkinManager() {
+        if (SkinManager == null)
+            SkinManager = new SkinManager(this);
         return SkinManager;
     }
 
     public RecipeManager getRecipeManager() {
+        if (RecipeManager == null)
+            RecipeManager = new RecipeManager(this);
         return RecipeManager;
     }
 
     public PaintingManager getPaintingManager() {
+        if (PaintingManager == null)
+            PaintingManager = new PaintingManager(this);
         return PaintingManager;
     }
 
     public VanishManager getVanishManager() {
+        if (VanishManager == null)
+            VanishManager = new VanishManager(this);
         return VanishManager;
     }
 
     public PlayerOptionsManager getPlayerOptionsManager() {
+        if (PlayerOptionsManager == null)
+            PlayerOptionsManager = new PlayerOptionsManager(this);
         return PlayerOptionsManager;
     }
 
     public ParticleManager getParticleManager() {
+        if (ParticleManager == null)
+            ParticleManager = new ParticleManager(this);
         return ParticleManager;
     }
 
     public DeathMessageManager getDeathMessageManager() {
+        if (DeathMessageManager == null)
+            DeathMessageManager = new DeathMessageManager(this);
         return DeathMessageManager;
     }
 
     public FlightChargeManager getFlightChargeManager() {
+        if (FlightChargeManager == null)
+            FlightChargeManager = new FlightChargeManager(this);
         return FlightChargeManager;
     }
 
     public Lag getLagMeter() {
+        if (lagMeter == null)
+            lagMeter = new Lag();
         return lagMeter;
     }
 
     public EnderChestManager getEnderChestManager() {
+        if (EnderChestManager == null)
+            EnderChestManager = new EnderChestManager(getInstance());
         return EnderChestManager;
     }
 
     public RegChestManager getRegChestManager() {
+        if (RegChestManager == null)
+            RegChestManager = new RegChestManager(getInstance());
         return RegChestManager;
     }
 
     public HologramManager getHologramManager() {
+        if (HologramManager == null) {
+            HologramManager = new HologramManager(getInstance());
+        }
         return HologramManager;
     }
 
     public EconomyManager getEconomyManager() {
+        if (economyManager == null)
+            economyManager = new EconomyManager(getInstance());
         return economyManager;
     }
 
     public CMICommandCostManager getCommandCostManager() {
+        if (CMICommandCostManager == null)
+            CMICommandCostManager = new CMICommandCostManager(getInstance());
         return CMICommandCostManager;
     }
 
     public CooldownManager getCooldownManager() {
+        if (cooldownManager == null)
+            cooldownManager = new CooldownManager(getInstance());
         return cooldownManager;
     }
 
     public PortalManager getPortalManager() {
+        if (portalManager == null)
+            portalManager = new PortalManager(getInstance());
         return portalManager;
     }
 
     public SignManager getSignManager() {
+        if (signManager == null)
+            signManager = new SignManager(getInstance());
         return signManager;
     }
 
     public SelectionManager getSelectionManager() {
+        if (SelectionManager == null)
+            SelectionManager = new SelectionManager(getInstance());
         return SelectionManager;
     }
 
     public ArmorEffectManager getArmorEffectManager() {
+        if (armorEffectManager == null)
+            armorEffectManager = new ArmorEffectManager(getInstance());
         return armorEffectManager;
     }
 
     public WarmUpManager getWarmUpManager() {
+        if (WarmUpManager == null)
+            WarmUpManager = new WarmUpManager(getInstance());
         return WarmUpManager;
     }
 
     public WorldManager getRegionManager() {
+        if (regionManager == null)
+            regionManager = new WorldManager(getInstance());
         return regionManager;
     }
 
     public ShulkerBoxManager getShulkerBoxManager() {
+        if (shulkerBoxManager == null)
+            shulkerBoxManager = new ShulkerBoxManager(getInstance());
         return shulkerBoxManager;
     }
 
     public TimedCommandManager getTimedCommandManager() {
+        if (timedCommandManager == null)
+            timedCommandManager = new TimedCommandManager(getInstance());
         return timedCommandManager;
     }
 
     public PermissionsManager getPermissionsManager() {
+        if (permissionsManager == null)
+            permissionsManager = new PermissionsManager(getInstance());
         return permissionsManager;
     }
 
     public NickNameManager getNickNameManager() {
+        if (nickNameManager == null)
+            nickNameManager = new NickNameManager(getInstance());
         return nickNameManager;
     }
 
     public TagManager getTagManager() {
+        if (TagManager == null)
+            TagManager = new TagManager(getInstance());
         return TagManager;
     }
 
     public WarpManager getWarpManager() {
+        if (warpManager == null)
+            warpManager = new WarpManager(getInstance());
         return warpManager;
     }
 
     public IpManager getIpManager() {
+        if (ipManager == null)
+            ipManager = new IpManager(getInstance());
         return ipManager;
     }
 
     public PlayTimeRewardsManager getPlayTimeRewardManager() {
+        if (PlayTimeRewardsManager == null)
+            PlayTimeRewardsManager = new PlayTimeRewardsManager(getInstance());
         return PlayTimeRewardsManager;
     }
 
-    public TpManager getTpManager() {
-        return tpManager;
+    public TeleportManager getTeleportManager() {
+        if (TeleportManager == null)
+            TeleportManager = new TeleportManager(getInstance());
+        return TeleportManager;
     }
 
-    public Teleportations getTeleportations() {
-        return teleportations;
+    public TeleportHandler getTeleportHandler() {
+        if (TeleportHandler == null)
+            TeleportHandler = new TeleportHandler(getInstance());
+        return TeleportHandler;
     }
 
     public StatsManager getStatsManager() {
+        if (statsManager == null)
+            statsManager = new StatsManager(getInstance());
         return statsManager;
     }
 
     public JailManager getJailManager() {
+        if (JailManager == null)
+            JailManager = new JailManager(getInstance());
         return JailManager;
     }
 
     public WorthManager getWorthManager() {
+        if (WorthManager == null)
+            WorthManager = new WorthManager(getInstance());
         return WorthManager;
     }
 
     public AliasManager getAliasManager() {
+        if (aliasManager == null)
+            aliasManager = new AliasManager(getInstance());
         return aliasManager;
     }
 
     public AfkManager getAfkManager() {
+        if (AfkManager == null)
+            AfkManager = new AfkManager(getInstance());
         return AfkManager;
     }
 
     public TabListHeaderFooterHandler getTabListHandler() {
+        if (TabListHandler == null)
+            TabListHandler = new TabListHeaderFooterHandler(getInstance());
         return TabListHandler;
     }
 
     public TabListManager getTabListManager() {
+        if (TabListManager == null)
+            TabListManager = new TabListManager(getInstance());
         return TabListManager;
     }
 
     public CTextManager getCTextManager() {
+        if (cTextManager == null)
+            cTextManager = new CTextManager(getInstance());
         return cTextManager;
     }
 
     public CustomNBTManager getCustomNBTManager() {
+        if (CustomNBTManager == null)
+            CustomNBTManager = new CustomNBTManager(getInstance());
         return CustomNBTManager;
     }
 
     public EventActionManager getEventActionManager() {
+        if (eventActionManager == null)
+            eventActionManager = new EventActionManager(getInstance());
         return eventActionManager;
     }
 
     public HomeManager getHomeManager() {
+        if (homeManager == null)
+            homeManager = new HomeManager(getInstance());
         return homeManager;
     }
 
     public SchedulerManager getSchedulerManager() {
+        if (schedulerManager == null)
+            schedulerManager = new SchedulerManager(getInstance());
         return schedulerManager;
     }
 
     public AnvilManager getAnvilManager() {
+        if (anvilManager == null)
+            anvilManager = new AnvilManager(getInstance());
         return anvilManager;
     }
 
     public TotemManager getTotemManager() {
+        if (totemManager == null)
+            totemManager = new TotemManager(getInstance());
         return totemManager;
     }
 
     public AnimationManager getAnimationManager() {
+        if (AnimationManager == null)
+            AnimationManager = new AnimationManager(getInstance());
         return AnimationManager;
     }
 
@@ -572,28 +707,40 @@ public class CMI extends JavaPlugin {
     }
 
     public ChatFilterManager getChatFilterManager() {
+        if (chatFilterManager == null)
+            chatFilterManager = new ChatFilterManager(this);
         return chatFilterManager;
     }
 
     public SavedInventoryManager getSavedInventoryManager() {
+        if (SavedInventoryManager == null)
+            SavedInventoryManager = new SavedInventoryManager(this);
         return SavedInventoryManager;
     }
 
     BungeeCordManager BungeeCordManager;
 
     public BungeeCordManager getBungeeCordManager() {
+        if (BungeeCordManager == null)
+            BungeeCordManager = new BungeeCordManager(this);
         return BungeeCordManager;
     }
 
     public PatrolManager getPatrolManager() {
+        if (PatrolManager == null)
+            PatrolManager = new PatrolManager(this);
         return PatrolManager;
     }
 
     public RankManager getRankManager() {
+        if (rankManager == null)
+            rankManager = new RankManager(this);
         return rankManager;
     }
 
     public PlayerManager getPlayerManager() {
+        if (PM == null)
+            PM = new PlayerManager(this);
         return PM;
     }
 
@@ -601,27 +748,49 @@ public class CMI extends JavaPlugin {
         return Sorting;
     }
 
-    public PrevNamesFetcher getNamesChecker() {
-        return NamesChecker;
-    }
-
     public TimeManager getTimeManager() {
         return TimeManager;
     }
 
     public VersionChecker getVersionCheckManager() {
+        if (versionCheckManager == null)
+            versionCheckManager = new VersionChecker(this);
         return versionCheckManager;
     }
 
     public CommandsHandler getCommandManager() {
+        if (cManager == null)
+            cManager = new CommandsHandler(this);
         return cManager;
     }
 
+    public ElytraManager getElytraManager() {
+        if (ElytraManager == null)
+            ElytraManager = new ElytraManager(this);
+        return ElytraManager;
+    }
+
+    public RepairManager getRepairManager() {
+        if (RepairManager == null)
+            RepairManager = new RepairManager(this);
+        return RepairManager;
+    }
+
+    public RandomTeleportationManager getRandomTeleportationManager() {
+        if (RandomTeleportationManager == null)
+            RandomTeleportationManager = new RandomTeleportationManager(this);
+        return RandomTeleportationManager;
+    }
+
     public SavedItemManager getSavedItemManager() {
+        if (SavedItemManager == null)
+            SavedItemManager = new SavedItemManager(this);
         return SavedItemManager;
     }
 
     public PlayTimeManager getPlayTimeManager() {
+        if (PlayTimeManager == null)
+            PlayTimeManager = new PlayTimeManager(this);
         return PlayTimeManager;
     }
 
@@ -662,37 +831,54 @@ public class CMI extends JavaPlugin {
     }
 
     public Util getUtilManager() {
+        if (UtilManager == null)
+            UtilManager = new Util(this);
         return UtilManager;
     }
 
     public Config getConfigManager() {
+        if (config == null)
+            config = new Config(this);
         return config;
     }
 
     public ScavengeManager getScavengeManager() {
+        if (scavengeManager == null)
+            scavengeManager = new ScavengeManager(this);
         return scavengeManager;
     }
 
     public DBManager getDbManager() {
+        if (dbManager == null)
+            dbManager = new DBManager(this);
         return dbManager;
     }
 
     public Language getLM() {
+        if (languageManager == null) {
+            languageManager = new Language(this);
+            languageManager.reload();
+        }
         return languageManager;
     }
 
     @Override
     public void onDisable() {
-
     }
 
-    int lagId = -1;
+    CMITask lagTask = null;
 
     public Scoreboard getSB() {
         return scoreboard;
     }
 
+    public boolean safeRenameFile(String file, String toFile) {
+
+        return false;
+    }
+
     public void renameDirectory(String fromDir, String toDir) {
+
     }
 
     public void Enabled(boolean state) {
@@ -700,7 +886,7 @@ public class CMI extends JavaPlugin {
     }
 
     List<String> logo = new ArrayList<String>(Arrays.asList(
-
+        "&7_______________________________________________________",
         "&7┏━━━┓ &f┏━┓┏━┓ &7┏━━┓",
         "&7┃┏━┓┃ &f┃ ┗┛ ┃ &7┗┫┣┛",
         "&7┃┃ ┗┛ &f┃┏┓┏┓┃ &7 ┃┃ ",
@@ -712,12 +898,19 @@ public class CMI extends JavaPlugin {
     ));
 
     List<String> SpigotLogo = new ArrayList<String>(Arrays.asList(
-        "┏━━━┓ ┏━┓┏━┓ ┏━━┓",
-        "┃┏━┓┃ ┃ ┗┛ ┃ ┗┫┣┛",
-        "┃┃ ┗┛ ┃┏┓┏┓┃  ┃┃ ",
-        "┃┃ ┏┓ ┃┃┃┃┃┃  ┃┃ ",
-        "┃┗━┛┃ ┃┃┃┃┃┃ ┏┫┣┓",
-        "┗━━━┛ ┗┛┗┛┗┛ ┗━━┛",
+        "_______________________________________________________",
+        "   ______  ____    ____  _____  ",
+        " .' ___  ||_   \\  /   _||_   _| ",
+        "/ .'   \\_|  |   \\/   |    | |   ",
+        "| |         | |\\  /| |    | |   ",
+        "\\ `.___.'\\ _| |_\\/_| |_  _| |_  ",
+        " `.____ .'|_____||_____||_____| ",
+        "_______________________________________________________"));
+
+    List<String> FoliaError = new ArrayList<String>(Arrays.asList(
+        "_______________________________________________________",
+        "_ &5Folia server detected. Plugin isint fully compatible with this type of server, yet.",
+        "_ &5Expect error messages!",
         "_______________________________________________________"));
 
     private int lastCMILibVersion = 1000100;
@@ -726,28 +919,21 @@ public class CMI extends JavaPlugin {
     private final String srequiredCMILibVersion = "1.0.1.0";
     public static int cmiLibId = 87610;
 
-    private void libCheck() {
-    }
-
-    private void libDownloader() {
-
-    }
-
     @Override
     public void onEnable() {
         instance = this;
-
     }
 
     public void consoleMessage(String message) {
 
     }
 
-    public void loadMessage(Integer amount, String type, Long took) {
+    public void loadMessage(Object amount, String type, Long took) {
     }
 
     public String getOffOn(Player player, Player whoGets) {
-        return getOffOn(whoGets == null ? player == null ? false : player.isOnline() : whoGets.canSee(player) && player.isOnline());
+
+        return getOffOn(whoGets.canSee(player));
     }
 
     public String getOffOn(Player player) {
@@ -759,6 +945,7 @@ public class CMI extends JavaPlugin {
     }
 
     public void save(Player player) {
+
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd, boolean checkOrther, boolean inform) {
@@ -766,15 +953,15 @@ public class CMI extends JavaPlugin {
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd) {
-        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), true);
+        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), true, true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, Object cmd, boolean checkOrther) {
-        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther);
+        return getTarget(sender, playerName, cmd.getClass().getSimpleName(), checkOrther, true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, String cmd) {
-        return getTarget(sender, playerName, cmd, true);
+        return getTarget(sender, playerName, cmd, true, true);
     }
 
     public Player getTarget(CommandSender sender, String playerName, String cmd, boolean checkOther) {
@@ -789,19 +976,19 @@ public class CMI extends JavaPlugin {
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd, boolean inform, boolean checkOther) {
-        return getUser(sender, playerName, cmd.getClass().getSimpleName(), inform, checkOther);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), inform, checkOther, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd) {
-        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, true);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, true, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, Object cmd, boolean checkOther) {
-        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, checkOther);
+        return getUser(sender, playerName, cmd.getClass().getSimpleName(), true, checkOther, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd) {
-        return getUser(sender, playerName, cmd, true, true);
+        return getUser(sender, playerName, cmd, true, true, true);
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd, boolean inform, boolean checkOther) {
@@ -809,124 +996,13 @@ public class CMI extends JavaPlugin {
     }
 
     public CMIUser getUser(CommandSender sender, String playerName, String cmd, boolean inform, boolean checkOther, boolean informOnPerm) {
-        return null;
+        CMIUser user = null;
+        return user;
     }
 
+    @Deprecated
     public Player getPlayer(String playerName) {
-        return null;
-    }
-
-    public void info(Object c, CMIUser user, String path, Object... variables) {
-    }
-
-    public void info(Class<?> c, Player player, String path, Object... variables) {
-        info(c.getSimpleName(), player, path, variables);
-    }
-
-    public void info(Object c, Player player, String path, Object... variables) {
-        info(c.getClass().getSimpleName(), player, path, variables);
-    }
-
-    public void info(Object thi, CommandSender sender, String path, Object... variables) {
-        info(thi.getClass().getSimpleName(), sender, path, variables);
-    }
-
-    public void info(String c, CommandSender sender, String path, Object... variables) {
-    }
-
-    public void info(String c, Player player, String path, Object... variables) {
-    }
-
-    public String getIM(Class<?> c, String path, Object... variables) {
-        return getIM(c.getSimpleName(), path, variables);
-    }
-
-    public String getIM(Object c, String path, Object... variables) {
-        return getIM(c.getClass().getSimpleName(), path, variables);
-    }
-
-    public String getIM(String cmd, String path, Object... variables) {
-        return getLM().getMessage("command." + cmd + ".info." + path, variables);
-    }
-
-    public List<String> getIML(String cmd, String path, Object... variables) {
-        return getLM().getMessageList("command." + cmd + ".info." + path, variables);
-    }
-
-    public List<String> getIML(Object c, String path, Object... variables) {
-        return getIML(c.getClass().getSimpleName(), path, variables);
-    }
-
-    public List<String> getIML(Class<?> c, String path, Object... variables) {
-        return getIML(c.getSimpleName(), path, variables);
-    }
-
-    public void sendMessage(Object sender, LC lc, Object... variables) {
-
-    }
-
-    public void sendMessage(Object sender, String msg) {
-        sendMessage(sender, msg, true);
-    }
-
-    public void sendMessage(Object sender, String msg, boolean updateSnd) {
-        sendMessage(sender, msg, updateSnd, true);
-    }
-
-    public void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors) {
-        sendMessage(sender, msg, updateSnd, translateColors, true);
-    }
-
-    public void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors, boolean translatePlaceholders) {
-
-    }
-
-    public int broadcastMessage(String msg) {
-        return broadcastMessage(null, msg, false, null, null);
-    }
-
-    public int broadcastMessage(CommandSender sender, String msg) {
-        return broadcastMessage(sender, msg, true, null, null);
-    }
-
-    public int broadcastMessage(CommandSender sender, CMIPerm perm, String msg) {
-        return broadcastMessage(sender, msg, true, perm, null);
-    }
-
-    public int broadcastMessage(CommandSender sender, String msg, boolean showForsender) {
-        return broadcastMessage(sender, msg, showForsender, null, null);
-    }
-
-    public int broadcastMessage(CommandSender sender, String msg, boolean showForsender, Set<Player> ignorePlayers) {
-        return broadcastMessage(sender, msg, showForsender, null, ignorePlayers);
-    }
-
-    public int broadcastMessage(CommandSender sender, String msg, boolean showForsender, CMIPerm perm, Set<Player> ignorePlayers) {
-        return 0;
-    }
-
-    public String getMsg(LC lc, Object... variables) {
-        return lc.getLocale(variables);
-    }
-
-    public boolean isUseProtocollib() {
-        return useProtocollib;
-    }
-
-    public boolean isPlayerVaultEnabled() {
-        return PlayerVaultEnabled;
-    }
-
-    public boolean isPlayerVaultXEnabled() {
-        return PlayerVaultXEnabled;
-    }
-
-    public boolean isPlayerVaultNBTEnabled() {
-        return PlayerVaultNBTEnabled;
-    }
-
-    public boolean isPlaceholderAPIEnabled() {
-        return PlaceholderAPIEnabled;
+        return CMIUser.getPlayer(playerName);
     }
 
     public Placeholder getPlaceholderAPIManager() {
@@ -943,45 +1019,8 @@ public class CMI extends JavaPlugin {
         this.timer = timer;
     }
 
-    public boolean isVaultPermEnabled() {
-        return VaultPermEnabled;
-    }
-
-    public Permission getPerms() {
-        return perms;
-    }
-
     public TabComplete getTab() {
         return tab;
-    }
-
-    public void setUseProtocollib(boolean b) {
-        useProtocollib = b;
-    }
-
-    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd) {
-        ShowPagination(sender, pi, cmd, null);
-    }
-
-    public void ShowPagination(CommandSender sender, PageInfo pi, Object cmd, String pagePref) {
-
-        ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), CommandsHandler.getLabel() + " " + cmd.getClass().getSimpleName(), pagePref);
-    }
-
-    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-        ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
-    }
-
-    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
-
-    }
-
-    public void ShowPagination(Set<Player> players, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
-
-    }
-
-    public void autoPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-
     }
 
     public int getViewRange(World world) {
@@ -989,44 +1028,30 @@ public class CMI extends JavaPlugin {
         return view;
     }
 
-    public boolean isMcmmoexpmodulepresent() {
-        return mcmmoexpmodulepresent;
-    }
-
-    public boolean isJobsPresent() {
-        return jobsPresent;
-    }
-
+    @Deprecated
     public void performCommand(CommandSender sender, Object cls) {
         performCommand(sender, cls, "");
     }
 
+    public void performCommand(CommandSender sender, Class<?> clas) {
+        performCommand(sender, CommandsHandler.getLabel() + " " + clas.getSimpleName());
+    }
+
+    @Deprecated
     public void performCommand(CommandSender sender, Object cls, String cmd) {
-        cmd = CommandsHandler.getLabel() + " " + cls.getClass().getSimpleName() + (cmd.isEmpty() ? "" : " " + cmd);
-        performCommand(sender, cmd);
+        performCommand(sender, CommandsHandler.getLabel() + " " + cls.getClass().getSimpleName() + (cmd.isEmpty() ? "" : " " + cmd));
+    }
+
+    public void performCommand(CommandSender sender, Class<?> clas, String cmd) {
+        performCommand(sender, CommandsHandler.getLabel() + " " + clas.getSimpleName() + (cmd.isEmpty() ? "" : " " + cmd));
     }
 
     public void performCommand(CommandSender sender, String cmd) {
-    }
 
-    public boolean isVotifierEnabled() {
-        return VotifierEnabled;
     }
 
     public boolean isFullyLoaded() {
         return fullyLoaded;
-    }
-
-    public boolean isCitizensEnabled() {
-        return CitizensEnabled;
-    }
-
-    public boolean isNCPEnabled() {
-        return NCPEnabled;
-    }
-
-    public boolean isMVdWPlaceholderAPIEnabled() {
-        return MVdWPlaceholderAPIEnabled;
     }
 
     public void setFullyLoaded(boolean fullyLoaded) {
@@ -1047,5 +1072,17 @@ public class CMI extends JavaPlugin {
 
     public long getServerStartupTime() {
         return serverStartupTime;
+    }
+
+    public Permission getVaultPerm() {
+        return vaultPerm;
+    }
+
+    public void setVaultPerm(Permission vaultPerm) {
+        this.vaultPerm = vaultPerm;
+    }
+
+    public boolean isServerLoaded() {
+        return serverLoaded;
     }
 }

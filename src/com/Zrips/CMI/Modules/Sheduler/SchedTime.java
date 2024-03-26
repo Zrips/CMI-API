@@ -72,8 +72,7 @@ public class SchedTime {
     Long next = 0L;
 
     public long getNextMili() {
-        return next < System.currentTimeMillis() + 1000L ? System.currentTimeMillis() + 1000L : next;
-
+        return 0;
     }
 
     public boolean isDone() {

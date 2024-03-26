@@ -23,13 +23,6 @@ public class EssentialsConverter {
     }
 
     public static void convertUsers(final CommandSender sender, final importSettings is) {
-    }
-
-    private static void convertWarps(final CommandSender sender) {
-
-    }
-
-    private static void proccess(int place, final CommandSender sender, final importSettings is) {
 
     }
 

@@ -1,14 +1,14 @@
 package com.Zrips.CMI.Modules.Placeholders;
 
 public class PlaceholderCache {
-    private Long validUntil;
-    private String value;
+    private long validUntil = 0L;
+    private String value = null;
 
-    public Long getValidUntil() {
+    public long getValidUntil() {
 	return validUntil;
     }
 
-    public void setValidUntil(Long validUntil) {
+    public void setValidUntil(long validUntil) {
 	this.validUntil = validUntil;
     }
 

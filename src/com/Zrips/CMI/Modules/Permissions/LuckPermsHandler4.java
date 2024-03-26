@@ -21,11 +21,13 @@ public class LuckPermsHandler4 implements PermissionInterface {
 
     @Override
     public String getNameColor(Player player) {
+
         return null;
     }
 
     @Override
     public String getSufix(Player player) {
+
         return null;
     }
 

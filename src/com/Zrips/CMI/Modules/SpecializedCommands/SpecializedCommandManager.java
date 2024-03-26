@@ -1,7 +1,9 @@
 package com.Zrips.CMI.Modules.SpecializedCommands;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -12,6 +14,8 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIInteractType;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class SpecializedCommandManager {
 
@@ -27,7 +31,7 @@ public class SpecializedCommandManager {
     class runAway {
 
         private Long time = null;
-        private int schedId = 0;
+        private CMITask schedId = null;
 
         public runAway(Long time) {
             this.time = time;
@@ -41,17 +45,18 @@ public class SpecializedCommandManager {
             this.time = time;
         }
 
-        public int getSchedId() {
+        public CMITask getSchedTask() {
             return schedId;
         }
 
-        public void stopSched() {
-            if (schedId > 0) {
-                Bukkit.getScheduler().cancelTask(schedId);
+        public void stopSchedTask() {
+            if (schedId != null) {
+                schedId.cancel();
+                schedId = null;
             }
         }
 
-        public void setSchedId(int schedId) {
+        public void setSchedTask(CMITask schedId) {
             this.schedId = schedId;
         }
     }
@@ -140,7 +145,7 @@ public class SpecializedCommandManager {
     }
 
     private enum invEmptyType {
-        hand, offhand, quickbar, armor, inv, subinv, maininv;
+        hand, offhand, quickbar, armor, inv, subinv, maininv, ender;
 
         public static invEmptyType getByName(String name) {
             for (invEmptyType one : invEmptyType.values()) {
@@ -188,6 +193,8 @@ public class SpecializedCommandManager {
         ptarget("ptarget:[value]!", specialisedCommandType.condition),
 
         closeinv("closeinv!", specialisedCommandType.subaction),
+
+        ph("ph!", specialisedCommandType.subaction),
 
         msg("msg!", specialisedCommandType.action),
         broadcast("broadcast!", specialisedCommandType.action),
@@ -329,6 +336,7 @@ public class SpecializedCommandManager {
         return true;
     }
 
+//    Pattern patern = Pattern.compile("^ptarget:(\\S+)!");
     Pattern patern = Pattern.compile("^ptarget:(\\S+)!|^asPlayer! ptarget:(\\S+)!");
 
     public boolean executeCmd(String cmd, Player senderPlayer) {
@@ -347,18 +355,59 @@ public class SpecializedCommandManager {
         return executeCmd(initializer, cmd, senderPlayer, clickType, sender, null);
     }
 
+    private static boolean informed = false;
+
     public boolean executeCmd(String initializer, String cmd, Player senderPlayer, CMIInteractType clickType, CommandSender sender, CheckStatements groupedStatements) {
 
         return true;
     }
 
+    private static void processCondition(failType feedback, CheckStatements groupedConditions) {
+
+    }
+
     private static final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", Pattern.LITERAL);
+
+    private int maxRepeats = 40;
+
+    private static int MAX_ENTRIES = Bukkit.getMaxPlayers();
+    public static LinkedHashMap<UUID, overflowCommands> repeatingCommands = new LinkedHashMap<UUID, overflowCommands>(MAX_ENTRIES + 1, .75F, false) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<UUID, overflowCommands> eldest) {
+            return size() > MAX_ENTRIES;
+        }
+    };
+
+    private UUID getUUID(CommandSender sender) {
+        if (sender instanceof Player)
+            return ((Player) sender).getUniqueId();
+        return plugin.getServerUUID();
+    }
 
     public synchronized boolean dispatch(CommandSender sender, String commandLine) throws CommandException {
 
-        return false;
+        return true;
+    }
+
+    private static boolean isOpCmd(String cmd) {
+        return cmd.toLowerCase().startsWith("op") || cmd.toLowerCase().startsWith("minecraft:op") || cmd.toLowerCase().startsWith("deop") || cmd.toLowerCase().startsWith("minecraft:deop");
+    }
+
+    private failType deductForCommand(Player player, List<specCommandAction> conditions) {
+
+        return null;
     }
 
     Pattern checkPattern = Pattern.compile("(.+)?(==|>=|>|<=|<|!=)(.+)");
 
+    private failType canPerformCommand(String initializer, Player player, List<specCommandAction> conditions, boolean deduct, CMIInteractType clickType, CheckStatements groupedStatements,
+        boolean translate) {
+
+        return null;
+    }
+
+    private boolean checkForMatch(List<String> values, String checkedValue) {
+
+        return false;
+    }
 }

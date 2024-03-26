@@ -48,7 +48,6 @@ public class SkinManager {
     public boolean setSkin(GameProfile profile, UUID uuid) {
 
         return false;
-
     }
 
     private boolean checkCache(GameProfile profile, UUID uuid) {
@@ -65,6 +64,8 @@ public class SkinManager {
     public void save(CMISkin skin) {
 
     }
+
+    private String fileName = "SkinsCache.yml";
 
     public void load() {
 

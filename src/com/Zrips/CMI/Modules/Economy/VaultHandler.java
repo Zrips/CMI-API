@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,6 +17,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
 import net.milkbowl.vault.economy.AbstractEconomy;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class VaultHandler extends AbstractEconomy {
@@ -25,9 +27,16 @@ public class VaultHandler extends AbstractEconomy {
 
     public VaultHandler(CMI plugin) {
 
+        if (cmi == null) {
+            this.cmi = plugin;
+            EconomyServerListener listener = new EconomyServerListener(this);
+            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+        }
+//	plugin.log("Vault support enabled.");
     }
 
     public VaultHandler(Plugin plugin) {
+
     }
 
     public void setCMI(CMI cmi) {
@@ -95,7 +104,7 @@ public class VaultHandler extends AbstractEconomy {
     }
 
     private static EconomyResponse withdraw(CMIUser user, double amount) {
-        return new EconomyResponse(0.0D, user.getBalance(), EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
+        return null;
     }
 
     @Override
@@ -111,7 +120,7 @@ public class VaultHandler extends AbstractEconomy {
     }
 
     private static EconomyResponse deposit(CMIUser user, double amount) {
-        return new EconomyResponse(amount, user.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        return null;
     }
 
     @Override

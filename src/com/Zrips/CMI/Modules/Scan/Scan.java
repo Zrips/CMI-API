@@ -36,8 +36,25 @@ public class Scan {
 
     }
 
+    private static void RemoveItemsFromBlock(List<ItemStack> toRemove, Block block) {
+
+    }
+
+    private void RemoveItemsFromEntity(List<ItemStack> toRemove, Entity ent) {
+
+    }
+
     public boolean isValidContainer(Block block) {
         return block.getState() instanceof InventoryHolder;
+    }
+
+    private static ScanResultLocations checkArmorStand(ScanResultLocations ScanResult, Entity oneEnt) {
+
+        return null;
+    }
+
+    private static void removeFromArmorStand(List<ItemStack> toRemove, Entity oneEnt) {
+
     }
 
     public List<ItemStack> CheckContent(ScanInfo scan, ScanResultLocations scanResult, Block block, Entity ent) {

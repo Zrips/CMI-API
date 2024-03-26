@@ -13,11 +13,11 @@ public class ChunkFix {
     private CMI plugin;
 
     public ChunkFix(CMI plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void loadRegionFile(final FixChunkInfo scan) {
-	
+
     }
 
     private void loadChunk(final FixChunkInfo scan) {

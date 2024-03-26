@@ -24,16 +24,13 @@ public class CMIScavengeItem {
     }
 
     CMIScavengeItem(ItemStack item, Player player) {
-
     }
 
     public boolean canScavenge() {
-
         return true;
     }
 
     public boolean isBlackListedItem() {
-
         return false;
     }
 
@@ -54,7 +51,14 @@ public class CMIScavengeItem {
     }
 
     public double getEnchantExtractionFailChance(Enchantment enchant) {
-        return format(0);
+        Integer level = this.enchants.get(enchant);
+        if (level == null)
+            level = 1;
+        Double chance = ScavengeManager.baseEnchantFailPercentage;
+        int max = enchant.getMaxLevel();
+        chance += (level * ScavengeManager.levelEnchantFailPercentage) / max;
+        chance = chance > ScavengeManager.levelEnchantFailMaxChance ? ScavengeManager.levelEnchantFailMaxChance : chance;
+        return format(chance);
     }
 
     private double format(double number) {
@@ -62,26 +66,28 @@ public class CMIScavengeItem {
     }
 
     public double getExtractionCost() {
-
-        return format(0);
+        return 0D;
     }
 
     public double getIngredientReturnChance() {
 
-        return format(0);
+        double chance = ScavengeManager.IngredientReturnBase;
+
+        return format(chance);
     }
 
     public double getEnchantLevelLowerChance(Enchantment enchant) {
-
-        return format(0);
+        return 0;
     }
 
     public double getItemBreakChance() {
-
-        return format(0);
+        return 100D;
     }
 
     public double getBreakChanceByItemDurability() {
+        if (ScavengeManager.ItemBreakDurabilityChange > 0 && this.maxDurability != this.durability) {
+            return format(ScavengeManager.ItemBreakDurabilityChange - (Math.ceil((getLeftDurabilityPercentage() * ScavengeManager.ItemBreakDurabilityChange) / 100D)));
+        }
         return 0D;
     }
 
@@ -96,6 +102,7 @@ public class CMIScavengeItem {
     public List<ItemStack> getIngredients(boolean checkDurability, boolean considerEndResultAmount) {
 
         return null;
+
     }
 
     public double getLeftDurabilityPercentage() {
@@ -103,14 +110,19 @@ public class CMIScavengeItem {
     }
 
     public List<ItemStack> enchantsToBooks() {
+
         return null;
     }
 
     public ItemStack createBook(Enchantment enchant) {
-        return null;
+        Integer level = this.enchants.get(enchant);
+        if (level == null)
+            level = 1;
+        return createBook(enchant, level);
     }
 
     public ItemStack createBook(Enchantment enchant, int level) {
+
         return null;
     }
 

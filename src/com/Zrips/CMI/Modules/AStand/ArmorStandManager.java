@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -144,11 +145,16 @@ public class ArmorStandManager {
     }
 
     public Entity getLast(Player player) {
+        Entity ent = last.get(player.getUniqueId());
+        if (ent == null)
+            return null;
+        Entity closest = plugin.getUtilManager().getClosestEntity(ent.getLocation(), 10, EntityType.ARMOR_STAND);
+        if (closest != null && closest.getUniqueId().toString().equals(ent.getUniqueId().toString()))
+            return closest;
         return null;
     }
 
     public boolean isBeingEdited(UUID uuid) {
-
         return false;
     }
 
@@ -207,10 +213,6 @@ public class ArmorStandManager {
         return 0;
     }
 
-    private void setAngleButtons(CMIGui gui, ArmorStand armor, armorStandActions pose, int startSlot) {
-
-    }
-
     public boolean isOk(CMIGui gui) {
 
         return true;
@@ -224,13 +226,29 @@ public class ArmorStandManager {
     private static EulerAngle getEulerAngle(ArmorStand armor, armorStandActions apose, armorStandPoseC coord) {
         EulerAngle pose = null;
 
+        switch (apose) {
+        case head:
+            pose = armor.getHeadPose();
+            break;
+        case leftArm:
+            pose = armor.getLeftArmPose();
+            break;
+        case torso:
+            pose = armor.getBodyPose();
+            break;
+        case leftLeg:
+            pose = armor.getLeftLegPose();
+            break;
+        case rightArm:
+            pose = armor.getRightArmPose();
+            break;
+        case rightLeg:
+            pose = armor.getRightLegPose();
+            break;
+        default:
+            break;
+        }
         return pose;
-    }
-
-    private static void duplicate(armorStandActions part, ArmorStand source, ArmorStand target) {
-        setAngle(target, part, armorStandPoseC.x, getEulerAngle(source, part, armorStandPoseC.x));
-        setAngle(target, part, armorStandPoseC.y, getEulerAngle(source, part, armorStandPoseC.y));
-        setAngle(target, part, armorStandPoseC.z, getEulerAngle(source, part, armorStandPoseC.z));
     }
 
     public void duplicate(ArmorStand source, ArmorStand target, Set<armorStandActions> copy) {
@@ -242,7 +260,6 @@ public class ArmorStandManager {
     }
 
     private boolean canBuild(Player player, Location loc) {
-
         return true;
     }
 

@@ -40,7 +40,7 @@ public class EnderChestManager {
         return WatchedList.get(player.getUniqueId());
     }
 
-    public boolean openEnderChest(Player player, Player target) {
+    public boolean openEnderChest(Player player, Player target) { 
         return false;
     }
 

@@ -12,7 +12,7 @@ public class McMMOManager {
     }
 
     public static String getRealSkillName(String name) {
-        return null;
+        return name;
     }
 
     public static int getSkillLevel(Player player, String skill) {

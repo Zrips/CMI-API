@@ -1,17 +1,28 @@
 package com.Zrips.CMI.Modules.Sheduler;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class Schedule {
 
     private boolean enabled = false;
     private String name;
-    private Long performOn = 0L;
+    private long performOn = 0L;
     private boolean performed = false;
     private List<String> commands = new ArrayList<String>();
     private List<String> tempCommands = new ArrayList<String>();
@@ -21,12 +32,14 @@ public class Schedule {
     private boolean duplicateRandomize = false;
     private boolean singleLinear = false;
     private long delay = 0L;
-    private Long lastPerformedOn = 0L;
+    private long lastPerformedOn = 0L;
     private List<SchedTime> time = new ArrayList<SchedTime>();
-    private Integer MinPlayer = null;
-    private Integer MaxPlayer = null;
-    private Boolean playerAmountFeedback = true;
+    private int MinPlayer = 0;
+    private int MaxPlayer = 0;
+    private boolean playerAmountFeedback = true;
     private double commandDelay = 0D;
+
+    private boolean dontTranslatePlaceholders = true;
 
     private boolean randomPlayer = false;
 
@@ -35,28 +48,21 @@ public class Schedule {
     }
 
     public void reset() {
-        performOn = 0L;
-        performed = false;
-        commands = new ArrayList<String>();
-        repeatable = false;
-        delay = 0L;
-        randomize = false;
-        duplicateRandomize = false;
-        singleLinear = false;
-        MinPlayer = null;
-        MaxPlayer = null;
     }
 
     public String getDuplicatedRandomCommand() {
+
         return null;
 
     }
 
     public String getRandomCommand() {
+
         return null;
     }
 
     public String getSingleLinearCommand() {
+
         return null;
     }
 
@@ -81,11 +87,11 @@ public class Schedule {
     }
 
     public boolean isPlayerMinOk() {
-        return this.getMinPlayer() == null || Bukkit.getOnlinePlayers().size() >= this.getMinPlayer();
+        return this.getMinPlayer() == 0 || Bukkit.getOnlinePlayers().size() >= this.getMinPlayer();
     }
 
     public boolean isPlayerMaxOk() {
-        return this.getMaxPlayer() == null || Bukkit.getOnlinePlayers().size() <= this.getMaxPlayer();
+        return this.getMaxPlayer() == 0 || Bukkit.getOnlinePlayers().size() <= this.getMaxPlayer();
     }
 
     public boolean itsTimeToPerform() {
@@ -103,6 +109,10 @@ public class Schedule {
 
         return performOn;
     }
+
+//    public void setPerformOn(Long performOn) {
+//	this.performOn = performOn;
+//    }
 
     public String getName() {
         return name;
@@ -182,17 +192,16 @@ public class Schedule {
     }
 
     public void safePerform() {
+
     }
 
     Pattern placeholderKeepPatern = Pattern.compile("(\\{\\%)([^\\\"^\\%^ ]+)(\\%\\})(\\B)");
 
     public void perform() {
 
-        return;
     }
 
     public List<String> updateSchedCmds(List<String> cmds, Player player) {
-
         return null;
     }
 
@@ -243,4 +252,13 @@ public class Schedule {
     public void setMinPlayerCommands(List<String> minPlayerCommands) {
         this.minPlayerCommands = minPlayerCommands;
     }
+
+    public boolean isDontTranslatePlaceholders() {
+        return dontTranslatePlaceholders;
+    }
+
+    public void setDontTranslatePlaceholders(boolean dontTranslatePlaceholders) {
+        this.dontTranslatePlaceholders = dontTranslatePlaceholders;
+    }
+
 }

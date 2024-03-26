@@ -5,44 +5,44 @@ import java.util.UUID;
 public class PlayerKillCount {
 
     UUID uuid = null;
-    private Long lastKill = 0L;
+    private long lastKill = 0L;
     private int kills = 0;
     private int headDropCount = 0;
 
     public PlayerKillCount(UUID uuid) {
-	this.uuid = uuid;
+        this.uuid = uuid;
     }
 
     public int addKill() {
-	lastKill = System.currentTimeMillis();
-	return kills++;
+        lastKill = System.currentTimeMillis();
+        return kills++;
     }
 
     public int getKills() {
-	return kills;
+        return kills;
     }
 
     public void setKills(int kills) {
-	this.kills = kills;
+        this.kills = kills;
     }
 
     public Long getLastKill() {
-	return lastKill;
+        return lastKill;
     }
 
     public void setLastKill(Long lastKill) {
-	this.lastKill = lastKill;
+        this.lastKill = lastKill == null ? 0 : lastKill;
     }
 
     public int getHeadDropCount() {
-	return headDropCount;
+        return headDropCount;
     }
 
     public void setHeadDropCount(int headDropCount) {
-	this.headDropCount = headDropCount;
+        this.headDropCount = headDropCount;
     }
 
     public void addHeadDropCount() {
-	this.headDropCount++;
+        this.headDropCount++;
     }
 }

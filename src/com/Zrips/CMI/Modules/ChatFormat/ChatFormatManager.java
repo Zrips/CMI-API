@@ -2,13 +2,13 @@ package com.Zrips.CMI.Modules.ChatFormat;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +17,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
 
+import net.Zrips.CMILib.Container.CMIPlayer;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
@@ -29,6 +30,8 @@ public class ChatFormatManager {
 
 //    private HashMap<UUID, String> fixedChats = new HashMap<UUID, String>();
     private HashMap<String, CMIChatRoom> chatRooms = new HashMap<String, CMIChatRoom>();
+    private HashMap<UUID, CMIChatRoom> userChatRoom = new HashMap<UUID, CMIChatRoom>();
+
     private Set<UUID> staffChats = new HashSet<UUID>();
 //    public final static String colorReplacerPlaceholder = "\u0026";
 
@@ -39,16 +42,34 @@ public class ChatFormatManager {
     private boolean BungeeStaffMessages = true;
 
     public void clearCache(UUID uuid) {
+        staffChats.remove(uuid);
+        for (Entry<String, CMIChatRoom> one : new HashMap<String, CMIChatRoom>(chatRooms).entrySet()) {
+            one.getValue().cleanOldUsers();
+            if (one.getValue().getUsers().isEmpty() && !one.getValue().isPersistent())
+                chatRooms.remove(one.getKey());
+        }
+        userChatRoom.remove(uuid);
     }
 
     public ChatFormatManager(CMI plugin) {
         this.plugin = plugin;
     }
 
-    public enum chatReplySuggestion {
+    public enum chatClickAction {
         pubmsg, privmsg, staffmsg, helpop, chatroom, discord;
 
         private String sug = "/msg [playerNickName] ";
+        private String cmd = "";
+
+        private boolean specialized = false;
+
+        public void updateClickAction(RawMessage rm, CMIUser user) {
+
+        }
+
+        public void updateClickAction(RawMessage rm, String playerName, String playerDisplayName, String playerNickName) {
+
+        }
 
         public String getSuggestion(CMIUser user) {
             if (user == null)
@@ -57,12 +78,37 @@ public class ChatFormatManager {
         }
 
         public String getSuggestion(String playerName, String playerDisplayName, String playerNickName) {
-
-            return "";
+            return process(playerName, playerDisplayName, playerNickName, sug);
         }
 
         public void setSuggestion(String sug) {
             this.sug = sug;
+        }
+
+        public String getCommand() {
+            return cmd;
+        }
+
+        public void setCommand(String cmd) {
+            this.cmd = cmd;
+            specialized = CMI.getInstance().getSpecializedCommandManager().isSpecializedCommand(cmd);
+        }
+
+        public String getCommand(CMIUser user) {
+            if (user == null)
+                return sug;
+            return getCommand(user.getName(false), user.getDisplayName(false), user.getNickName());
+        }
+
+        private static String process(String playerName, String playerDisplayName, String playerNickName, String value) {
+
+            return null;
+        }
+
+        public String getCommand(String playerName, String playerDisplayName, String playerNickName) {
+            if (cmd.isEmpty())
+                return cmd;
+            return process(playerName, playerDisplayName, playerNickName, cmd);
         }
     }
 
@@ -89,13 +135,16 @@ public class ChatFormatManager {
         return ChatGeneralFormat;
     }
 
+    public String getNickNamePrefix(CMIUser user) {
+        return null;
+    }
+
     public String getGroupFormat(Player player) {
-        return "";
+        return null;
     }
 
     public String getGroupMessageFormat(Player player) {
-
-        return "";
+        return null;
     }
 
     public Long getChatMutedUntil() {
@@ -111,7 +160,25 @@ public class ChatFormatManager {
     }
 
     public void sendMessage(String sender, String targetName, String message) {
+        CommandSender s = null;
+        if (sender.equalsIgnoreCase("console"))
+            s = Bukkit.getConsoleSender();
+        else {
+            CMIUser send = plugin.getPlayerManager().getUser(sender);
+            if (send != null)
+                s = send.getPlayer(false);
+        }
+        if (s == null)
+            s = CMIPlayer.getByName(sender);
 
+        CMIUser user = plugin.getPlayerManager().getUser(targetName);
+        Player target = null;
+        if (user != null)
+            target = user.getPlayer(false);
+        else
+            target = CMIUser.getOnlinePlayer(targetName);
+
+        sendMessage(s, sender, target, targetName, message, true);
     }
 
     public void sendMessage(CommandSender sender, Player Target, String message) {
@@ -131,8 +198,7 @@ public class ChatFormatManager {
     }
 
     public String updateUrl(String message) {
-
-        return "";
+        return null;
     }
 
     public boolean containsUrl(String message) {
@@ -148,6 +214,10 @@ public class ChatFormatManager {
 
         return url || item;
     }
+
+//    public RawMessage convertHoverOver(RawMessage rm, String message) {
+//	return convertHoverOver(rm, message, null);
+//    }
 
     public RawMessage convertHoverOver(RawMessage rm, String message, Player player) {
         return convertHoverOver(rm, message, player, false);
@@ -200,20 +270,8 @@ public class ChatFormatManager {
     }
 
     public HashMap<String, CMIChatRoom> getChatRooms() {
-        Iterator<Entry<String, CMIChatRoom>> iter = chatRooms.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<String, CMIChatRoom> roome = iter.next();
-            CMIChatRoom room = roome.getValue();
-            if (room.isPersistent())
-                continue;
-            if (!room.getUsers().isEmpty())
-                continue;
-            if (room.getKeepAliveUntil() == 0L || room.getKeepAliveUntil() > System.currentTimeMillis())
-                continue;
-            iter.remove();
-        }
 
-        return chatRooms;
+        return null;
     }
 
     public CMIChatRoom getChatRoom(String name) {
@@ -229,6 +287,7 @@ public class ChatFormatManager {
         }
         old.addUser(user);
         old.removeWatcher(user);
+        this.setChatRoom(user, old);
         return true;
     }
 
@@ -242,6 +301,8 @@ public class ChatFormatManager {
         return true;
     }
 
+    private String fileName = "ChatRooms.yml";
+
     public void load() {
 
     }
@@ -250,9 +311,25 @@ public class ChatFormatManager {
 
     }
 
-    @Deprecated
+    public CMIChatRoom getChatRoom(UUID uuid) {
+        return userChatRoom.get(uuid);
+    }
+
+    public boolean leaveChatRoom(UUID uuid) {
+        if (getChatRoom(uuid) == null)
+            return false;
+        return getChatRoom(uuid).removeUser(CMIUser.getUser(uuid));
+    }
+
+    public void setChatRoom(CMIUser user, CMIChatRoom cmiChatRoom) {
+        if (cmiChatRoom != null && !cmiChatRoom.getUsers().contains(user)) {
+            cmiChatRoom.getUsers().add(user);
+        }
+        userChatRoom.put(user.getUniqueId(), cmiChatRoom);
+    }
+
     public void leaveChatRoom(CMIUser user) {
-        user.leaveChatRoom();
+        leaveChatRoom(user.getUniqueId());
     }
 
     public String getChatMutedReason() {

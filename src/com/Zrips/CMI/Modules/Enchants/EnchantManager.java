@@ -14,6 +14,7 @@ public class EnchantManager {
 
     private CMI plugin;
     private boolean RequireSpecificPermission;
+    private boolean EnforceValidEnchants;
     private boolean PermissionLevelLimit;
     private boolean enchantLimitEnabled = false;
 
@@ -30,9 +31,11 @@ public class EnchantManager {
     }
 
     public void reEnableEnchantsOnDisable() {
+
     }
 
     public void disableEnchantsOnLoad() {
+
     }
 
     public HashMap<String, Enchantment> getDisabled() {
@@ -51,28 +54,16 @@ public class EnchantManager {
     }
 
     public void addDisabled(Enchantment disabled) {
-        String name = disabled.getName();
-        if (name == null)
-            return;
-        if (name.isEmpty())
-            return;
-        if (name == " ")
-            return;
-        this.disabled.put(disabled.getName(), disabled);
+
     }
 
     public void removeDisabled(Enchantment disabled) {
-        String name = disabled.getName();
-        if (name == null)
-            return;
-        if (name.isEmpty())
-            return;
-        if (name == " ")
-            return;
-        this.disabled.remove(disabled.getName());
+
     }
 
-    private void loadDisabledEnchants() {
+    private String fileName = "DisabledEnchants.yml";
+
+    public void loadDisabledEnchants() {
 
     }
 
@@ -90,5 +81,9 @@ public class EnchantManager {
 
     public boolean isEnchantLimitEnabled() {
         return enchantLimitEnabled;
+    }
+
+    public boolean isEnforceValidEnchants() {
+        return EnforceValidEnchants;
     }
 }

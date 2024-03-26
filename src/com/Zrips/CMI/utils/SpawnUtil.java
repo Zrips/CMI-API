@@ -10,6 +10,8 @@ import java.util.Set;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.Zrips.CMI.CMI;
+
 import net.Zrips.CMILib.Container.CMILocation;
 
 public class SpawnUtil {
@@ -88,7 +90,14 @@ public class SpawnUtil {
         }
 
         public List<String> getWorldsAsStringList() {
-            return null;
+            List<String> ls = new ArrayList<String>();
+            if (this.worlds != null)
+                for (World one : this.worlds) {
+                    if (one == null)
+                        continue;
+                    ls.add(one.getName());
+                }
+            return ls;
         }
 
         public void setWorlds(List<World> worlds) {
@@ -124,6 +133,7 @@ public class SpawnUtil {
 
     public static void save() {
 
+        CMI.getInstance().getConfigManager().load();
     }
 
     private static boolean SpawnSpawnOnJoin = false;

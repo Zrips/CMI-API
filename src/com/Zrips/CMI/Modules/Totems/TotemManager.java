@@ -61,16 +61,10 @@ public class TotemManager {
     }
 
     public void hideAllBars() {
-
     }
 
     public boolean isOnCd(Player player) {
-        TotemBossBar tbar = totem.get(player.getUniqueId());
-
-        if (tbar == null)
-            return false;
-
-        return tbar.getType() == BossBarType.Cooldown;
+        return false;
     }
 
     public boolean isOnWarmup(Player player) {
@@ -81,9 +75,6 @@ public class TotemManager {
     }
 
     public TotemBossBar getBossBar(Player player) {
-        TotemBossBar tb = this.totem.get(player.getUniqueId());
-        if (tb != null)
-            return tb;
         return null;
     }
 
@@ -93,41 +84,31 @@ public class TotemManager {
     }
 
     public TotemBossBar getBossBar(UUID uuid, BossBarType type) {
-        TotemBossBar tb = this.totem.get(uuid);
-        if (tb != null && tb.getType() == type)
-            return tb;
         return null;
     }
 
     public void addCooldownPlayer(Player player) {
-
     }
 
     public void addWarmupPlayer(Player player) {
-
     }
 
     public void showWarmupEffect(Player player) {
-
     }
 
     public void stopWarmupEffect(Player player) {
-
     }
 
     @Deprecated
     public boolean toggleBar(Player player) {
-
         return false;
     }
 
     public boolean toggleBar(CMIUser user, Boolean state) {
-
         return true;
     }
 
     public void removePlayer(Player player, BossBarType type) {
-
     }
 
     public synchronized void ShowTotemWarmup(Player player) {
@@ -136,10 +117,6 @@ public class TotemManager {
 
     @Deprecated
     public synchronized void ShowTotemCooldown(Player player) {
-        CMIUser user = plugin.getPlayerManager().getUser(player);
-        if (user == null)
-            return;
-        ShowTotemCooldown(user);
     }
 
     public synchronized void ShowTotemCooldown(CMIUser user) {
@@ -147,8 +124,11 @@ public class TotemManager {
     }
 
     public Long getLeftCd(Player player, int cd) {
-
-        return null;
+        CMIUser user = plugin.getPlayerManager().getUser(player);
+        if (user == null)
+            return 0L;
+        Long usedOn = user.getTotemCooldown();
+        return getLeftCd(usedOn, cd);
     }
 
     private Long getLeftCd(Long usedOn, int cd) {
@@ -168,7 +148,6 @@ public class TotemManager {
     }
 
     public void checkAllForTotemCd() {
-
     }
 
     public int getRegenerationDuration() {

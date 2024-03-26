@@ -84,7 +84,7 @@ public class CMIJail {
     }
 
     public void addCell(CMIJailCell cell) {
-        if (cell.getId() == null)
+        if (cell.getId() == 0)
             cell.setId(this.getNextCellId());
         this.cells.put(cell.getId(), cell);
     }
@@ -100,8 +100,9 @@ public class CMIJail {
     }
 
     public int getNextCellId() {
-        if (this.cells.isEmpty())
+        if (this.cells.isEmpty()) {
             return 1;
+        }
         int i = 1;
         for (Entry<Integer, CMIJailCell> one : this.cells.entrySet()) {
             if (one.getKey() >= i)

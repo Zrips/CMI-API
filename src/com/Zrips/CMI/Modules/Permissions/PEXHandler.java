@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 public class PEXHandler implements PermissionInterface {
 
     public PEXHandler() {
-
     }
 
     @Override

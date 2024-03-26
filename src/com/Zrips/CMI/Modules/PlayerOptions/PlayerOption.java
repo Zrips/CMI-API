@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.inventory.ItemStack;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Version;
 
 public enum PlayerOption {
 
@@ -19,7 +20,14 @@ public enum PlayerOption {
     signSpy(10, false, "&eSign spy", CMIMaterial.LAVA_BUCKET),
     acceptingPM(10, true, "&eAccepting private messages", CMIMaterial.MAP),
     acceptingTPA(10, true, "&eAccepting teleportations to you", CMIMaterial.CLOCK),
-    acceptingMoney(10, true, "&eAccepting money payments", CMIMaterial.KNOWLEDGE_BOOK);
+    acceptingMoney(10, true, "&eAccepting money payments", CMIMaterial.KNOWLEDGE_BOOK),
+    chatbubble(10, true, "&eChat bubbles", CMIMaterial.LANTERN, Version.v1_19_R3),
+    pmSound(10, true, "&ePrivate messages sounds", CMIMaterial.STONE_BUTTON),
+    rideMe(10, true, "&ePlayers can ride you", CMIMaterial.SADDLE),
+    pveDamageNumbers(10, true, "&eShows PvE damage numbers", CMIMaterial.WOODEN_SWORD),
+    pvpDamageNumbers(10, true, "&eShows PvP damage numbers", CMIMaterial.DIAMOND_SWORD),
+    InformDurability(10, true, "&eInform on item durability loss", CMIMaterial.ANVIL),
+    ;
     // Add new entry to the end, ALWAYS.
 
     private int slot;
@@ -27,9 +35,15 @@ public enum PlayerOption {
     private boolean globalEnabled = true;
     private ItemStack icon;
     private String desc;
+    private Version versionFrom;
 
     PlayerOption(int slot, boolean defaults, String desc, CMIMaterial icon) {
+        this(slot, defaults, desc, icon, null);
+    }
+
+    PlayerOption(int slot, boolean defaults, String desc, CMIMaterial icon, Version version) {
         this.slot = slot;
+        this.versionFrom = version;
         this.defaults = defaults;
         this.desc = desc;
         this.icon = icon.newItemStack();
@@ -76,20 +90,18 @@ public enum PlayerOption {
     }
 
     public static HashMap<PlayerOption, Boolean> fromString(String line) {
-        HashMap<PlayerOption, Boolean> map = new HashMap<PlayerOption, Boolean>();
-        return map;
+        return null;
     }
 
     public static String toString(HashMap<PlayerOption, Boolean> map) {
-        StringBuilder line = new StringBuilder();
-        return line.toString();
+        return null;
     }
 
     public static String defaultString = "";
 
     public static String toDefaultValueString() {
 
-        return PlayerOptionsManager.defaultString;
+        return PlayerOptionsManager.defaultString; 
     }
 
     public boolean isGlobalEnabled() {
@@ -106,5 +118,9 @@ public enum PlayerOption {
 
     public void setIcon(ItemStack icon) {
         this.icon = icon;
+    }
+
+    public Version getVersionFrom() {
+        return versionFrom;
     }
 }

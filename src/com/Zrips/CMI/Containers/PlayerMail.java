@@ -3,8 +3,8 @@ package com.Zrips.CMI.Containers;
 public class PlayerMail {
 
     private String sender;
-    private Long time;
-    private Long keepFor;
+    private long time;
+    private long keepFor;
     private String message;
 
     public PlayerMail(String sender, Long time, String message) {
@@ -13,9 +13,9 @@ public class PlayerMail {
 
     public PlayerMail(String sender, Long time, String message, Long keepForSeconds) {
 	this.sender = sender;
-	this.time = time;
+	this.time = time == null ? 0 : time;
 	this.message = message;
-	keepFor = keepForSeconds;
+	keepFor = keepForSeconds == null ? 0 : keepForSeconds;
     }
 
     public String getSender() {
@@ -31,7 +31,7 @@ public class PlayerMail {
     }
 
     public void setTime(Long time) {
-	this.time = time;
+	this.time = time == null ? 0 : time;
     }
 
     public String getMessage() {
@@ -43,11 +43,11 @@ public class PlayerMail {
     }
 
     public Long getKeepFor() {
-	return keepFor == null ? 0L : keepFor;
+	return keepFor;
     }
 
     public void setKeepFor(Long keepFor) {
-	this.keepFor = keepFor;
+	this.keepFor = keepFor == null ? 0 : keepFor;
     }
 
 }

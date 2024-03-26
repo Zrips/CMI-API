@@ -1,22 +1,24 @@
 package com.Zrips.CMI.Containers;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class CMISunMover {
-    private int timeMoverId = -1;
+    private CMITask task = null;
     private String moving;
 
-    public int getTimeMoverId() {
-	return timeMoverId;
+    public CMITask getTimeMoverTask() {
+        return task;
     }
 
-    public void setTimeMoverId(int timeMoverId) {
-	this.timeMoverId = timeMoverId;
+    public void setTimeMoverTask(CMITask task) {
+        this.task = task;
     }
 
     public String getMoving() {
-	return moving;
+        return moving;
     }
 
     public void setMoving(String moving) {
-	this.moving = moving;
+        this.moving = moving;
     }
 }

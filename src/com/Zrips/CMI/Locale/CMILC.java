@@ -3,9 +3,14 @@ package com.Zrips.CMI.Locale;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
 
@@ -28,15 +33,16 @@ public enum CMILC {
     info_WarmUp_DontMove("!title!&6Don't move!!subtitle!&7Wait &c[time] &7seconds"),
     info_WarmUp_Boss_DontMove("&4Don't move for &7[autoTimeLeft] &4seconds!"),
     info_WarmUp_Boss_WaitFor("&4Wait for &7[autoTimeLeft] &4seconds!"),
-    info_Spawner("&r[type] Spawner"),
     info_FailedSpawnerMine("!actionbar!&cFailed to mine spawner. &7[percent]% &cdrop chance"),
     info_ClickSpawner("!actionbar!&7[percent]% &eDrop chance"),
     info_Elevator_created("&eCreated elevator sign"),
     info_CantPlaceSpawner("&eCan't place spawner so close to another spawner (&6[range]&e)"),
     info_ChunksLoading("&eWorld chunk data is still being loaded. Please wait a bit and try again."),
     info_CantUseNonEncrypted("!actionbar!&cCommands on this item are not encrypted. Can't use them!"),
+    info_CantUseTrident("!actionbar!&cCan't use trident with riptide enchant at this moment!"),
     info_CantDecode("!actionbar!&cCan't decode message/command. Key file contains wrong key for this task. Inform server administration about this"),
     info_CantTeleport("&eYou can't teleport because you have too many limited items. Scroll over this line to see the maximum amount of items allowed."),
+    info_CantTeleportDistance("&eSorry you cant teleport over &6[amount] &eblocks away!"),
     info_BlackList("&e[material] [amount] &6Max: [max]"),
     info_wrongPortal("&cYou are in incorrect area of effect"),
     info_ItemWillBreak("!actionbar!&eYour item (&6[itemName]&e) will break soon! &e[current]&6/&e[max]"),
@@ -63,6 +69,7 @@ public enum CMILC {
     info_LoginCustom(" &6[playerDisplayName] &ejoined the game"),
     info_deathlocation("&eYou died at x:&6[x]&e, y:&6[y]&e, z:&6[z]&e in &6[world]"),
     info_book_exploit("&cYou cant create book with more than [amount] pages"),
+    info_combat_CostToOpen("!actionbar!&eCharged for opening: [amount]"),
     info_combat_CantUseShulkerBox("&cCan't use shulker box while you are in combat with player. Wait: [time]"),
     info_combat_CantUseCommand("!actionbar!&cCan't use command while in combat mode. Wait: [time]"),
     info_combat_bossBarPvp("&cCombat mode [autoTimeLeft]"),
@@ -70,7 +77,7 @@ public enum CMILC {
     info_noSchedule("&cSchedule by this name is not found"),
     info_totem_cooldown("&eTotem cooldown: [time]"),
     info_totem_warmup("&eTotem effect: [time]"),
-    info_totem_cantConsume("&eTotem usage was denied due to its cooldown time"), 
+    info_totem_cantConsume("&eTotem usage was denied due to its cooldown time"),
     info_InventorySave_info("&8Info: &8[playerDisplayName]"),
     info_InventorySave_saved("&e[time] &eInventory saved with id: &e[id]"),
     info_InventorySave_NoSavedInv("&eThis player doesn't have any saved inventories"),
@@ -108,6 +115,10 @@ public enum CMILC {
     info_InvEmpty_subinv("&eYour sub inventory should be empty!"),
     info_InvEmpty_subinvslots("&eYour sub inventory should have atleast &6[count] &eempty slots!"),
     info_Relog("&eRelog might be needed for change to take effect"),
+
+    info_outsideWorldBorder("&cLocation is outside world border"),
+
+    info_IncorrectColor("&4Color defined incorrectly!"),
 
     info_time_days("&2[d]&7d:", "Mainly for placeholder playtime output", "Use + sign at the start of line to force include it even if specific and previous time values are 0",
         "Use - sign at the start of line if you want to include it only if its value isn't 0. If entire output results into empty line, then we will output seconds value"),
@@ -177,12 +188,7 @@ public enum CMILC {
     info_CommandFormat("&cIncorrect command format"),
     info_ServerSwitchOut(" &6[playerDisplayName] &eswitched server to &6[serverName]"),
     info_ServerSwitchIn(" &6[playerDisplayName] &ecame from &6[serverName] &eserver"),
-
-    info_months("&e[months] &6months "),
-    info_oneMonth("&e[months] &6month "),
-    info_weeks("&e[weeks] &6weeks "),
-    info_oneWeek("&e[weeks] &6week "),
-
+//    info_FailedTeleport("&cFailed teleportation!"),
     ;
 
     private String text;
@@ -252,6 +258,106 @@ public enum CMILC {
     }
 
     private static String getMsg(CMILC lc, Object... variables) {
-        return CMI.getInstance().getPlaceholderAPIManager().updatePlaceHolders("");
+        return null;
+    }
+
+    public static void info(Class<?> c, CMIUser user, String path, Object... variables) {
+    }
+
+    public static void info(Object c, CMIUser user, String path, Object... variables) {
+        if (!user.isOnline())
+            return;
+        if (c instanceof String)
+            info((String) c, user.getPlayer(false), path, variables);
+        else
+            info(c, user.getPlayer(false), path, variables);
+    }
+
+    public static void info(Class<?> c, CommandSender sender, String path, Object... variables) {
+        info(c.getSimpleName(), sender, path, variables);
+    }
+
+    public static void info(Object thi, CommandSender sender, String path, Object... variables) {
+        info(thi.getClass().getSimpleName(), sender, path, variables);
+    }
+
+    public static void info(String c, CommandSender sender, String path, Object... variables) {
+        if (sender != null) {
+            String msg = CMI.getInstance().getLM().getMessage("command." + c + ".info." + path, variables);
+            if (!msg.isEmpty())
+                sendMessage(sender, msg, false);
+        }
+    }
+
+    public static void info(String c, Player player, String path, Object... variables) {
+        if (player != null) {
+            String msg = CMI.getInstance().getLM().getMessage("command." + c + ".info." + path, variables);
+            if (!msg.isEmpty())
+                sendMessage(player, msg, false);
+        }
+    }
+
+    public static String getIM(Class<?> c, String path, Object... variables) {
+        return getIM(c.getSimpleName(), path, variables);
+    }
+
+    public static String getIM(Object c, String path, Object... variables) {
+        return getIM(c.getClass().getSimpleName(), path, variables);
+    }
+
+    public static String getIM(String cmd, String path, Object... variables) {
+        return CMI.getInstance().getLM().getMessage("command." + cmd + ".info." + path, variables);
+    }
+
+    public static List<String> getIML(String cmd, String path, Object... variables) {
+        return CMI.getInstance().getLM().getMessageList("command." + cmd + ".info." + path, variables);
+    }
+
+    public static List<String> getIML(Object c, String path, Object... variables) {
+        return getIML(c.getClass().getSimpleName(), path, variables);
+    }
+
+    public static List<String> getIML(Class<?> c, String path, Object... variables) {
+        return getIML(c.getSimpleName(), path, variables);
+    }
+
+    public static void sendMessage(Object sender, String msg) {
+        sendMessage(sender, msg, true, true, true);
+    }
+
+    public static void sendMessage(Object sender, String msg, boolean updateSnd) {
+        sendMessage(sender, msg, updateSnd, true, true);
+    }
+
+    public static void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors) {
+        sendMessage(sender, msg, updateSnd, translateColors, true);
+    }
+
+    public static void sendMessage(Object sender, String msg, boolean updateSnd, boolean translateColors, boolean translatePlaceholders) {
+
+    }
+
+    public static int broadcastMessage(String msg) {
+        return broadcastMessage(null, msg, false, null, null);
+    }
+
+    public static int broadcastMessage(CommandSender sender, String msg) {
+        return broadcastMessage(sender, msg, true, null, null);
+    }
+
+    public static int broadcastMessage(CommandSender sender, CMIPerm perm, String msg) {
+        return broadcastMessage(sender, msg, true, perm, null);
+    }
+
+    public static int broadcastMessage(CommandSender sender, String msg, boolean showForsender) {
+        return broadcastMessage(sender, msg, showForsender, null, null);
+    }
+
+    public static int broadcastMessage(CommandSender sender, String msg, boolean showForsender, Set<Player> ignorePlayers) {
+        return broadcastMessage(sender, msg, showForsender, null, ignorePlayers);
+    }
+
+    public static int broadcastMessage(CommandSender sender, String msg, boolean showForsender, CMIPerm perm, Set<Player> ignorePlayers) {
+        return 0;
     }
 }

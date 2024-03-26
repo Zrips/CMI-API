@@ -224,6 +224,9 @@ public class CMISpawner {
     }
 
     private void updateValue(String type, int val) {
+        Object tag = new CMINBT(block).setShort(type, (short) val);
+        CMILib.getInstance().getReflectionManager().updateTileEntity(this.getLocation(), tag);
+        spawner.update();
     }
 
     public void setSpawnedType(EntityType arg0) {

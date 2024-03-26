@@ -6,17 +6,19 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.Zrips.CMI.Modules.Particl.ParticleManager.CMIPresetAnimations;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
 
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class RankManager {
 
@@ -27,19 +29,58 @@ public class RankManager {
     private CMI plugin;
     BukkitScheduler scheduler;
 
+    private HashMap<UUID, CMIRank> ranksCache = new HashMap<UUID, CMIRank>();
+
+    public CMIRank getNullRank(CMIUser user) {
+        return ranksCache.get(user.getUniqueId());
+    }
+
+    public CMIRank getRank(CMIUser user) {
+        return ranksCache.computeIfAbsent(user.getUniqueId(), k -> CMI.getInstance().getRankManager().getDefaultRank(user.getPlayer(false)));
+    }
+
+    public CMIRank recalculateRank(CMIUser user) {
+
+        return null;
+    }
+
+    public void setRank(CMIUser user, CMIRank rank) {
+        ranksCache.put(user.getUniqueId(), rank);
+    }
+
     public RankManager(CMI plugin) {
         this.plugin = plugin;
     }
 
     private boolean isNextCheck(UUID uuid) {
+        Long time = nextCheck.get(uuid);
+        if (time == null || time < System.currentTimeMillis()) {
+            nextCheck.put(uuid, System.currentTimeMillis() + PlayerDelay);
+            return true;
+        }
         return false;
     }
 
     private boolean isNextAutoRecalculate(UUID uuid) {
+        Long time = nextAutoRecalculate.get(uuid);
+        if (time == null || time < System.currentTimeMillis()) {
+            nextAutoRecalculate.put(uuid, System.currentTimeMillis() + Recalculation);
+            return true;
+        }
         return false;
     }
 
     private boolean isNextInform(UUID uuid) {
+        InformTimer time = nextInform.get(uuid);
+        if (time == null) {
+            nextInform.put(uuid, new InformTimer(System.currentTimeMillis() + PlayerDelay));
+            return true;
+        }
+        if (time.getNextCheck() < System.currentTimeMillis()) {
+            time.addTimesInformed();
+            time.setNextCheck((System.currentTimeMillis() + PlayerDelay) + (time.getTimesInformed() * PlayerDelay));
+            return true;
+        }
         return false;
     }
 
@@ -49,17 +90,17 @@ public class RankManager {
         nextInform.remove(uuid);
     }
 
-    int sched = -1;
-    int recSched = -1;
+    CMITask sched = null;
+    CMITask recSched = null;
 
     public void stop() {
-        if (sched != -1) {
-            Bukkit.getScheduler().cancelTask(sched);
-            sched = -1;
+        if (sched != null) {
+            sched.cancel();
+            sched = null;
         }
-        if (recSched != -1) {
-            Bukkit.getScheduler().cancelTask(recSched);
-            recSched = -1;
+        if (recSched != null) {
+            recSched.cancel();
+            recSched = null;
         }
         percentCache.clear();
     }
@@ -68,8 +109,22 @@ public class RankManager {
 
     }
 
+    private void cycle() {
+
+    }
+
     public void run() {
 
+        if (!CMIModule.ranks.isEnabled())
+            return;
+        if (Delay <= 0)
+            return;
+
+        if (async) {
+            sched = CMIScheduler.runTimerAsync(this::cycle, 0L, Delay * 20L);
+        } else {
+            sched = CMIScheduler.scheduleSyncRepeatingTask(this::cycle, 0L, Delay * 20L);
+        }
     }
 
     public void addRank(CMIRank rank) {
@@ -92,30 +147,30 @@ public class RankManager {
     }
 
     public enum rankupFailType {
-        Money, Exp, Stats, McMMO, Aurelium, Jobs, Perm, None, NoRank, Items, Votes, SameRank
+        Money, Exp, Stats, McMMO, Aurelium, Jobs, Placeholoder, Perm, None, NoRank, Items, Votes, SameRank
     }
 
     public enum rankupType {
-        Money, Exp, Stats, McMMO, Aurelium, Jobs, Perm, Items, Votes;
+        Money, Exp, Stats, McMMO, Aurelium, Jobs, Perm, Placeholoder, Items, Votes;
     }
 
     public boolean canRankUpAuto(CMIUser user) {
 
-        return true;
-
+        return false;
     }
 
     public rankupFailType canRankUp(CMIUser user, CMIRank rank) {
 
-        return rankupFailType.None;
+        return null;
     }
 
     private static HashMap<String, CMIItemStack> getInvContentsAmounts(Player player) {
-        HashMap<String, CMIItemStack> map = new HashMap<String, CMIItemStack>();
-        return map;
+
+        return null;
     }
 
     public boolean removeContents(Player player, LinkedHashMap<CMIItemStack, Integer> map) {
+
         return true;
     }
 
@@ -151,17 +206,49 @@ public class RankManager {
     }
 
     public HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>> getStatsRequirements(CMIUser user, CMIRank rank) {
-        HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>> haveMap = new HashMap<CMIStatistic, LinkedHashMap<Object, rankCurrentRequirement>>();
 
-        return haveMap;
+        return null;
     }
 
     public Double getStatsDonePercentage(CMIUser user, CMIRank rank) {
+
         return null;
     }
 
     private static String firstCap(String msg) {
         return msg.substring(0, 1).toUpperCase() + msg.substring(1);
+    }
+
+    private class donePercentage {
+        private double percent = 0D;
+        private int times = 0;
+
+        public double getPercent() {
+            return percent;
+        }
+
+        public void addPercent(double percent) {
+            this.percent += percent;
+        }
+
+        public int getTimes() {
+            return times;
+        }
+
+        public void incrementTimes() {
+            this.times++;
+        }
+
+        public void addIncrement(int times) {
+            this.times += times;
+        }
+    }
+
+    private void calculate(Double v, donePercentage done, int times) {
+        if (v == null)
+            return;
+        done.addPercent(v);
+        done.addIncrement(times);
     }
 
     public Double getOverallDonePercentage(CMIUser user, CMIRank rank) {
@@ -170,37 +257,49 @@ public class RankManager {
     }
 
     public Double getMoneyDonePercentage(CMIUser user, CMIRank rank) {
-        return null;
+        if (rank.getMoneyCost() <= 0)
+            return null;
+        double have = user.getBalance();
+        if (have > rank.getMoneyCost())
+            return 100D;
+        return have * 100D / rank.getMoneyCost();
     }
 
     public void listMoneyRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getExpDonePercentage(CMIUser user, CMIRank rank) {
+
         return null;
     }
 
     public void listExpRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getVoteDonePercentage(CMIUser user, CMIRank rank) {
-        if (rank.getVotes() <= 0 || !plugin.isVotifierEnabled())
-            return null;
-        int have = user.getVotifierVotes();
-        if (have > rank.getVotes())
-            return 100D;
-        return (have * 100D) / ((double) rank.getVotes());
+
+        return null;
     }
 
     public void listVoteRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public void listPermRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public class rankCache {
         HashMap<rankupType, Double> percentage = new HashMap<rankupType, Double>();
         HashMap<rankupType, Long> nextPercentageCheck = new HashMap<rankupType, Long>();
+
+        long time = 5000L;
+
+        public rankCache(long time) {
+            this.time = time;
+        }
 
         public rankCache() {
 
@@ -216,7 +315,7 @@ public class RankManager {
 
         public void setCache(rankupType type, Double percent) {
             percentage.put(type, percent);
-            nextPercentageCheck.put(type, System.currentTimeMillis() + 5000L);
+            nextPercentageCheck.put(type, System.currentTimeMillis() + time);
         }
     }
 
@@ -225,6 +324,15 @@ public class RankManager {
     public Double getPermDonePercentage(CMIUser user, CMIRank rank) {
 
         return null;
+    }
+
+    public Double getPlaceholderDonePercentage(CMIUser user, CMIRank rank) {
+
+        return null;
+    }
+
+    public void listPlaceholderRequirements(CommandSender sender, CMIUser user, CMIRank rank) {
+
     }
 
     public Double getAureliumDonePercentage(CMIUser user, CMIRank rank) {
@@ -275,13 +383,21 @@ public class RankManager {
         return null;
     }
 
+    private String fileName = "Ranks.yml";
+
     @SuppressWarnings("unchecked")
     public void load() {
 
     }
 
     private void calculateWeight(CMIRank rank, int weight) {
-
+        weight++;
+        if (weight > 1000)
+            return;
+        rank.setWeight(weight);
+        for (CMIRank one : rank.getNextRanks()) {
+            calculateWeight(one, weight);
+        }
     }
 
     private int Delay = 30;

@@ -1,25 +1,21 @@
 package com.Zrips.CMI.Modules.DataBase;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.PlayerManager;
 import com.Zrips.CMI.Containers.CMIUser;
-import net.Zrips.CMILib.FileHandler.ConfigReader;
 import com.Zrips.CMI.Modules.DataBase.DBDAO.UserTablesFields;
-import com.Zrips.CMI.Modules.Homes.CmiHome;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import com.Zrips.CMI.Modules.PlayTime.CMIPlayDay;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class DBManager {
     private DBDAO dao;
@@ -60,7 +56,7 @@ public class DBManager {
     int autoSaveInterval = 15;
     private boolean ForceSaveOnLogOut = false;
     private boolean ForceLoadOnLogIn = false;
-    private static final String dataBaseFile = "dataBaseInfo.yml";
+    private static final String fileName = "DataBaseInfo.yml";
 
     private String username = "";
     private String password = "";
@@ -76,18 +72,12 @@ public class DBManager {
     }
 
     private synchronized DBMySQL startMysql(boolean reload) {
-
         return null;
     }
 
     private synchronized DBSQLite startSqlite(boolean reload) {
 
-        if (reload && dao != null)
-            return (DBSQLite) dao;
-
-        DBSQLite data = new DBSQLite(plugin, plugin.getDataFolder());
-        data.initialize();
-        return data;
+        return null;
     }
 
     public DataBaseType getDbType() {
@@ -98,15 +88,15 @@ public class DBManager {
     private Set<CMIUser> playerListToSave = ConcurrentHashMap.newKeySet();
     private Set<CMIUser> playerPlayTimeRewardToSave = ConcurrentHashMap.newKeySet();
 
-    int autosaveBukkitId = -1;
+    CMITask autosaveBukkitId = null;
 
     public void stop() {
-        if (autosaveBukkitId != -1) {
-            CMIDebug.d("Stopped auto save task", autosaveBukkitId);
-            Bukkit.getScheduler().cancelTask(autosaveBukkitId);
+        if (autosaveBukkitId != null) {
+            CMIDebug.d("Stopped auto save task");
+            autosaveBukkitId.cancel();
         }
         if (task != null)
-            Bukkit.getScheduler().cancelTask(task.getTaskId());
+            task.cancel(false);
     }
 
     class InvSave {
@@ -139,12 +129,10 @@ public class DBManager {
         autosaveInt = autosaveInt * 20;
         stop();
 
-        autosaveBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave, autosaveInt, autosaveInt);
+        autosaveBukkitId = CMIScheduler.scheduleSyncRepeatingTask(autoSave, autosaveInt, autosaveInt);
     }
 
     public void addForSave(CMIUser user) {
-//	if (user.getName() != null && user.getName().equalsIgnoreCase(plugin.getPlayerManager().getFakeUserName()))
-//	    return;
         playerListToSave.add(user);
     }
 
@@ -160,13 +148,10 @@ public class DBManager {
     }
 
     public void clear() {
-        getPlayerId.clear();
-        getPlayerInvId.clear();
-        getPlayerPlayTimeId.clear();
-        getPlayerPlayTimeRewardId.clear();
+
     }
 
-    BukkitTask task = null;
+    CompletableFuture<Void> task = null;
     Long startedAt = 0L;
 
     private Runnable autoSave = new Runnable() {
@@ -182,9 +167,8 @@ public class DBManager {
     HashMap<Integer, CMIUser> getPlayerPlayTimeRewardId = new HashMap<Integer, CMIUser>();
 
     private synchronized HashSet<CMIUser> getFirstPlayersForSave(boolean all) {
-        HashSet<CMIUser> temp = new HashSet<CMIUser>();
 
-        return temp;
+        return null;
     }
 
     Boolean all = false;
@@ -194,21 +178,7 @@ public class DBManager {
     }
 
     public void saveBatchAsync(boolean allEntries) {
-        if (task != null && startedAt + (60 * 1000) < System.currentTimeMillis()) {
-            Bukkit.getScheduler().cancelTask(task.getTaskId());
-            task = null;
-        }
-        if (task == null) {
-            startedAt = System.currentTimeMillis();
-            task = Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    saveBatch(allEntries);
-                    all = false;
-                    return;
-                }
-            });
-        }
+
     }
 
     Integer oldRapidvalue = null;

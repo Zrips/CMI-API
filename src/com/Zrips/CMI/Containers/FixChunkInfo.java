@@ -12,9 +12,11 @@ import org.bukkit.util.Vector;
 
 import com.Zrips.CMI.CMI;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class FixChunkInfo {
 
-    private int scheduleId = -1;
+    private CMITask scheduleTask = null;
 
     private int currentId = 1;
 
@@ -59,216 +61,216 @@ public class FixChunkInfo {
     }
 
     public List<ChunkInfo> getChunksResult() {
-	return this.chunksResult;
+        return this.chunksResult;
     }
 
     public void addChunkResult(ChunkInfo c) {
-	chunksResult.add(c);
+        chunksResult.add(c);
     }
 
     public int getCurrentId() {
-	return this.currentId;
+        return this.currentId;
     }
 
     public void setCurrentId(int id) {
-	this.currentId = id;
+        this.currentId = id;
     }
 
     public void setChunksCkeckedLast(double checked2) {
-	this.chunksCkeckedLast = checked2;
+        this.chunksCkeckedLast = checked2;
     }
 
     public double getChunksCkeckedLast() {
-	return this.chunksCkeckedLast;
+        return this.chunksCkeckedLast;
     }
 
     public void setRange(int range) {
-	this.range = range;
+        this.range = range;
     }
 
     public int getRange() {
-	return this.range;
+        return this.range;
     }
 
-    public void setscheduleId(int id) {
-	this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+        this.scheduleTask = task;
     }
 
-    public int getScheduleId() {
-	return this.scheduleId;
+    public CMITask getScheduleTask() {
+        return this.scheduleTask;
     }
 
     public void setShowInfo(long time) {
-	this.showedInfo = time;
+        this.showedInfo = time;
     }
 
     public long getShowInfo() {
-	return this.showedInfo;
+        return this.showedInfo;
     }
 
     public void addChunkCkecked() {
-	this.chunksChecked++;
+        this.chunksChecked++;
     }
 
     public double getChunkChecked() {
-	return this.chunksChecked;
+        return this.chunksChecked;
     }
 
     public void setAutoSpeed(boolean autoSpeed) {
-	this.autoSpeed = autoSpeed;
+        this.autoSpeed = autoSpeed;
     }
 
     public boolean isAutoSpeed() {
-	return this.autoSpeed;
+        return this.autoSpeed;
     }
 
     public void setMessages(boolean messages) {
-	this.messages = messages;
+        this.messages = messages;
     }
 
     public boolean isMessages() {
-	return this.messages;
+        return this.messages;
     }
 
     public void setShowRegionInfo(boolean state) {
-	this.showInfo = state;
+        this.showInfo = state;
     }
 
     public boolean isShowRegionInfo() {
-	return this.showInfo;
+        return this.showInfo;
     }
 
     public void setOnlyChunks(boolean state) {
-	this.onlyChunks = state;
+        this.onlyChunks = state;
     }
 
     public boolean isOnlyChunks() {
-	return this.onlyChunks;
+        return this.onlyChunks;
     }
 
     public void addChunks(ArrayList<ChunkInfo> chunks) {
-	this.chunks = chunks;
+        this.chunks = chunks;
     }
 
     public void addChunk(ChunkInfo chunk) {
-	this.chunks.add(chunk);
+        this.chunks.add(chunk);
     }
 
     public ArrayList<ChunkInfo> getChunks() {
-	return this.chunks;
+        return this.chunks;
     }
 
     public void addFound() {
-	this.found++;
+        this.found++;
     }
 
     public int getFound() {
-	return this.found;
+        return this.found;
     }
 
     public void setSpeed(int speed) {
-	this.speed = speed;
+        this.speed = speed;
     }
 
     public int getSpeed() {
-	return this.speed;
+        return this.speed;
     }
 
     public void setRunning(boolean state) {
-	this.running = state;
+        this.running = state;
     }
 
     public boolean isRunning() {
-	return this.running;
+        return this.running;
     }
 
     public void setStartTime() {
-	this.startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
     }
 
     public long getStartTime() {
-	return this.startTime;
+        return this.startTime;
     }
 
     public void addLoaded() {
-	this.loaded++;
+        this.loaded++;
     }
 
     public int getloaded() {
-	return this.loaded;
+        return this.loaded;
     }
 
     public void setX(int mcaX) {
-	this.mcaX = mcaX;
+        this.mcaX = mcaX;
     }
 
     public int getX() {
-	return this.mcaX;
+        return this.mcaX;
     }
 
     public void setZ(int mcaZ) {
-	this.mcaZ = mcaZ;
+        this.mcaZ = mcaZ;
     }
 
     public int getZ() {
-	return this.mcaZ;
+        return this.mcaZ;
     }
 
     public void addRegionChecked() {
-	this.checked++;
+        this.checked++;
     }
 
     public double getRegionChecked() {
-	return this.checked;
+        return this.checked;
     }
 
     public void setWorld(World world) {
-	this.world = world;
+        this.world = world;
     }
 
     public World getWorld() {
-	return this.world;
+        return this.world;
     }
 
     public void setRegionFiles(List<File> regionFiles2) {
-	this.regionFiles = regionFiles2;
+        this.regionFiles = regionFiles2;
     }
 
     public List<File> getRegionFiles() {
-	return this.regionFiles;
+        return this.regionFiles;
     }
 
     public CommandSender getSender() {
-	if (this.sender.equals(CMI.getInstance().getServerUUID()))
-	    return Bukkit.getConsoleSender();
-	return Bukkit.getPlayer(this.sender);
+        if (this.sender.equals(CMI.getInstance().getServerUUID()))
+            return Bukkit.getConsoleSender();
+        return CMIUser.getOnlinePlayer(this.sender);
     }
 
     public void setSender(UUID sender) {
-	this.sender = sender;
+        this.sender = sender;
     }
 
     public double getTotal() {
-	return total;
+        return total;
     }
 
     public void setTotal(double total) {
-	this.total = total;
+        this.total = total;
     }
 
     public Vector getCenter() {
-	return center;
+        return center;
     }
 
     public void setCenter(Vector center) {
-	this.center = center;
+        this.center = center;
     }
 
     public RegionFiles getCurrentRegion() {
-	return currentRegion;
+        return currentRegion;
     }
 
     public void setCurrentRegion(RegionFiles currentRegion) {
-	this.currentRegion = currentRegion;
+        this.currentRegion = currentRegion;
     }
 }

@@ -19,7 +19,6 @@ public @interface CAnnotation {
     @Deprecated
     String[] tab() default {};
 
-    
     // ! in front prevents repeatable suggestions
     // |number| to repeat suggestions for specified tab complete amount
     String[] multiTab() default {};
@@ -35,7 +34,7 @@ public @interface CAnnotation {
     boolean test() default false;
 
     boolean ignoreHelpPage() default false;
-    
+
     // only in cases where usage of ? in first variable results in help page, otherwise performs command
     boolean subIgnoreHelpPage() default false;
 
@@ -48,7 +47,7 @@ public @interface CAnnotation {
     Class<? extends Cmd> redirectClass() default Void.class;
 
     String redirectFormat() default "";
-    
+
     boolean asyncSupported() default false;
 
     boolean others();

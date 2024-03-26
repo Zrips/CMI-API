@@ -1,8 +1,6 @@
 package com.Zrips.CMI.Modules.Mirror;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,8 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-
-import net.Zrips.CMILib.Container.CMIBlock;
 
 public class MirrorManager {
 
@@ -63,7 +59,16 @@ public class MirrorManager {
         }
     }
 
-    HashMap<UUID, CMIUser> map = new HashMap<UUID, CMIUser>();
+    HashMap<UUID, Mirrors> mirrorMap = new HashMap<UUID, Mirrors>();
+
+    public Mirrors getMirror(UUID uuid) {
+        return mirrorMap.computeIfAbsent(uuid, s -> new Mirrors());
+    }
+
+    public void setMirror(UUID uuid, Mirrors mirror) {
+        this.mirrorMap.put(uuid, mirror);
+    }
+
     private final String CMIMirrorBlock = "CMIMirrorBlock";
     private CMI plugin;
 
@@ -72,18 +77,22 @@ public class MirrorManager {
     }
 
     public boolean isMirroring(Player player) {
-        return map.containsKey(player.getUniqueId());
+        return mirrorMap.containsKey(player.getUniqueId());
     }
 
     public boolean addMirroring(Player player) {
         CMIUser user = plugin.getPlayerManager().getUser(player);
         if (user != null)
-            return map.put(player.getUniqueId(), user) != null;
+            return mirrorMap.computeIfAbsent(player.getUniqueId(), k -> new Mirrors()) != null;
         return false;
     }
 
     public void removeMirroring(Player player) {
-        map.remove(player.getUniqueId());
+        removeMirroring(player.getUniqueId());
+    }
+
+    public void removeMirroring(UUID uuid) {
+        mirrorMap.remove(uuid);
     }
 
     class blockInfo {
@@ -183,19 +192,13 @@ public class MirrorManager {
     }
 
     private HashMap<String, blockInfo> offset(Mirrors mirror, Block block, mirrorShift shift) {
-        Location blockLoc = shift.modifyLocation(block.getLocation().clone());
-        HashMap<String, blockInfo> locs = new HashMap<String, blockInfo>(getMapLocations(mirror.clone().setCenter(shift.modifyLocation(mirror.getCenter().clone())), blockLoc, block));
-        locs.put(toString(blockLoc), new blockInfo(blockLoc, (new CMIBlock(block)).getData()));
-        return locs;
+
+        return null;
     }
 
     private HashMap<String, blockInfo> combineMaps(HashMap<String, blockInfo> locs, HashMap<String, blockInfo> shiftedLocs) {
-        for (Entry<String, blockInfo> one : shiftedLocs.entrySet()) {
-            if (locs.containsKey(one.getKey()))
-                continue;
-            locs.put(one.getKey(), one.getValue());
-        }
-        return locs;
+
+        return null;
     }
 
     public void MirrorPlace(Player player, Block block) {
@@ -207,34 +210,28 @@ public class MirrorManager {
     }
 
     private Location rotate90horClockWise(Mirrors mirror, Location loc) {
-        Location n = loc.clone();
 
-        return n;
+        return null;
     }
 
     private Location rotate90horCounterClockWise(Mirrors mirror, Location loc) {
-        Location n = loc.clone();
 
-        return n;
+        return null;
     }
 
     private static Location rotate90hor(Mirrors mirror, Location loc, boolean clock) {
-        Location n = loc.clone();
 
-        return n;
+        return null;
     }
 
     private static Location rotate180hor(Mirrors mirror, Location loc) {
-        Location n = loc.clone();
 
-        return n;
+        return null;
     }
 
     private static Location rotate90vert(Mirrors mirror, Location loc) {
 
-        Location n = loc.clone();
-
-        return n;
+        return null;
     }
 
     private HashMap<String, blockInfo> getMirroredXZMap(Mirrors mirror, Block block, Object data, Location loc, int repeat, HashMap<String, blockInfo> map) {
@@ -248,18 +245,17 @@ public class MirrorManager {
     }
 
     private static Set<Location> getMirroredXZ(Mirrors mirror, Location loc, int repeat) {
-        Set<Location> list = new HashSet<Location>();
 
-        return list;
+        return null;
     }
 
     private static Set<Location> getMirroredZX(Mirrors mirror, Location loc, int repeat) {
-        Set<Location> list = new HashSet<Location>();
 
-        return list;
+        return null;
     }
 
     private HashMap<String, blockInfo> getMirroredZYMap(Mirrors mirror, Block block, Object data, Location loc, int repeat, HashMap<String, blockInfo> map) {
+
         return null;
     }
 
@@ -269,13 +265,13 @@ public class MirrorManager {
     }
 
     private static Set<Location> getMirroredZY(Mirrors mirror, Location loc, int repeat) {
-        Set<Location> list = new HashSet<Location>();
-        return list;
+
+        return null;
     }
 
     private static Set<Location> getMirroredXY(Mirrors mirror, Location loc, int repeat) {
-        Set<Location> list = new HashSet<Location>();
-        return list;
+
+        return null;
     }
 
     private HashMap<String, blockInfo> getMirroredLocMap(Mirrors mirror, Location loc) {
@@ -285,9 +281,7 @@ public class MirrorManager {
 
     private static Set<Location> getMirroredLocs(Mirrors mirror, Location loc) {
 
-        Set<Location> list = new HashSet<Location>();
-
-        return list;
+        return null;
     }
 
     private static int getX(Location center, Location loc) {
@@ -326,7 +320,4 @@ public class MirrorManager {
         return center.getBlockZ() - loc.getBlockZ();
     }
 
-    public void openNewGui(CMIUser user) {
-
-    }
 }

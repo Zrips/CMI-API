@@ -1,9 +1,15 @@
 package com.Zrips.CMI.Containers;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Container.CMIVectorInt3D;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class RandomTeleport {
     private boolean enabled = true;
@@ -15,15 +21,21 @@ public class RandomTeleport {
     private boolean ignoreWater = true;
     private boolean ignoreLava = true;
     private boolean ignorePowderSnow = true;
+    private boolean ignoreLeaves = true;
     private boolean surfaceOnly = false;
+    private Set<CMIMaterial> ignoredMaterials = new HashSet<CMIMaterial>();
+
     private int MaxY = 256;
     private int MinY = 0;
+
+    static Random random = new Random(System.nanoTime());
 
     public RandomTeleport(boolean enabled, int MaxDistance, int MinDistance, CMILocation center) {
         this.loc = center;
         this.MaxDistance = MaxDistance;
         this.MinDistance = MinDistance;
         this.enabled = enabled;
+
     }
 
     public RandomTeleport(World world, int MaxDistance, int MinDistance, int centerX, int centerZ) {
@@ -140,6 +152,33 @@ public class RandomTeleport {
 
     public RandomTeleport setSurfaceOnly(boolean surfaceOnly) {
         this.surfaceOnly = surfaceOnly;
+        return this;
+    }
+
+    public CMIVectorInt3D getRandomLocation() {
+
+        return null;
+    }
+
+    public boolean isIgnoreLeaves() {
+        return ignoreLeaves;
+    }
+
+    public RandomTeleport setIgnoreLeaves(boolean ignoreLeaves) {
+        this.ignoreLeaves = ignoreLeaves;
+        return this;
+    }
+
+    public boolean isIgnoreMaterials() {
+        return !ignoredMaterials.isEmpty();
+    }
+
+    public boolean isIgnoredMaterial(CMIMaterial material) {
+        return ignoredMaterials.contains(material);
+    }
+
+    public RandomTeleport setIgnoredMaterials(Set<CMIMaterial> ignoredMaterials) {
+        this.ignoredMaterials = ignoredMaterials;
         return this;
     }
 }

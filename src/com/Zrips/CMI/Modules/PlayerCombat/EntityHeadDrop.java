@@ -2,7 +2,6 @@ package com.Zrips.CMI.Modules.PlayerCombat;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.entity.Entity;
@@ -27,11 +26,6 @@ public class EntityHeadDrop {
     }
 
     public void setHeads(HashMap<String, Double> heads) {
-        this.heads = heads;
-        ls.clear();
-        for (Entry<String, Double> one : heads.entrySet()) {
-            ls.add(one.getKey());
-        }
     }
 
     public void addHead(String texture, Double chance) {
@@ -40,6 +34,7 @@ public class EntityHeadDrop {
     }
 
     public ItemStack getHead() {
+
         return null;
     }
 

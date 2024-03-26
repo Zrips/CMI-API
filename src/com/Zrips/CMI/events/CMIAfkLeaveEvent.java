@@ -4,60 +4,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
-public final class CMIAfkLeaveEvent extends Event {
+public final class CMIAfkLeaveEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
     private List<String> leaveTrigerCommands = new ArrayList<String>();
-    private Player player;
     private long time;
     private String reason;
 
     public CMIAfkLeaveEvent(Player player) {
-	this.player = player;
+        super(player);
     }
 
     @Deprecated
     public CMIAfkLeaveEvent(Player player, List<String> leaveTrigerCommands) {
-	this.player = player;
-	this.leaveTrigerCommands = leaveTrigerCommands;
+        super(player);
+        this.leaveTrigerCommands = leaveTrigerCommands;
     }
 
     public CMIAfkLeaveEvent(Player player, List<String> leaveTrigerCommands, long time, String reason) {
-	this.player = player;
-	this.leaveTrigerCommands = leaveTrigerCommands;
-	this.time = time;
-	this.reason = reason;
-    }
-
-    public Player getPlayer() {
-	return this.player;
+        super(player);
+        this.leaveTrigerCommands = leaveTrigerCommands;
+        this.time = time;
+        this.reason = reason;
     }
 
     @Override
     @EventAnnotation(info = "Fired when players leaves afk mode")
     public HandlerList getHandlers() {
-	return handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-	return handlers;
+        return handlers;
     }
 
     public List<String> getLeaveTrigerCommands() {
-	return leaveTrigerCommands;
+        return leaveTrigerCommands;
     }
 
     public void setLeaveTrigerCommands(List<String> leaveTrigerCommands) {
-	this.leaveTrigerCommands = leaveTrigerCommands;
+        this.leaveTrigerCommands = leaveTrigerCommands;
     }
 
     public long getTime() {
-	return time;
+        return time;
     }
 
     public String getReason() {
-	return reason;
+        return reason;
     }
 }

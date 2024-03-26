@@ -4,65 +4,60 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
-import com.Zrips.CMI.Modules.tp.SafeTeleport;
-import com.Zrips.CMI.Modules.tp.Teleportations.TeleportType;
+import com.Zrips.CMI.Modules.Teleportations.CMITeleportType;
+import com.Zrips.CMI.Modules.Teleportations.SafeTeleport;
 
-public final class CMIPlayerTeleportEvent extends Event implements Cancellable {
+public final class CMIPlayerTeleportEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
     private CommandSender sender;
-    private Player player;
     private SafeTeleport safe;
-    private TeleportType type;
+    private CMITeleportType type;
 
-    public CMIPlayerTeleportEvent(final CommandSender sender, final Player player, final SafeTeleport safe, final TeleportType type) {
-	this.sender = sender;
-	this.player = player;
-	this.safe = safe;
-	this.type = type;
+    public CMIPlayerTeleportEvent(final CommandSender sender, final Player player, final SafeTeleport safe, final CMITeleportType type) {
+        super(player);
+        this.sender = sender;
+        this.safe = safe;
+        this.type = type;
     }
 
     public final static HandlerList getHandlerList() {
-	return handlers;
+        return handlers;
     }
 
     @Override
     @EventAnnotation(info = "Fired when player teleports to new safe location")
     public final HandlerList getHandlers() {
-	return handlers;
+        return handlers;
     }
 
     @Override
     public final void setCancelled(final boolean cancel) {
-	this.cancel = cancel;
+        this.cancel = cancel;
     }
 
     @Override
     public final boolean isCancelled() {
-	return cancel;
+        return cancel;
     }
 
     public CommandSender getSender() {
-	return sender;
-    }
-
-    public Player getPlayer() {
-	return player;
+        return sender;
     }
 
     public SafeTeleport getSafe() {
-	return safe;
+        return safe;
     }
 
-    public TeleportType getType() {
-	return type;
+    public CMITeleportType getType() {
+        return type;
     }
 
     public Location getTo() {
-	return getSafe().getSafeLoc();
+        return getSafe().getSafeLoc();
     }
 }

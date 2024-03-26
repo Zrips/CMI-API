@@ -13,7 +13,7 @@ public class PlayTimeReward {
     private String displayName;
     private List<String> description;
     private List<String> commands;
-    private Long range;
+    private long range;
 
     private boolean autoClaim = false;
     
@@ -54,6 +54,10 @@ public class PlayTimeReward {
     }
     
     public void performCommands(Player player){
+	Snd snd = new Snd();
+	snd.setTarget(player);
+	List<String> cmds = CMI.getInstance().getLM().updateSnd(snd, new ArrayList<String>(getCommands()));
+	CMI.getInstance().getSpecializedCommandManager().processCmds(cmds, player);
     }
 
     public boolean isAutoClaim() {

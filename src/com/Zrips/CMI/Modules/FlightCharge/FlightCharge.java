@@ -4,11 +4,12 @@ import com.Zrips.CMI.CMI;
 
 public class FlightCharge {
 
-    private Double charge = null;
-    private Double lastChange = null;
+    private double charge = 0;
+    private double lastChange = 0;
     private boolean enabled = false;
-    private Boolean autoRecharge = null;
-    private Boolean moneyRecharge = null;
+    private boolean autoRecharge = false;
+    private boolean moneyRecharge = false;
+    private boolean expRecharge = false;
 
     public FlightCharge() {
     }
@@ -18,7 +19,7 @@ public class FlightCharge {
     }
 
     public Double getSafeCharge() {
-        return charge == null ? 0D : charge;
+        return charge;
     }
 
     public void setCharge(Double charge) {
@@ -50,11 +51,11 @@ public class FlightCharge {
     }
 
     public Boolean isAutoRecharge() {
-        return autoRecharge == null ? false : autoRecharge;
+        return autoRecharge;
     }
 
     public void setAutoRecharge(Boolean autoRecharge) {
-        this.autoRecharge = autoRecharge;
+        this.autoRecharge = autoRecharge == null ? false : autoRecharge;
     }
 
     public void setAutoMoneyRecharge() {
@@ -62,14 +63,14 @@ public class FlightCharge {
     }
 
     public void setAutoExpRecharge() {
-        moneyRecharge = false;
+        expRecharge = true;
     }
 
     public boolean isMoneyAutoRecharge() {
-        return moneyRecharge == null || moneyRecharge;
+        return moneyRecharge;
     }
 
     public boolean isExpAutoRecharge() {
-        return moneyRecharge != null && !moneyRecharge;
+        return expRecharge;
     }
 }

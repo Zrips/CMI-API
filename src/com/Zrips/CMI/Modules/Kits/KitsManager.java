@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class KitsManager {
 
@@ -56,11 +56,7 @@ public class KitsManager {
     }
 
     public void onDisable() {
-        if (saveId != -1) {
-            Bukkit.getScheduler().cancelTask(saveId);
-            saveId = -1;
-            save();
-        }
+
     }
 
     public KitsManager(CMI plugin) {
@@ -80,15 +76,11 @@ public class KitsManager {
     }
 
     public void renameKitConfigName(Kit kit, String newName) {
-        map.remove(kit.getConfigName().toLowerCase());
-        kit.setName(newName);
-        map.put(kit.getConfigName().toLowerCase(), kit);
-        save();
+
     }
 
     public void renameKitCommandName(Kit kit, String newName) {
-        kit.setCommandName(newName);
-        save();
+
     }
 
     public HashMap<String, List<Kit>> getValidKitsForPlayer(Player player, boolean includePreview) {
@@ -105,21 +97,13 @@ public class KitsManager {
     }
 
     public Kit getKit(Player player, String name, boolean ignorePerm, boolean includePreview) {
-        Kit kit = null;
 
-        return kit;
+        return null;
     }
 
     public Kit getKit(String name, boolean getdisabled) {
-        if (name == null)
-            return null;
-        Kit kit = map.get(name.toLowerCase());
-        if (kit != null && !kit.isEnabled()) {
-            if (getdisabled)
-                return kit;
-            return null;
-        }
-        return kit;
+
+        return null;
     }
 
     public List<Kit> getKitsByCommandName(Kit kit) {
@@ -132,9 +116,8 @@ public class KitsManager {
     }
 
     public List<Kit> getGroupedKits(Kit kit) {
-        List<Kit> l = new ArrayList<Kit>();
 
-        return l;
+        return null;
     }
 
     public LinkedHashMap<String, Kit> getKitMap() {
@@ -145,23 +128,22 @@ public class KitsManager {
         this.map = map;
     }
 
+    private String fileName = "Kits.yml";
+
     public void load() {
 
     }
 
-    private int saveId = -1;
+    private CMITask saveTask = null;
 
     public void safeSave() {
-        if (saveId != -1)
+        if (saveTask != null)
             return;
 
-        saveId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CMI.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                save();
-                saveId = -1;
-            }
-        }, 60 * 20);
+        saveTask = CMIScheduler.runLaterAsync(() -> {
+            save();
+            saveTask = null;
+        }, 1 * 20);
     }
 
     public void save() {
@@ -175,29 +157,17 @@ public class KitsManager {
 
     private static Integer getData(String val) {
 
-        return 0;
+        return null;
     }
 
     public ItemStack updateItemStackLore(ItemStack item, Player player, Kit kit) {
-        ItemMeta meta = item.getItemMeta();
 
-        if (meta.hasDisplayName()) {
-            meta.setDisplayName(processText(meta.getDisplayName(), player, kit));
-        }
-        if (meta.hasLore()) {
-            List<String> lore = new ArrayList<String>();
-            for (String oneL : meta.getLore()) {
-                lore.add(processText(oneL, player, kit));
-            }
-            meta.setLore(lore);
-        }
-        item.setItemMeta(meta);
-        return item;
+        return null;
     }
 
     public String processText(String text, Player player, Kit kit) {
 
-        return text;
+        return null;
     }
 
     public void listPlayersKits(Player player) {
@@ -208,11 +178,9 @@ public class KitsManager {
 
     }
 
-    private List<String> getLoreForButton(CMIUser user, Kit kit) {
-        Long time = user.getKitTime(kit);
-        List<String> lore = new ArrayList<String>();
+    private List<String> getLoreForButton(CMIUser user, Kit oneKit) {
 
-        return lore;
+        return null;
     }
 
     private int slotToGUIrelativeSlot(int slot) {
@@ -294,6 +262,7 @@ public class KitsManager {
 
         configName(39),
         commandName(40),
+        fileName(48),
         displayName(49),
 
         ShowDespiteWeight(36),

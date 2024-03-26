@@ -1,63 +1,42 @@
 package com.Zrips.CMI.Modules.Display;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Display.Billboard;
-import org.bukkit.entity.Display.Brightness;
 import org.bukkit.entity.Player;
 
-import net.Zrips.CMILib.Container.CMINumber;
+import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class CMIDisplay {
     CMIDisplayTransform transform;
 
-    private static Constructor<?> TextDisplay;
-    private static Constructor<?> ItemDisplay;
-    private static Constructor<?> BlockDisplay;
-//    private static Class<?> Interaction;
-    private static Object textDisplayEntityType;
-    private static Object itemDisplayEntityType;
-    private static Object blockDisplayEntityType;
-//    private static Object interactionEntityType;
-    private static Class<?> worldClass;
-//    private static Method locMethod;
-    private static Constructor<?> PacketPlayOutSpawnEntity;
-    private static Constructor<?> PacketPlayOutEntityMetadata;
-    private static Constructor<?> PacketPlayOutEntityDestroy;
-
-    private static Method sendPacket;
-    private static Method method1;
-    private static Method method2;
-    private static Field playerConnection;
-
     static {
-      
+
     }
 
     protected Location loc;
     protected org.bukkit.entity.Display display;
     protected Object d = null;
     private int id = 0;
+    private CMIDisplayType type;
 
-    public CMIDisplay(CMIDisplayType type, World world) {
-       
+    public CMIDisplay(CMIDisplayType type, Location loc) {
+
     }
 
-
     public void setWidth(double width) {
-       
+
     }
 
     public void setHeight(double height) {
-      
+
     }
 
     public void setInterpolationDuration(int duration) {
-        display.setInterpolationDuration(duration);
+        if (Version.isFolia()) {
+            CMIScheduler.runAtLocation(getLocation(), () -> setInterpolationDuration(duration));
+        } else
+            display.setInterpolationDuration(duration);
     }
 
     public int getInterpolationDuration() {
@@ -65,7 +44,7 @@ public class CMIDisplay {
     }
 
     public void setInterpolationDelay(int delay) {
-        display.setInterpolationDelay(delay);
+
     }
 
     public int getInterpolationDelay() {
@@ -73,7 +52,6 @@ public class CMIDisplay {
     }
 
     public void setLocation(Location loc) {
-//        display.teleport(loc); 
         this.loc = loc;
     }
 
@@ -82,15 +60,18 @@ public class CMIDisplay {
     }
 
     public void setRange(int range) {
-        display.setViewRange(range);
+
     }
 
     public void setBrightness(int skyValue, int blockValue) {
-        display.setBrightness(new Brightness(CMINumber.clamp(skyValue, 0, 15), CMINumber.clamp(blockValue, 0, 15)));
+
     }
 
     public void setBillboard(Billboard billboard) {
-        display.setBillboard(billboard);
+        if (Version.isFolia()) {
+            CMIScheduler.runAtLocation(getLocation(), () -> display.setBillboard(billboard));
+        } else
+            display.setBillboard(billboard);
     }
 
     public Billboard getBillboard() {
@@ -105,7 +86,6 @@ public class CMIDisplay {
         return d;
     }
 
-
     private static void sendPacket(Object connection, Object packet) {
 
     }
@@ -114,13 +94,23 @@ public class CMIDisplay {
 
     }
 
+    private void show(Player player, net.minecraft.world.entity.Entity ent) {
 
-    public void update(Player player) {
-       
     }
 
+    public void update(Player player) {
+
+    }
+
+    private void update(Player player, net.minecraft.world.entity.Entity ent) {
+
+    }
 
     public void destroy(Player player) {
-     
+
+    }
+
+    public int getId() {
+        return id;
     }
 }

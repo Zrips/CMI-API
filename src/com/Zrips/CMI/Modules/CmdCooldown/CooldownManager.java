@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.CmdCooldown.CmdCooldown.CMICooldown;
 import com.Zrips.CMI.Modules.SpecializedCommands.SpecCMDCooldown;
 
 public class CooldownManager {
@@ -16,6 +17,10 @@ public class CooldownManager {
 
     public CooldownManager(CMI plugin) {
         this.plugin = plugin;
+    }
+
+    public void loadConfig() {
+
     }
 
     public int getCooldownCount() {
@@ -36,6 +41,7 @@ public class CooldownManager {
     }
 
     private CMICmdCooldown getCooldown(String cmd) {
+
         return null;
     }
 
@@ -44,7 +50,14 @@ public class CooldownManager {
     }
 
     private static Long getUsedTime(String cmd, CmdCooldown userCooldowns, boolean exact) {
+        cmd = cmd.toLowerCase();
 
+        String match = getCommandMatch(cmd, userCooldowns, exact);
+        if (match != null) {
+            CMICooldown cd = userCooldowns.getList().get(match);
+            if (cd != null)
+                return cd.getInitialized();
+        }
         return null;
     }
 
@@ -53,6 +66,7 @@ public class CooldownManager {
     }
 
     private static String getCommandMatch(String cmd, CmdCooldown userCooldowns, boolean exact) {
+
         return null;
     }
 
@@ -82,7 +96,7 @@ public class CooldownManager {
 
     public boolean canUseSpecCommand(Player player, SpecCMDCooldown cooldown, boolean inform) {
 
-        return true;
+        return false;
     }
 
     public HashMap<String, CMICmdCooldown> getCooldowns() {

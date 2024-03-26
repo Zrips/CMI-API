@@ -3,12 +3,12 @@ package com.Zrips.CMI.Containers;
 public class PlayerNote {
 
     private String sender;
-    private Long time;
+    private long time;
     private String note;
     
     public PlayerNote(String sender, Long time, String note) {
 	this.sender = sender;
-	this.time = time;
+	this.time = time == null ? 0 : time;
 	this.note = note;
     }
 
@@ -25,7 +25,7 @@ public class PlayerNote {
     }
 
     public void setTime(Long time) {
-	this.time = time;
+	this.time = time == null ? 0 : time;
     }
 
     public String getNote() {

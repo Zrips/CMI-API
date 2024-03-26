@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import com.Zrips.CMI.CMI;
 
 import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.Items.CMIItemStack;
@@ -25,6 +25,9 @@ public class WorthManager {
 
     private CMI plugin;
 
+//    private HashMap<CMIUser, Double> soldFor = new HashMap<CMIUser, Double>();
+//    private boolean reset = false;
+
     public WorthManager(CMI plugin) {
         this.plugin = plugin;
     }
@@ -33,18 +36,17 @@ public class WorthManager {
     private HashMap<Enchantment, HashMap<Integer, WorthEnchantment>> enchantMap = new HashMap<Enchantment, HashMap<Integer, WorthEnchantment>>();
 
     public Double getEnchantSellPrice(Enchantment enchant, int level) {
-
         return null;
     }
 
     public WorthEnchantment getEnchantWorth(Enchantment enchant, int level) {
-
         return null;
     }
 
     public void addEnchantWorth(WorthEnchantment worth) {
-
     }
+
+    public static String fileName = "Worth.yml";
 
     public void load() {
 
@@ -95,7 +97,13 @@ public class WorthManager {
     }
 
     public void updatePriceInFile(final WorthItem worth, final WorthEnchantment enchantWorth) {
-
+        HashSet<WorthItem> worths = new HashSet<WorthItem>();
+        if (worth != null)
+            worths.add(worth);
+        HashSet<WorthEnchantment> enchantWorths = new HashSet<WorthEnchantment>();
+        if (enchantWorth != null)
+            enchantWorths.add(enchantWorth);
+        updateWorthInFile(worths, enchantWorths);
     }
 
     private void updateWorthInFile(final Set<WorthItem> worths, final Set<WorthEnchantment> enchantWorths) {
@@ -107,13 +115,6 @@ public class WorthManager {
     }
 
     public boolean containsBlockedLore(CMIItemStack citem) {
-        for (String one : citem.getLore()) {
-            String o = CMIChatColor.stripColor(one).toLowerCase();
-            for (String oneBad : badLore) {
-                if (o.contains(oneBad))
-                    return true;
-            }
-        }
 
         return false;
     }
@@ -125,7 +126,14 @@ public class WorthManager {
 
     public double damagePercentage(ItemStack item) {
 
-        return 0;
+        CMIItemStack citem = CMILib.getInstance().getItemManager().getItem(item);
+
+        if (citem.getMaxDurability() < 2)
+            return 0;
+
+        double percent = 100D - ((citem.getMaxDurability() - citem.getDurability()) * 100 / (double) citem.getMaxDurability());
+
+        return (int) (percent * 100) / 100D;
     }
 
     public double getWorthByDurability(ItemStack item, double amount) {
@@ -195,7 +203,6 @@ public class WorthManager {
     }
 
     public WorthItem addWorth(WorthItem worth) {
-
         return null;
     }
 

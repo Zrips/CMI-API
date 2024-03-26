@@ -13,7 +13,6 @@ public enum CMIInteractType {
     public static CMIInteractType getFromAction(Action action, Player player) {
 
         CMIInteractType type = CMIInteractType.LeftClick;
-
         return type;
     }
 }

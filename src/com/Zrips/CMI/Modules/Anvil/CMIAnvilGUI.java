@@ -3,20 +3,12 @@ package com.Zrips.CMI.Modules.Anvil;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import com.Zrips.CMI.CMI;
-
-import net.Zrips.CMILib.Version.Version;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class CMIAnvilGUI {
 
@@ -148,6 +140,12 @@ public class CMIAnvilGUI {
 
     public String getSlotName(AnvilSlot Slot) {
 
+        ItemStack IS = getSlot(Slot);
+
+        if (IS != null && IS.hasItemMeta()) {
+            ItemMeta M = IS.getItemMeta();
+            return M.hasDisplayName() ? M.getDisplayName() : "";
+        }
         return "";
     }
 
@@ -156,61 +154,6 @@ public class CMIAnvilGUI {
     }
 
     public CMIAnvilGUI(Player Player, final AnvilClickEventHandler Handler) {
-
-        loadClasses();
-
-        player = Player;
-        handler = Handler;
-
-        listener = null;
-
-        // PrepareAnvilEvent doesn't exist in older server versions
-        if (Version.isCurrentEqualOrLower(Version.v1_8_R3)) {
-
-            listener = new Listener() {
-
-                @EventHandler
-                public void ICE(InventoryClickEvent e) {
-
-                }
-
-                @EventHandler
-                public void ICE(InventoryCloseEvent e) {
-
-                }
-
-                @EventHandler
-                public void PQE(PlayerQuitEvent e) {
-                }
-            };
-
-        } else {
-
-            listener = new Listener() {
-
-                @EventHandler
-                public void ICE(InventoryClickEvent e) {
-
-                }
-
-                @EventHandler
-                public void PAE(PrepareAnvilEvent e) {
-
-                }
-
-                @EventHandler
-                public void ICE(InventoryCloseEvent e) {
-
-                }
-
-                @EventHandler
-                public void PQE(PlayerQuitEvent e) {
-
-                }
-            };
-        }
-
-        Bukkit.getPluginManager().registerEvents(listener, CMI.getInstance());
 
     }
 

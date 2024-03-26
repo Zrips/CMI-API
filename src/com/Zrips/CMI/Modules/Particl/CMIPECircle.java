@@ -1,5 +1,6 @@
 package com.Zrips.CMI.Modules.Particl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.Zrips.CMI.CMI;
+
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class CMIPECircle extends CMIPEAnimation {
 
@@ -56,9 +60,7 @@ public class CMIPECircle extends CMIPEAnimation {
 
     private List<Location> getLocations(Location location, double radius, double yaw, double pitch) {
 
-        List<Location> locs = new ArrayList<Location>();
-
-        return locs;
+        return null;
     }
 
     private static Vector rotateX(Vector v, double a) {
@@ -102,6 +104,12 @@ public class CMIPECircle extends CMIPEAnimation {
     }
 
     public Vector getMove() {
+//	if (getPlayerMove() != null && getPlayerMove().isOnline()) {
+//	    Vector m = getPlayerMove().getLocation().getDirection().clone();
+//	    if (this.moveMulty != null)
+//		m.multiply(this.moveMulty);
+//	    move = m;
+//	}
         return move;
     }
 

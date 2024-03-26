@@ -1,5 +1,7 @@
 package com.Zrips.CMI.utils;
 
+import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -14,12 +16,17 @@ public class CMIEncoder {
     }
 
     public static String encode(String str) {
-
         return null;
     }
 
     public static boolean isEncoded(String str) {
-        return true;
+        try {
+            Decoder ed = Base64.getDecoder();
+            ed.decode(str);
+            return true;
+        } catch (Exception | Error e) {
+            return false;
+        }
     }
 
     public static String decode(String str) {

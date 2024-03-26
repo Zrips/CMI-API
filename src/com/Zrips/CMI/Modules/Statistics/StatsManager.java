@@ -2,26 +2,21 @@ package com.Zrips.CMI.Modules.Statistics;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Config;
 import com.Zrips.CMI.Containers.CMIUser;
 
-import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Entities.CMIEntityType;
-import net.Zrips.CMILib.Items.CMIItemStack;
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class StatsManager {
 
@@ -36,9 +31,6 @@ public class StatsManager {
     }
 
     private static HashMap<String, CMIStatistic> cache = new HashMap<String, CMIStatistic>();
-
-    static {
-    }
 
     public enum CMIStatistic {
 
@@ -216,16 +208,16 @@ public class StatsManager {
         }
     }
 
-    private int autoTimerBukkitId = 0;
+    private CMITask autoTimerBukkitId = null;
 
     public StatsManager(CMI plugin) {
         this.plugin = plugin;
-        autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 60 * 20L, 60 * 20L);
+        autoTimerBukkitId = CMIScheduler.scheduleSyncRepeatingTask(autoTimer, 60 * 20L, 60 * 20L);
     }
 
     public void stop() {
-        if (autoTimerBukkitId > 0)
-            Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
+        if (autoTimerBukkitId != null)
+            autoTimerBukkitId.cancel();
     }
 
     public CMIStatistic getStatisticByName(String name) {
@@ -247,7 +239,7 @@ public class StatsManager {
         return true;
     }
 
-    private BukkitTask task;
+    private CompletableFuture<Void> task;
     SortedMap<Long, CMIUser> sm = Collections.synchronizedSortedMap(new TreeMap<Long, CMIUser>(Collections.reverseOrder()));
     SortedMap<UUID, Long> smt = Collections.synchronizedSortedMap(new TreeMap<UUID, Long>());
     private boolean loaded = false;
@@ -292,39 +284,28 @@ public class StatsManager {
 //    SortedMap<Long, CMIUser> tmp = Collections.synchronizedSortedMap(new TreeMap<Long, CMIUser>(Collections.reverseOrder()));
 
     public SortedMap<Long, CMIUser> getTop() {
-
         return null;
     }
 
     public synchronized SortedMap<Long, CMIUser> getTop(int count) {
-
         return null;
     }
 
     public synchronized Long getTimeByPlace(int place) {
-
         return null;
     }
 
     public synchronized CMIUser getUserByPlace(int place) {
-
         return null;
     }
 
     public int getPlace(CMIUser user) {
-
         return 0;
     }
 
     private Runnable autoTimer = new Runnable() {
         @Override
         public void run() {
-            for (Player one : Bukkit.getOnlinePlayers()) {
-                CMIUser user = plugin.getPlayerManager().getUser(one);
-                if (user.isVanished())
-                    continue;
-                addUserData(user);
-            }
         }
     };
 

@@ -6,9 +6,11 @@ import java.util.List;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class UCInfo {
 
-    private int scheduleId = -1;
+    private CMITask scheduleId = null;
 
     private int currentId = 1;
 
@@ -61,11 +63,11 @@ public class UCInfo {
 	return this.chunksCkeckedLast;
     }
 
-    public void setscheduleId(int id) {
-	this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+	this.scheduleId = task;
     }
 
-    public int getScheduleId() {
+    public CMITask getScheduleTask() {
 	return this.scheduleId;
     }
 

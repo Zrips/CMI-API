@@ -1,9 +1,12 @@
 package com.Zrips.CMI.Modules.SavedInv;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -39,7 +42,6 @@ public class SavedInventoryManager {
     }
 
     public CMIInventory getInvById(CMIUser user, int id) {
-
         return null;
     }
 
@@ -56,17 +58,14 @@ public class SavedInventoryManager {
     }
 
     public CMIInventory getNextInv(CMIUser user, int id) {
-
         return null;
     }
 
     public CMIInventory getPrevInv(CMIUser user, int id) {
-
         return null;
     }
 
     public SavedInventories getInventories(CMIUser user) {
-
         return null;
     }
 
@@ -74,11 +73,9 @@ public class SavedInventoryManager {
     }
 
     public void loadInventories(CMIUser user, String invString) {
-
     }
 
     public boolean saveAllInventories(UUID uuid) {
-
         return true;
     }
 
@@ -87,17 +84,11 @@ public class SavedInventoryManager {
     }
 
     public CMIInventory saveInv(Player player, Entity killer, DamageCause cause, Integer id) {
-
-        CMIUser user = plugin.getPlayerManager().getUser(player);
-        if (user == null)
-            return null;
-
-        return saveInv(generateCMIInventory(player, killer, cause), id);
+        return null;
 
     }
 
     public CMIInventory saveInv(CMIInventory inv, Integer id) {
-
         return null;
 
     }
@@ -147,11 +138,11 @@ public class SavedInventoryManager {
     }
 
     public void InvList(CommandSender sender, Player player) {
-        CMIUser user = plugin.getPlayerManager().getUser(player);
-        InvList(sender, user);
+
     }
 
     public void InvList(CommandSender sender, CMIUser user) {
+
     }
 
     @SuppressWarnings("deprecation")
@@ -166,19 +157,22 @@ public class SavedInventoryManager {
     }
 
     public int showTimer(Player player, int current, int found, int total, int skipped, int currentplace) {
-        return 1;
+
+        return 0;
     }
 
-    private Boolean restoreHP = true;
-    private Boolean restoreXP = true;
-    private Boolean restoreFood = true;
-    private Boolean restoreSaturation = true;
-    private Boolean restorePotions = true;
-    private Boolean restoreItems = true;
-    private Boolean SaveOnDeath = false;
-    private Boolean ignoreEmpty = false;
-    private Boolean SaveOnDeathRequiresPermission = false;
+    private boolean restoreHP = true;
+    private boolean restoreXP = true;
+    private boolean restoreFood = true;
+    private boolean restoreSaturation = true;
+    private boolean restorePotions = true;
+    private boolean restoreItems = true;
+    private boolean SaveOnDeath = false;
+    private boolean ignoreEmpty = false;
+    private boolean SaveOnDeathRequiresPermission = false;
     private int SavedInventorys = 10;
+
+    List<Material> blackListedMaterials = new ArrayList<Material>();
 
     public void loadConfig() {
 

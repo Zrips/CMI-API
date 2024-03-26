@@ -2,11 +2,10 @@ package com.Zrips.CMI.Modules.Sheduler;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
 
 import com.Zrips.CMI.CMI;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class SchedulerManager {
 
@@ -14,7 +13,7 @@ public class SchedulerManager {
 
     private CMI plugin;
 
-    private int autoTimerBukkitId = 0;
+    private CMITask autoTimerBukkitId = null;
 
     public static final String randomPlayerLabel = "[randomPlayer]";
 
@@ -27,20 +26,13 @@ public class SchedulerManager {
     }
 
     public Schedule getSchedule(String name, boolean includeDisabled) {
-        Schedule sched = map.get(name.toLowerCase());
-        if (sched == null)
-            return null;
-        if (!sched.isEnabled() && !includeDisabled)
-            return null;
-        return sched;
+        return null;
     }
 
     public void stop() {
-        if (autoTimerBukkitId != 0) {
-            Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
-            autoTimerBukkitId = 0;
-        }
     }
+
+    private String fileName = "Schedules.yml";
 
     @SuppressWarnings("unchecked")
     public void load() {
@@ -48,18 +40,11 @@ public class SchedulerManager {
     }
 
     private void runTimer() {
-
     }
 
     private Runnable autoTimer = new Runnable() {
         @Override
         public void run() {
-            try {
-                checkSchedulers();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            runTimer();
         }
     };
 
@@ -90,14 +75,6 @@ public class SchedulerManager {
     }
 
     private void checkSchedulers() {
-        for (Entry<String, Schedule> one : map.entrySet()) {
-            Schedule sched = one.getValue();
-            if (!sched.isEnabled())
-                continue;
-            if (!sched.itsTimeToPerform())
-                continue;
-            sched.safePerform();
-        }
     }
 
     public HashMap<String, Schedule> getMap() {

@@ -23,11 +23,12 @@ public class RecipeManager {
 
     public RecipeManager(CMI plugin) {
         this.plugin = plugin;
-        try {
-            loadRecipes();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    }
+
+    private boolean RecipesRequireBackwards;
+    private boolean Recipes4Sized;
+
+    public void loadConfig() {
     }
 
     private HashMap<String, Recipe> disabledRecipes = new HashMap<String, Recipe>();
@@ -55,7 +56,11 @@ public class RecipeManager {
     }
 
     public Recipe addRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, CMIRecipeIngredient> Recipe, CMIRecipeCraftData temp, String customKey) {
-        return null;
+        Recipe recipe = CMIRecipe.createRecipe(type, result, Recipe, temp, customKey);
+        if (recipe == null)
+            return null;
+        addRecipe(type, recipe, temp);
+        return recipe;
     }
 
     @Deprecated
@@ -68,6 +73,7 @@ public class RecipeManager {
     }
 
     public Recipe addRecipe(CMIRecipeType type, Recipe recipe, CMIRecipeCraftData data, String customKey) {
+
         return null;
     }
 
@@ -85,7 +91,9 @@ public class RecipeManager {
 
     }
 
-    private void loadRecipes() {
+    private String fileName = "Recipes.yml";
+
+    public void load() {
 
     }
 
@@ -107,6 +115,7 @@ public class RecipeManager {
     }
 
     public Boolean openRecipeUI(Player player, CMIItemStack cm, int page, boolean onlyCustom) {
+
         return null;
     }
 
@@ -120,4 +129,11 @@ public class RecipeManager {
         return null;
     }
 
+    public boolean isRecipesRequireBackwards() {
+        return RecipesRequireBackwards;
+    }
+
+    public boolean isRecipes4Sized() {
+        return Recipes4Sized;
+    }
 }

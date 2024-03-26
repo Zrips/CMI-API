@@ -3,15 +3,15 @@ package com.Zrips.CMI.Modules.TimedCommands;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Location;
-
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class TimedCommandManager {
 
     private CMI plugin;
-    private int autoTimerBukkitId = -1;
+    private CMITask autoTimerBukkitId = null;
     private long nextIn = -1L;
     private boolean delay = false;
 
@@ -26,13 +26,11 @@ public class TimedCommandManager {
     }
 
     public void stop() {
-
     }
 
     private Runnable autoTimer = new Runnable() {
         @Override
         public void run() {
-
         }
     };
 
@@ -41,7 +39,6 @@ public class TimedCommandManager {
     }
 
     private void updateNextIn(Long time) {
-
     }
 
     public boolean checkTFly(final CMIUser user, boolean logout) {
@@ -53,10 +50,4 @@ public class TimedCommandManager {
 
         return true;
     }
-
-    private static Location getSafeLocation(Location loc) {
-
-        return null;
-    }
-
 }

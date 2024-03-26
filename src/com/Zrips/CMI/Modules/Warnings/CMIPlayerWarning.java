@@ -3,7 +3,7 @@ package com.Zrips.CMI.Modules.Warnings;
 public class CMIPlayerWarning {
 
     private String givenBy;
-    private Long givenAt;
+    private long givenAt = 0;
     private String reason;
     private CMIWarningCategory category;
 
@@ -24,7 +24,7 @@ public class CMIPlayerWarning {
     }
 
     public void setGivenAt(Long givenAt) {
-	this.givenAt = givenAt;
+	this.givenAt = givenAt == null ? 0 : givenAt;
     }
 
     public String getReason() {

@@ -8,11 +8,22 @@ public enum CMITabSortingType {
     Group, CustomGroup, Name, NickName, Balance, World;
 
     public static CMITabSortingType getByName(String name) {
-        return null;
+	for (CMITabSortingType one : CMITabSortingType.values()) {
+	    if (one.toString().equalsIgnoreCase(name))
+		return one;
+	}
+	return null;
     }
 
     public static String toStringList() {
-        return null;
+	String n = "";
+	for (CMITabSortingType one : CMITabSortingType.values()) {
+	    if (!n.isEmpty())
+		n += LC.info_ListSpliter.getLocale();
+	    n += one.toString();
+	}
+
+	return n;
     }
 
 }

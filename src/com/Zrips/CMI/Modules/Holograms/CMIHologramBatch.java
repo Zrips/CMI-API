@@ -25,10 +25,6 @@ public class CMIHologramBatch {
         this.displays.put(side, display);
     }
 
-//    public void addDisplay(Set<CMIDisplay> displays) {
-//        this.displays.addAll(displays);
-//    }
-
     public void clear() {
         this.displays.clear();
         this.icons.clear();
@@ -46,18 +42,6 @@ public class CMIHologramBatch {
         this.icons.put(line, icon);
     }
 
-    public void destroy(Player player) {
-        if (player == null || !player.isOnline())
-            return;
-        
-        for (CMIDisplay one : displays.values()) {
-            one.destroy(player);
-        }
-
-        for (CMIDisplay one : icons.values()) {
-            one.destroy(player);
-        }
-        
-        clear();
+    public void destroy(Player player) { 
     }
 }

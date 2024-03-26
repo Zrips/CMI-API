@@ -17,6 +17,7 @@ import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
 
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class Placeholder {
 
@@ -45,12 +46,14 @@ public class Placeholder {
         cmi_user_nickname("Players nick name if set or players name otherwise"),
         cmi_user_name("Original players name"),
         cmi_user_uuid("Player uuid"),
+        cmi_user_uuid_$1("Player uuid by name", "playerName"),
         cmi_user_deathloc("Players last death location"),
         cmi_user_backloc("Players back location"),
         cmi_user_cuffed("Identification if player is cuffed"),
         cmi_user_muted("Identification if player is muted"),
         cmi_user_inpvp("Identification if player is in pvp mode"),
         cmi_user_god("Identification if player has god mode enabled"),
+        cmi_user_sneaking("Identification if player is sneaking"),
         cmi_user_mail_count("Amount of mails player have"),
         cmi_user_warning_count("Amount of warnings player have"),
         cmi_user_warning_points("Amount of warning points player have"),
@@ -66,6 +69,7 @@ public class Placeholder {
         cmi_user_banned("Indication if player is banned"),
         cmi_user_maxhomes("Max amount of homes player can have"),
         cmi_user_homeamount("Amount of homes player has"),
+        cmi_user_homelist("List of players homes"),
         cmi_user_missingexp("Missing exp amount until next level"),
         cmi_user_missingexpp("Missing exp in percentage until next level"),
         cmi_user_exp("Current exp amount for current level"),
@@ -98,6 +102,7 @@ public class Placeholder {
         cmi_user_tgod_formatted("Formatted time for temp god mode"),
         cmi_user_votecount("Amount of votes"),
         cmi_user_dailyvotecount("Daily vote count"),
+        cmi_user_chatcolor("Player chatcolor"),
         cmi_user_rank(true),
         cmi_user_rank_displayname("Current rank display name"),
         cmi_user_rank_name("Current rank name"),
@@ -116,6 +121,7 @@ public class Placeholder {
         cmi_user_jailcell("Jail cell id user currently is in. Example: 1"),
         cmi_user_jailtime("Left jail time. Example: 1hour 5minutes"),
         cmi_user_jailreason("Jailed reason"),
+        cmi_user_jailedby("Jailer name"),
         cmi_user_bungeeserver("Bungee server name"),
         cmi_user_playtime_formatted("Formatted playtime"),
         cmi_user_playtime_days("Playtime in days"),
@@ -127,12 +133,17 @@ public class Placeholder {
         cmi_user_playtime_minutest("Total playtime in minutes"),
         cmi_user_playtime_seconds("Playtime in minutes"),
         cmi_user_playtime_secondst("Total playtime in minutes"),
+        cmi_user_prewards_count("Number of claimable prewards"),
         cmi_user_world_formatted("Current players world name by using custom identification"),
         cmi_user_online("Returns player online status"),
         cmi_user_itemcount_$1("Number of items in players inventory by provided material", "itemIdName(:data)"),
         cmi_user_maxperm_$1_$2("Maximum value by provided permission node, and if it doesn't exist, returns default value", "corePerm", "defaultValue"),
-        cmi_user_toggle_$1("Outputs 1 or 0 if defined feature is toggled on or off", "msg|pay|tp|compass|sospy|sispy|cospy|schest|autoflightrecharge|totem|shiftedit|tagsound"),
-        cmi_user_togglename_$1("Outputs formatted True or False if defined feature is toggled on or off", "msg|pay|tp|compass|sospy|sispy|cospy|schest|autoflightrecharge|totem|shiftedit|tagsound"),
+        cmi_user_toggle_$1("Outputs 1 or 0 if defined feature is toggled on or off", "msg|pay|tp|compass|sospy|sispy|cospy|schest|autoflightrecharge|totem|shiftedit|tagsound|chatbubble"),
+        cmi_user_togglename_$1("Outputs formatted True or False if defined feature is toggled on or off",
+            "msg|pay|tp|compass|sospy|sispy|cospy|schest|autoflightrecharge|totem|shiftedit|tagsound|chatbubble"),
+
+        cmi_user_holo_page_$1("Outputs page number of hologram player is in at the moment", "hologramName"),
+
         cmi_equation_$1("Result of provided mathematical equation with fraction", "equation"),
         cmi_equationint_$1("Result of provided mathematical equation without fraction", "equation"),
 
@@ -148,7 +159,7 @@ public class Placeholder {
         cmi_iteminhand_worth_one("Returns worth value of one item from main hand"),
         cmi_iteminhand_worthc("Returns total worth value of items in main hand without formatting"),
         cmi_iteminhand_worthc_one("Returns worth value of one item from main hand without formatting"),
-
+// Complex placeholders cant have more than 3
         cmi_schedule_nextin_$1("Left time until next schedule trigger", "schedName"),
         cmi_schedule_endat_$1("Left time until scheduler triggers last command", "schedName"),
         cmi_baltop_name_$1("Name of player from a provided place in a list", "1-10"),
@@ -171,6 +182,7 @@ public class Placeholder {
         cmi_tps_300("Tps from last 5 minutes"),
         cmi_tps_$1_colored("Tps from defined range", "range"),
         cmi_random_player_name("Returns random online player name", false),
+// cmi_random_player_name_$1("Returns random online player name while not repeating by provided amount of unique players", "1-10"),
         cmi_lastrandom_player_name("Returns last random online player name", false),
         cmi_random_$1_$2("Random number from defined range", false, "from", "to"),
         cmi_lastrandom_$1("Last random number assigned to player from random placeholder", false, "playerName"),
@@ -280,6 +292,9 @@ public class Placeholder {
         }
 
         CMIPlaceHolders(String desc, boolean hidden, boolean cache, String... vars) {
+            this.desc = desc;
+            this.vars = vars;
+            this.hidden = hidden;
 
         }
 
@@ -357,7 +372,11 @@ public class Placeholder {
     }
 
     public List<String> updatePlaceHolders(Player player, List<String> messages) {
-        return null;
+        List<String> ms = new ArrayList<String>(messages);
+        for (int i = 0, l = messages.size(); i < l; ++i) {
+            ms.set(i, updatePlaceHolders(player, messages.get(i)));
+        }
+        return ms;
     }
 
     public enum CMIPlaceholderType {
@@ -366,6 +385,12 @@ public class Placeholder {
 
     public CMIPlaceholderType getPlaceHolderType(Player player, String placeholder) {
         return null;
+    }
+
+    private static final String checkItem = "%checkitem_";
+
+    private static void reportIssue() {
+        CMIMessages.consoleMessage("&c[CMI] Placeholder got blocked due to security concerns (" + checkItem + "...%)");
     }
 
     public String updatePlaceHolders(UUID uuid, String message) {
@@ -402,6 +427,11 @@ public class Placeholder {
     }
 
     public String coolDownPlaceHolders(String msg) {
+
+        return null;
+    }
+
+    public String translatePAPIPlaceHolder(Player player, CMIPlaceHolders place, String group) {
 
         return null;
     }
@@ -446,6 +476,6 @@ public class Placeholder {
     }
 
     private String variable(Boolean state) {
-        return state ? plugin.getMsg(LC.info_variables_True) : plugin.getMsg(LC.info_variables_False);
+        return state ? LC.info_variables_True.getLocale() : LC.info_variables_False.getLocale();
     }
 }

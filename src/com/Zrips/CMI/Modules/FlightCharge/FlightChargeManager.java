@@ -1,9 +1,13 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.SpawnerCharge.PlayerCharge;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 
@@ -33,17 +37,28 @@ public class FlightChargeManager {
     private double autoRechargeFrom = 0;
     private double autoRechargeAmount = 0;
 
+    private HashMap<UUID, FlightCharge> flightCharges = new HashMap<UUID, FlightCharge>();
+
+    public FlightCharge getFlightCharge(UUID uuid) {
+        return flightCharges.computeIfAbsent(uuid, k -> new FlightCharge());
+    }
+
+    @Deprecated
+    public PlayerCharge getPCharge(UUID uuid) {
+        return getPCharge(uuid, true);
+    }
+
+    @Deprecated
+    public PlayerCharge getPCharge(UUID uuid, boolean update) {
+        return plugin.getSpawnerChargesManager().getPCharge(CMIUser.getUser(uuid), update);
+    }
+
     public void load() {
 
     }
 
     public void process(Player player, Integer take) {
-        traveledDistance dinfo = FlightListener.distanceMap.get(player.getUniqueId());
-        if (dinfo == null) {
-            dinfo = new traveledDistance(plugin.getPlayerManager().getUser(player));
-            FlightListener.distanceMap.put(player.getUniqueId(), dinfo);
-        }
-        process(dinfo, take);
+
     }
 
     public void process(traveledDistance dinfo, Integer take) {
@@ -57,10 +72,6 @@ public class FlightChargeManager {
     public static final String flightChargeBossBar = "CMIFlightChargeBossBar";
 
     public void updateBossBar(CMIUser user) {
-
-    }
-
-    private void updateBossBar(traveledDistance dinfo) {
 
     }
 

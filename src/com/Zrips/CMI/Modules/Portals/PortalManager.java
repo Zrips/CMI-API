@@ -14,7 +14,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class PortalManager {
 
@@ -34,26 +37,19 @@ public class PortalManager {
 
     private CMI plugin;
 
-    public PortalManager(CMI plugin) {
-
+    public PortalManager(CMI plugin) { 
     }
 
-    private int sched = -1;
+    private CMITask sched = null;
 
     public void stop() {
-        if (sched == -1)
+        if (sched == null)
             return;
-        Bukkit.getScheduler().cancelTask(sched);
-        sched = -1;
+        sched.cancel();
+        sched = null;
     }
-
-    private void tasker() {
-
-    }
-
-    private static void showParticlesForPortal(CMIPortal portal) {
-
-    }
+ 
+ 
 
     public void addPortal(CMIPortal portal) {
         portals.put(portal.getName().toLowerCase(), portal);
@@ -69,7 +65,7 @@ public class PortalManager {
     }
 
     public void recalculateChunks(CMIPortal portal) {
-
+ 
     }
 
     public CMIPortal getByName(String name) {
@@ -79,23 +75,23 @@ public class PortalManager {
     }
 
     public CMIPortal getByLoc(Location loc) {
-
-        return null;
+      
+return null;
     }
 
     public Set<CMIPortal> getByLocList(Location loc) {
-
-        return null;
+    
+return null;
     }
 
     public Set<CMIPortal> getByLocExtended(Location loc) {
-
-        return null;
+      
+return null;
     }
 
     public CMIPortal collidesWithPortal(CuboidArea newarea) {
-
-        return null;
+      
+return null;
     }
 
     private static List<ChunkRef> getChunks(CMIPortal res) {
@@ -111,15 +107,17 @@ public class PortalManager {
     }
 
     public void loadConfig() {
-
+      
     }
 
-    public void load() {
+    private String fileName = "Portals.yml";
 
+    public void load() {
+       
     }
 
     public void loadMap(String world, Map<String, Object> root) throws Exception {
-
+      
     }
 
     public void handlePortalVisualizerUpdates() {
@@ -129,55 +127,43 @@ public class PortalManager {
     }
 
     public boolean handlePortalVisualizerUpdates(Player player, Location locfrom, Location locto) {
-
-        return false;
+      
+        return true;
     }
 
-    public void savePortals() {
-        if (id != null)
-            return;
-        id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CMI.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                CMI.getInstance().getPortalManager().save();
-                id = null;
-            }
-        }, 20 * 10L);
+    public void savePortals() { 
     }
 
-    private Integer id = null;
+    private CMITask id = null;
     private boolean saving = false;
 
     private void save() {
-
+        
     }
 
     public void removeLastPortalInRange(CMIPortal portal, UUID uuid) {
-
+        
     }
 
     public void removeLastPortalInRange(UUID uuid) {
-
+       
     }
 
     public void addLastPortalInRange(CMIPortal portal, UUID uuid) {
-
+       
     }
-
+ 
     public SortedMap<String, CMIPortal> getPortals() {
         return portals;
     }
 
     public List<CMIPortal> getPortalsByDistance(Location loc) {
 
-        return null;
+return null;
     }
 
     public void removePortal(CMIPortal portal) {
-        portals.remove(portal.getName().toLowerCase());
-        lastPortalInRange.remove(portal);
-        this.recalculateChunks();
-        this.savePortals();
+        
     }
 
     public int getPortalsCheckInterval() {
@@ -206,12 +192,17 @@ public class PortalManager {
         if (ls == null)
             ls = new HashSet<CMIPortal>();
         ls.add(portal);
-        portal.updateParticleLimitations(Bukkit.getPlayer(uuid));
+        portal.updateParticleLimitations(CMIUser.getOnlinePlayer(uuid));
         playerNearPortals.put(uuid, ls);
     }
 
     public void removeNearPortal(UUID uuid, CMIPortal portal) {
-
+        Set<CMIPortal> ls = playerNearPortals.get(uuid);
+        if (ls == null)
+            return;
+        ls.remove(portal);
+        portal.removeParticleLimitations(uuid);
+        playerNearPortals.put(uuid, ls);
     }
 
     public void removeNearPortal(UUID uuid) {
@@ -229,5 +220,11 @@ public class PortalManager {
     }
 
     public void forceUpdate(UUID uuid, CMIPortal portal) {
+        if (portal == null || uuid == null)
+            return;
+
+        plugin.getPortalManager().removeNearPortal(uuid, portal);
+        plugin.getPortalManager().removeLastPortalInRange(uuid);
+        plugin.getPortalManager().handlePortalVisualizerUpdates();
     }
 }

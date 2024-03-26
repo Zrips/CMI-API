@@ -12,6 +12,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.Snd;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
@@ -94,11 +96,13 @@ public class CMIPortal {
     }
 
     public boolean teleport(Player player) {
-        return false;
+
+        return true;
     }
 
     public Location loadTpLoc(Object root) throws Exception {
-        return null;
+        tpLoc = (Location) root;
+        return tpLoc;
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
@@ -115,6 +119,7 @@ public class CMIPortal {
     }
 
     public void setArea(CuboidArea area, boolean recalculatePart) {
+
     }
 
     public boolean isEnabled() {
@@ -138,6 +143,11 @@ public class CMIPortal {
     }
 
     public void setParticleAmount(int particleAmount) {
+        this.particleAmount = particleAmount;
+        if (this.particleAmount < 0)
+            this.particleAmount = 0;
+        if (this.particleAmount > 300)
+            this.particleAmount = 300;
     }
 
     public int getPercentToHide() {
@@ -145,6 +155,11 @@ public class CMIPortal {
     }
 
     public void setPercentToHide(int percentToHide) {
+        this.percentToHide = percentToHide;
+        if (this.percentToHide < 0)
+            this.percentToHide = 0;
+        if (this.percentToHide > 99)
+            this.percentToHide = 99;
     }
 
     public int getActivationRange() {
@@ -152,14 +167,28 @@ public class CMIPortal {
     }
 
     public void setActivationRange(int activationRange) {
+        this.activationRange = activationRange;
+        if (this.activationRange < 2)
+            this.activationRange = 2;
+        if (this.activationRange > 128)
+            this.activationRange = 128;
     }
 
     public List<String> getCommands() {
-        return null;
+//	if (!CMI.getInstance().getPortalManager().performCmd)
+//	    return new ArrayList<String>();
+        if (this.commands == null)
+            setCommands(CMI.getInstance().getPortalManager().getCommandsOnTeleport());
+        return commands;
     }
 
     public List<String> getCommands(Player player) {
-        return null;
+        Snd snd = new Snd().setSender(player).setTarget(player);
+        List<String> cmd = new ArrayList<String>();
+        for (String one : this.getCommands()) {
+            cmd.add(CMI.getInstance().getLM().updateSnd(snd, one));
+        }
+        return cmd;
     }
 
     public void setCommands(List<String> commands) {
@@ -253,7 +282,16 @@ public class CMIPortal {
     }
 
     public Set<UUID> updateParticleLimitations(Player player) {
-        return null;
+        if (player != null) {
+            if (!this.isParticlesByPermission() || player.isOnline() && CMIPerm.command_portal_$1.hasPermission(player, this.getName())) {
+                particleForPlayers.add(player.getUniqueId());
+            }
+            // We might not want to remove player from particle list
+//            else {
+//                particleForPlayers.remove(player.getUniqueId());
+//            } 
+        }
+        return particleForPlayers;
     }
 
     public boolean isParticlesByPermission() {

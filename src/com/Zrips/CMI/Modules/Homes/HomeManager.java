@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.Homes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,30 +89,23 @@ public class HomeManager {
         }
 
         public static List<String> getAsStringList() {
-            List<String> list = new ArrayList<String>();
-            for (RespawnPriority one : RespawnPriority.values()) {
-                list.add(one.name());
-            }
-            return list;
+            return null;
         }
 
         public static String getAsString() {
-            String list = "";
-            for (RespawnPriority one : RespawnPriority.values()) {
-                if (!list.isEmpty())
-                    list += ", ";
-                list += one.name();
-            }
-            return list;
+            return null;
         }
     }
 
     public int getMaxHomes(CommandSender sender) {
+        if (sender instanceof Player)
+            return getMaxHomes((Player) sender);
         return 999;
     }
 
     public int getMaxHomes(Player player) {
-        return 9999;
+        int homes = 1;
+        return homes;
     }
 
     public void loadConfig() {
@@ -150,21 +142,13 @@ public class HomeManager {
     }
 
     public void addBedHome(CMIUser user, CmiHome bedHome) {
-        // Only bedhomes will have exact 0.5 as x coordinates
-
-        if (Math.abs(bedHome.getLoc().getX() % 1) != 0.5 && Math.abs(bedHome.getLoc().getZ() % 1) != 0.5)
-            return;
-
-        String l = plugin.getPlayerManager().convertBlockLocToString(bedHome.getLoc());
-        HashMap<CMIUser, CmiHome> m = new HashMap<CMIUser, CmiHome>();
-        m.put(user, bedHome);
-        bedHome.setBed(true);
-        this.bedHomes.put(l, m);
     }
 
     public boolean removeBedHome(Location loc) {
+        String l = plugin.getPlayerManager().convertBlockLocToString(loc);
+        HashMap<CMIUser, CmiHome> res = bedHomes.remove(l);
 
-        return false;
+        return res != null;
     }
 
     public boolean isRemoveBedLocationOnBedBreak() {
@@ -172,6 +156,10 @@ public class HomeManager {
     }
 
     public boolean openHomeGui(Player player, CMIUser user, int page) {
+
+        if (page < 1)
+            page = 1;
+
         if (this.isHomesGuiComplex())
             return openComplexHomeGui(player, user, page);
         return openSimpleHomeGui(player, user, page);
@@ -180,6 +168,10 @@ public class HomeManager {
     public boolean openComplexHomeGui(Player player, CMIUser user, int page) {
 
         return true;
+    }
+
+    private void homeEditor(Player player, CmiHome home, int page) {
+
     }
 
     public boolean openSimpleHomeGui(Player player, CMIUser user, int page) {

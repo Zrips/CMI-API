@@ -12,8 +12,7 @@ public class PatrolManager {
     }
 
     public CMIUser getNextUser() {
-        CMIUser user = null;
-        return user;
+        return null;
 
     }
 

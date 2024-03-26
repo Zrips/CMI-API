@@ -8,9 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Portals.CuboidArea;
-
 public class CMIHitBox {
     private Vector max;
     private Vector min;
@@ -25,17 +22,11 @@ public class CMIHitBox {
     }
 
     public CMIHitBox(Block block) {
-        this.block = block;
-        world = block.getWorld();
-        CMI.getInstance().getNMS().getBlockHitBox(this);
+
     }
 
     public CMIHitBox(Entity ent) {
-        this.ent = ent;
-        if (ent != null) {
-            world = ent.getWorld();
-            CMI.getInstance().getNMS().getEntityHitBox(this);
-        }
+
     }
 
     public Vector getMax() {
@@ -45,20 +36,16 @@ public class CMIHitBox {
     }
 
     public Location getCenterLocation() {
-
-        Double width = this.getMaxGlobal().getX() - this.getMinGlobal().getX();
-        Double length = this.getMaxGlobal().getZ() - this.getMinGlobal().getZ();
-
-        return new Location(this.world, this.getMinGlobal().getX() + (width / 2D), this.getMinGlobal().getY(), this.getMinGlobal().getZ() + (length / 2D));
+        return null;
     }
 
     public Double getHeightAtLocation(Location loc) {
-        Double height = 0D;
-        return height;
+        return null;
     }
 
+
     public Vector getMaxGlobal() {
-        return new Vector(getMax().getX(), getMax().getY(), getMax().getZ());
+        return null;
     }
 
     public Vector getMin() {
@@ -80,7 +67,7 @@ public class CMIHitBox {
     }
 
     public Vector getMinGlobal() {
-        return new Vector(getMin().getX(), getMin().getY(), getMin().getZ());
+        return null;
     }
 
     public void byExactXYZ(double x, double y, double z) {
@@ -88,18 +75,15 @@ public class CMIHitBox {
     }
 
     private static HashMap<BlockStateType, String> getBlockStates(Block block) {
-        HashMap<BlockStateType, String> map = new HashMap<BlockStateType, String>();
-
-        return map;
+        return null;
     }
 
     public boolean byExactXYZ(double x, double y, double z, double tolerance) {
-
         return false;
     }
 
     private boolean checkBlock(Block block, boolean resize) {
-
+      
         return false;
     }
 
@@ -138,23 +122,11 @@ public class CMIHitBox {
     }
 
     public boolean collides(Entity ent) {
-        if (ent == null)
             return false;
-        CMIHitBox hitbox = new CMIHitBox(ent);
-
-        if (hitbox.world == null || hitbox.min == null || hitbox.max == null)
-            return false;
-
-        if (world == null || min == null || max == null)
-            return false;
-
-        CuboidArea cuboid = new CuboidArea(hitbox.world, hitbox.min, hitbox.max);
-        CuboidArea cuboid2 = new CuboidArea(world, min, max);
-
-        return cuboid.checkCollision(cuboid2);
     }
 
     public boolean canPlayerStand(Location loc) {
+      
 
         return true;
     }

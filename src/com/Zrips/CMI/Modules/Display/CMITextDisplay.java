@@ -13,7 +13,7 @@ public class CMITextDisplay extends CMIDisplay {
     private org.bukkit.entity.TextDisplay td;
 
     public CMITextDisplay(Location loc) {
-        super(CMIDisplayType.Text, loc.getWorld());
+        super(CMIDisplayType.Text, loc);       
     }
 
     public String getText() {
@@ -21,10 +21,11 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setText(String text) {
-        this.td.setText(CMIChatColor.translate(text));
+
     }
 
     public void setText(List<String> text) {
+     
     }
 
     public int getLineWidth() {
@@ -32,7 +33,7 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setLineWidth(int lineWidth) {
-        td.setLineWidth(lineWidth);
+
     }
 
     public byte getTextOpacity() {
@@ -40,7 +41,7 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setTextOpacity(byte textOpacity) {
-        td.setTextOpacity(textOpacity);
+
     }
 
     public TextAlignment getAligment() {
@@ -48,11 +49,11 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setAligment(TextAlignment aligment) {
-        td.setAlignment(aligment);
+
     }
 
     public void setDefaultBackground(boolean show) {
-        this.td.setDefaultBackground(show);
+
     }
 
     public boolean isDefaultBackground() {
@@ -61,12 +62,12 @@ public class CMITextDisplay extends CMIDisplay {
 
     @SuppressWarnings("deprecation")
     public void setBackgroundColor(Color color) {
-        this.td.setBackgroundColor(color);
+
     }
 
     @SuppressWarnings("deprecation")
     public void setBackgroundColor(CMIChatColor color) {
-        this.td.setBackgroundColor(color.getRGBColor());
+
     }
 
     @SuppressWarnings("deprecation")
@@ -75,6 +76,7 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setFacing(double pitchDegrees, double yawDegrees) {
+
     }
 
     public float getDisplayHeight() {
@@ -82,7 +84,7 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setShadowed(boolean shadow) {
-        td.setShadowed(shadow);
+
     }
 
     public boolean isShadowed() {
@@ -90,7 +92,7 @@ public class CMITextDisplay extends CMIDisplay {
     }
 
     public void setSeeThrough(boolean seeThrough) {
-        td.setSeeThrough(seeThrough);
+
     }
 
     public boolean isSeeThrough() {

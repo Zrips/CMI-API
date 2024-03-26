@@ -1,17 +1,20 @@
 package com.Zrips.CMI.commands;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.jar.JarFile;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
+
+import net.Zrips.CMILib.CMILib;
 
 public class CommandsHandler implements CommandExecutor {
     public static final String label = "cmi";
@@ -22,11 +25,21 @@ public class CommandsHandler implements CommandExecutor {
     private List<String> disabledBase = new ArrayList<String>();
 
     private boolean testServer = false;
-
+    Class<?> RCON = null;
     protected CMI plugin;
 
     public CommandsHandler(CMI plugin) {
+        this.plugin = plugin;
+        packagePath = this.getClass().getPackage().getName() + ".list";
 
+        try {
+            RCON = Class.forName("org.bukkit.command.RemoteConsoleCommandSender");
+        } catch (ClassNotFoundException e) {
+        }
+
+        // Enables extra commands for test servers
+        if (CMILib.getInstance().getReflectionManager().getServerName().equals("LT_Craft") && Bukkit.getWorlds().get(0).getSeed() == 1782374759)
+            testServer = true;
     }
 
     public Boolean performCMICommand(CommandSender sender, Class<?> command, String... args) {
@@ -58,21 +71,25 @@ public class CommandsHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String l, String[] args) {
-
         return true;
     }
 
     public static boolean hasCommandPermission(CommandSender sender, String cmd, Long delay) {
-        return true;
+        if (!(sender instanceof Player))
+            return true;
+        if (CMIPerm.command_$1.hasPermission(sender, false, true, delay, "*"))
+            return true;
+        return CMIPerm.command_$1.hasPermission(sender, false, true, delay, cmd);
     }
 
     private String getUsage(String cmd) {
-        String cmdString = plugin.getLM().getMessage("command.help.output.cmdFormat");
-        return cmdString;
+
+        return null;
     }
 
     private String getCommandRoot(String cmd) {
-        return cmd;
+
+        return null;
     }
 
     public void sendUsage(CommandSender sender, String cmd) {
@@ -80,6 +97,7 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     public void sendUsage(CommandSender sender, String cmd, boolean explanation) {
+
     }
 
     protected boolean help(CommandSender sender, int page) {
@@ -94,57 +112,26 @@ public class CommandsHandler implements CommandExecutor {
     }
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
-        JarFile jarFile = null;
-        List<String> listOfCommands = new ArrayList<String>();
-
-        return listOfCommands;
+        return null;
     }
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
-        Map<String, Integer> temp = new TreeMap<String, Integer>();
 
-        return temp;
+        return null;
     }
 
     public void fillCommands() {
-    }
 
-    private static Class<?> getClass(String cmd) {
-        Class<?> nmsClass = null;
-        return nmsClass;
-    }
-
-    private Cmd getCmdClass(String cmdName) {
-        return null;
-    }
-
-    private Cmd getBestCmdmatch(String cmdName) {
-        return null;
+        return;
     }
 
     public static int distance(String a, String b) {
-        a = a.toLowerCase();
-        b = b.toLowerCase();
-        int[] costs = new int[b.length() + 1];
-        for (int j = 0; j < costs.length; j++)
-            costs[j] = j;
-        for (int i = 1; i <= a.length(); i++) {
-            costs[0] = i;
-            int nw = i - 1;
-            for (int j = 1; j <= b.length(); j++) {
-                int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
-                nw = costs[j];
-                costs[j] = cj;
-            }
-        }
-        return costs[b.length()];
+        return 0;
     }
 
     private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
 
-        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
-
-        return sortedMap;
+        return null;
     }
 
     public Map<String, CMICommand> getCommands() {

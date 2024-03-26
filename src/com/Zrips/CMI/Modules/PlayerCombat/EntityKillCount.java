@@ -5,7 +5,7 @@ import org.bukkit.entity.EntityType;
 public class EntityKillCount {
 
     EntityType type = null;
-    private Long lastKill = 0L;
+    private long lastKill = 0L;
     private int kills = 0;
     private int headDropCount = 0;
 
@@ -31,7 +31,7 @@ public class EntityKillCount {
     }
 
     public void setLastKill(Long lastKill) {
-	this.lastKill = lastKill;
+	this.lastKill = lastKill == null ? 0 : lastKill;
     }
 
     public int getHeadDropCount() {

@@ -11,9 +11,11 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.itemInfo;
 import com.Zrips.CMI.Modules.Region.WorldInfo;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class ScanInfo {
 
-    private int scheduleId = -1;
+    private CMITask scheduleTask = null;
 
     private long showedInfo = 0L;
     private boolean showInfo = false;
@@ -58,7 +60,6 @@ public class ScanInfo {
     }
 
     public void addLocation(int amount, ScanResultLocations location) {
-
     }
 
     public int getCurrentId() {
@@ -85,12 +86,12 @@ public class ScanInfo {
         return this.oversize;
     }
 
-    public void setscheduleId(int id) {
-        this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+        this.scheduleTask = task;
     }
 
-    public int getScheduleId() {
-        return this.scheduleId;
+    public CMITask getScheduleTask() {
+        return this.scheduleTask;
     }
 
     public void setShowInfo(long time) {

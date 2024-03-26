@@ -24,7 +24,9 @@ public class WorthItemCheck {
 
     public Double getSellPrice(boolean includeEnchants, boolean includeDurability) {
 
-        return null;
+        if (item == null)
+            return worth.getSellPrice();
+        return worth.getPlayerSellPrice(item, includeEnchants, includeDurability);
     }
 
     public Double getEnchantSellPrice() {

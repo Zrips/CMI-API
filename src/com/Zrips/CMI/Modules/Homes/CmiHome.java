@@ -14,7 +14,10 @@ public class CmiHome {
     private String name;
     private boolean privateH = false;
     private boolean bed = false;
-    private Integer slot;
+
+    private boolean fav = false;
+
+    private int slot;
 
     private CMIMaterial material;
 
@@ -66,10 +69,7 @@ public class CmiHome {
     }
 
     public void setSlot(Integer slot) {
-        if (slot != null && slot <= 0)
-            this.slot = null;
-        else
-            this.slot = slot;
+        this.slot = slot == null ? 0 : slot <= 0 ? 0 : slot;
     }
 
     public boolean isBed() {
@@ -78,6 +78,14 @@ public class CmiHome {
 
     public void setBed(boolean bed) {
         this.bed = bed;
+    }
+
+    public boolean isFavorite() {
+        return fav;
+    }
+
+    public void setFavorite(boolean fav) {
+        this.fav = fav;
     }
 
 }

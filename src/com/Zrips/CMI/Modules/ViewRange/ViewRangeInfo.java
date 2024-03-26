@@ -11,9 +11,11 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.Containers.ChunkInfo;
 import com.Zrips.CMI.Containers.Direction;
 
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class ViewRangeInfo {
 
-    private int scheduleId = -1;
+    private CMITask scheduleTask = null;
     private int currentId = 1;
 
     private boolean teleporting = false;
@@ -119,12 +121,12 @@ public class ViewRangeInfo {
 	return this.range;
     }
 
-    public void setscheduleId(int id) {
-	this.scheduleId = id;
+    public void setScheduleTask(CMITask task) {
+	this.scheduleTask = task;
     }
 
-    public int getScheduleId() {
-	return this.scheduleId;
+    public CMITask getScheduleTask() {
+	return this.scheduleTask;
     }
 
     public void setShowInfo(long time) {
@@ -183,19 +185,7 @@ public class ViewRangeInfo {
 	this.LoadedChunks.addAll(chunks);
     }
 
-    public synchronized void removeLoadedChunks(List<ChunkInfo> chunks) {
-	List<ChunkInfo> remove = new ArrayList<ChunkInfo>();
-	for (ChunkInfo oneNew : chunks) {
-	    for (ChunkInfo oneOld : LoadedChunks) {
-		if (oneOld.getX() != oneNew.getX())
-		    continue;
-		if (oneOld.getZ() != oneNew.getZ())
-		    continue;
-		remove.add(oneOld);
-		break;
-	    }
-	}
-	this.LoadedChunks.removeAll(remove);
+    public synchronized void removeLoadedChunks(List<ChunkInfo> chunks) { 
     }
 
     public void addLoadedChunk(ChunkInfo chunk) {

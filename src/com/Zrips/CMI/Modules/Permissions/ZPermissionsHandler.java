@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 public class ZPermissionsHandler implements PermissionInterface {
 
     public ZPermissionsHandler() {
-
     }
 
     @Override
     public String getMainGroup(Player player) {
         return null;
+
     }
 
     @Override

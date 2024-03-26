@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import com.Zrips.CMI.CMI;
@@ -21,6 +20,7 @@ public class AliasManager {
     public LinkedHashMap<String, CommandAlias> defaultAliases = new LinkedHashMap<String, CommandAlias>();
     public LinkedHashMap<String, CommandAlias> customAliases = new LinkedHashMap<String, CommandAlias>();
     public LinkedHashMap<String, CommandAlias> alternativeAliases = new LinkedHashMap<String, CommandAlias>();
+
     public HashMap<String, CommandAlias> fromAliases = new HashMap<String, CommandAlias>();
 
     public AliasManager(CMI plugin) {
@@ -37,10 +37,27 @@ public class AliasManager {
         return null;
     }
 
-    Map<String, CommandAlias> cache = Collections.synchronizedMap(new HashMap<String, CommandAlias>());
+    private static final int MAX_CACHE_SIZE = 100;
+
+    private static Map<String, CommandAlias> cache = Collections.synchronizedMap(
+        new LinkedHashMap<String, CommandAlias>(MAX_CACHE_SIZE, 0.75f, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, CommandAlias> eldest) {
+                return size() > MAX_CACHE_SIZE;
+            }
+        });
+
+    private static Map<String, List<CommandAlias>> cacheListed = Collections.synchronizedMap(
+        new LinkedHashMap<String, List<CommandAlias>>(MAX_CACHE_SIZE, 0.75f, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, List<CommandAlias>> eldest) {
+                return size() > MAX_CACHE_SIZE;
+            }
+        });
 
     public void clearCache() {
         cache.clear();
+        cacheListed.clear();
     }
 
     public CommandAlias getAliasForCommand(String msg) {
@@ -53,13 +70,16 @@ public class AliasManager {
     }
 
     public List<CommandAlias> getAliasStartingWith(String msg, CommandAliasType type) {
+
         return null;
     }
 
     private void register(CommandAlias ca) {
+
     }
 
     public void addDefault(CommandAlias ca) {
+
     }
 
     public void addCustom(CommandAlias ca) {
@@ -83,10 +103,8 @@ public class AliasManager {
     }
 
     public HashMap<String, CommandAlias> getAll() {
-        HashMap<String, CommandAlias> t = new HashMap<String, CommandAlias>();
-        t.putAll(this.defaultAliases);
-        t.putAll(this.customAliases);
-        return t;
+
+        return null;
     }
 
     public HashMap<String, CommandAlias> getFrom() {
@@ -94,11 +112,8 @@ public class AliasManager {
     }
 
     private List<String> convertCustom() {
-        List<String> list = new ArrayList<String>();
-        for (Entry<String, CommandAlias> one : customAliases.entrySet()) {
-            list.add(one.getValue().getCommand() + "-" + one.getKey());
-        }
-        return list;
+
+        return null;
     }
 
     public void save() {
@@ -109,9 +124,7 @@ public class AliasManager {
 
     public List<String> updateCommands(CommandAlias alias, List<String> args, List<String> commands) {
 
-        ArrayList<String> t = new ArrayList<String>();
-
-        return t;
+        return null;
     }
 
     List<String> CommentList = new ArrayList<String>(Arrays.asList("",
@@ -134,9 +147,17 @@ public class AliasManager {
 
     List<String> temp = new ArrayList<String>();
 
+    public void fullLoad() {
+        load();
+        loadRegularAlias();
+        clearCache();
+    }
+
     public void load() {
 
     }
+
+    private String fileName = "Alias.yml";
 
     public void loadRegularAlias() {
 

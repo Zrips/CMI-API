@@ -4,11 +4,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class PlayTimeManager {
 
@@ -97,36 +105,66 @@ public class PlayTimeManager {
         }
     }
 
-    private int autoTimerBukkitId = 0;
+    private CMITask autoTimerBukkitId = null;
 
     private CMI plugin;
 
     public static final Long checkIntervalMs = 1000 * 60L;
 
-    public PlayTimeManager(CMI plugin) {
+    protected Map<UUID, CMIPlayTime> playtimeCache = new HashMap<UUID, CMIPlayTime>();
 
+    public CMIPlayTime getCMIPlayTime(UUID uuid) {
+        return playtimeCache.computeIfAbsent(uuid, k -> new CMIPlayTime(CMIUser.getUser(uuid)));
+    }
+
+    public void setCMIPlayTime(UUID uuid, CMIPlayTime playTime) {
+        playtimeCache.put(uuid, playTime);
+    }
+
+    public PlayTimeManager(CMI plugin) {
+        this.plugin = plugin;
+        if (CMIModule.cmiPlaytime.isEnabled())
+            autoTimerBukkitId = CMIScheduler.scheduleSyncRepeatingTask(autoTimer, 0L, checkIntervalMs / 50L);
     }
 
     public void stop() {
+        if (autoTimerBukkitId != null) {
+            autoTimerBukkitId.cancel();
+            autoTimerBukkitId = null;
+        }
     }
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
     Calendar calendar = Calendar.getInstance();
 
     private Integer getTodaysDate() {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     private Integer getYeastardayDate() {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     Integer getWeekStartDate() {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     Integer getMonthStartDate() {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        while (calendar.get(Calendar.DAY_OF_MONTH) != 1) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     private static int currentHour() {
@@ -137,15 +175,24 @@ public class PlayTimeManager {
     }
 
     static Integer hourBack(int back) {
-        return null;
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, -back);
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     Integer getYearStartDate() {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_YEAR, 1);
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     public Integer getDaysBackDate(int i) {
-        return null;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.DAY_OF_MONTH, -i);
+        return Integer.parseInt(formatter.format(calendar.getTime()));
     }
 
     private Runnable autoTimer = new Runnable() {
@@ -160,10 +207,20 @@ public class PlayTimeManager {
     };
 
     public void updatePlayTimes() {
+        for (PlaytimeRange one : PlaytimeRange.values()) {
+            one.update();
+        }
+        for (Player one : Bukkit.getOnlinePlayers()) {
+            CMIUser user = plugin.getPlayerManager().getUser(one);
+            user.updatePlayTime();
+        }
     }
 
     public String formatDate(int date) {
-        return null;
+        int year = date / 10000;
+        int month = (date - (year * 10000)) / 100;
+        int day = date % 100;
+        return day + "/" + month + "/" + year;
     }
 
 }

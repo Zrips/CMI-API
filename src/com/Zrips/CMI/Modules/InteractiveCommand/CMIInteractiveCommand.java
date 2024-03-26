@@ -74,7 +74,7 @@ public class CMIInteractiveCommand {
     public List<String> getLocListAsString() {
         List<String> ls = new ArrayList<String>();
         for (CMILocation one : loc) {
-            ls.add(CMI.getInstance().getPlayerManager().convertLocToStringShort(one));
+            ls.add(CMI.getInstance().getPlayerManager().convertLocToStringShortBlock(one));
         }
         return ls;
     }
@@ -84,6 +84,7 @@ public class CMIInteractiveCommand {
         this.loc.addAll(loc);
     }
 
+    @Deprecated
     public void addLoc(CMILocation loc) {
         if (loc == null)
             return;
@@ -197,7 +198,7 @@ public class CMIInteractiveCommand {
         return true;
     }
 
-    public void updateSignText(final Block block) {
+    public void updateSignText(final Block block) { 
     }
 
     public void setSignLines(List<String> signLines) {
@@ -235,4 +236,5 @@ public class CMIInteractiveCommand {
     public void setSignRequiresPerm(boolean signRequiresPerm) {
         this.signRequiresPerm = signRequiresPerm;
     }
+
 }

@@ -1,9 +1,20 @@
 package com.Zrips.CMI.Modules.BungeeCord;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.Bukkit;
+
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.BungeeCord.ServerListPing.StatusResponse;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class BungeeCordServer {
 
@@ -67,7 +78,7 @@ public class BungeeCordServer {
 
     public int getCurrentPlayers() {
         int total = 0;
-        Iterator<Entry<String, BungeePlayer>> iter = playersMapUUID.entrySet().iterator();
+        Iterator<Entry<String, BungeePlayer>> iter = playersMapName.entrySet().iterator();
         while (iter.hasNext()) {
             BungeePlayer user = iter.next().getValue();
             if (user.getVanished())
@@ -76,6 +87,10 @@ public class BungeeCordServer {
         }
         return total;
     }
+
+//    public void setCurrentPlayers(int currentPlayers) {
+//	this.currentPlayers = currentPlayers;
+//    }
 
     public Long getNextCheck() {
         return nextCheck;
@@ -106,13 +121,14 @@ public class BungeeCordServer {
     }
 
     public BungeePlayer getPlayer(String name) {
-        BungeePlayer p = playersMapName.get(name.toLowerCase());
-        return p;
+        return null;
     }
 
     public void addPlayer(BungeePlayer player) {
-        this.playersMapUUID.put(player.getUniqueId().toString(), player);
-        this.playersMapName.put(player.getName().toLowerCase(), player);
+        if (player.getUniqueId() != null)
+            this.playersMapUUID.put(player.getUniqueId().toString(), player);
+        if (player.getName() != null)
+            this.playersMapName.put(player.getName().toLowerCase(), player);
     }
 
     public void removePlayer(UUID uuid, String name) {
@@ -125,5 +141,9 @@ public class BungeeCordServer {
             this.playersMapUUID.clear();
         if (playersMapName != null)
             this.playersMapName.clear();
+    }
+
+    public ConcurrentHashMap<String, BungeePlayer> getPlayersMapName() {
+        return playersMapName;
     }
 }

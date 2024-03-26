@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Containers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -11,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.command.defaults.BukkitCommand;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.commands.CMICommand;
 
 public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
@@ -27,33 +27,28 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
         return register(null);
     }
 
-    private static void unRegisterBukkitCommand(Command cmd) {
-    }
-
     public boolean register(String permission) {
         return true;
     }
 
     final static CommandMap getCommandMap() {
-        return cmap;
+        return null;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        return true;
 
+        CMICommand cm = CMI.getInstance().getCommandManager().getCommands().get(label);
+
+        if (cm != null) {
+            return cm.getCmdClass().perform(CMI.getInstance(), sender, args);
+        }
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!alias.isTabComplete())
-            return new ArrayList<String>();
-
-        if (alias.getType() == CommandAliasType.subbase) {
-            return CMI.getInstance().getTab().get(sender, alias.getCmiCommandName(), "cmi", args);
-        }
-
-        return CMI.getInstance().getTab().get(sender, command, "cmi", args);
+        return null;
     }
 
     private final class ReflectCommand extends BukkitCommand {
@@ -79,11 +74,19 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
         @Override
         public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+
             return true;
         }
 
         @Override
         public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
+            if (alias.getType() == CommandAliasType.subbase)
+                return null;
+
+            if (exe != null) {
+                return exe.onTabComplete(sender, this, alais, args);
+            }
+
             return null;
         }
     }

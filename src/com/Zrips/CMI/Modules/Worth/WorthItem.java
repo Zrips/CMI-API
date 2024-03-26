@@ -1,10 +1,14 @@
 package com.Zrips.CMI.Modules.Worth;
 
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+
+import com.Zrips.CMI.CMI;
 
 public class WorthItem {
 
@@ -50,14 +54,29 @@ public class WorthItem {
     }
 
     public Double getPlayerSellPrice(ItemStack item, boolean includeEnchants, boolean includeDurability) {
+        double sell = sellPrice;
+        if (includeDurability) {
+            sell = CMI.getInstance().getWorthManager().getWorthByDurability(item, sell);
+        }
 
-        return null;
+        if (includeEnchants)
+            sell += WorthItem.getEnchantSellPrice(item);
+
+        return sell;
     }
 
     public static double getEnchantSellPrice(ItemStack item) {
 
-        return 0D;
+        if (item == null)
+            return 0D;
 
+        Double extra = 0D;
+        for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
+            if (one == null)
+                continue;
+            extra += CMI.getInstance().getWorthManager().getEnchantSellPrice(one.getKey(), one.getValue());
+        }
+        return extra;
     }
 
     public void setSellPrice(double price) {
@@ -69,6 +88,8 @@ public class WorthItem {
     }
 
     public ItemStack getItem() {
+//	if (item == null)
+//	    item = CMIMaterial.get(material).newItemStack();
         return item;
     }
 

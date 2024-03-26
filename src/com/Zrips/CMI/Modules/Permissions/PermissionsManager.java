@@ -1,7 +1,9 @@
 package com.Zrips.CMI.Modules.Permissions;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +12,11 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.permissions.PermissionDefault;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.tp.Teleportations.TpCondition;
+import com.Zrips.CMI.Modules.PlayerOptions.PlayerOption;
+import com.Zrips.CMI.Modules.Teleportations.CMITeleportCondition;
+
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class PermissionsManager {
 
@@ -33,6 +39,7 @@ public class PermissionsManager {
         elevator_create("Allows to create elevator signs"),
         bossbar_colors("Allows to use colors in bossbarmsg command"),
         bossbar_hpbar("Allows to see hp boss bar when dealing damage to entity. Rechecks every minute."),
+//	me_colors("Allows to use colors in me command"),
         dynmap_hidden("Hides player from dynmap map"),
         prewards_notification("Allows to see playtime rewards notifications"),
         prewards_$1("Allows to get particular playtime reward", "preward"),
@@ -42,6 +49,7 @@ public class PermissionsManager {
         colors_$1_$star("Allows all color usage in particular areas", "type"),
         colors_$1_$2("Allows color usage in particular areas. Types: publicmessage, privatemessage, nickname, signs, books, me", "type", "colorName/hex"),
         seevanished("Allows to see vanished people"),
+//	joinvanished("Sets player to vanish mode on join"),
         messages_disablelogin("Disables login message"),
         messages_disablequit("Disables logout message"),
         scrollpainting("Allows to modify paintings"),
@@ -68,8 +76,8 @@ public class PermissionsManager {
         worldlimit_fly_aboveroof("Allows to fly over world build limit. Feature should be enabled in config file"),
         worldlimit_god_bypass("Allows to bypass god mode limitations by worlds"),
         spawners_charge_bypass("Allows to bypass charge limitations"),
-        namehistory("Allows to see previous players names"),
         inventoryhat("Allows to put block on head from inventory"),
+        inventoryhat_bypass("Allows to bypass item limitations"),
         minecart_change_$1("Allows to change minecart type by right clicking with appropriate item", "minecartType"),
         hologram_$1("Allows to see hologram", "hologramName"),
         kit_$1("Allows to use kit", "kitName"),
@@ -107,7 +115,11 @@ public class PermissionsManager {
 
         hunger_keepafterdeath("Prevents from hunger to be replenished after death"),
 
+//	hunger_max_$1("Defines max amount of hunger player can have", "value"),
+//	hunger_rate_$1("Defines mhow fast hunger is depleating, default rate is 1.0", "value"),
+
         anvil_itemrename_bypass("Allows to rename items with black listed names. /itemanem and physical anvil"),
+//	anvil_nolimits("Allows repair items without level limitations"),
 
         sleepignore("Players with this permission node will be ignored when checking how many players are sleeping in the world to speed up time"),
 
@@ -120,12 +132,15 @@ public class PermissionsManager {
         saveinv("Saves player inventory on death to be restored if needed later on"),
         scheduler_exclude("Excludes player from scheduler random player list"),
         openshulker("Allows to use shulkerbox as backpack"),
+        openshulker_free("Allows to use shulkerbox for free"),
         openshulker_shift("Allows to use shulkerbox as backpack with shift right click"),
         safeteleport("Prevents teleportation to unsafe locations"),
-        safeteleport_bypass_$1("Allows to teleport into unsafe location without confirmation", TpCondition.getBadLocations()),
+        safeteleport_bypass_$1("Allows to teleport into unsafe location without confirmation", CMITeleportCondition.getBadLocations()),
 
         viewrange("Allows to have custom view range"),
         viewrange_$1("Defines custom view range", "range(1-15)"),
+
+//	specialized_target("Allows to channge ptarget in specialized commands while performing command"),
 
         dropspawner("Allows for spawner to be dropped after its being broken"),
         dropspawner_$1("Allows for spawner to be dropped after its being broken by defined type", "entityType"),
@@ -151,11 +166,11 @@ public class PermissionsManager {
         bungee_publicmessages_$1("Allows to send public messages to target server", "serverName"),
 
         warmupbypass_$1("Allows to bypass particular CMI command warmup", "commandName"),
-        warmuptime_$1("Allows to set warmup time. Lower is prioritized", "commandName"),
+        warmuptime_$1_$2("Allows to set warmup time. Lower is prioritized", "commandName", "timeInSeconds"),
 
         command("Gives access to base usage of commands"),
 
-        command_options_$1("Allows to modify specific options", "visibleHolograms/shiftSignEdit/totemBossBar/bassBarCompass/tagSound/chatSpy/cmdSpy/signSpy/acceptingPM/acceptingTPA/acceptingMoney"),
+        command_options_$1("Allows to modify specific options"),
         command_jump_$1("Defines max jump distance", "[distance]"),
         costbypass_$1("Allows to bypass command cost", "commandName"),
         cooldownbypass_$1("Allows to bypass command cooldown", "commandName"),
@@ -171,11 +186,13 @@ public class PermissionsManager {
         command_donate_send("Allows you to send items throw donate command"),
 
         command_portal_$1("Allows to use portal", "portalName"),
+//	command_portalparticles_$1("Allows to see portal particles when requirement is enabled", "portalName"),
 
         command_kill_byforce("Allows to kill player independent of protection plugins"),
 
         command_kiteditor_admin("Allows to define more dangerous aspects of kits, like commands"),
 
+        command_itemframe_$1("Allows specific action", "invisible/fixed/invulnerable/all"),
         command_world_$1("Allows to teleport to particular world with command", "worldName"),
         command_skin_perm_$1("Allows to change skin to particular player", "skinName"),
         command_point_$1("Allows to change particle type", "particleType"),
@@ -186,6 +203,8 @@ public class PermissionsManager {
         command_inv_information("Shows target player information in GUI"),
         command_inv_preventmodify_bypass("Bypass for regular inventory modification protection"),
         command_give_max_$1("Max item stack size player can use", "number"),
+//	command_tgod_give("Allows to give tgod for some one else"),
+//	command_tfly_give("Allows to give tfly for some one else"),
         command_tfly_admin("Allows to manage tfly for players"),
         command_tfly_maxtime_$1("Defines max amount of time player can have with tfly command", "seconds"),
         command_spawner_shiftclick("Allows to use spawner set GUI on shift clicking it"),
@@ -259,6 +278,8 @@ public class PermissionsManager {
         command_mail_send("Allows to send mail"),
         command_mail_sendtemp("Allows to send timed mail"),
 
+        command_itemlore_modification("Allows to modify existing item lore"),
+
         command_glow_color_$1("Allows to change glow color", "colorName"),
         command_walkspeed_$1("Defines max walkspeed player can set", "range0-10"),
         command_tptoggle_bypass("Allows teleportation to players with disabled teleportations"),
@@ -267,7 +288,7 @@ public class PermissionsManager {
         command_repair_bypass("Allows to bypass repair cost on item"),
         command_nick_bypassblacklist("Allows to bypass nick name black list"),
         command_nick_bypass_length("Allows to bypass nick name length limitations"),
-        command_nick_bypassinuse("Allows to bypass limitationn in using already existing name"),
+        command_nick_bypassinuse("Allows to bypass limitation in using already existing name"),
         command_nick_different("Allows to set nick name to different one than original"),
         command_msg_clean("Allows to send clean messages to player by using ! at beginning"),
         command_msg_noreply("Allows to send clean messages to player by using !- at beginning without option to reply"),
@@ -292,6 +313,7 @@ public class PermissionsManager {
         command_money_admin("Allows to manipulate player balance"),
         command_money_betweenworldgroups("Allows money transfer between worlds"),
         command_time_$1("Allows to manipulate time", "freeze/unfreeze/day/morning/night/dusk/add/take/realtime/autorealtime"),
+        command_weather_$1("Allows to define change weather to specific state", "sun/rain/storm/lock"),
         command_weather_$1_$2("Allows to define max length player can change weather to", "sun/rain", "maxValue"),
         command_pweather_$1("Allows to change personal weather to specific state", "sun/rain/reset"),
         command_back_ondeath("Allows returning to death location by using back command after death"),
@@ -313,6 +335,8 @@ public class PermissionsManager {
         command_jail_maxtime_$1("Defines max amount of time player can jail someone", "seconds"),
         command_near_hide("Hides player from being shown in near command"),
         command_near_max_$1("Defines max distance for near command to override default", "blocks"),
+        command_tpa_max_$1("Defines max distance for tpa command to override default", "blocks"),
+        command_tpahere_max_$1("Defines max distance for tpahere command to override default", "blocks"),
         command_silent("Allows to use -s variable in commands to avoid sending feedback messages to target player"),
         command_warn_bypass("Prevents player from being warned"),
         command_ban_bypass("Prevents player from being banned"),
@@ -362,6 +386,10 @@ public class PermissionsManager {
         private String desc;
         private String[] wars;
 
+        static {
+            command_options_$1.wars = new String[] { Arrays.asList(PlayerOption.values()).stream().map(Enum::name).collect(Collectors.joining("/")) };
+        }
+
         CMIPerm(String desc, Boolean show) {
             this.desc = desc;
             this.show = show;
@@ -397,11 +425,12 @@ public class PermissionsManager {
         }
 
         public String getPermission(String... extra) {
+
             return null;
         }
 
         public boolean hasPermission(CommandSender sender) {
-            return hasPermission(sender, false);
+            return hasPermission(sender, false, true, 200L);
         }
 
         public boolean hasPermission(CommandSender sender, Integer... extra) {
@@ -409,11 +438,11 @@ public class PermissionsManager {
             for (int i = 0; i < extra.length; i++) {
                 ex[i] = String.valueOf(extra[i]);
             }
-            return hasPermission(sender, false, ex);
+            return hasPermission(sender, false, true, 200L, ex);
         }
 
         public boolean hasPermission(CommandSender sender, String... extra) {
-            return hasPermission(sender, false, extra);
+            return hasPermission(sender, false, true, 200L, extra);
         }
 
         public boolean hasPermission(CommandSender sender, Long delay, String... extra) {
@@ -421,11 +450,11 @@ public class PermissionsManager {
         }
 
         public boolean hasPermission(CommandSender sender, boolean inform, String... extra) {
-            return hasPermission(sender, inform, true, extra);
+            return hasPermission(sender, inform, true, 200L, extra);
         }
 
         public boolean hasPermission(CommandSender sender, boolean inform, boolean informConsole, String... extra) {
-            return hasPermission(sender, inform, informConsole, null, extra);
+            return hasPermission(sender, inform, informConsole, 200L, extra);
         }
 
         public boolean hasPermission(CommandSender sender, boolean inform, Long delayInMiliSeconds) {
@@ -433,10 +462,12 @@ public class PermissionsManager {
         }
 
         public boolean hasPermission(CommandSender sender, boolean inform, boolean informConsole, Long delay, String... extra) {
-            return false;
+
+            return true;
         }
 
         private static void informConsole(CommandSender sender, String permission, boolean informConsole) {
+
         }
 
         public boolean hasSetPermission(CommandSender sender, String... extra) {
@@ -448,7 +479,16 @@ public class PermissionsManager {
         }
 
         public static boolean hasSetPermission(CommandSender sender, String perm, boolean inform) {
-            return false;
+            PermissionAttachmentInfo has = CMI.getInstance().getPermissionsManager().getSetPermission(sender, perm);
+            if (has != null && !has.getValue() && inform) {
+                boolean showPerm = CMI.getInstance().getConfigManager().isPermisionOnError() || CMIPerm.permisiononerror.hasPermission(sender);
+                RawMessage rm = new RawMessage();
+                rm.addText(LC.info_NoPermission.getLocale()).addHover(showPerm ? perm : null);
+                rm.show(sender);
+
+                informConsole(sender, perm, true);
+            }
+            return has == null ? false : has.getValue();
         }
 
         public String[] getWars() {
@@ -472,6 +512,7 @@ public class PermissionsManager {
         }
 
         public static boolean hasPermission(CommandSender sender, String permision, Boolean output, boolean informConsole) {
+
             return false;
         }
 
@@ -486,6 +527,7 @@ public class PermissionsManager {
     }
 
     public void checkPermissions() {
+
     }
 
     public String getMainGroup(Player player) {
@@ -557,7 +599,18 @@ public class PermissionsManager {
     }
 
     public PermissionInfo getFromCache(Player player, String perm) {
-        return null;
+        HashMap<String, PermissionInfo> old = cache.get(player.getUniqueId());
+        if (old == null) {
+            return null;
+        }
+
+        PermissionInfo info = old.get(perm);
+
+        if (info == null) {
+            return null;
+        }
+
+        return info;
     }
 
     public PermissionInfo addToCache(Player player, String perm, boolean has, Long delayInMiliseconds) {

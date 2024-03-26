@@ -21,6 +21,6 @@ public class LightFix {
     }
 
     private void loadChunk(final LightFixInfo info) {
-
+ 
     }
 }

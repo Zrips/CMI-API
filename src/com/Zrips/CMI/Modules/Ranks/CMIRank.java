@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.Snd;
 import com.Zrips.CMI.Modules.Ranks.RankManager.rankupFailType;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
 
@@ -26,6 +27,7 @@ public class CMIRank {
     private List<String> CommandsOnRankDown;
     private LinkedHashMap<CMIStatistic, LinkedHashMap<Object, Long>> statRequirements;
     private LinkedHashMap<String, String> permRequirements;
+    private LinkedHashMap<String, CMIRankPlaceholder> placeholderRequirements;
     private LinkedHashMap<String, Integer> mcmmoRequirements;
     private LinkedHashMap<String, Integer> aureliumRequirements;
     private LinkedHashMap<String, Integer> JobsRequirements;
@@ -47,6 +49,7 @@ public class CMIRank {
         CommandsOnRankDown = new ArrayList<String>();
         statRequirements = new LinkedHashMap<CMIStatistic, LinkedHashMap<Object, Long>>();
         permRequirements = new LinkedHashMap<String, String>();
+        placeholderRequirements = new LinkedHashMap<String, CMIRankPlaceholder>();
         mcmmoRequirements = new LinkedHashMap<String, Integer>();
         aureliumRequirements = new LinkedHashMap<String, Integer>();
         JobsRequirements = new LinkedHashMap<String, Integer>();
@@ -98,10 +101,21 @@ public class CMIRank {
     }
 
     public List<CMIRank> getNextValidRankUps(CMIUser user) {
-        return null;
+        List<CMIRank> r = new ArrayList<CMIRank>();
+
+        for (CMIRank oneR : getNextRanks()) {
+            if (oneR.canRankup(user) != rankupFailType.None)
+                continue;
+            r.add(oneR);
+        }
+        return r;
     }
 
     public boolean isOnSamePathWith(CMIRank rank2) {
+        if (checkPrevious(this, rank2))
+            return true;
+        if (checkNext(this, rank2))
+            return true;
         return false;
     }
 
@@ -164,7 +178,6 @@ public class CMIRank {
     }
 
     public CMIRank addStatRequirement(CMIStatistic stat, String name, Long amount) {
-
         return null;
     }
 
@@ -198,7 +211,6 @@ public class CMIRank {
     }
 
     public void finalizeRankup(CMIUser user, Boolean commands, Boolean cost) {
-
     }
 
     @Deprecated
@@ -218,11 +230,14 @@ public class CMIRank {
     }
 
     public void performCommands(CMIUser user) {
+        Snd snd = new Snd().setSender(user).setTarget(user);
 
+        List<String> cp = new ArrayList<String>(this.Commands);
+        cp = CMI.getInstance().getLM().updateSnd(snd, cp);
+        CMI.getInstance().getSpecializedCommandManager().processCmds(cp, user.isOnline() ? user.getPlayer() : null);
     }
 
     public void performCommandsOnRankDown(CMIUser user) {
-
     }
 
     public String getDisplayName() {
@@ -297,5 +312,13 @@ public class CMIRank {
 
     public void setAureliumRequirements(LinkedHashMap<String, Integer> aureliumRequirements) {
         this.aureliumRequirements = aureliumRequirements;
+    }
+
+    public LinkedHashMap<String, CMIRankPlaceholder> getPlaceholderRequirements() {
+        return placeholderRequirements;
+    }
+
+    public void setPlaceholderRequirements(LinkedHashMap<String, CMIRankPlaceholder> placeholderRequirements) {
+        this.placeholderRequirements = placeholderRequirements;
     }
 }

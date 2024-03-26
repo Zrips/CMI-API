@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
+
 public class TabListManager {
 
     private HashMap<Integer, TabList> TabList = new HashMap<Integer, TabList>();
@@ -19,8 +22,8 @@ public class TabListManager {
         this.plugin = plugin;
     }
 
-    private int sched = -1;
-    private int sortSched = -1;
+    private CMITask sched = null;
+    private CMITask sortSched = null;
     private double interval = 1D;
 //    private Boolean Enabled = true;
     private boolean async = true;
@@ -46,8 +49,18 @@ public class TabListManager {
     private int SortingAutoUpdate = 1;
 
     public void stop() {
+        if (sched != null) {
+            sched.cancel();
 
+            sched = null;
+        }
+        if (sortSched != null) {
+            sortSched.cancel();
+            sortSched = null;
+        }
     }
+
+    private String fileName = "TabList.yml";
 
     public void loadConfig() {
 
@@ -58,16 +71,22 @@ public class TabListManager {
     }
 
     public TabList getTL(Player player) {
+
         return null;
     }
 
     public void updateTabList(int delay) {
+        if (!CMIModule.tablist.isEnabled())
+            return;
+        CMIScheduler.runTaskLater(() -> plugin.getTabListManager().updateTabList(), delay);
     }
 
     public void updateTabList() {
+
     }
 
     public void updateTablistName(Player player) {
+
     }
 
     public void updateTabList(Player player) {

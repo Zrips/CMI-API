@@ -41,6 +41,7 @@ public class Reflections {
     private Class<?> IStack;
     private Class<?> dimensionManager;
     private Class<?> PacketPlayOutAnimation;
+    private Class<?> PacketPlayOutAdvancements;
 
     Field playerConnection;
     Method sendPacket;
@@ -56,6 +57,10 @@ public class Reflections {
 
     }
 
+    public void sendPacket(Object connection, Object packet) {
+
+    }
+
     private static Class<?> getBukkitClass(String nmsClassString) {
         return null;
     }
@@ -65,73 +70,75 @@ public class Reflections {
     }
 
     public void exitBed(Player p) {
-
     }
 
     public void setOnGround(Player p, boolean state) {
-     
     }
 
     public void changePlayerLimit(int amount) {
-      
+
     }
 
     @SuppressWarnings("deprecation")
     public void setGameMode(Player player, GameMode mode) {
-      
+
     }
 
     @SuppressWarnings({ "unchecked", "deprecation" })
     public void manageEnchantment(Enchantment enchant, boolean disable) {
-       
+
     }
 
     public void setMotd(String motd) {
-       
+
     }
 
     public int getPing(Player player) {
-       
+
         return 999;
     }
 
     public int getHoneyLevel(Block block) {
-      
-        return 0;
+
+        return -1;
     }
 
     public int getBeesInside(Block block) {
-       
+
         return 0;
     }
 
-    public boolean openCartographyTable(Player player) {
-      
+    private static boolean processOpeningOfTable(Player player, String type) {
+
         return false;
+    }
+
+    public boolean openCartographyTable(Player player) {
+        return processOpeningOfTable(player, "openCartographyTable");
     }
 
     public boolean openGrindstone(Player player) {
-       
-        return false;
+        return processOpeningOfTable(player, "openGrindstone");
     }
 
     public boolean openLoom(Player player) {
-       
-        return false;
+        return processOpeningOfTable(player, "openLoom");
     }
 
     public boolean openSmithingTable(Player player) {
-
-        return false;
+        return processOpeningOfTable(player, "openSmithingTable");
     }
 
     public boolean openStonecutter(Player player) {
-      
-        return false;
+        return processOpeningOfTable(player, "openStonecutter");
+    }
+
+    public boolean openAnvil(Player player) {
+        return processOpeningOfTable(player, "openAnvil");
     }
 
     public boolean openSignUI(Player player, Sign sign) {
-      
+
         return false;
     }
 
@@ -140,21 +147,22 @@ public class Reflections {
     }
 
     public void openBook(ItemStack i, Player p) {
-      
     }
 
     public void printItemNBT(ItemStack item, CommandSender sender) {
-       
+
     }
 
     public void printEntityNBT(Entity entity, CommandSender sender) {
+
     }
 
     public void printNBT(Object t, int level, CommandSender sender, List<String> path) {
-       
+
     }
 
-    public ItemStack tryToMakeShulkerBox(ItemStack item) {       
-        return item;
+    public ItemStack tryToMakeShulkerBox(ItemStack item) {
+
+        return null;
     }
 }

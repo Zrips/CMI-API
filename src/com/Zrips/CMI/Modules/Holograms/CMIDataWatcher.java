@@ -18,60 +18,76 @@ public class CMIDataWatcher {
 
     private boolean updatingHead = false;
 
+//    @Deprecated
+//    public CMIDataWatcher(Integer id, Object stand) {
+//	this.stand = stand;
+//	this.id = id;
+//    }
+
     public CMIDataWatcher(Integer id, Object stand, CMIHoloLineType type) {
+	this.stand = stand;
+	this.id = id;
+	this.type = type;
     }
 
     public CMIDataWatcher(Integer id, Integer secid, Object stand, CMIHoloLineType type) {
+	this.stand = stand;
+	this.id = id;
+	this.secId = secid;
+	this.type = type;
     }
 
     public Object getStand() {
-        return stand;
+	return stand;
     }
 
     public void setStand(Object watcher) {
-        this.stand = watcher;
+	this.stand = watcher;
     }
 
     public Integer getId() {
-        return id;
+	return id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+	this.id = id;
     }
 
     public void remove(Player player) {
+	CMI.getInstance().getNMS().removeHologram(player, id);
+	if (secId != null)
+	    CMI.getInstance().getNMS().removeHologram(player, secId);
     }
 
     public Location getLoc() {
-        return loc;
+	return loc;
     }
 
     public void setLoc(Location loc) {
-        this.loc = loc;
+	this.loc = loc;
     }
 
     public CMIHoloLineType getType() {
-        return type;
+	return type;
     }
 
     public void setType(CMIHoloLineType type) {
-        this.type = type;
+	this.type = type;
     }
 
     public CMIItemStack getItem() {
-        return item;
+	return item;
     }
 
     public void setItem(CMIItemStack item) {
-        this.item = item;
+	this.item = item;
     }
 
     public boolean isUpdatingHead() {
-        return updatingHead;
+	return updatingHead;
     }
 
     public void setUpdatingHead(boolean updatingHead) {
-        this.updatingHead = updatingHead;
+	this.updatingHead = updatingHead;
     }
 }

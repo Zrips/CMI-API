@@ -2,29 +2,22 @@ package com.Zrips.CMI.Containers;
 
 import java.util.HashMap;
 
-import com.Zrips.CMI.commands.list.vanishedit.VanishAction;
+import com.Zrips.CMI.Modules.Vanish.VanishAction;
 
 public class CMIVanish {
 
     private CMIUser user;
-
     private HashMap<VanishAction, Boolean> map = new HashMap<VanishAction, Boolean>();
-
-    private Boolean wasCollidable = null;
-
-    private Long vanishedFrom = null;
-
-    private Long playtimeAtVanishStart = null;
+    private boolean wasCollidable = true;
+    private long vanishedFrom = 0;
+    private long playtimeAtVanishStart = 0;
 
     public void fromString(String line) {
-
     }
 
     @Override
     public String toString() {
-        String line = "";
-
-        return line;
+        return null;
     }
 
     private static String to(boolean state) {
@@ -59,11 +52,11 @@ public class CMIVanish {
     }
 
     public Boolean getWasCollidable() {
-        return wasCollidable == null ? true : wasCollidable;
+        return wasCollidable;
     }
 
     public void setWasCollidable(Boolean wasCollidable) {
-        this.wasCollidable = wasCollidable;
+        this.wasCollidable = wasCollidable == null ? true : wasCollidable;
     }
 
     public Long getVanishedFrom() {
@@ -71,11 +64,11 @@ public class CMIVanish {
     }
 
     public void setVanishedFrom(Long vanishedFrom) {
-        this.vanishedFrom = vanishedFrom;
+        this.vanishedFrom = vanishedFrom == null ? 0 : vanishedFrom;
     }
 
     public Long getPlaytimeAtVanishStart() {
-        return playtimeAtVanishStart == null ? 0L : playtimeAtVanishStart;
+        return playtimeAtVanishStart;
     }
 
     public void setPlaytimeAtVanishStart(Long playtimeAtAfkStart) {

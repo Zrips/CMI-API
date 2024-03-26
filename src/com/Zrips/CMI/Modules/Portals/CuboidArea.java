@@ -40,6 +40,9 @@ public class CuboidArea {
         return p1 != null && p2 != null;
     }
 
+//    public CuboidArea() {
+//    }
+
     public CuboidArea(World world) {
         this.world = world;
     }
@@ -80,7 +83,6 @@ public class CuboidArea {
     }
 
     public boolean containsLoc(Vector vector, int extraRange) {
-
         return true;
     }
 
@@ -101,6 +103,7 @@ public class CuboidArea {
     }
 
     private static boolean advCuboidCheckCollision(Vector A1High, Vector A1Low, Vector A2High, Vector A2Low) {
+
         return false;
     }
 
@@ -162,6 +165,7 @@ public class CuboidArea {
     }
 
     public List<ChunkRef> getChunks(int range) {
+
         return null;
     }
 
@@ -212,6 +216,10 @@ public class CuboidArea {
             this.p2 = vector;
         recheck();
     }
+
+//    public void setWorld(World world) {
+//	this.world = world;
+//    }
 
     @Deprecated
     public Location getMiddleLocation() {
@@ -279,7 +287,6 @@ public class CuboidArea {
     }
 
     public boolean shift(Direction d, double amount) {
-
         return true;
     }
 
@@ -321,7 +328,6 @@ public class CuboidArea {
     }
 
     private static Direction getDirection(Player player) {
-
         return null;
     }
 

@@ -28,7 +28,7 @@ public class PlayerVaultManager {
 
     public static boolean vaultExists(UUID uuid, int id) {
 
-        return false;
+        return true;
     }
 
     public static Inventory loadOtherVault(UUID uuid, int i, int y) {

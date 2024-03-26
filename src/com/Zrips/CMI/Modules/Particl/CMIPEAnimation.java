@@ -10,7 +10,6 @@ import org.bukkit.util.Vector;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class CMIPEAnimation implements CMIPEAnimationInterface {
 

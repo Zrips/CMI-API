@@ -11,6 +11,7 @@ import net.Zrips.CMILib.BossBar.BossBarInfo;
 public class Speed {
     private BossBarInfo bb;
     private Player player;
+//    private Location loc;
 
     private boolean allowBoost = false;
     private boolean allowSuperBoost = false;

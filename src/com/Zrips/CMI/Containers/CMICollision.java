@@ -31,6 +31,7 @@ public class CMICollision {
 
     public double min(int i) {
         return 0;
+
     }
 
     public double max(int i) {

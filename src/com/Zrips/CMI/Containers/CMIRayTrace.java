@@ -1,8 +1,6 @@
 package com.Zrips.CMI.Containers;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -33,11 +31,7 @@ public class CMIRayTrace {
     }
 
     public ArrayList<Vector> traverse(double blocksAway, double accuracy) {
-	ArrayList<Vector> positions = new ArrayList<>();
-	for (double d = 0; d <= blocksAway; d += accuracy) {
-	    positions.add(getPostion(d));
-	}
-	return positions;
+        return null;
     }
 
     public ArrayList<Block> getBlocks(double blocksAway) {
@@ -45,8 +39,8 @@ public class CMIRayTrace {
     }
 
     public ArrayList<Block> getBlocks(double blocksAway, double accuracy) {
-	Set<Block> blocks = new LinkedHashSet<Block>();
-	return new ArrayList<Block>(blocks);
+	
+        return null;
     }
 
     public ArrayList<Block> getLastTwoBlocks(double blocksAway) {
@@ -54,10 +48,6 @@ public class CMIRayTrace {
     }
 
     public ArrayList<Block> getLastTwoBlocks(double blocksAway, double accuracy) {
-	ArrayList<Block> blocks = getBlocks(blocksAway, accuracy);
-
-	ArrayList<Block> t = new ArrayList<Block>();
-
-	return t;
+        return null;
     }
 }

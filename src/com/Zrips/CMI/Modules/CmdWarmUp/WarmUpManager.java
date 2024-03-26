@@ -1,6 +1,7 @@
 package com.Zrips.CMI.Modules.CmdWarmUp;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -8,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.tp.TpManager.TpAction;
+import com.Zrips.CMI.Modules.Teleportations.TeleportManager.TpAction;
 
 public class WarmUpManager {
     public HashMap<String, CmdWarmUp> warmups = new HashMap<String, CmdWarmUp>();
@@ -42,12 +43,29 @@ public class WarmUpManager {
     }
 
     public boolean canMove(UUID uuid) {
+        WarmUpInfo info = counter.get(uuid);
+        if (info == null)
+            return true;
 
+        String cmd = info.getCmd();
+        if (cmd != null) {
+            cmd = cmd.toLowerCase();
+            for (Entry<String, CmdWarmUp> one : warmups.entrySet()) {
+                if (cmd.startsWith(one.getKey()))
+                    return one.getValue().isMove();
+            }
+        }
+        if (info.getLoc() != null)
+            return info.isMove();
         return true;
     }
 
     public boolean canMoveByCmd(String cmd) {
-
+        cmd = cmd.toLowerCase();
+        for (Entry<String, CmdWarmUp> one : warmups.entrySet()) {
+            if (cmd.startsWith(one.getKey()))
+                return one.getValue().isMove();
+        }
         return true;
     }
 
@@ -82,8 +100,12 @@ public class WarmUpManager {
     }
 
     public boolean cancel(UUID uuid) {
+        return cancel(uuid, false);
+    }
 
-        return false;
+    public boolean cancel(UUID uuid, boolean soft) {
+
+        return true;
     }
 
     boolean InformOnNoMove;

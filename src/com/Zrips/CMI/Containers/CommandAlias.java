@@ -86,13 +86,12 @@ public class CommandAlias {
     }
 
     public String getCleanCommand() {
-        return "";
+        return null;
     }
 
     public String getCommand(CommandSender sender, List<String> args) {
 
-        return "";
-
+        return null;
     }
 
     public List<String> getCommands() {
@@ -100,8 +99,8 @@ public class CommandAlias {
     }
 
     public String getCommandsForLore() {
-        String lore = "";
-        return lore;
+
+        return null;
     }
 
     public String getAlias() {
@@ -118,6 +117,7 @@ public class CommandAlias {
     }
 
     public void recalculateDynamicVariables() {
+
     }
 
     public String getAliasBaseCommand() {

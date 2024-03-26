@@ -39,5 +39,4 @@ public class specCommand {
     public List<specCommandAction> getStatements() {
         return statements;
     }
-
 }

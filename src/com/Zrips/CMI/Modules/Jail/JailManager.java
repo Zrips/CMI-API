@@ -1,27 +1,27 @@
 package com.Zrips.CMI.Modules.Jail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Containers.CMIUserJailData;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 import com.Zrips.CMI.Modules.Portals.CuboidArea.ChunkRef;
 
-import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class JailManager {
 
@@ -29,6 +29,8 @@ public class JailManager {
     protected Map<String, Map<ChunkRef, Set<CMIJail>>> chunkJails;
 
     private Set<CMIUser> onlineInjail = new HashSet<CMIUser>();
+
+    protected Map<UUID, CMIUserJailData> jailed = new HashMap<UUID, CMIUserJailData>();
 
     private int JailCheckInterval = 500;
     private Integer DefaultTime = 500;
@@ -43,21 +45,37 @@ public class JailManager {
     private CMI plugin;
 
     public JailManager(CMI plugin) {
-
+        this.plugin = plugin;
+        jails = new TreeMap<String, CMIJail>();
+        chunkJails = new HashMap<String, Map<ChunkRef, Set<CMIJail>>>();
     }
 
-    private int sched = -1;
+    private CMITask sched = null;
+
+    public CMIUserJailData getJailData(UUID uuid) {
+        return jailed.computeIfAbsent(uuid, k -> new CMIUserJailData());
+    }
 
     public void recheckAllOnline() {
 
+        for (Player one : Bukkit.getOnlinePlayers()) {
+            CMIUser user = plugin.getPlayerManager().getUser(one);
+            if (!user.isJailed())
+                continue;
+
+            plugin.getJailManager().placePlayerIntoJail(user);
+        }
     }
 
     public void stop() {
-
+        if (sched == null)
+            return;
+        sched.cancel();
+        sched = null;
     }
 
     private void tasker() {
-
+       
     }
 
     public boolean anyJailedOnline() {
@@ -91,7 +109,7 @@ public class JailManager {
     }
 
     public void recalculateChunks(CMIJail jail) {
-
+       
     }
 
     public CMIJail getByName(String name) {
@@ -101,6 +119,7 @@ public class JailManager {
     }
 
     public CMIJail getByLoc(Location loc) {
+       
         return null;
     }
 
@@ -109,15 +128,7 @@ public class JailManager {
     }
 
     public CMIJail collidesWithJail(CuboidArea newarea, CMIJail ignore) {
-        Set<Entry<String, CMIJail>> set = jails.entrySet();
-        for (Entry<String, CMIJail> entry : set) {
-            CMIJail check = entry.getValue();
-            if (check.checkCollision(newarea)) {
-                if (ignore != null && ignore.equals(check))
-                    continue;
-                return entry.getValue();
-            }
-        }
+       
         return null;
     }
 
@@ -132,55 +143,21 @@ public class JailManager {
     }
 
     public void loadConfig() {
-
+ 
     }
 
+    private String fileName = "Jails.yml";
+
     public void load() {
-        Long time = System.currentTimeMillis();
-        jails.clear();
-        chunkJails.clear();
-
-        File file = new File(plugin.getDataFolder(), "jails.yml");
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-            }
-            return;
-        }
-
-        YamlConfiguration k = null;
-        try {
-            k = YamlConfiguration.loadConfiguration(file);
-        } catch (Exception e) {
-            return;
-        }
-
-        if (k.getKeys(false).isEmpty())
-            return;
-
-        Map<String, Object> root = k.getValues(false);
-
-        for (Entry<String, Object> world : root.entrySet()) {
-            Map<String, Object> jaillist = k.getValues(false);
-            if (jaillist != null) {
-                try {
-                    loadMap(jaillist);
-                } catch (Exception ex) {
-                    plugin.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "Error in loading jails file for world: " + world.getKey());
-                }
-            }
-        }
-        plugin.loadMessage(jails.size(), "jails", System.currentTimeMillis() - time);
+         
     }
 
     public void loadMap(Map<String, Object> root) throws Exception {
-
+        
     }
 
     public void save() {
-
+      
     }
 
     public SortedMap<String, CMIJail> getJails() {
@@ -189,9 +166,7 @@ public class JailManager {
 
     public List<CMIJail> getJailsByDistance(Location loc) {
 
-        List<CMIJail> sortedList = new ArrayList<CMIJail>();
-
-        return sortedList;
+        return null;
     }
 
     public void removeJail(CMIJail jail) {
@@ -205,14 +180,12 @@ public class JailManager {
     }
 
     private boolean isCellOk(CMIJailCell cell) {
+       
         return true;
     }
 
     private boolean isJailOk(CMIJail jail) {
-        if (jail == null)
-            return false;
-        if (this.getByName(jail.getName()) == null)
-            return false;
+        
         return true;
     }
 
@@ -221,12 +194,16 @@ public class JailManager {
     }
 
     public CMIJailCell getValidCell(CMIUser user, CMIJail j, Integer cellId) {
-
+       
         return null;
     }
 
     public void removePlayerFromJail(CMIUser user) {
+       
+    }
 
+    private void processOnUnjailCommands(CMIUser user) {
+       
     }
 
     public void placePlayerIntoJail(CMIUser user) {
@@ -234,6 +211,7 @@ public class JailManager {
     }
 
     public boolean placePlayerIntoJail(CMIUser user, CMIJail jail, Integer cellId, Long jailedFor) {
+       
 
         return true;
     }
@@ -243,12 +221,7 @@ public class JailManager {
     }
 
     public void informAboutLeftTime(CMIUser user) {
-        if (!user.isJailed())
-            return;
-
-        long left = user.getJailedForTime();
-
-        plugin.sendMessage(user, plugin.getIM("jail", "leftTime", "[time]", CMITimeManager.to24hourShort(left)));
+       
     }
 
     public boolean canUseCommand(String command) {

@@ -1,8 +1,19 @@
 package com.Zrips.CMI.Modules.PlayerMeta;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerMeta {
+
+    private static HashMap<UUID, PlayerMeta> cacheMap = new HashMap<UUID, PlayerMeta>();
+
+    public static PlayerMeta getMeta(UUID uuid) {
+        return cacheMap.computeIfAbsent(uuid, k -> new PlayerMeta());
+    }
+
+    public static PlayerMeta getMetaRaw(UUID uuid) {
+        return cacheMap.get(uuid);
+    }
 
     private HashMap<String, metaValues> map = new HashMap<String, metaValues>();
 
@@ -35,6 +46,9 @@ public class PlayerMeta {
     }
 
     public void add(String key, String value, String defaultV) {
+        metaValues v = map.computeIfAbsent(key.toLowerCase(), k -> new metaValues());
+        v.setValue(value);
+        v.setDefaultV(defaultV);
     }
 
     public void remove(String key) {
@@ -57,7 +71,6 @@ public class PlayerMeta {
     }
 
     public HashMap<String, String> getMapForSave() {
-        HashMap<String, String> m = new HashMap<String, String>();
-        return m;
+        return null;
     }
 }

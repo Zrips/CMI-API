@@ -14,11 +14,7 @@ public class CMIPlayTime {
     TreeMap<Integer, CMIPlayDay> map = new TreeMap<Integer, CMIPlayDay>(Collections.reverseOrder());
     private Set<CMIPlayDay> forSave = new HashSet<CMIPlayDay>();
 
-    Long lastUpdate = null;
-
     private CMIUser user;
-
-    Integer dayBack = null;
 
     public CMIPlayTime(CMIUser user) {
         this.user = user;
@@ -38,10 +34,12 @@ public class CMIPlayTime {
     }
 
     public CMIPlayDay getPlayDayOfToday() {
+
         return null;
     }
 
     private void checkYestarday() {
+
     }
 
     public void addDayForSave(CMIPlayDay playDay) {
@@ -53,11 +51,12 @@ public class CMIPlayTime {
     }
 
     public void updatePlayTime(boolean checkForOnline) {
+
     }
 
     public Long getPlayTime(PlaytimeRange range) {
 
-        return 0L;
+        return null;
     }
 
     public Long getTotalPlayTime() {

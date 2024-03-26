@@ -14,30 +14,29 @@ public class CounterInfo {
     private CMI plugin;
 
     public CounterInfo(String message, List<Player> list, int t, CMI plugin) {
-	this.message = message;
-	this.list = list;
-	this.t = t;
-	this.plugin = plugin;
-
+        this.message = message;
+        this.list = list;
+        this.t = t;
+        this.plugin = plugin;
     }
 
     public String getMessage() {
-	return message;
+        return message;
     }
 
     public List<Player> getList() {
-	return list;
+        return list;
     }
 
     public int getLeftTime() {
-	return t;
+        return t;
     }
 
     public void lowerTime() {
-	t--;
+        t--;
     }
 
     public CMI getPlugin() {
-	return plugin;
+        return plugin;
     }
 }

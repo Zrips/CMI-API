@@ -14,6 +14,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 
+import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 import net.Zrips.CMILib.Locale.LC;
 
 public class SelectionManager {
@@ -22,6 +23,13 @@ public class SelectionManager {
     protected CMI plugin;
 
     private HashMap<UUID, Visualizer> vMap = new HashMap<UUID, Visualizer>();
+
+    int visualizerSidesCap = 1000;
+    int visualizerFrameCap = 1000;
+    CMIParticle selectedSpigotSides = CMIParticle.COLOURED_DUST;
+    CMIParticle selectedSpigotFrame = CMIParticle.HAPPY_VILLAGER;
+    long visualizerShowFor = 60 * 1000L;
+    long visualizerUpdateInterval = 10L;
 
     public SelectionManager(CMI plugin) {
         this.plugin = plugin;
@@ -40,10 +48,6 @@ public class SelectionManager {
     }
 
     public void updateLocations(Player player, Location loc1, Location loc2, boolean force) {
-        if (loc1 != null && loc2 != null) {
-            selections.put(player.getUniqueId(), new CuboidArea(loc1, loc2));
-            this.afterSelectionUpdate(player, force);
-        }
     }
 
     public void placeLoc1(Player player, Location loc) {
@@ -51,7 +55,6 @@ public class SelectionManager {
     }
 
     public void placeLoc1(Player player, Location loc, boolean show) {
-
     }
 
     public void placeLoc2(Player player, Location loc) {
@@ -59,7 +62,6 @@ public class SelectionManager {
     }
 
     public void placeLoc2(Player player, Location loc, boolean show) {
-
     }
 
     public void afterSelectionUpdate(Player player) {
@@ -67,7 +69,6 @@ public class SelectionManager {
     }
 
     public void afterSelectionUpdate(Player player, boolean force) {
-
     }
 
     @Deprecated
@@ -119,7 +120,6 @@ public class SelectionManager {
     }
 
     public void setSelectionCuboid(Player player, CuboidArea area) {
-
     }
 
     @Deprecated
@@ -161,11 +161,14 @@ public class SelectionManager {
     }
 
     public void showSelection(Player player) {
-
+        if (hasPlacedBoth(player.getUniqueId())) {
+            Visualizer v = new Visualizer(player);
+            v.setAreas(this.getSelectionCuboid(player));
+            this.showBounds(player, v);
+        }
     }
 
     public void showBounds(final Player player, final Visualizer v) {
-
     }
 
     public List<Location> getLocations(Location lowLoc, Location loc, Vector vector, boolean StartFromZero) {
@@ -195,12 +198,12 @@ public class SelectionManager {
     }
 
     public boolean worldEdit(Player player) {
-        plugin.sendMessage(player, LC.info_NoInformation);
+        LC.info_NoInformation.sendMessage(player);
         return false;
     }
 
     public boolean worldEditUpdate(Player player) {
-        plugin.sendMessage(player, LC.info_NoInformation);
+        LC.info_NoInformation.sendMessage(player);
         return false;
     }
 

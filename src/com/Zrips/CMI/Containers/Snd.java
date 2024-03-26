@@ -1,10 +1,15 @@
 package com.Zrips.CMI.Containers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Snd {
     private Player sender;
@@ -58,6 +63,15 @@ public class Snd {
     }
 
     public Snd setSender(CommandSender sender) {
+        if (sender instanceof Player) {
+            this.sender = (Player) sender;
+            senderName = sender.getName();
+        } else if (sender instanceof ConsoleCommandSender)
+            this.console = (ConsoleCommandSender) sender;
+        else if (sender instanceof BlockCommandSender)
+            this.console = Bukkit.getConsoleSender();
+        else if (sender instanceof RemoteConsoleCommandSender)
+            this.console = Bukkit.getConsoleSender();
         return this;
     }
 
@@ -75,6 +89,11 @@ public class Snd {
     }
 
     public Snd setTarget(Player sender) {
+        this.target = sender;
+        if (target != null) {
+            targetUser = CMI.getInstance().getPlayerManager().getUser(sender);
+            targetName = target.getName();
+        }
         return this;
     }
 
@@ -84,6 +103,18 @@ public class Snd {
     }
 
     public Snd setTarget(CommandSender sender) {
+        if (sender instanceof Player) {
+            this.target = (Player) sender;
+            targetUser = CMI.getInstance().getPlayerManager().getUser(target);
+            targetName = target.getName();
+
+        } else if (sender instanceof ConsoleCommandSender) {
+            this.targetConsole = (ConsoleCommandSender) sender;
+        } else if (sender instanceof BlockCommandSender) {
+            this.targetConsole = Bukkit.getConsoleSender();
+        } else if (sender instanceof RemoteConsoleCommandSender) {
+            this.targetConsole = Bukkit.getConsoleSender();
+        }
         return this;
     }
 
@@ -101,6 +132,11 @@ public class Snd {
     }
 
     public Snd setSource(Player sender) {
+        this.source = sender;
+        if (source != null) {
+            if (sourceUser == null)
+                sourceUser = CMI.getInstance().getPlayerManager().getUser(sender);
+        }
         return this;
     }
 
@@ -110,6 +146,14 @@ public class Snd {
     }
 
     public Snd setSource(CommandSender sender) {
+        if (sender instanceof Player)
+            this.source = (Player) sender;
+        else if (sender instanceof ConsoleCommandSender)
+            this.sourceConsole = (ConsoleCommandSender) sender;
+        else if (sender instanceof BlockCommandSender)
+            this.sourceConsole = Bukkit.getConsoleSender();
+        else if (sender instanceof RemoteConsoleCommandSender)
+            this.sourceConsole = Bukkit.getConsoleSender();
         return this;
     }
 

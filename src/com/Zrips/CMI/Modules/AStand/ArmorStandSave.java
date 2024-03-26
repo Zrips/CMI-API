@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.EulerAngle;
 
 import com.Zrips.CMI.Modules.AStand.ArmorStandManager.armorStandSaveOptions;
 
@@ -66,15 +65,10 @@ public class ArmorStandSave {
 
     public String serialize() {
 
-        return "";
+        return null;
     }
 
     private static String getAngle(ArmorStand armor, armorStandSaveOptions apose) {
-
-        return "";
-    }
-
-    private static EulerAngle getAngle(armorStandSaveOptions option, String value) {
 
         return null;
     }
@@ -101,7 +95,6 @@ public class ArmorStandSave {
     }
 
     public ItemStack createItem() {
-
         return null;
     }
 }

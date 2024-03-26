@@ -9,6 +9,7 @@ import com.Zrips.CMI.CMI;
 public class GroupManagerXHandler implements PermissionInterface {
 
     public GroupManagerXHandler(CMI plugin) {
+
     }
 
     @Override

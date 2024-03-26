@@ -22,9 +22,7 @@ public class UltraPermissions3Handler implements PermissionInterface {
 
     @Override
     public String getPrefix(Player player) {
-        if (player == null)
-            return "";
-        return getPrefix(player.getUniqueId());
+        return null;
     }
 
     @Override
@@ -34,9 +32,7 @@ public class UltraPermissions3Handler implements PermissionInterface {
 
     @Override
     public String getSufix(Player player) {
-        if (player == null)
-            return "";
-        return getSufix(player.getUniqueId());
+        return null;
     }
 
     @Override

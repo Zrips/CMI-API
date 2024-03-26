@@ -6,10 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.Zrips.CMI.CMI;
-
 import net.Zrips.CMILib.Container.CMILocation;
-import net.Zrips.CMILib.Locale.LC;
 
 public class CmiWarp {
 
@@ -115,8 +112,7 @@ public class CmiWarp {
     }
 
     public String getCreatorName() {
-        return creator.equals(CMI.getInstance().getServerUUID()) ? CMI.getInstance().getMsg(LC.info_Console) : CMI.getInstance().getPlayerManager().getUser(creator) == null ? "N/A" : CMI.getInstance()
-            .getPlayerManager().getUser(creator).getName();
+        return null;
     }
 
     public void setCreator(UUID creator) {

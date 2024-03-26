@@ -47,12 +47,16 @@ public class CMIChatRoom {
     }
 
     public void addUser(CMIUser user) {
+        if (user == null)
+            return;
         this.users.add(user);
         user.setChatRoom(this);
         keepAliveUntil = 0L;
     }
 
     public boolean removeUser(CMIUser user) {
+        if (user == null)
+            return false;
         user.setChatRoom(null);
         boolean feed = users.remove(user);
         if (users.isEmpty() && !persistent)
@@ -71,11 +75,17 @@ public class CMIChatRoom {
     }
 
     public void broadcastMessage(CMIUser sender, String msg) {
-
+     
     }
 
     public void cleanOldUsers() {
-
+        for (CMIUser user : new HashSet<CMIUser>(users)) {
+            if (user.isOnline())
+                continue;
+            if (user.getLastLogoff() + (1000L * 60) > System.currentTimeMillis())
+                continue;
+            removeUser(user);
+        }
     }
 
     public void informLeave(CMIUser left) {
@@ -107,7 +117,7 @@ public class CMIChatRoom {
     }
 
     public boolean kick(CMIUser user) {
-
+      
         return true;
     }
 

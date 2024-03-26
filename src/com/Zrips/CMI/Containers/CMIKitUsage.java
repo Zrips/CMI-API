@@ -5,7 +5,7 @@ import com.Zrips.CMI.Modules.Kits.Kit;
 public class CMIKitUsage {
 
     Kit kit;
-    private Long lastUsage;
+    private long lastUsage = 0;
     private int usedTimes = 0;
 
     public CMIKitUsage(Kit kit) {
@@ -18,7 +18,7 @@ public class CMIKitUsage {
 
     public CMIKitUsage(Kit kit, Long lastUsage, int usedTimes) {
 	this.kit = kit;
-	this.lastUsage = lastUsage;
+	this.lastUsage = lastUsage == null ? 0 : lastUsage;
 	this.usedTimes = usedTimes;
     }
 
@@ -27,7 +27,7 @@ public class CMIKitUsage {
     }
 
     public void setLastUsage(Long lastUsage) {
-	this.lastUsage = lastUsage;
+	this.lastUsage = lastUsage == null ? 0 : lastUsage;
     }
 
     public void addUsedTimes() {

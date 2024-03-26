@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -18,6 +17,7 @@ import com.Zrips.CMI.Containers.Snd;
 
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class ParticleManager {
 
@@ -34,6 +34,7 @@ public class ParticleManager {
     }
 
     public synchronized boolean removePlayerEffects(CMIVisualEffect effect) {
+
         return true;
     }
 
@@ -64,31 +65,34 @@ public class ParticleManager {
     }
 
     public void drawLine(Location loc1, Location loc2, CMIEffect effect, boolean center, List<Player> players, Long keepFor, Double speed) {
+        ArrayList<Location> primaryLocations = getLineLocations(loc1, loc2, center, speed);
+        drawShed(primaryLocations, effect, players, keepFor);
+    }
+
+    private static ArrayList<Location> getLineLocations(Location loc1, Location loc2, boolean center, Double speed) {
+
+        return null;
+    }
+
+    private void drawShed(final ArrayList<Location> primaryLocations, final CMIEffect effect, final List<Player> players, final Long keepFor) {
+
     }
 
     private class taskCancel {
-        private int id = -1;
+        private CMITask task = null;
 
-        taskCancel(int id) {
-            this.id = id;
+        taskCancel(CMITask task) {
+            this.task = task;
         }
 
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
+        public void setTask(CMITask task) {
+            this.task = task;
         }
 
         public void cancel() {
-            if (id > 0)
-                Bukkit.getScheduler().cancelTask(id);
+            if (task != null)
+                task.cancel();
         }
-
-    }
-
-    private void markBlockShed(final Location o, final CMIEffect effect, final Long until, final List<Player> players) {
 
     }
 
@@ -97,9 +101,8 @@ public class ParticleManager {
     }
 
     private static List<Vector> remakePlotLineInRange(Double rowSpacing, int range, Vector p1, Vector p2, Location loc) {
-        ArrayList<Vector> vectors = new ArrayList<Vector>();
 
-        return vectors;
+        return null;
     }
 
     private static boolean inRange(Location loc, Location loc2, Integer range) {
@@ -109,15 +112,22 @@ public class ParticleManager {
 
     private static Vectors shortenVectors(Double rowSpacing, Integer range, Vector p1, Vector p2, Location loc) {
 
-        Vectors v = new Vectors();
+        return null;
+    }
 
-        return v;
+    private static final String fileName = "ParticleEffects.yml";
+
+    public void loadConfig() {
+
     }
 
     private static final String customPreset = "circle;effect:reddust;dur:5;pitchc:5;part:10;offset:0,1,0;radius:1;yawc:4";
 
     public enum CMIPresetAnimations {
+//	Rotator2("circle;effect:reddust;dur:5;pitchc:5;part:10;offset:0,1.7,0;radius:1;yawc:5;color:rs"),
         TotemHalo("circle;effect:reddust;c:255,255,10;twist;part:3;offset:0,2,0;pitch:90;radius:0.3;interval:2"),
+//	STwister2("circle;effect:redstonedust;part:4;radius:0.75;color:rfs;yaw:[playerName];pitch:[playerName];move:[playerName],0.5;twist;rc:-0.02;mmdist:30;offset:0,1.5,0;fixed"),
+//	CTree2("circle;effect:flame;part:4;radius:0.75;color:rs;pitch:90;move:0,0.1,0;twist;rc:-0.04;mmdist:2"),
         Healing("circle;effect:heart;dur:0.1;part:1;offset:0,1.7,0;radius:0.3"),
         GlyphHead("circle;effect:flying_glyph;dur:5;pitchc:15;part:10;offset:0,1.7,0;radius:0.5;yawc:12;color:rs;pitch:90"),
         tpaWarmup("circle;effect:flying_glyph;dur:5;pitchc:15;part:10;offset:0,1.7,0;radius:0.5;yawc:12;color:rs;pitch:90"),
@@ -159,10 +169,12 @@ public class ParticleManager {
         custom29(customPreset),
         custom30(customPreset);
 
+//	private CMIPEAnimationInterface inter;
         private String string = "";
         private boolean enabled = true;
 
         CMIPresetAnimations(String anim) {
+//	    inter = CMI.getInstance().getParticleManager().getParticleAnimation(anim);
             string = anim;
         }
 
@@ -176,12 +188,15 @@ public class ParticleManager {
             return CMI.getInstance().getParticleManager().getParticleAnimation(this.isEnabled() ? s : "");
         }
 
+//	public void setInter(CMIPEAnimationInterface inter) {
+//	    this.inter = inter;
+//	}
+
         public void show(Location loc) {
             CMI.getInstance().getParticleManager().show(CMI.getInstance().getParticleManager().getParticleAnimation(string), loc);
         }
 
         public void show(Player player) {
-
         }
 
         public static CMIPresetAnimations getByName(String name) {
@@ -215,9 +230,11 @@ public class ParticleManager {
     }
 
     public void show(final CMIPEAnimationInterface animation, final Location loc) {
+
     }
 
     public void show(final CMIPEAnimationInterface animation, final Player player) {
+
     }
 
     public CMIPEAnimationInterface getParticleAnimation(String string) {

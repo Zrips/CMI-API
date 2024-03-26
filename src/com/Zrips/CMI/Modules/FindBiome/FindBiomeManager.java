@@ -18,7 +18,14 @@ public class FindBiomeManager {
     }
 
     public boolean stop(Player player) {
+        if (FindBiomeInfo.containsKey(player.getUniqueId())) {
+            FindBiomeInfo c = FindBiomeInfo.get(player.getUniqueId());
+            c.setRunning(false);
+            if (c.getScheduleTask() != null)
+                c.getScheduleTask().cancel();
 
+            return true;
+        }
         return false;
     }
 
@@ -30,5 +37,4 @@ public class FindBiomeManager {
     private void loadChunk(final FindBiomeInfo scan) {
 
     }
-
 }

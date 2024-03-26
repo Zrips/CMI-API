@@ -1,7 +1,5 @@
 package com.Zrips.CMI;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,13 +14,12 @@ public class TabComplete implements TabCompleter {
     private CMI plugin;
 
     public TabComplete(CMI plugin) {
+     
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> completionList = get(sender, command.getName(), label, args);
-        Collections.sort(completionList);
-        return completionList;
+        return null;
     }
 
     static HashMap<String, TabAction> map = new HashMap<String, TabAction>();
@@ -70,6 +67,7 @@ public class TabComplete implements TabCompleter {
         effect("Particle effects"),
         merchants("Villager professions"),
         enchant("Enchant names"),
+        limitedEnchant("Enchant names by permission"),
         halfViewRange("Half of max server view range"),
         doubleViewRange("Double of max server view range"),
         ViewRange("Server view range"),
@@ -135,17 +133,17 @@ public class TabComplete implements TabCompleter {
     }
 
     public List<String> get(CommandSender sender, String command, String label, String[] args) {
-        List<String> completionList = new ArrayList<>();        
-        return completionList;
+
+        return null;
+
     }
 
     public List<String> getByAction(CommandSender sender, TabAction action, String[] args, int i) {
-        List<String> temp = new ArrayList<String>();        
-        return temp;
+       
+        return null;
     }
 
     private static List<String> getColorNames() {
-        List<String> list = new ArrayList<String>();       
-        return list;
+        return null;
     }
 }
