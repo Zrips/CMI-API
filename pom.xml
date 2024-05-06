@@ -44,11 +44,9 @@
 		</dependency>
 		<!-- CMILib -->
 		<dependency>
-			<groupId>net.Zrips</groupId>
+			<groupId>com.github.Zrips</groupId>
 			<artifactId>CMILib</artifactId>
-			<version>latest</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.4.6.0.jar</systemPath>
+			<version>1.4.7.4</version>
 		</dependency>
 	</dependencies>
 	<repositories>
