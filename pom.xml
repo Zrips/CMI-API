@@ -65,14 +65,14 @@
 			<url>https://jitpack.io</url>
 		</repository>
 		<repository>
+			<id>minecraft-repo</id>
+			<url>https://libraries.minecraft.net/</url>
+		</repository>
+		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<!-- papermc -->
-		<repository>
-			<id>minecraft-repo</id>
-			<url>https://libraries.minecraft.net/</url>
-		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>
