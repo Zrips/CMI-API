@@ -6,7 +6,7 @@
 	
 	<groupId>CMI-API</groupId>
 	<artifactId>CMI-API</artifactId>
-	<version>9.7.0.4</version>
+	<version>9.7.0.6</version>
 	<name>CMI-API</name>
 	<url>http://maven.apache.org</url>
 	<packaging>jar</packaging>
