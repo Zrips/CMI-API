@@ -2,20 +2,15 @@ package com.Zrips.CMI.events;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.world.PortalCreateEvent.CreateReason;
 import org.bukkit.util.Vector;
 
-public final class CMIPortalCreateEvent extends PlayerEvent implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public final class CMIPortalCreateEvent extends CMIPlayerCancellableEvent {
     private int height;
     private int width;
     private World world;
     private Vector lowestPoint;
     private CreateReason reason;
-    private boolean cancelled;
     private CMIPortalType type;
 
     public enum CMIPortalType {
@@ -36,26 +31,6 @@ public final class CMIPortalCreateEvent extends PlayerEvent implements Cancellab
 
     public int getWidth() {
         return this.width;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        cancelled = cancel;
-    }
-
-    @Override
-    @EventAnnotation(info = "Fired when new portal is been created")
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     public World getWorld() {

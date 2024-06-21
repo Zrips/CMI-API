@@ -1,40 +1,25 @@
 package com.Zrips.CMI.events;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Jail.CMIJailCell;
 
-public final class CMIPlayerUnjailEvent extends Event {
-
-    private static final HandlerList handlers = new HandlerList();
+public final class CMIPlayerUnjailEvent extends CMIEvent {
 
     private CMIUser user;
 
     private CMIJailCell cell;
 
     public CMIPlayerUnjailEvent(CMIUser user, CMIJailCell cell) {
-	this.user = user;
-	this.cell = cell;
-    }
-
-    public final static HandlerList getHandlerList() {
-	return handlers;
-    }
-
-    @Override
-    @EventAnnotation(info = "Fired when players gets unjailed")
-    public final HandlerList getHandlers() {
-	return handlers;
+        this.user = user;
+        this.cell = cell;
     }
 
     public CMIUser getUser() {
-	return user;
+        return user;
     }
 
     public CMIJailCell getCell() {
-	return cell;
+        return cell;
     }
 
 }

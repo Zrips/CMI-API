@@ -56,11 +56,11 @@ public class ChatFilterManager {
         return true;
     }
 
-    public RuleResponce getCorrectMessage(Player player, String message) {
+    public RuleResponse getCorrectMessage(Player player, String message) {
         return getCorrectMessage(player, message, false);
     }
 
-    public RuleResponce getCorrectMessage(Player player, String message, boolean privateMessage) {
+    public RuleResponse getCorrectMessage(Player player, String message, boolean privateMessage) {
 
         return null;
     }

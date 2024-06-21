@@ -1,13 +1,9 @@
 package com.Zrips.CMI.events;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
 import com.Zrips.CMI.Containers.CMIUser;
 
-public final class CMIUserBalanceChangeEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
-    private CMIUser user;
+public final class CMIUserBalanceChangeEvent extends CMIUserEvent {
+
     private CMIUser source;
     private double from;
     private double to;
@@ -15,57 +11,42 @@ public final class CMIUserBalanceChangeEvent extends Event {
 
     @Deprecated
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to) {
-	this(user, from, to, "Unknown");
+        this(user, from, to, "Unknown");
     }
 
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to, String actionType, CMIUser source) {
-	super(true);
-	this.user = user;
-	this.from = from;
-	this.to = to;
-	this.actionType = actionType;
-	this.source = source;
+        super(user, true);
+        this.from = from;
+        this.to = to;
+        this.actionType = actionType;
+        this.source = source;
     }
 
     @Deprecated
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to, String actionType) {
-	this(user, from, to, actionType, null);
-    }
-
-    @Override
-    @EventAnnotation(info = "Fired when players balance changes")
-    public HandlerList getHandlers() {
-	return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-	return handlers;
-    }
-
-    public CMIUser getUser() {
-	return user;
+        this(user, from, to, actionType, null);
     }
 
     public double getFrom() {
-	return from;
+        return from;
     }
 
     public double getTo() {
-	return to;
+        return to;
     }
 
     public String getActionType() {
-	return actionType;
+        return actionType;
     }
 
     public void setActionType(String actionType) {
-	this.actionType = actionType;
+        this.actionType = actionType;
     }
 
     /**
     * Only indicates player from or to who money got transferred if possible
     */
     public CMIUser getSource() {
-	return source;
+        return source;
     }
 }
