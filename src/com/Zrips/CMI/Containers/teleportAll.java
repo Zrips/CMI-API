@@ -1,81 +1,69 @@
 package com.Zrips.CMI.Containers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class teleportAll {
-
-    private String targetFolder = null;
-    private String targetWorld = null;
-    private Location destination = null;
-    private CompletableFuture<Void> id = null;
-    private int teleported = 0;
-    private List<String> names = new ArrayList<String>();
+    private String targetFolder;
+    private String targetWorld;
+    private Location destination;
+    private CompletableFuture<Void> id;
+    private int teleported;
+    private List<String> names;
     private Player player;
 
     public teleportAll() {
     }
 
     public void setTargetFolder(String targetFolder) {
-        this.targetFolder = targetFolder;
     }
 
     public String getTargetFolder() {
-        if (this.targetFolder == null)
-            return Bukkit.getWorlds().get(0).getName();
-        return this.targetFolder;
+        return null;
     }
 
     public void setTargetWorld(String targetWorld) {
-        this.targetWorld = targetWorld;
     }
 
     public String getTargetWorld() {
-        return this.targetWorld;
+        return null;
     }
 
     public void setDestination(Location destination) {
-        this.destination = destination;
     }
 
     public Location getDestination() {
-        return this.destination;
+        return null;
     }
 
     public void setTask(CompletableFuture<Void> task) {
-        this.id = task;
     }
 
     public Player getPlayer() {
-        return this.player;
+        return null;
     }
 
     public void setPlayer(Player Player) {
-        this.player = Player;
     }
 
     public CompletableFuture<Void> getTask() {
-        return this.id;
+        return null;
     }
 
     public void addName(String name) {
-        this.names.add(name);
     }
 
     public List<String> getNames() {
-        return this.names;
+        return null;
     }
 
     public int getTeleportedCount() {
-        return teleported;
+        return 0;
     }
 
     public void addTeleported() {
-        this.teleported++;
     }
 }

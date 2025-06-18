@@ -7,100 +7,75 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.CmdCooldown.CmdCooldown.CMICooldown;
 import com.Zrips.CMI.Modules.SpecializedCommands.SpecCMDCooldown;
 
 public class CooldownManager {
-    private HashMap<String, CMICmdCooldown> cooldowns = new HashMap<String, CMICmdCooldown>();
-
+    private HashMap<String, CMICmdCooldown> cooldowns;
     CMI plugin;
+    HashMap<UUID, CmdCooldown> playerCustomCooldowns;
+    CmdCooldown globalCooldowns;
 
     public CooldownManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig() {
-
     }
 
     public int getCooldownCount() {
-        return cooldowns.size();
+        return 0;
     }
 
     @Deprecated
     public void addCD(String cmd, Long seconds) {
-        addCooldown(new CMICmdCooldown(cmd, seconds.intValue()));
     }
 
     public void addCooldown(String cmd, int seconds) {
-        addCooldown(new CMICmdCooldown(cmd, seconds));
     }
 
     public void addCooldown(CMICmdCooldown cooldown) {
-        cooldowns.put(cooldown.getCommand().toLowerCase(), cooldown);
     }
 
     private CMICmdCooldown getCooldown(String cmd) {
-
         return null;
     }
 
     private static Long getUsedTime(String cmd, CmdCooldown userCooldowns) {
-        return getUsedTime(cmd, userCooldowns, false);
+        return null;
     }
 
     private static Long getUsedTime(String cmd, CmdCooldown userCooldowns, boolean exact) {
-        cmd = cmd.toLowerCase();
-
-        String match = getCommandMatch(cmd, userCooldowns, exact);
-        if (match != null) {
-            CMICooldown cd = userCooldowns.getList().get(match);
-            if (cd != null)
-                return cd.getInitialized();
-        }
         return null;
     }
 
     private static String getCommandMatch(String cmd, CmdCooldown userCooldowns) {
-        return getCommandMatch(cmd, userCooldowns, false);
+        return null;
     }
 
     private static String getCommandMatch(String cmd, CmdCooldown userCooldowns, boolean exact) {
-
         return null;
     }
 
     public boolean removeCooldown(CommandSender sender, String cmd) {
-
-        return true;
+        return false;
     }
 
     public boolean isCmdInCooldown(CommandSender sender, String cmd) {
-
         return false;
     }
 
     public boolean canUseCmd(CommandSender sender, String cmd) {
-
-        return true;
+        return false;
     }
 
-    HashMap<UUID, CmdCooldown> playerCustomCooldowns = new HashMap<UUID, CmdCooldown>();
-
-    CmdCooldown globalCooldowns = new CmdCooldown();
-
     public boolean canUseSpecCommandGlobal(CommandSender sender, SpecCMDCooldown cooldown, boolean inform) {
-
-        return true;
+        return false;
     }
 
     public boolean canUseSpecCommand(Player player, SpecCMDCooldown cooldown, boolean inform) {
-
         return false;
     }
 
     public HashMap<String, CMICmdCooldown> getCooldowns() {
-        return cooldowns;
+        return null;
     }
-
 }

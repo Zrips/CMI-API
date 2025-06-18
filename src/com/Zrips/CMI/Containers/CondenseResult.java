@@ -1,45 +1,38 @@
 package com.Zrips.CMI.Containers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
 public class CondenseResult {
-    private int iAmount = 0;
-    private int rAmount = 0;
-    private List<ItemStack> items = new ArrayList<ItemStack>();
+    private int iAmount;
+    private int rAmount;
+    private List<ItemStack> items;
 
     public CondenseResult() {
     }
 
     public CondenseResult(int inputAmount, int resultAmount) {
-	this.iAmount = inputAmount;
-	this.rAmount = resultAmount;
     }
 
     public int getImputAmount() {
-	return iAmount;
+        return 0;
     }
 
     public void addImputAmount(int imputAmount) {
-	this.iAmount += imputAmount;
     }
 
     public int getResultAmount() {
-	return rAmount;
+        return 0;
     }
 
     public void addResultAmount(int resultAmount) {
-	this.rAmount += resultAmount;
     }
 
     public List<ItemStack> getToAdd() {
-	return items;
+        return null;
     }
 
     public void addToAdd(ItemStack toAdd) {
-	this.items.add(toAdd);
     }
-
 }

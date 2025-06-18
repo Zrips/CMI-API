@@ -5,30 +5,25 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.Warps.CmiWarp;
 
-public final class CMIPlayerWarpEvent extends CMIPlayerCancellableEvent {
-
+public class CMIPlayerWarpEvent extends CMIPlayerCancellableEvent {
     private CmiWarp warp;
     private CommandSender sender;
 
-    public CMIPlayerWarpEvent(final Player target, CmiWarp warp, CommandSender sender) {
+    public CMIPlayerWarpEvent(Player target, CmiWarp warp, CommandSender sender) {
         super(target);
-        this.warp = warp;
-        this.sender = sender;
     }
 
     public CmiWarp getWarp() {
-        return warp;
+        return null;
     }
 
     public void setWarp(CmiWarp warp) {
-        this.warp = warp;
     }
 
     public CommandSender getCommandSender() {
-        return sender;
+        return null;
     }
 
     public void setCommandSender(CommandSender sender) {
-        this.sender = sender;
     }
 }

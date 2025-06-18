@@ -4,32 +4,27 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Containers.CMIInteractType;
 
-public final class CMIPlayerFakeEntityInteractEvent extends CMIPlayerEvent {
-
-    private final int id;
+public class CMIPlayerFakeEntityInteractEvent extends CMIPlayerEvent {
+    private final int id = 0;
     private Object obj;
     private CMIInteractType type;
 
-    public CMIPlayerFakeEntityInteractEvent(final Player player, final int id, final Object obj, CMIInteractType type) {
+    public CMIPlayerFakeEntityInteractEvent(Player player, int id, Object obj, CMIInteractType type) {
         super(player);
-        this.id = id;
-        this.obj = obj;
-        this.type = type;
     }
 
     public int getEntityId() {
-        return id;
+        return 0;
     }
 
     public Object getObject() {
-        return obj;
+        return null;
     }
 
     public CMIInteractType getType() {
-        return type;
+        return null;
     }
 
     public void setType(CMIInteractType type) {
-        this.type = type;
     }
 }

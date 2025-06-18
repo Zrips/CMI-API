@@ -1,35 +1,28 @@
 package com.Zrips.CMI.Modules.Notify;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Notification {
-
     private String notifyier;
-    private List<String> mesages = new ArrayList<String>();
+    private List<String> mesages;
 
     public Notification(String notifyier) {
-	this.notifyier = notifyier;
     }
 
     public String getNotifyier() {
-	return notifyier;
+        return null;
     }
 
     public void setNotifyier(String notifyier) {
-	this.notifyier = notifyier;
     }
 
     public List<String> getMesages() {
-	return mesages;
+        return null;
     }
 
     public void setMesages(List<String> mesages) {
-	this.mesages = mesages;
     }
 
     public void addMesage(String mesage) {
-	this.mesages.add(mesage);
     }
-
 }

@@ -5,49 +5,39 @@ import com.Zrips.CMI.CMI;
 import net.milkbowl.vault.economy.Economy;
 
 public class VaultManager {
-
     private CMI plugin;
-    private String version = "";
-    private boolean supportsCmi = false;
+    private String version;
+    private boolean supportsCmi;
+    private Economy economy;
 
     public VaultManager(CMI plugin) {
-        this.plugin = plugin;
-    }
-
-//    private Economy vaultHandler = null;
-
-    private Economy economy = null;
-
-    public enum EconomySetupResponse {
-        Vault, NoVault, NoVaultEconomy, CMI;
     }
 
     public EconomySetupResponse setupVault() {
-
         return null;
     }
 
     public Economy getVaultEconomy() {
-        return economy;
+        return null;
     }
 
     public boolean isVaultEnabled() {
-        return economy != null;
+        return false;
     }
 
     public String format(Double money) {
-        if (money == null)
-            return "0";
-        if (this.economy == null)
-            return String.valueOf(money);
-        return this.economy.format(money);
+        return null;
     }
 
     public String getVersion() {
-        return version;
+        return null;
     }
 
     public boolean isSupportsCmi() {
-        return supportsCmi;
+        return false;
+    }
+
+    public enum EconomySetupResponse {
+        Vault, NoVault, NoVaultEconomy, CMI;
     }
 }

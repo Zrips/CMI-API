@@ -5,62 +5,53 @@ import java.util.regex.Pattern;
 import org.bukkit.entity.Player;
 
 public class CMIRankPlaceholder {
-
-    private static final String regex = "^(.*?)(>=|<=|==)(.*?)(;)(.+)";
-    private static final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
-
-    private String placeholder = "";
-    private Object value = "";
-    private rankPlaceholderType type = rankPlaceholderType.invalid;
-    private rankPlaceholderAction action = rankPlaceholderAction.equal;
-    private String message = "";
+    private static final String regex = null;
+    private static final Pattern pattern = null;
+    private String placeholder;
+    private Object value;
+    private rankPlaceholderType type;
+    private rankPlaceholderAction action;
+    private String message;
 
     public CMIRankPlaceholder(String line) {
-
     }
 
     public String getPlaceholder() {
-        return placeholder;
+        return null;
     }
 
     public void setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
     }
 
     public Object getValue() {
-        return value;
+        return null;
     }
 
     public void setValue(Object value) {
-        this.value = value;
     }
 
     public rankPlaceholderType getType() {
-        return type;
+        return null;
     }
 
     public void setType(rankPlaceholderType type) {
-        this.type = type;
     }
 
     public rankPlaceholderAction getAction() {
-        return action;
+        return null;
     }
 
     public void setAction(rankPlaceholderAction action) {
-        this.action = action;
     }
 
     public String getMessage() {
-        return message;
+        return null;
     }
 
     public void setMessage(String message) {
-        this.message = message;
     }
 
     public double percent(Player player) {
-
-        return 0D;
+        return 0.0;
     }
 }

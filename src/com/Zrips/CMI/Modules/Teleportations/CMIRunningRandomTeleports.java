@@ -1,18 +1,16 @@
 package com.Zrips.CMI.Modules.Teleportations;
 
 public class CMIRunningRandomTeleports {
-    private long time = 0L;
+    private long time;
 
     public CMIRunningRandomTeleports() {
-        time = System.currentTimeMillis() + (30 * 1000L);
     }
 
     public long getEndTime() {
-        return time;
+        return 0;
     }
 
     public CMIRunningRandomTeleports setTime(long time) {
-        this.time = time;
-        return this;
+        return null;
     }
 }

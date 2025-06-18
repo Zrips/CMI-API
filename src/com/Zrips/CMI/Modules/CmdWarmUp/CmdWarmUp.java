@@ -1,65 +1,54 @@
 package com.Zrips.CMI.Modules.CmdWarmUp;
 
 import com.Zrips.CMI.Modules.Particl.ParticleManager.CMIPresetAnimations;
-import com.Zrips.CMI.commands.CommandsHandler;
 
 public class CmdWarmUp {
-
-    private Long warmUpTime = 0L;
-    private boolean move = true;
+    private Long warmUpTime;
+    private boolean move;
     private String command;
     private CMIPresetAnimations animation;
 
     public CmdWarmUp(String command, Long warmUpTime, boolean move) {
-        this.command = command;
-        this.warmUpTime = warmUpTime;
-        this.move = move;
     }
 
     @Deprecated
     public Long getWU() {
-        return getTime();
+        return null;
     }
 
     @Deprecated
     public void setWU(Long warmUpTime) {
-        setTime(warmUpTime);
     }
 
     public Long getTime() {
-        return warmUpTime;
+        return null;
     }
 
     public void setTime(Long warmUpTime) {
-        this.warmUpTime = warmUpTime;
     }
 
     public boolean isMove() {
-        return move;
+        return false;
     }
 
     public void setMove(boolean move) {
-        this.move = move;
     }
 
     public String getCommand() {
-        return command;
+        return null;
     }
 
     public String getSubCommand() {
-        return command.startsWith(CommandsHandler.getLabel() + " ") ? command.substring(4) : command;
+        return null;
     }
 
     public void setCommand(String command) {
-        this.command = command;
     }
 
     public CMIPresetAnimations getAnimation() {
-        return animation;
+        return null;
     }
 
     public void setAnimation(CMIPresetAnimations animation) {
-        this.animation = animation;
     }
-
 }

@@ -1,10 +1,10 @@
 package com.Zrips.CMI.Modules.Recipes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -18,122 +18,133 @@ import net.Zrips.CMILib.Recipes.CMIRecipeIngredient;
 import net.Zrips.CMILib.Recipes.CMIRecipeType;
 
 public class RecipeManager {
-
     private CMI plugin;
-
-    public RecipeManager(CMI plugin) {
-        this.plugin = plugin;
-    }
-
     private boolean RecipesRequireBackwards;
     private boolean Recipes4Sized;
+    private HashMap<String, Recipe> disabledRecipes;
+    private Integer GUIRecipeResultSlot;
+    private HashMap<String, CMIRecipe> recipes;
+    private HashMap<Recipe, CMIRecipe> recipesMap;
+    private String fileName;
+
+    public RecipeManager(CMI plugin) {
+    }
 
     public void loadConfig() {
     }
 
-    private HashMap<String, Recipe> disabledRecipes = new HashMap<String, Recipe>();
+    public boolean isCustom(Recipe recipe) {
+        return false;
+    }
 
-    private Integer GUIRecipeResultSlot = 24;
-
-    private List<CMIRecipe> recipes = new ArrayList<CMIRecipe>();
-
-    public CMIRecipe getById(String id) {
+    public CMIRecipe getByKey(String identificator) {
         return null;
     }
 
     public boolean removeRecipe(CMIRecipe recipe) {
-        recipes.remove(recipe);
-        this.saveRecipes();
-        return true;
+        return false;
     }
 
     public Recipe addRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, CMIRecipeIngredient> Recipe) {
-        return addRecipe(type, result, Recipe, null);
+        return null;
     }
 
     public Recipe addRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, CMIRecipeIngredient> Recipe, CMIRecipeCraftData temp) {
-        return addRecipe(type, result, Recipe, temp, null);
+        return null;
     }
 
     public Recipe addRecipe(CMIRecipeType type, ItemStack result, HashMap<Integer, CMIRecipeIngredient> Recipe, CMIRecipeCraftData temp, String customKey) {
-        Recipe recipe = CMIRecipe.createRecipe(type, result, Recipe, temp, customKey);
-        if (recipe == null)
-            return null;
-        addRecipe(type, recipe, temp);
-        return recipe;
+        return null;
     }
 
     @Deprecated
     public Recipe addRecipe(CMIRecipeType type, Recipe recipe) {
-        return addRecipe(type, recipe, null);
+        return null;
     }
 
     public Recipe addRecipe(CMIRecipeType type, Recipe recipe, CMIRecipeCraftData data) {
-        return addRecipe(type, recipe, data, null);
+        return null;
     }
 
     public Recipe addRecipe(CMIRecipeType type, Recipe recipe, CMIRecipeCraftData data, String customKey) {
-
         return null;
     }
 
     public Recipe exist(Recipe recipe) {
-
         return null;
     }
 
     public Recipe getRecipe(HashMap<Integer, ItemStack> ingredients) {
-
         return null;
     }
 
     private void saveRecipes() {
-
     }
 
-    private String fileName = "Recipes.yml";
+    private void loadCustomRecipes(YamlConfiguration k) {
+    }
+
+    private void loadDisabled(YamlConfiguration k) {
+    }
 
     public void load() {
-
     }
 
     public Integer getGUIRecipeResultSlot() {
-        return GUIRecipeResultSlot;
+        return null;
     }
 
+    public HashMap<String, CMIRecipe> getCustomRecipes() {
+        return null;
+    }
+
+    @Deprecated
     public List<CMIRecipe> getRecipes() {
-        return recipes;
+        return null;
     }
 
     @Deprecated
     public void setRecipes(List<CMIRecipe> recipes) {
-        this.recipes = recipes;
     }
 
     public Boolean openRecipeUI(Player player, CMIItemStack cm, int page) {
-        return openRecipeUI(player, cm, page, false);
-    }
-
-    public Boolean openRecipeUI(Player player, CMIItemStack cm, int page, boolean onlyCustom) {
-
         return null;
     }
 
-    public Boolean openRecipeUI(Player player, CMIItemStack cm, int page, List<Recipe> recipes) {
+    public Boolean openOnlyCustomRecipeUI(Player player, int page) {
+        return null;
+    }
 
+    public Boolean openRecipeUI(Player player, CMIItemStack cm, int page, boolean onlyCustom) {
+        return null;
+    }
+
+    private static int getModelData(ItemStack item) {
+        return 0;
+    }
+
+    @Deprecated
+    public Boolean openRecipeUI(Player player, CMIItemStack cm, int page, List<Recipe> recipes) {
+        return null;
+    }
+
+    public Boolean openRecipeUI(Player player, int page, List<Recipe> recipes) {
         return null;
     }
 
     private Set<Recipe> getDisabled(ItemStack item) {
-
         return null;
     }
 
+    public boolean isDisabled(Recipe r) {
+        return false;
+    }
+
     public boolean isRecipesRequireBackwards() {
-        return RecipesRequireBackwards;
+        return false;
     }
 
     public boolean isRecipes4Sized() {
-        return Recipes4Sized;
+        return false;
     }
 }

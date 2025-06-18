@@ -3,22 +3,20 @@ package com.Zrips.CMI.Containers;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class CMISunMover {
-    private CMITask task = null;
+    private CMITask task;
     private String moving;
 
     public CMITask getTimeMoverTask() {
-        return task;
+        return null;
     }
 
     public void setTimeMoverTask(CMITask task) {
-        this.task = task;
     }
 
     public String getMoving() {
-        return moving;
+        return null;
     }
 
     public void setMoving(String moving) {
-        this.moving = moving;
     }
 }

@@ -1,66 +1,52 @@
 package com.Zrips.CMI.Modules.PlayerCombat;
 
-import com.Zrips.CMI.CMI;
-
 public class CMIPlayerCombat {
-    private long gotLastDamageAt = 0L;
-
-    private long gotLastDamageFromPlayer = 0L;
-    private long didLastDamageToPlayer = 0L;
-
-    private long gotLastDamageFromEntity = 0L;
-    private long didLastDamageToEntity = 0L;
+    private long gotLastDamageAt;
+    private long gotLastDamageFromPlayer;
+    private long didLastDamageToPlayer;
+    private long gotLastDamageFromEntity;
+    private long didLastDamageToEntity;
 
     public Long getGotLastDamageAt() {
-	return gotLastDamageAt;
+        return null;
     }
 
     public void setGotLastDamageAt(Long gotLastDamageAt) {
-	this.gotLastDamageAt = gotLastDamageAt;
     }
 
     public boolean isInCombatWithPlayer() {
-	return false;
+        return false;
     }
 
     public long getGotLastDamageFromPlayer() {
-	return gotLastDamageFromPlayer;
+        return 0;
     }
 
     public void setGotLastDamageFromPlayer(Long gotLastDamageFromPlayer) {
-	this.gotLastDamageFromPlayer = gotLastDamageFromPlayer;
     }
 
     public void setDidLastDamageToPlayer(Long didLastDamageToPlayer) {
-	this.didLastDamageToPlayer = didLastDamageToPlayer;
     }
 
     public boolean isInCombat() {
-	return isInCombatWithMob() || isInCombatWithPlayer();
+        return false;
     }
 
     public boolean isInCombatWithMob() {
-	return false;
+        return false;
     }
 
     public long getGotLastDamageFromMob() {
-	return gotLastDamageFromEntity;
+        return 0;
     }
 
     public void setGotLastDamageFromMob(Long gotLastDamageFromEntity) {
-	this.gotLastDamageFromEntity = gotLastDamageFromEntity;
     }
 
     public void setDidLastDamageToMob(Long didLastDamageToEntity) {
-	this.didLastDamageToEntity = didLastDamageToEntity;
     }
 
     public long getLeftCombatTime() {
-	if (CMI.getInstance().getPlayerCombatManager().getCombatTimer() <= 0)
-	    return 0;
-	long m = Math.max(Math.max(gotLastDamageFromPlayer, didLastDamageToPlayer), Math.max(gotLastDamageFromEntity, didLastDamageToEntity));
-	if (m == 0 || m + (CMI.getInstance().getPlayerCombatManager().getCombatTimer() * 1000L) < System.currentTimeMillis())
-	    return 0;
-	return m + (CMI.getInstance().getPlayerCombatManager().getCombatTimer() * 1000L) - System.currentTimeMillis();
+        return 0;
     }
 }

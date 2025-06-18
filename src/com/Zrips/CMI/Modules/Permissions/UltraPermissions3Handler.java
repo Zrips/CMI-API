@@ -5,9 +5,7 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class UltraPermissions3Handler implements PermissionInterface {
-
     public UltraPermissions3Handler() {
-
     }
 
     @Override

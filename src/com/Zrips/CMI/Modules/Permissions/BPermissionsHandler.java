@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class BPermissionsHandler implements PermissionInterface {
-
     @Override
     public String getMainGroup(Player player) {
         return null;

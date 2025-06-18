@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.Economy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -11,62 +10,46 @@ import com.Zrips.CMI.Containers.CMIUser;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class Economy {
-
     static public CMI plugin;
-//    private final String name = "CMI Economy";
-    private static final String ecoName = "CMIEconomy";
+    private static final String ecoName = null;
 
     public Economy(CMI pl) {
-	plugin = pl;
     }
 
     public boolean isEnabled() {
-	return plugin != null;
+        return false;
     }
 
     public static String getName() {
-	return ecoName;
+        return null;
     }
 
     private static String TrA(double amount) {
-
         return null;
     }
 
     public static String format(double amount) {
-	return TrA(amount);
+        return null;
     }
 
     public static String currencyNameSingular() {
-	return "";
+        return null;
     }
 
     public static String currencyNamePlural() {
-	return "";
+        return null;
     }
 
     public static double getBalance(String playerName) {
-	if (plugin == null)
-	    return 0D;
-	if (plugin.getEconomyManager().isTownyAccount(playerName)) {
-	    CMIUser user = plugin.getPlayerManager().getUser(playerName, false, true, true, true);
-	    return getAccountBalance(user);
-	}
-	CMIUser user = plugin.getPlayerManager().getUser(playerName, false, true, false, true);
-	return getAccountBalance(user);
+        return 0.0;
     }
 
     public static double getBalance(OfflinePlayer offlinePlayer) {
-	if (plugin == null)
-	    return 0D;
-	CMIUser user = plugin.getPlayerManager().getUser(offlinePlayer);
-	return getAccountBalance(user);
+        return 0.0;
     }
 
     private static double getAccountBalance(CMIUser user) {
-	if (user == null)
-	    return 0.0D;
-	return user.getBalance().doubleValue();
+        return 0.0;
     }
 
     public static EconomyResponse withdrawPlayer(String playerName, double amount) {
@@ -74,10 +57,7 @@ public class Economy {
     }
 
     public static EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
-	if (plugin == null)
-	    return new EconomyResponse(0.0D, 0D, EconomyResponse.ResponseType.FAILURE, "Plugin is not loaded");
-	CMIUser user = plugin.getPlayerManager().getUser(offlinePlayer);
-	return withdraw(user, amount);
+        return null;
     }
 
     private static EconomyResponse withdraw(CMIUser user, double amount) {
@@ -97,142 +77,131 @@ public class Economy {
     }
 
     public static boolean has(String playerName, double amount) {
-	return getBalance(playerName) >= amount;
+        return false;
     }
 
     public static boolean has(OfflinePlayer offlinePlayer, double amount) {
-	return getBalance(offlinePlayer) >= amount;
+        return false;
     }
 
     public static EconomyResponse createBank(String name, String player) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse createBank(String name, OfflinePlayer offlinePlayer) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse deleteBank(String name) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse bankHas(String name, double amount) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse bankWithdraw(String name, double amount) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse bankDeposit(String name, double amount) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse isBankOwner(String name, String playerName) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse isBankOwner(String name, OfflinePlayer offlinePlayer) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse isBankMember(String name, String playerName) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse isBankMember(String name, OfflinePlayer offlinePlayer) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static EconomyResponse bankBalance(String name) {
-	return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     public static List<String> getBanks() {
-	return new ArrayList<String>();
+        return null;
     }
 
     public static boolean hasBankSupport() {
-	return false;
+        return false;
     }
 
     public static boolean hasAccount(String playerName) {
-	return plugin.getPlayerManager().getUser(playerName) != null;
+        return false;
     }
 
     public static boolean hasAccount(OfflinePlayer offlinePlayer) {
-	return plugin.getPlayerManager().getUser(offlinePlayer) != null;
+        return false;
     }
 
     @Deprecated
     public static boolean createPlayerAccount(String playerName) {
-	if (plugin == null)
-	    return false;
-
-	if (hasAccount(playerName)) {
-	    return true;
-	}
-
-	CMIUser u = CMI.getInstance().getPlayerManager().getUser(playerName, true, false, true, true);
-
-	return u != null;
+        return false;
     }
 
     public static boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-	if (plugin == null)
-	    return false;
-	return plugin.getPlayerManager().getUser(offlinePlayer) != null;
+        return false;
     }
 
     public static int fractionalDigits() {
-	return -1;
+        return 0;
     }
 
     public static boolean hasAccount(String playerName, String worldName) {
-	return hasAccount(playerName);
+        return false;
     }
 
     public static boolean hasAccount(OfflinePlayer offlinePlayer, String worldName) {
-	return hasAccount(offlinePlayer);
+        return false;
     }
 
     public static double getBalance(String playerName, String worldName) {
-	return getBalance(playerName);
+        return 0.0;
     }
 
     public static double getBalance(OfflinePlayer offlinePlayer, String worldName) {
-	return getBalance(offlinePlayer);
+        return 0.0;
     }
 
     public static boolean has(String playerName, String worldName, double amount) {
-	return has(playerName, amount);
+        return false;
     }
 
     public static boolean has(OfflinePlayer offlinePlayer, String worldName, double amount) {
-	return has(offlinePlayer, amount);
+        return false;
     }
 
     public static EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-	return withdrawPlayer(playerName, amount);
+        return null;
     }
 
     public static EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
-	return withdrawPlayer(offlinePlayer, amount);
+        return null;
     }
 
     public static EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-	return depositPlayer(playerName, amount);
+        return null;
     }
 
     public static EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
-	return depositPlayer(offlinePlayer, amount);
+        return null;
     }
 
     public static boolean createPlayerAccount(String playerName, String worldName) {
-	return createPlayerAccount(playerName);
+        return false;
     }
 
     public static boolean createPlayerAccount(OfflinePlayer offlinePlayer, String worldName) {
-	return createPlayerAccount(offlinePlayer);
+        return false;
     }
 }

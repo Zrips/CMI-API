@@ -1,10 +1,7 @@
 package com.Zrips.CMI.Modules.Economy;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,90 +14,73 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
 import net.milkbowl.vault.economy.AbstractEconomy;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class VaultHandler extends AbstractEconomy {
     public CMI cmi;
     Plugin plugin;
-    private final String name = "CMIEconomy";
+    private final String name = null;
 
     public VaultHandler(CMI plugin) {
-
-        if (cmi == null) {
-            this.cmi = plugin;
-            EconomyServerListener listener = new EconomyServerListener(this);
-            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-        }
-//	plugin.log("Vault support enabled.");
     }
 
     public VaultHandler(Plugin plugin) {
-
     }
 
     public void setCMI(CMI cmi) {
-        this.cmi = cmi;
     }
 
     @Override
     public boolean isEnabled() {
-        return this.cmi != null;
+        return false;
     }
 
     @Override
     public String getName() {
-        return "CMIEconomy";
+        return null;
     }
 
     public String TrA(double amount) {
-        DecimalFormat decimalFormat = CMI.getInstance().getEconomyManager().getMoneyFormat();
-        return decimalFormat.format(amount);
+        return null;
     }
 
     @Override
     public String format(double amount) {
-        return TrA(amount);
+        return null;
     }
 
     @Override
     public String currencyNameSingular() {
-        return "";
+        return null;
     }
 
     @Override
     public String currencyNamePlural() {
-        return "";
+        return null;
     }
 
     @Override
     public double getBalance(String playerName) {
-        CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
-        return getAccountBalance(user);
+        return 0.0;
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        CMIUser user = cmi.getPlayerManager().getUser(offlinePlayer);
-        return getAccountBalance(user);
+        return 0.0;
     }
 
     private static double getAccountBalance(CMIUser user) {
-        if (user == null)
-            return 0.0D;
-        return user.getBalance().doubleValue();
+        return 0.0;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
-        return withdraw(user, amount);
+        return null;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
-        CMIUser user = cmi.getPlayerManager().getUser(offlinePlayer);
-        return withdraw(user, amount);
+        return null;
     }
 
     private static EconomyResponse withdraw(CMIUser user, double amount) {
@@ -109,14 +89,12 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        CMIUser user = cmi.getPlayerManager().getUser(playerName, false, true, false, true);
-        return deposit(user, amount);
+        return null;
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
-        CMIUser user = cmi.getPlayerManager().getUser(offlinePlayer);
-        return deposit(user, amount);
+        return null;
     }
 
     private static EconomyResponse deposit(CMIUser user, double amount) {
@@ -125,72 +103,72 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return getBalance(playerName) >= amount;
+        return false;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double amount) {
-        return getBalance(offlinePlayer) >= amount;
+        return false;
     }
 
     @Override
     public EconomyResponse createBank(String name, String player) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse createBank(String name, OfflinePlayer offlinePlayer) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse deleteBank(String name) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse bankHas(String name, double amount) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse bankWithdraw(String name, double amount) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse bankDeposit(String name, double amount) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse isBankOwner(String name, String playerName) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse isBankOwner(String name, OfflinePlayer offlinePlayer) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse isBankMember(String name, String playerName) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse isBankMember(String name, OfflinePlayer offlinePlayer) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public EconomyResponse bankBalance(String name) {
-        return new EconomyResponse(0.0D, 0.0D, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "CMI currently don't support bank's");
+        return null;
     }
 
     @Override
     public List<String> getBanks() {
-        return new ArrayList<String>();
+        return null;
     }
 
     @Override
@@ -200,134 +178,101 @@ public class VaultHandler extends AbstractEconomy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return CMI.getInstance().getPlayerManager().getUser(playerName) != null;
+        return false;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return CMI.getInstance().getPlayerManager().getUser(offlinePlayer) != null;
+        return false;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        if (hasAccount(playerName))
-            return true;
-        return cmi.getPlayerManager().getUser(playerName, true, false, true, true) != null;
+        return false;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        if (hasAccount(offlinePlayer))
-            return true;
-        return cmi.getPlayerManager().getUser(offlinePlayer) != null;
+        return false;
     }
 
     @Override
     public int fractionalDigits() {
-        return -1;
+        return 0;
     }
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return hasAccount(playerName);
+        return false;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer, String worldName) {
-        return hasAccount(offlinePlayer);
+        return false;
     }
 
     @Override
     public double getBalance(String playerName, String worldName) {
-        return getBalance(playerName);
+        return 0.0;
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer, String worldName) {
-        return getBalance(offlinePlayer);
+        return 0.0;
     }
 
     @Override
     public boolean has(String playerName, String worldName, double amount) {
-        return has(playerName, amount);
+        return false;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, String worldName, double amount) {
-        return has(offlinePlayer, amount);
+        return false;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-        return withdrawPlayer(playerName, amount);
+        return null;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
-        return withdrawPlayer(offlinePlayer, amount);
+        return null;
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-        return depositPlayer(playerName, amount);
+        return null;
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
-        return depositPlayer(offlinePlayer, amount);
+        return null;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        return createPlayerAccount(playerName);
+        return false;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String worldName) {
-        return createPlayerAccount(offlinePlayer);
+        return false;
     }
 
     public class EconomyServerListener implements Listener {
-        VaultHandler economy = null;
+        VaultHandler economy;
 
         public EconomyServerListener(VaultHandler economy) {
-            this.economy = economy;
         }
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPluginEnable(PluginEnableEvent event) {
-            if (economy.cmi == null) {
-                Plugin cm = event.getPlugin();
-
-                if (cm.getDescription().getName().equals("CMI")) {
-                    CMI cmi = (CMI) cm;
-                    if (cmi.getEconomyManager().isEnabled()) {
-                        economy.cmi = cmi;
-                        CMI.getInstance().consoleMessage("&2" + String.format("[%s][Economy] %s hooked.", plugin.getDescription().getName(), economy.name));
-                    } else {
-                        plugin.getServer().getServicesManager().unregister(Economy.class, economy);
-                        if (CMI.getInstance().getEconomyManager().getVaultManager() != null)
-                            CMI.getInstance().getEconomyManager().getVaultManager().setupVault();
-                    }
-                }
-            }
         }
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPluginDisable(PluginDisableEvent event) {
-            if (economy.cmi != null) {
-                if (event.getPlugin().getDescription().getName().equals("CMI")) {
-                    try {
-                        plugin.getServer().getServicesManager().unregister(Economy.class, economy);
-                    } catch (Exception e) {
-                    }
-                    economy.cmi = null;
-                    try {
-                        CMI.getInstance().consoleMessage("&2" + String.format("[%s][Economy] %s unhooked.", plugin.getDescription().getName(), economy.name));
-                    } catch (Exception e) {
-                    }
-                }
-            }
         }
     }
 }

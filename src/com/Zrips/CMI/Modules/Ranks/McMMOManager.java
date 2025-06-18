@@ -1,8 +1,11 @@
 package com.Zrips.CMI.Modules.Ranks;
 
+import java.util.Set;
+
 import org.bukkit.entity.Player;
 
 public class McMMOManager {
+    private static Set<String> correctSkills;
 
     public McMMOManager() {
     }
@@ -12,7 +15,7 @@ public class McMMOManager {
     }
 
     public static String getRealSkillName(String name) {
-        return name;
+        return null;
     }
 
     public static int getSkillLevel(Player player, String skill) {

@@ -6,58 +6,47 @@ import org.bukkit.entity.Player;
 import com.Zrips.CMI.Modules.Teleportations.TeleportManager.TpAction;
 
 public class TpInfo {
-
     private Player whoOffers;
     private Player whoAccepts;
     private TpAction action;
-    private Location loc = null;
+    private Location loc;
     private long when;
 
     public TpInfo(Player whoOffers, Player whoAccepts, TpAction action) {
-	this.whoOffers = whoOffers;
-	this.whoAccepts = whoAccepts;
-	this.action = action;
-	this.when = System.currentTimeMillis();
     }
 
     public Player getWhoOffers() {
-	return whoOffers;
+        return null;
     }
 
     public void setWhoOffers(Player whoOffers) {
-	this.whoOffers = whoOffers;
     }
 
     public Player getWhoAccepts() {
-	return whoAccepts;
+        return null;
     }
 
     public void setWhoAccepts(Player whoAccepts) {
-	this.whoAccepts = whoAccepts;
     }
 
     public TpAction getAction() {
-	return action;
+        return null;
     }
 
     public void setAction(TpAction action) {
-	this.action = action;
     }
 
     public long getWhen() {
-	return when;
+        return 0;
     }
 
     public void setWhen(long when) {
-	this.when = when;
     }
 
     public Location getLoc() {
-	return loc;
+        return null;
     }
 
     public void setLoc(Location loc) {
-	this.loc = loc;
     }
-
 }

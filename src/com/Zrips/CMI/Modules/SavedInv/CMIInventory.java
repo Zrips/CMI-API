@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.SavedInv;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
@@ -11,10 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 public class CMIInventory {
-
-    private int id = 0;
+    private int id;
     private String owner;
-    private Long time = 0L;
+    private long time;
     private String killer;
     private String DeathReason;
     private double Exp;
@@ -24,184 +22,162 @@ public class CMIInventory {
     private int Hunger;
     private GameMode GameMode;
     private boolean Fly;
-    private Collection<PotionEffect> potions = new ArrayList<PotionEffect>();
-    private HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
+    private Collection<PotionEffect> potions;
+    private HashMap<Integer, ItemStack> items;
     private Location loc;
-
-    private boolean editable = false;
+    private boolean editable;
     private UUID uuid;
 
     public CMIInventory() {
     }
 
     public CMIInventory(String owner, UUID uuid) {
-	this.owner = owner;
-	this.uuid = uuid;
     }
 
     public int getId() {
-	return id;
+        return 0;
     }
 
     public void setId(int id) {
-	this.id = id;
     }
-    
+
     public void afterSave() {
-	
     }
 
     public Long getTime() {
-	return time;
+        return null;
     }
 
     public void setTime(Long time) {
-	this.time = time;
     }
 
     public String getKiller() {
-	return killer;
+        return null;
     }
 
     public void setKiller(String killer) {
-	this.killer = killer;
     }
 
     public String getDeathReason() {
-	return DeathReason;
+        return null;
     }
 
     public void setDeathReason(String deathReason) {
-	DeathReason = deathReason;
     }
 
     public double getExp() {
-	return Exp;
+        return 0.0;
     }
 
     public void setExp(double exp) {
-	Exp = exp;
     }
 
     public double getHealth() {
-	return Health;
+        return 0.0;
     }
 
     public void setHealth(double health) {
-	Health = health;
     }
 
     public double getMaxHealth() {
-	return MaxHealth;
+        return 0.0;
     }
 
     public void setMaxHealth(double maxHealth) {
-	MaxHealth = maxHealth;
     }
 
     public float getSaturation() {
-	return Saturation;
+        return 0.0f;
     }
 
     public void setSaturation(float saturation) {
-	Saturation = saturation;
     }
 
     public int getHunger() {
-	return Hunger;
+        return 0;
     }
 
     public void setHunger(int hunger) {
-	Hunger = hunger;
     }
 
     public GameMode getGameMode() {
-	return GameMode;
+        return null;
     }
 
     public void setGameMode(GameMode gameMode) {
-	GameMode = gameMode;
     }
 
     public boolean isFly() {
-	return Fly;
+        return false;
     }
 
     public void setFly(boolean fly) {
-	Fly = fly;
     }
 
     public Location getLocation() {
-	return loc;
+        return null;
     }
 
     public void setLoc(Location loc) {
-	this.loc = loc;
     }
 
     public Collection<PotionEffect> getPotions() {
-	return potions;
+        return null;
     }
 
     public void setPotions(Collection<PotionEffect> potions) {
-	this.potions = potions;
     }
 
     public HashMap<Integer, ItemStack> getItems() {
-	return items;
+        return null;
     }
 
     public ItemStack getBoots() {
-	return items.get(36);
+        return null;
     }
 
     public ItemStack getPants() {
-	return items.get(37);
+        return null;
     }
 
     public ItemStack getChest() {
-	return items.get(38);
+        return null;
     }
 
     public ItemStack getHelmet() {
-	return items.get(39);
+        return null;
     }
 
     public ItemStack getOffHand() {
-	return items.get(40);
+        return null;
     }
 
     public void setItems(HashMap<Integer, ItemStack> items) {
-	this.items = items;
     }
 
     public String getOwner() {
-	return owner;
+        return null;
     }
 
     public void setOwner(String owner) {
-	this.owner = owner;
     }
 
     public boolean isEditable() {
-	return editable;
+        return false;
     }
 
     public void setEditable(boolean editable) {
-	this.editable = editable;
     }
 
     @Deprecated
     public UUID getUuid() {
-	return getUniqueId();
+        return null;
     }
 
     public UUID getUniqueId() {
-	return uuid;
+        return null;
     }
 
     public void setUuid(UUID uuid) {
-	this.uuid = uuid;
     }
-
 }

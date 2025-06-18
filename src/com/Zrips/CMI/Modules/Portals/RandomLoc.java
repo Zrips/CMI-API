@@ -1,26 +1,22 @@
 package com.Zrips.CMI.Modules.Portals;
 
 public class RandomLoc {
-
-    double x = 0D;
-    double y = 0D;
-    double z = 0D;
+    double x;
+    double y;
+    double z;
 
     public RandomLoc(double x, double y, double z) {
-	this.x = x;
-	this.y = y;
-	this.z = z;
     }
 
     public double getX() {
-	return x;
+        return 0.0;
     }
 
     public double getY() {
-	return y;
+        return 0.0;
     }
 
     public double getZ() {
-	return z;
+        return 0.0;
     }
 }

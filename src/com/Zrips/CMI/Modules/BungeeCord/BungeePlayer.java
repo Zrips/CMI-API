@@ -3,87 +3,76 @@ package com.Zrips.CMI.Modules.BungeeCord;
 import java.util.UUID;
 
 public class BungeePlayer {
-
     private String playerName;
     private String playerDisplayName;
     private String nickName;
     private BungeeCordServer bungeeServer;
     private UUID uuid;
-    private boolean vanished = false;
-    
-    private String previousServer = null;
-    private Long serverSwitchTime = 0L;
+    private boolean vanished;
+    private String previousServer;
+    private Long serverSwitchTime;
 
     public boolean getVanished() {
-	return vanished;
+        return false;
     }
 
     public BungeePlayer setVanished(boolean vanished) {
-	this.vanished = vanished;
-	return this;
+        return null;
     }
 
     public String getName() {
-	return playerName;
+        return null;
     }
 
     public BungeePlayer setName(String playerName) {
-	this.playerName = playerName;
-	return this;
+        return null;
     }
 
     public UUID getUniqueId() {
-	return uuid;
+        return null;
     }
 
     public BungeePlayer setUniqueId(UUID uuid) {
-	this.uuid = uuid;
-	return this;
+        return null;
     }
 
     public String getPlayerDisplayName() {
-	return playerDisplayName == null ? this.getName() : playerDisplayName;
+        return null;
     }
 
     public BungeePlayer setPlayerDisplayName(String playerDisplayName) {
-	this.playerDisplayName = playerDisplayName;
-	return this;
+        return null;
     }
 
     public BungeeCordServer getBungeeServer() {
-	return bungeeServer;
+        return null;
     }
 
     public void setBungeeServer(BungeeCordServer bungeeServer) {
-	this.bungeeServer = bungeeServer;
     }
 
     public String getServerName() {
-	return this.getBungeeServer() == null ? "" : this.getBungeeServer().getName();
+        return null;
     }
 
     public String getNickName() {
-	return nickName;
+        return null;
     }
 
     public void setNickName(String nickName) {
-	this.nickName = nickName;
     }
 
     public Long getServerSwitchTime() {
-	return serverSwitchTime;
+        return null;
     }
 
     public void setServerSwitchTime(Long serverSwitchTime) {
-	this.serverSwitchTime = serverSwitchTime;
     }
 
     public String getPreviousServer() {
-	return previousServer;
+        return null;
     }
 
     public void setPreviousServer(String previousServer) {
-	this.previousServer = previousServer;
     }
-
 }

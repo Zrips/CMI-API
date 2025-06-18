@@ -3,90 +3,75 @@ package com.Zrips.CMI.Modules.InvRegEditor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Zrips.CMI.Containers.CMIUser;
-
-import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class CMIInvSee {
-    Player watcher = null;
-    Player target = null;
-    private ItemStack[] contents;
-    private ItemStack[] armor;
+    Player watcher;
+    Player target;
+    private ItemStack contents;
+    private ItemStack armor;
     private ItemStack offHand;
     private ItemStack cursor;
     private CMITask task;
     private CMITask lockTask;
-
-    private boolean tempLocked = false;
+    private boolean tempLocked;
 
     public CMIInvSee(Player watcher, Player target) {
-        this.watcher = watcher;
-        this.target = target;
     }
 
     public Player getWatcher() {
-        return this.watcher;
+        return null;
     }
 
     public CMIInvSee setWatcher(Player watcher) {
-        this.watcher = watcher;
-        return this;
+        return null;
     }
 
     public Player getTarget() {
-        if (CMIUser.getOnlinePlayer(target.getUniqueId()) != null)
-            return CMIUser.getOnlinePlayer(target.getUniqueId());
-        return this.target;
+        return null;
     }
 
     public CMIInvSee setTarget(Player target) {
-        this.target = target;
-        return this;
+        return null;
     }
 
     public void setTargetContents(ItemStack[] contents) {
-        this.contents = contents;
     }
 
     public void setTargetArmorContents(ItemStack[] armor) {
-        this.armor = armor;
     }
 
     public ItemStack[] getContents() {
-        return contents;
+        return null;
     }
 
     public ItemStack[] getArmorContents() {
-        return armor;
+        return null;
     }
 
     public void setOffHand(ItemStack offHand) {
-        this.offHand = offHand;
     }
 
     public ItemStack getOffHand() {
-        return this.offHand;
+        return null;
     }
 
     public ItemStack getCursor() {
-        return cursor;
+        return null;
     }
 
     public void setCursor(ItemStack cursor) {
-        this.cursor = cursor;
     }
 
     public void setTask(CMITask task) {
-        this.task = task;
     }
 
     public CMITask getTask() {
-        return this.task;
+        return null;
     }
 
     public boolean isTempLocked() {
-        return tempLocked;
+        return false;
     }
 
     public void setTempLocked(boolean tempLocked) {

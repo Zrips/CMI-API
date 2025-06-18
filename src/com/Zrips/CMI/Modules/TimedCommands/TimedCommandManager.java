@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.TimedCommands;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.Zrips.CMI.CMI;
@@ -9,45 +8,33 @@ import com.Zrips.CMI.Containers.CMIUser;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class TimedCommandManager {
-
     private CMI plugin;
-    private CMITask autoTimerBukkitId = null;
-    private long nextIn = -1L;
-    private boolean delay = false;
+    private CMITask autoTimerBukkitId;
+    private long nextIn;
+    private boolean delay;
+    public Set<CMIUser> timed;
+    private Runnable autoTimer;
 
     public TimedCommandManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    public Set<CMIUser> timed = new HashSet<CMIUser>();
-
     public void addTimed(CMIUser user) {
-
     }
 
     public void stop() {
     }
 
-    private Runnable autoTimer = new Runnable() {
-        @Override
-        public void run() {
-        }
-    };
-
     private void checkUsers() {
-
     }
 
     private void updateNextIn(Long time) {
     }
 
-    public boolean checkTFly(final CMIUser user, boolean logout) {
-
-        return true;
+    public boolean checkTFly(CMIUser user, boolean logout) {
+        return false;
     }
 
-    public boolean checkTGod(final CMIUser user, boolean logout) {
-
-        return true;
+    public boolean checkTGod(CMIUser user, boolean logout) {
+        return false;
     }
 }

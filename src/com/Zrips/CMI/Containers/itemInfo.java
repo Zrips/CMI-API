@@ -1,29 +1,40 @@
 package com.Zrips.CMI.Containers;
 
+import org.bukkit.Material;
+
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class itemInfo {
+    private Material mat;
+    private int chance;
 
-    private CMIMaterial mat = null;
-    private int chance = 100;
-
+    @Deprecated
     public itemInfo(CMIMaterial mat) {
-	this.mat = mat;
     }
 
+    public itemInfo(Material mat) {
+    }
+
+    @Deprecated
     public CMIMaterial getMat() {
-	return mat;
+        return null;
     }
 
+    public Material getMaterial() {
+        return null;
+    }
+
+    @Deprecated
     public void setId(CMIMaterial mat) {
-	this.mat = mat;
+    }
+
+    public void setMaterial(Material mat) {
     }
 
     public int getChance() {
-	return chance;
+        return 0;
     }
 
     public void setChance(int chance) {
-	this.chance = chance;
     }
 }

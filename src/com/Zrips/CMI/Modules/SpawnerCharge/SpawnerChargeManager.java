@@ -2,7 +2,6 @@ package com.Zrips.CMI.Modules.SpawnerCharge;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.block.Block;
@@ -10,142 +9,145 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
 
 public class SpawnerChargeManager {
-
-    private LinkedHashMap<String, SCharges> map = new LinkedHashMap<String, SCharges>();
-    private Integer total = 0;
-    private HashMap<UUID, PlayerCharge> spawnerCharges = new HashMap<UUID, PlayerCharge>();
-
-    private boolean SpawnersSupportDisabled = false;
-    private int SpawnersBreakBaseDropChance = 100;
-    private boolean SpawnersXpDrop = true;
-    private boolean SpawnersBreakEnabled = false;
-    private boolean SpawnersPlaceEnabled = false;
-    private boolean SpawnersPlaceRequiresPermission = false;
-    private boolean SpawnersBreakRequiresExactPermission = false;
-    private boolean SpawnersPlaceRequiresExactPermission = false;
-    private boolean SpawnersEggInteractRequiresPermission = false;
-    private int SpawnersBreakSilkTouchLevel = 1;
-
-    private boolean SpawnerDropFromTnt = false;
-    private int SpawnerDropChanceTnt = 30;
-    private boolean SpawnerDropFromCreeper = false;
-    private int SpawnerDropChanceCreeper = 30;
-
-    private boolean ChargesUse = false;
-    private boolean ChargesBreakWithoutCharge = false;
-    private boolean SpawnersProximityUse = false;
-    private int SpawnersProximityRange = 0;
+    private LinkedHashMap<String, SCharges> map;
+    private Integer total;
+    private HashMap<UUID, PlayerCharge> spawnerCharges;
+    private boolean SpawnersSupportDisabled;
+    private double SpawnersBreakBaseDropChance;
+    private long SpawnersStopDroppingAfter;
+    private boolean SpawnersStopDroppingEnabled;
+    private boolean SpawnersStopDroppingLinear;
+    private boolean SpawnersXpDrop;
+    private boolean SpawnersBreakEnabled;
+    private boolean SpawnersIntoInventory;
+    private boolean SpawnersPlaceEnabled;
+    private boolean SpawnersPlaceRequiresPermission;
+    private boolean SpawnersBreakRequiresExactPermission;
+    private boolean SpawnersPlaceRequiresExactPermission;
+    private boolean SpawnerEggInteractRequiresPermission;
+    private boolean TrialSpawnerEggInteractRequiresPermission;
+    private int SpawnersBreakSilkTouchLevel;
+    private boolean SpawnerDropFromTnt;
+    private int SpawnerDropChanceTnt;
+    private boolean SpawnerDropFromCreeper;
+    private int SpawnerDropChanceCreeper;
+    private boolean ChargesUse;
+    private boolean ChargesBreakWithoutCharge;
+    private boolean SpawnersProximityUse;
+    private int SpawnersProximityRange;
 
     public void loadConfig() {
-
     }
 
     public PlayerCharge getPCharge(CMIUser user, boolean update) {
-        return spawnerCharges.computeIfAbsent(user.getUniqueId(), k -> new PlayerCharge(user, update));
+        return null;
     }
 
     private void recalculateTotalSpawnerEntities() {
-
     }
 
     public void addCharge(SCharges charge) {
-        map.put(charge.getName().toLowerCase(), charge);
     }
 
     public SCharges getCharge(String name) {
-        return map.get(name.toLowerCase());
+        return null;
     }
 
     public SCharges getCharge(Player player) {
-        SCharges charge = null;
-        if (player == null)
-            return charge;
-        for (Entry<String, SCharges> one : map.entrySet()) {
-            if (CMIPerm.spawners_charge_$1.hasPermission(player, one.getKey()))
-                charge = one.getValue();
-        }
-        return charge;
+        return null;
     }
 
     public boolean changeSpawnerType(Block block, EntityType type) {
-        return true;
+        return false;
     }
 
     @Deprecated
     public void openSpawnerPickerUI(Player player) {
-        openSpawnerPickerUI(player, 1);
     }
 
     public void openSpawnerPickerUI(Player player, int page) {
-
     }
 
+    @Deprecated
     public int getSpawnerDropChance(Player player, Block block) {
+        return 0;
+    }
 
+    public double getDropChance(Player player, Block block) {
+        return 0.0;
+    }
+
+    public int getSpawnersStopDroppingAfter(Player player) {
         return 0;
     }
 
     public boolean isSpawnersSupportDisabled() {
-        return SpawnersSupportDisabled;
+        return false;
     }
 
     public boolean isSpawnersXpDrop() {
-        return SpawnersXpDrop;
+        return false;
     }
 
     public boolean isSpawnersEggInteractRequiresPermission() {
-        return SpawnersEggInteractRequiresPermission;
+        return false;
+    }
+
+    public boolean isTrialSpawnersEggInteractRequiresPermission() {
+        return false;
     }
 
     public boolean isSpawnersPlaceRequiresExactPermission() {
-        return SpawnersPlaceRequiresExactPermission;
+        return false;
     }
 
     public boolean isSpawnersPlaceRequiresPermission() {
-        return SpawnersPlaceRequiresPermission;
+        return false;
     }
 
     public boolean isSpawnersPlaceEnabled() {
-        return SpawnersPlaceEnabled;
+        return false;
     }
 
     public boolean isSpawnerDropFromCreeper() {
-        return SpawnerDropFromCreeper;
+        return false;
     }
 
     public int getSpawnerDropChanceCreeper() {
-        return SpawnerDropChanceCreeper;
+        return 0;
     }
 
     public boolean isSpawnersBreakEnabled() {
-        return SpawnersBreakEnabled;
+        return false;
+    }
+
+    public boolean isSpawnersIntoInventory() {
+        return false;
     }
 
     public int getSpawnerDropChanceTnt() {
-        return SpawnerDropChanceTnt;
+        return 0;
     }
 
     public boolean isSpawnerDropFromTnt() {
-        return SpawnerDropFromTnt;
+        return false;
     }
 
     public boolean isChargesUse() {
-        return ChargesUse;
+        return false;
     }
 
     public boolean isChargesBreakWithoutCharge() {
-        return ChargesBreakWithoutCharge;
+        return false;
     }
 
     public boolean isSpawnersProximityUse() {
-        return SpawnersProximityUse;
+        return false;
     }
 
     public int getSpawnersProximityRange() {
-        return SpawnersProximityRange;
+        return 0;
     }
-
 }

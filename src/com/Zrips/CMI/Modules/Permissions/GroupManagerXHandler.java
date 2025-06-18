@@ -1,7 +1,6 @@
 package com.Zrips.CMI.Modules.Permissions;
 
 import java.util.UUID;
-
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
@@ -9,7 +8,6 @@ import com.Zrips.CMI.CMI;
 public class GroupManagerXHandler implements PermissionInterface {
 
     public GroupManagerXHandler(CMI plugin) {
-
     }
 
     @Override

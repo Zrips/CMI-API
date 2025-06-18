@@ -5,24 +5,17 @@ import java.util.regex.Pattern;
 
 import com.Zrips.CMI.CMI;
 
-@SuppressWarnings("deprecation")
 public class ReplaceBlock {
-
-    public Pattern regionPattern = Pattern.compile("r\\.([0-9-]+)\\.([0-9-]+)\\.mca");
-    public ConcurrentHashMap<String, BRInfo> BRInfo = new ConcurrentHashMap<String, BRInfo>();
+    public Pattern regionPattern;
+    public ConcurrentHashMap<String, BRInfo> BRInfo;
     private CMI plugin;
 
     public ReplaceBlock(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    public void start(final BRInfo scan) {
-        if (scan.getStartTime() == 0L)
-            scan.setShowInfo(System.currentTimeMillis());
-        loadChunk(scan);
+    public void start(BRInfo scan) {
     }
 
-    private void loadChunk(final BRInfo scan) {
-
+    private void loadChunk(BRInfo scan) {
     }
 }

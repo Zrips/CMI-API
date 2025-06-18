@@ -8,58 +8,96 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class CMIAnvilGUI {
-
-    private boolean colorrename = false;
+    private boolean colorrename;
     private Player player;
-    private String title = "Repair & Name";
-    private String defaulttext = "";
+    private String title;
+    private String defaulttext;
     private Inventory inventory;
-    private HashMap<AnvilSlot, ItemStack> items = new HashMap<AnvilSlot, ItemStack>();
+    private HashMap<AnvilSlot, ItemStack> items;
     private Listener listener;
     private AnvilClickEventHandler handler;
+    private static Class<?> BlockPosition;
+    private static Class<?> PacketPlayOutOpenWindow;
+    private static Class<?> ContainerAnvil;
+    private static Class<?> ChatMessage;
+    private static Class<?> EntityHuman;
+    private static Class<?> ContainerAccess;
+    private static Class<?> Containers;
+    private static Class<?> Container;
+    private static boolean useNewVersion;
 
-    private Class<?> BlockPosition;
-    private Class<?> PacketPlayOutOpenWindow;
-    private Class<?> ContainerAnvil;
-    private Class<?> ChatMessage;
-    private Class<?> EntityHuman;
-    private Class<?> ContainerAccess;
-    private Class<?> Containers;
-    private Class<?> Container;
+    private static void loadClasses() {
+    }
 
-    private boolean useNewVersion = true;
+    public boolean getColorRename() {
+        return false;
+    }
 
-    private void loadClasses() {
+    public void setColorRename(boolean ColorRename) {
+    }
 
+    public Player getPlayer() {
+        return null;
+    }
+
+    public String getTitle() {
+        return null;
+    }
+
+    public void setTitle(String Title) {
+    }
+
+    public String getDefaultText() {
+        return null;
+    }
+
+    public void setDefaultText(String DefaultText) {
+    }
+
+    public ItemStack getSlot(AnvilSlot Slot) {
+        return null;
+    }
+
+    public void setSlot(AnvilSlot Slot, ItemStack Item) {
+    }
+
+    public String getSlotName(AnvilSlot Slot) {
+        return null;
+    }
+
+    public void setSlotName(AnvilSlot Slot, String Name) {
+    }
+
+    public CMIAnvilGUI(Player Player, AnvilClickEventHandler Handler) {
+    }
+
+    public void open() {
+    }
+
+    public Field getField(Class<?> clazz, String fieldName) throws Exception {
+        return null;
+    }
+
+    public void open(String Title) {
     }
 
     public enum AnvilSlot {
-
         INPUT_LEFT(0), INPUT_RIGHT(1), OUTPUT(2);
 
         private int slot;
 
         private AnvilSlot(int Slot) {
-            slot = Slot;
         }
 
         public int getSlot() {
-            return slot;
+            return 0;
         }
 
         public static AnvilSlot bySlot(int Slot) {
-
-            for (AnvilSlot AS : values())
-                if (AS.getSlot() == Slot)
-                    return AS;
-
             return null;
-
         }
-
     }
 
     public interface AnvilClickEventHandler {
@@ -69,105 +107,30 @@ public class CMIAnvilGUI {
     }
 
     public class AnvilClickEvent {
-
         private AnvilSlot slot;
         private ItemStack item;
         private String text;
 
         public AnvilClickEvent(AnvilSlot Slot, ItemStack Item, String Text) {
-            slot = Slot;
-            item = Item;
-            text = Text;
         }
 
         public AnvilSlot getSlot() {
-            return slot;
+            return null;
         }
 
         public ItemStack getItemStack() {
-            return item;
+            return null;
         }
 
         public void setItemStack(ItemStack Item) {
-            item = Item;
-            inventory.setItem(slot.getSlot(), item);
         }
 
         public boolean hasText() {
-            return text != null;
+            return false;
         }
 
         public String getText() {
-            return text != null ? text : defaulttext;
+            return null;
         }
-    }
-
-    public boolean getColorRename() {
-        return colorrename;
-    }
-
-    public void setColorRename(boolean ColorRename) {
-        colorrename = ColorRename;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String Title) {
-        title = Title;
-    }
-
-    public String getDefaultText() {
-        return defaulttext;
-    }
-
-    public void setDefaultText(String DefaultText) {
-        defaulttext = DefaultText;
-    }
-
-    public ItemStack getSlot(AnvilSlot Slot) {
-        return items.get(Slot);
-    }
-
-    public void setSlot(AnvilSlot Slot, ItemStack Item) {
-        items.put(Slot, Item);
-    }
-
-    public String getSlotName(AnvilSlot Slot) {
-
-        ItemStack IS = getSlot(Slot);
-
-        if (IS != null && IS.hasItemMeta()) {
-            ItemMeta M = IS.getItemMeta();
-            return M.hasDisplayName() ? M.getDisplayName() : "";
-        }
-        return "";
-    }
-
-    public void setSlotName(AnvilSlot Slot, String Name) {
-
-    }
-
-    public CMIAnvilGUI(Player Player, final AnvilClickEventHandler Handler) {
-
-    }
-
-    public void open() {
-        open(title);
-    }
-
-    public Field getField(Class<?> clazz, String fieldName) throws Exception {
-        Field field = clazz.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field;
-    }
-
-    public void open(String Title) {
-
     }
 }

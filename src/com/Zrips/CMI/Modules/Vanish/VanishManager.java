@@ -1,12 +1,11 @@
 package com.Zrips.CMI.Modules.Vanish;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -19,118 +18,112 @@ import com.Zrips.CMI.Containers.CMIVanish;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class VanishManager {
-
     private CMI plugin;
+    private Set<UUID> vanishedOnlineList;
+    private Set<UUID> vanishedList;
+    private static HashMap<UUID, CMIVanish> vanishedCache;
+    private static final String vanishBossBar = null;
+    public static String defaultString;
+    private CMITask playtimeSched;
+    List<CMIUser> playtimeList;
 
-    private Set<UUID> vanishedOnlineList = new HashSet<UUID>();
-    private Set<UUID> vanishedList = new HashSet<UUID>();
-
-    private HashMap<UUID, CMIVanish> vanishedCache = new HashMap<UUID, CMIVanish>();
-
+    @Nullable
     public CMIVanish getVanish(UUID uuid) {
-        return vanishedCache.computeIfAbsent(uuid, k -> new CMIVanish(CMIUser.getUser(uuid)));
+        return null;
     }
 
-    public @Nullable CMIVanish getVanishRaw(UUID uuid) {
-        return vanishedCache.get(uuid);
+    public CMIVanish getOrCreateVanish(CMIUser user) {
+        return null;
+    }
+
+    public CMIVanish getOrCreateVanish(UUID uuid) {
+        return null;
+    }
+
+    public static boolean is(UUID uuid, VanishAction action) {
+        return false;
+    }
+
+    @Nonnull
+    public static VanishActionState getState(UUID uuid, VanishAction action) {
+        return null;
+    }
+
+    @Deprecated
+    /**
+    * @deprecated use getVanish(UUID) instead,
+    *  this will be removed in the future
+    * @param UUID
+    * @return CMIVanish
+    */
+    @Nullable
+    public CMIVanish getVanishRaw(UUID uuid) {
+        return null;
     }
 
     public VanishManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public Set<UUID> getAllVanished() {
-        return vanishedList;
+        return null;
     }
 
     public void addPlayer(CMIUser user) {
-        if (user == null)
-            return;
-        addPlayer(user.getUniqueId());
     }
 
     public void addPlayer(Player player) {
-        if (player == null)
-            return;
-        addPlayer(player.getUniqueId());
     }
 
     public void addPlayer(UUID uuid) {
     }
 
-    private static final String vanishBossBar = "CMIVanishBossBar";
-
     public boolean nearActivePlayer(Location loc) {
-
-        return true;
+        return false;
     }
 
     public void applyVanish(CMIUser user) {
-        applyVanish(user, true, true);
     }
 
     public void applyVanish(CMIUser user, boolean fireUnvanishEvent) {
-        applyVanish(user, fireUnvanishEvent, true);
     }
 
     public void applyVanish(CMIUser user, boolean fireUnvanishEvent, boolean showMessages) {
-        applyVanish(user, fireUnvanishEvent, showMessages, false);
     }
 
     public void applyVanish(CMIUser user, boolean fireUnvanishEvent, boolean showMessages, boolean login) {
-
     }
 
-    public static String defaultString = "";
-
     public void loadConfig() {
-
     }
 
     public void hideVanishedPlayersFor(Player player) {
-
     }
 
     public void hidePlayerForEveryone(Player player) {
-
     }
 
     public void removePlayer(CMIUser user) {
-        if (user == null)
-            return;
-        removePlayer(user.getUniqueId(), true);
     }
 
     public void removePlayer(Player player) {
     }
 
     public void removePlayer(UUID uuid) {
-        removePlayer(uuid, true);
     }
 
     public void removePlayer(UUID uuid, boolean showForOthers) {
     }
 
     public Set<UUID> getVanishedOnlineList() {
-        return vanishedOnlineList;
+        return null;
     }
 
-    private CMITask playtimeSched = null;
-
-    List<CMIUser> playtimeList = new ArrayList<CMIUser>();
-
     public void removeFromPlayTimePreventer(CMIUser user) {
-        playtimeList.remove(user);
     }
 
     public void addToPlayTimePreventer(CMIUser user) {
-        playtimeList.add(user);
-        user.getVanish().setPlaytimeAtVanishStart((long) (user.getTotalPlayTime() / 1000) * 1000);
-        playTimePreventer();
     }
 
     private void playTimePreventer() {
-
     }
-
 }

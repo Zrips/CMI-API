@@ -42,6 +42,7 @@ public @interface CAnnotation {
 
     String[] modules() default {};
 
+    // Should player get access to this command by default
     boolean paccess() default false;
 
     Class<? extends Cmd> redirectClass() default Void.class;
@@ -50,5 +51,5 @@ public @interface CAnnotation {
 
     boolean asyncSupported() default false;
 
-    boolean others();
+    boolean others() default false;
 }

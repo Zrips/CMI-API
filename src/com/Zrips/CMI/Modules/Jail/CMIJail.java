@@ -1,113 +1,86 @@
 package com.Zrips.CMI.Modules.Jail;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-
-import net.Zrips.CMILib.Container.CMILocation;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
 
-public class CMIJail {
+import net.Zrips.CMILib.Container.CMILocation;
 
+public class CMIJail {
     private String name;
     private CuboidArea area;
     private CMILocation safeLoc;
-    private HashMap<Integer, CMIJailCell> cells = new HashMap<Integer, CMIJailCell>();
+    private boolean preventLeave;
+    private HashMap<Integer, CMIJailCell> cells;
 
     public CMIJail() {
-        area = new CuboidArea(null);
     }
 
     public boolean containsLoc(Location loc) {
-        return area.containsLoc(loc);
+        return false;
     }
 
     public boolean containsLoc(Location loc, int range) {
-        return area.containsLoc(loc, range);
+        return false;
     }
 
     public CuboidArea getArea() {
-        return area;
+        return null;
     }
 
     public String getName() {
-        return name;
+        return null;
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public boolean checkCollision(CuboidArea area) {
-        if (this.area != null && area != null) {
-            if (this.area.checkCollision(area)) {
-                return true;
-            }
-        }
         return false;
     }
 
     public CuboidArea loadBounds(String root) throws Exception {
-
         return null;
     }
 
     public void setArea(CuboidArea area) {
-        this.area = area;
     }
 
     public Location getOutsideLocation() {
-        return safeLoc;
+        return null;
     }
 
     @Deprecated
     public void setOutsideLocation(Location safeLoc) {
-        if (safeLoc != null)
-            this.safeLoc = new CMILocation(safeLoc);
     }
 
     public void setOutsideLocation(CMILocation safeLoc) {
-        this.safeLoc = safeLoc;
     }
 
     public HashMap<Integer, CMIJailCell> getCells() {
-        return cells;
+        return null;
     }
 
     public void setCells(HashMap<Integer, CMIJailCell> cells) {
-        this.cells = cells;
     }
 
     public void addCell(CMIJailCell cell) {
-        if (cell.getId() == 0)
-            cell.setId(this.getNextCellId());
-        this.cells.put(cell.getId(), cell);
     }
 
     public int getCountInCells() {
-        if (this.cells.isEmpty())
-            return 0;
-        int i = 0;
-        for (Entry<Integer, CMIJailCell> one : this.cells.entrySet()) {
-            i += one.getValue().getJailed().size();
-        }
-        return i;
+        return 0;
     }
 
     public int getNextCellId() {
-        if (this.cells.isEmpty()) {
-            return 1;
-        }
-        int i = 1;
-        for (Entry<Integer, CMIJailCell> one : this.cells.entrySet()) {
-            if (one.getKey() >= i)
-                i = one.getKey() + 1;
-        }
-        return i;
+        return 0;
+    }
+
+    public boolean isPreventLeave() {
+        return false;
+    }
+
+    public void setPreventLeave(boolean preventLeave) {
     }
 }

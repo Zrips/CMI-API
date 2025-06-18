@@ -13,78 +13,185 @@ import com.Zrips.CMI.Containers.CMIUser;
 import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class HomeManager {
-
     private CMI plugin;
-    HashMap<String, Integer> homeGroups = new HashMap<String, Integer>();
-
-    private HashMap<String, HomeWorldLimit> homeLimits = new HashMap<String, HomeWorldLimit>();
-
-    private boolean checkBlockbreak = false;
-    private boolean pickRealBlock = false;
-    private boolean homesWorldLimits = false;
-    private boolean confirmation = true;
-    private String defaultHomeName = "Home";
-    private String defaultBedHomeName = "Home";
-    private String homeNameRegex = "/([\\p{L}-]+)/ug";
-    private int respawnImmortality = 0;
-    private int HomesMaxGuiSlots = 99;
-
-    private boolean HomesGui = true;
-    private boolean HomesGuiComplex = true;
-    private boolean guiExpanded = false;
-
-    private CMIItemStack guiBorder = null;
-    private CMIItemStack guiInfill = null;
-//    private CMISound guiSound = null;
-
-    private boolean guiInfoButton = true;
-    private int guiInfoButtonSlot = 45;
-    private CMIItemStack guiInfoButtonItem = null;
-    private List<String> guiInfoButtonCommands = null;
-
-    private boolean guiCloseButton = true;
-    private int guiCloseButtonSlot = 45;
-    private CMIItemStack guiCloseButtonItem = null;
-    private List<String> guiCloseButtonCommands = null;
-
-    private boolean guiBedButton = true;
-    private int guiBedButtonSlot = 45;
-    private CMIItemStack guiBedButtonItem = null;
-
-    private boolean guiHomeButton = true;
-    private int guiHomeButtonSlot = 45;
-    private CMIItemStack guiHomeButtonItem = null;
-
-    private boolean guiDeathButton = true;
-    private int guiDeathButtonSlot = 45;
-    private CMIItemStack guiDeathButtonItem = null;
-
-    private int guiPrevButtonSlot = 49;
-    private int guiMiddleButtonSlot = 50;
-    private int guiNextButtonSlot = 51;
-
-    private boolean HomesBedInteraction = true;
-    private boolean onlyShiftBed = false;
-    private boolean RemoveBedLocationOnBedBreak = true;
-    private HashMap<String, List<String>> ReSpawnPriorityOrder = new HashMap<String, List<String>>();
-    private HashMap<String, HashMap<CMIUser, CmiHome>> bedHomes = new HashMap<String, HashMap<CMIUser, CmiHome>>();
+    HashMap<String, Integer> homeGroups;
+    private HashMap<String, HomeWorldLimit> homeLimits;
+    private boolean checkBlockbreak;
+    private boolean pickRealBlock;
+    private boolean homesWorldLimits;
+    private boolean confirmation;
+    private String defaultHomeName;
+    private String defaultBedHomeName;
+    private String homeNameRegex;
+    private int respawnImmortality;
+    private int HomesMaxGuiSlots;
+    private boolean HomesGui;
+    private boolean HomesGuiComplex;
+    private boolean guiExpanded;
+    private CMIItemStack guiBorder;
+    private CMIItemStack guiInfill;
+    private boolean guiInfoButton;
+    private int guiInfoButtonSlot;
+    private CMIItemStack guiInfoButtonItem;
+    private List<String> guiInfoButtonCommands;
+    private boolean guiCloseButton;
+    private int guiCloseButtonSlot;
+    private CMIItemStack guiCloseButtonItem;
+    private List<String> guiCloseButtonCommands;
+    private boolean guiBedButton;
+    private int guiBedButtonSlot;
+    private CMIItemStack guiBedButtonItem;
+    private boolean guiHomeButton;
+    private int guiHomeButtonSlot;
+    private CMIItemStack guiHomeButtonItem;
+    private boolean guiDeathButton;
+    private boolean guiBackButton;
+    private int guiDeathButtonSlot;
+    private CMIItemStack guiDeathButtonItem;
+    private int guiBackButtonSlot;
+    private CMIItemStack guiBackButtonItem;
+    private int guiPrevButtonSlot;
+    private int guiMiddleButtonSlot;
+    private int guiNextButtonSlot;
+    private boolean HomesBedInteraction;
+    private boolean onlyShiftBed;
+    private boolean RemoveBedLocationOnBedBreak;
+    private HashMap<String, List<String>> ReSpawnPriorityOrder;
+    private HashMap<String, HashMap<CMIUser, CmiHome>> bedHomes;
 
     public HomeManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void addHomeGroup(String group, int amount) {
-        homeGroups.put(group, amount);
+    }
+
+    public int getMaxHomes(CommandSender sender) {
+        return 0;
+    }
+
+    public int getMaxHomes(Player player) {
+        return 0;
+    }
+
+    public void loadConfig() {
+    }
+
+    public boolean isHomesBedInteraction() {
+        return false;
+    }
+
+    public Location getReSpawnLocation(Player player) {
+        return null;
+    }
+
+    public Location getReSpawnLocation(Player player, Location respawnLoc) {
+        return null;
+    }
+
+    public boolean isCheckBlockbreak() {
+        return false;
+    }
+
+    public String getDefaultHomeName() {
+        return null;
+    }
+
+    public String getDefaultBedHomeName() {
+        return null;
+    }
+
+    public HashMap<String, HashMap<CMIUser, CmiHome>> getBedHomes() {
+        return null;
+    }
+
+    public void addBedHome(CMIUser user, CmiHome bedHome) {
+    }
+
+    public boolean removeBedHome(Location loc) {
+        return false;
+    }
+
+    public boolean isRemoveBedLocationOnBedBreak() {
+        return false;
+    }
+
+    public boolean openHomeGui(Player player, CMIUser user, int page) {
+        return false;
+    }
+
+    public boolean openComplexHomeGui(Player player, CMIUser user, int page) {
+        return false;
+    }
+
+    private void homeEditor(Player player, CMIUser targetUser, CmiHome home, int page) {
+    }
+
+    public boolean openSimpleHomeGui(Player player, CMIUser user, int page) {
+        return false;
+    }
+
+    public boolean isHomesGui() {
+        return false;
+    }
+
+    public int getRespawnImmortality() {
+        return 0;
+    }
+
+    public String getHomeNameRegex() {
+        return null;
+    }
+
+    public void setHomeNameRegex(String homeNameRegex) {
+    }
+
+    public boolean isPickRealBlock() {
+        return false;
+    }
+
+    public boolean isOnlyShiftBed() {
+        return false;
+    }
+
+    public boolean isConfirmation() {
+        return false;
+    }
+
+    public boolean isHomesWorldLimits() {
+        return false;
+    }
+
+    public void setHomesWorldLimits(boolean homesWorldLimits) {
+    }
+
+    public int getWorldLimit(String worldName) {
+        return 0;
+    }
+
+    public HomeWorldLimit getWorldLimitObject(String worldName) {
+        return null;
+    }
+
+    public boolean isHomesGuiComplex() {
+        return false;
+    }
+
+    public int getGuiCloseButtonSlot() {
+        return 0;
+    }
+
+    public CMIItemStack getGuiCloseButtonItem() {
+        return null;
+    }
+
+    public int getHomesMaxGuiSlots() {
+        return 0;
     }
 
     public enum RespawnPriority {
         anchor, bedLocation, spawn, homeLocation, worldSpawn;
 
         public static RespawnPriority getByName(String name) {
-            for (RespawnPriority one : RespawnPriority.values()) {
-                if (one.name().equalsIgnoreCase(name))
-                    return one;
-            }
             return null;
         }
 
@@ -95,150 +202,5 @@ public class HomeManager {
         public static String getAsString() {
             return null;
         }
-    }
-
-    public int getMaxHomes(CommandSender sender) {
-        if (sender instanceof Player)
-            return getMaxHomes((Player) sender);
-        return 999;
-    }
-
-    public int getMaxHomes(Player player) {
-        int homes = 1;
-        return homes;
-    }
-
-    public void loadConfig() {
-
-    }
-
-    public boolean isHomesBedInteraction() {
-        return HomesBedInteraction;
-    }
-
-    public Location getReSpawnLocation(Player player) {
-        return getReSpawnLocation(player, null);
-    }
-
-    public Location getReSpawnLocation(Player player, Location respawnLoc) {
-
-        return null;
-    }
-
-    public boolean isCheckBlockbreak() {
-        return checkBlockbreak;
-    }
-
-    public String getDefaultHomeName() {
-        return defaultHomeName;
-    }
-
-    public String getDefaultBedHomeName() {
-        return defaultBedHomeName;
-    }
-
-    public HashMap<String, HashMap<CMIUser, CmiHome>> getBedHomes() {
-        return bedHomes;
-    }
-
-    public void addBedHome(CMIUser user, CmiHome bedHome) {
-    }
-
-    public boolean removeBedHome(Location loc) {
-        String l = plugin.getPlayerManager().convertBlockLocToString(loc);
-        HashMap<CMIUser, CmiHome> res = bedHomes.remove(l);
-
-        return res != null;
-    }
-
-    public boolean isRemoveBedLocationOnBedBreak() {
-        return RemoveBedLocationOnBedBreak;
-    }
-
-    public boolean openHomeGui(Player player, CMIUser user, int page) {
-
-        if (page < 1)
-            page = 1;
-
-        if (this.isHomesGuiComplex())
-            return openComplexHomeGui(player, user, page);
-        return openSimpleHomeGui(player, user, page);
-    }
-
-    public boolean openComplexHomeGui(Player player, CMIUser user, int page) {
-
-        return true;
-    }
-
-    private void homeEditor(Player player, CmiHome home, int page) {
-
-    }
-
-    public boolean openSimpleHomeGui(Player player, CMIUser user, int page) {
-
-        return true;
-    }
-
-    public boolean isHomesGui() {
-        return HomesGui;
-    }
-
-    public int getRespawnImmortality() {
-        return respawnImmortality;
-    }
-
-    public String getHomeNameRegex() {
-        return homeNameRegex;
-    }
-
-    public void setHomeNameRegex(String homeNameRegex) {
-        this.homeNameRegex = homeNameRegex;
-    }
-
-    public boolean isPickRealBlock() {
-        return pickRealBlock;
-    }
-
-    public boolean isOnlyShiftBed() {
-        return onlyShiftBed;
-    }
-
-    public boolean isConfirmation() {
-        return confirmation;
-    }
-
-    public boolean isHomesWorldLimits() {
-        return homesWorldLimits;
-    }
-
-    public void setHomesWorldLimits(boolean homesWorldLimits) {
-        this.homesWorldLimits = homesWorldLimits;
-    }
-
-    public int getWorldLimit(String worldName) {
-        HomeWorldLimit limit = getWorldLimitObject(worldName);
-        if (limit == null)
-            return -1;
-        return limit.getLimit();
-    }
-
-    public HomeWorldLimit getWorldLimitObject(String worldName) {
-        return homeLimits.get(worldName.toLowerCase());
-    }
-
-    public boolean isHomesGuiComplex() {
-        return HomesGuiComplex;
-    }
-
-    public int getGuiCloseButtonSlot() {
-        return guiCloseButtonSlot;
-    }
-
-    public CMIItemStack getGuiCloseButtonItem() {
-        return guiCloseButtonItem;
-    }
-
-    public int getHomesMaxGuiSlots() {
-        return HomesMaxGuiSlots;
     }
 }

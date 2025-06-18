@@ -1,6 +1,5 @@
 package com.Zrips.CMI;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +8,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -21,7 +19,6 @@ import com.Zrips.CMI.Modules.ChatFilter.ChatFilterRule;
 import com.Zrips.CMI.Modules.CustomText.CText;
 import com.Zrips.CMI.Modules.Teleportations.TeleportManager.TpAction;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -29,142 +26,113 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Config {
-
-    public static String imageFolder = CMI.getInstance().getDataFolder().getPath() + File.separator + "Images";
-
-    private boolean ShowNewVersion = true;
-    public static boolean DyeBoundToPlayer = true;
-
-    private List<String> signEditBlackList = new ArrayList<String>();
-    private HashMap<String, Integer> FlyAboveRoofLimitationsMap = new HashMap<String, Integer>();
-
-    public boolean VaultMoney = true;
-
-    private boolean OverrideLoginMessage = true;
-    private boolean BossBarHpBarEnabled = true;
-    private List<EntityType> HpBarBlackList = new ArrayList<EntityType>();
-
+    public static String imageFolder;
+    private boolean ShowNewVersion;
+    public static boolean DyeBoundToPlayer;
+    private List<String> signEditBlackList;
+    private HashMap<String, Integer> FlyAboveRoofLimitationsMap;
+    public boolean VaultMoney;
+    private boolean OverrideLoginMessage;
+    private boolean BossBarHpBarEnabled;
+    private List<EntityType> HpBarBlackList;
     private String BooksDefaultAuthor;
-    public static boolean BooksAddDate = false;
-    public boolean VaultGroup = true;
-    public boolean GlobalRangeByDefault = false;
-    public boolean DynamicViewRangeEnabled = false;
+    public static boolean BooksAddDate;
+    public boolean VaultGroup;
+    public boolean DynamicViewRangeEnabled;
     private int OptimizationsSimilarCommandChecker;
     private boolean OptimizationsSimilarCommandPrevention;
-    public int scanDefaultSpeed;
     public int lfixDefaultSpeed;
-    public int DefaultRange;
     public int SpawnMobMaxQuantity;
     public int SpawnMobMaxPassengers;
-    public double scanSoftCap;
     public double lfixSoftCap;
     public boolean fixLightOngeneration;
-    private List<String> fixWorldsToFix = new ArrayList<String>();
-    public boolean hungeroveride = false;
-    public String Lang = "EN";
-    public boolean LanguageDownload = true;
-
-    public static boolean monochromeConsole = false;
-    public static int ImmortalityOnJoin = 3;
-    public boolean fileSaveAsync = false;
-    private boolean PartialPlayerName = false;
-    public static boolean PrioritizeOnlinePlayers = false;
-    public boolean PreventDifferentCapitalizationNames = true;
-    public boolean PlayTimeFromStats = false;
-    public static boolean PlayTimeAutoUpdater = false;
-    private boolean PreloadTopPlaytime = false;
-    private List<Material> ItemLoreTypeBlackList = new ArrayList<Material>();
-    private boolean ItemNameMarkChanged = false;
-    private boolean ItemLoreMarkChanged = false;
-    public static int ItemLoreMaxLength = 64;
-    private boolean CMIPlayTimeTracking = false;
-
-    public static List<String> PlaytimeTopExclude = new ArrayList<String>();
-    public static long PlaytimeTopOffline = 0;
-
+    private List<String> fixWorldsToFix;
+    public boolean hungeroveride;
+    public String Lang;
+    public boolean LanguageDownload;
+    public static boolean monochromeConsole;
+    public static int ImmortalityOnJoin;
+    public boolean fileSaveAsync;
+    private boolean PartialPlayerName;
+    public static boolean PrioritizeOnlinePlayers;
+    public boolean PreventDifferentCapitalizationNames;
+    public boolean PlayTimeFromStats;
+    public static boolean PlayTimeAutoUpdater;
+    private boolean PreloadTopPlaytime;
+    private List<Material> ItemLoreTypeBlackList;
+    private boolean ItemNameMarkChanged;
+    private boolean ItemLoreMarkChanged;
+    public static int ItemLoreMaxLength;
+    private boolean CMIPlayTimeTracking;
+    public static List<String> PlaytimeTopExclude;
+    public static long PlaytimeTopOffline;
     private boolean PerformCommandsOnNewName;
     private List<String> OptimizationsNameChangeCommands;
-
-    private boolean DisableWorldChunkCheckInfo = true;
-
-    private boolean OnLimitedItemUseInform = true;
-
-    private boolean PreventEntityBoatEnterAnimals = true;
-    private boolean PreventEntityBoatEnterMonsters = true;
-    private boolean PreventEntityBoatEnterVillagers = true;
-
-    private boolean PreventBedExplosionNether = true;
-    private boolean PreventBedExplosionTheEnd = true;
-    private boolean PreventPlayersOnNetherRoof = true;
-    private int netherRoofHeight = 0;
-    private boolean PreventPlayersBelowBedrock = true;
-
-    private boolean PreventIronGolemRoses = false;
-    public static boolean ShowMainHelpPage = true;
-    private boolean PreventHook = false;
-    public static int NearDefaultDistance = 200;
-    public static boolean NearCommand = false;
-    public static List<Integer> lastonlineTimers = new ArrayList<>();
-    public static boolean NearHideInvisible = false;
-    public static boolean NearHideObfuscate = false;
-    public static boolean NearDirection = true;
-    public static int NearCommandCount = 10;
-    private boolean MulticraftDisableList = false;
-    private boolean PreventExpPortals = false;
-    public static boolean NoCommandsInBed = false;
-    public static boolean LimitBooks = false;
-    public static boolean BlockEndPortalItemTransfers = false;
-
-    public static List<String> CommandsClearExclude = new ArrayList<String>();
-    public static boolean CommandsClearConfirmation = true;
-    public static boolean CommandsListASCOrder = true;
-
-    private boolean FlyAboveRoof = true;
-
-    private boolean durabilityLossUse = true;
-    private boolean armorDurabilityLossUse = true;
-    private int durabilityLossPercentage = 10;
-    private int armorDurabilityLossPercentage = 10;
-
+    private boolean OnLimitedItemUseInform;
+    private boolean PreventEntityBoatEnterAnimals;
+    private boolean PreventEntityBoatEnterMonsters;
+    private boolean PreventEntityBoatEnterVillagers;
+    private boolean PreventBedExplosionNether;
+    private boolean PreventBedExplosionTheEnd;
+    private boolean PreventPlayersOnNetherRoof;
+    private int netherRoofHeight;
+    private boolean PreventPlayersBelowBedrock;
+    private boolean PreventIronGolemRoses;
+    public static boolean ShowMainHelpPage;
+    private boolean PreventHook;
+    public static int NearDefaultDistance;
+    public static boolean NearCommand;
+    public static List<Integer> lastonlineTimers;
+    public static boolean NearHideInvisible;
+    public static boolean NearHideObfuscate;
+    public static boolean NearDirection;
+    public static int NearCommandCount;
+    private boolean MulticraftDisableList;
+    private boolean PreventExpPortals;
+    public static boolean NoCommandsInBed;
+    public static boolean LimitBooks;
+    public static boolean BlockEndPortalItemTransfers;
+    public static List<String> CommandsClearExclude;
+    public static boolean CommandsClearConfirmation;
+    public static boolean CommandsListASCOrder;
+    private boolean FlyAboveRoof;
+    private boolean durabilityLossUse;
+    private boolean armorDurabilityLossUse;
+    private int durabilityLossPercentage;
+    private int armorDurabilityLossPercentage;
     private String LongDateFormat;
     private String ShortDateFormat;
     private boolean SellLog;
-
     private boolean PermisionOnError;
     private boolean PermisionInConsole;
     private boolean OptimizationsCommandSorting;
     private boolean AllowRconCommands;
+    private List<String> CustomCommandSenders;
+    private boolean CleanRconCommands;
     private boolean OptimizationsCommandRemoveLabel;
-
-    private HashMap<CMIItemStack, String> ItemRenamingPreventMap = new HashMap<CMIItemStack, String>();
-    public static boolean ItemRenamingGlobalDisable = false;
-    public static int ItemRenamingMaxLength = 64;
-
-    private boolean PotionEffectsDeductWhileOffline = false;
-
+    private HashMap<CMIItemStack, String> ItemRenamingPreventMap;
+    public static boolean ItemRenamingGlobalDisable;
+    public static boolean ItemRenamingCheckSource;
+    public static boolean AddItalicByDefault;
+    public static int ItemRenamingMaxLength;
+    private boolean PotionEffectsDeductWhileOffline;
     public int IPdelay;
-    public static boolean IPRecord = true;
-    public static boolean helpopfeedbackMessage = true;
-
-    public boolean LoginDisabled = false;
-    public boolean LogoutDisabled = false;
-    public boolean LoginCustomUse = false;
-    public boolean LogoutCustomUse = false;
-    public boolean LogoutServerSwitch = false;
-    public boolean LoginServerSwitch = false;
-    public boolean FirstJoinMessageUse = false;
-
-    public static boolean loginNameFilterUse = false;
-    public static boolean logoutNameFilterUse = false;
-
-    public static ChatFilterRule loginLogoutNameFilter = new ChatFilterRule();
-
-    private int LogoutAutoHideFrom = -1;
-    private int LoginAutoHideFrom = -1;
-
-    private boolean NotesShowOnAlertEvent = true;
-    public static long alertTimer = 1440;
-
+    public static boolean IPRecord;
+    public static boolean helpopfeedbackMessage;
+    public boolean LoginDisabled;
+    public boolean LogoutDisabled;
+    public boolean LoginCustomUse;
+    public boolean LogoutCustomUse;
+    public boolean LogoutServerSwitch;
+    public boolean LoginServerSwitch;
+    public boolean FirstJoinMessageUse;
+    public static boolean loginNameFilterUse;
+    public static boolean logoutNameFilterUse;
+    public static ChatFilterRule loginLogoutNameFilter;
+    private int LogoutAutoHideFrom;
+    private int LoginAutoHideFrom;
+    private boolean NotesShowOnAlertEvent;
+    public static long alertTimer;
     public String TimeDay;
     public String TimeNight;
     public String TimeMorning;
@@ -172,769 +140,739 @@ public class Config {
     public int AutoTimeInterval;
     private boolean AutoTimeSmooth;
     private int AutoTimeSmoothSpeed;
-
-    private CText Motd = null;
-
-    public boolean SearchPurge = false;
-    public boolean ScanPurge = false;
-
-    public static boolean MuteNoPm = true;
-    public boolean CuffMute = true;
-    public List<String> CuffAllowed = new ArrayList<String>();
-    private List<Material> GroundCleanWhiteList = new ArrayList<Material>();
-
-    public boolean WorldLimits = false;
-    public HashMap<String, GameMode> worldGameMode = new HashMap<String, GameMode>();
-    public HashMap<String, Boolean> worldFlyMode = new HashMap<String, Boolean>();
-    public HashMap<String, Boolean> worldGodMode = new HashMap<String, Boolean>();
-    public HashMap<String, Boolean> worldElytraMode = new HashMap<String, Boolean>();
-
-    private HashMap<String, List<SpawnReason>> blockedSpawnReasons = new HashMap<String, List<SpawnReason>>();
-
-    public boolean hatIgnoreLored = false;
-    public boolean hatBlockArmorItems = false;
-    public boolean hatBlockNoneHatEnchanted = false;
-    public boolean hatAllowMobHeads = true;
-    public List<CMIMaterial> hatWhiteList = new ArrayList<CMIMaterial>();
-
-    public boolean RemoveNegative = false;
-    public List<String> RemoveNegativeEffects = new ArrayList<String>();
-    private List<String> CommandSpyBlackListed = new ArrayList<String>();
-    private List<String> CommandSpyCommandList = new ArrayList<String>();
-    private int SpyDelayForTrigger = 1;
-
-    private CMIParticle PointDefaultParticle = CMIParticle.COLOURED_DUST;
-
-    private boolean ExploitPatcherRiptide = true;
-    private boolean ExploitPatcherCheckItem = true;
-
-    public int CounterRange = 10;
-
-    private int MaxHp = 20;
-
-    private boolean NetherPortalPreventCreation = false;
-    public int NetherPortalMaxHeight = 23;
-    public int NetherPortalMaxWidth = 23;
-
-    public HashMap<DamageCause, ArrayList<DamageControl>> DamageControlMap = new HashMap<DamageCause, ArrayList<DamageControl>>();
-
-    public int MirrorMaxRange = 50;
-    private boolean MirrorBreakDisabled = false;
-
+    private CText Motd;
+    public boolean SearchPurge;
+    public boolean SearchLogIntoFile;
+    public static boolean MuteNoPm;
+    public boolean CuffMute;
+    public List<String> CuffAllowed;
+    private List<Material> GroundCleanWhiteList;
+    private List<EntityType> GroundCleanEntityWhiteList;
+    public boolean WorldLimits;
+    public HashMap<String, GameMode> worldGameMode;
+    public HashMap<String, Boolean> worldFlyMode;
+    public HashMap<String, Boolean> worldGodMode;
+    public HashMap<String, Boolean> worldElytraMode;
+    public boolean hatIgnoreLored;
+    public boolean hatBlockArmorItems;
+    public boolean hatBlockNoneHatEnchanted;
+    public boolean hatAllowMobHeads;
+    public List<CMIMaterial> hatWhiteList;
+    public boolean RemoveNegative;
+    public List<String> RemoveNegativeEffects;
+    private List<String> CommandSpyBlackListed;
+    private List<String> CommandSpyCommandList;
+    private int SpyDelayForTrigger;
+    private CMIParticle PointDefaultParticle;
+    private boolean ExploitPatcherRiptide;
+    private boolean ExploitPatcherCheckItem;
+    public int CounterRange;
+    private int MaxHp;
+    private boolean NetherPortalPreventCreation;
+    public int NetherPortalMaxHeight;
+    public int NetherPortalMaxWidth;
+    public HashMap<DamageCause, ArrayList<DamageControl>> DamageControlMap;
+    public int MirrorMaxRange;
+    private boolean MirrorBreakDisabled;
     private CMIItemStack SelectionTool;
-
-    private CMILocation firstSpawnPoint = null;
-
-    private boolean InvDisableOffline = false;
-    public static List<String> InvBlackList = new ArrayList<String>();
-
-    private boolean CompassBossBar = false;
-    private boolean CompassRequireCompass = false;
-    private boolean recoveryRequireCompass = false;
-    private boolean recoveryAsRegularCompass = false;
-    private int CompassUpdateInterval = 200;
-    private String CompassShape;
-    private String CompassColor;
-    private String CompassHomeIcon;
-    private String CompassSpawnIcon;
-    private String CompassDeathIcon;
-    private String CompassTargetIcon;
-    public static List<String> CompassColors = new ArrayList<String>();
-    public static boolean CompassShowHome;
-    public static boolean CompassShowSpawn;
-    public static boolean CompassShowDeath;
-    public static boolean CompassShowCompass;
-
-    private long PlayerNotesExpiresIn = 30L;
-    private long PlayerMailExpiresIn = 30L;
-    private int PlayerMailAllDays = 30;
-    private int PlayerMailMax = 30;
-
-    public int DisposeUILines = 4;
-    public boolean DisposeCustomModelData = true;
-    public boolean DisposeAttachedCommands = true;
-
-    private ConfigReader localeFile = null;
-    private ConfigReader cfg = null;
-
-    public static ChatFilterRule InteractiveCommandsSignRegex = new ChatFilterRule();
-    public static boolean InteractiveCommandsSort = true;
-    public static boolean UseFakeOperator = false;
-    public static boolean InfiniteLoopDetection = true;
-
-    public static boolean ShowSkullOwner = true;
-    public static boolean ShowBeeHive = true;
-    private String ElevatorIndicator = "[CMIElevator]";
-    private String ElevatorStaticIndicator = "[*]";
-    private boolean maintenance = false;
-    public static boolean DisableTeamManagement = false;
-    private boolean AutoDownloadGeoIp = true;
-    private boolean AutoDownloadGeoLiteCity = true;
-
-    private String maintenanceMessage = null;
-    public static Boolean maintenanceBossbar = null;
-    public static Boolean maintenanceAutoKick = null;
-
+    private CMILocation firstSpawnPoint;
+    private boolean InvDisableOffline;
+    public static List<String> InvBlackList;
+    private long PlayerNotesExpiresIn;
+    public int DisposeUILines;
+    public boolean DisposeCustomModelData;
+    public boolean DisposeAttachedCommands;
+    public List<CMIMaterial> DisposeMaterials;
+    private ConfigReader localeFile;
+    private ConfigReader cfg;
+    public static ChatFilterRule InteractiveCommandsSignRegex;
+    public static boolean InteractiveCommandsSort;
+    public static boolean UseFakeOperator;
+    public static boolean InfiniteLoopDetection;
+    public static boolean ShowSkullOwner;
+    public static boolean ShowBeeHive;
+    public static boolean ShowDecoratedPot;
+    private List<String> ElevatorIndicator;
+    private String ElevatorStaticIndicator;
+    private boolean maintenance;
+    public static boolean DisableTeamManagement;
+    private boolean AutoDownloadGeoIp;
+    private boolean AutoDownloadGeoLiteCity;
+    private String maintenanceMessage;
+    public static Boolean maintenanceBossbar;
+    public static Boolean maintenanceAutoKick;
     private CMI plugin;
+    List<String> CommentList;
 
     public Config(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void ChangeConfig(String path, Object list) {
-        ChangeConfig(path, list, true);
     }
 
     public void ChangeConfig(String path, Object list, boolean load) {
     }
 
     private static void newLn(StringBuilder header) {
-        header.append(System.lineSeparator());
     }
 
     private static StringBuilder formStringBuilder(List<String> list) {
-        StringBuilder header = new StringBuilder();
-        return header;
+        return null;
     }
 
-    // Language file
     public boolean LoadLang(String lang) {
-        return LoadLang(lang, false);
+        return false;
     }
 
     public boolean LoadLang(String lang, boolean isReload) {
-        return true;
+        return false;
     }
 
     public boolean load() {
-        return load(false);
+        return false;
     }
 
     private static void exportChatSection(ConfigReader cfg) {
-     
     }
 
-    public boolean load(boolean isReload) {    
-        return true;
+    public boolean reload() {
+        return false;
     }
 
+    public boolean load(boolean isReload) {
+        return false;
+    }
+
+    private static DamageCause getCause(String name) {
+        return null;
+    }
 
     public void reload(CommandSender sender) {
-
-
     }
 
     public boolean reloadLanguage() {
-        boolean langLoaded = LoadLang("EN", true);
-        return langLoaded;
+        return false;
     }
 
     public Location getFirstSpawnPoint() {
-        return firstSpawnPoint == null ? null : firstSpawnPoint.clone();
+        return null;
     }
 
     public ConfigReader getConfig() {
-        if (cfg == null) {
-            try {
-                cfg = new ConfigReader(CMI.getInstance(), "config.yml");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return cfg;
+        return null;
     }
 
     public long getPlayerNotesExpiresIn() {
-        return PlayerNotesExpiresIn;
+        return 0;
     }
 
+    @Deprecated
     public long getPlayerMailExpiresIn() {
-        return PlayerMailExpiresIn;
+        return 0;
     }
 
     @Deprecated
     public boolean isDurabilityLossUse() {
-        return isToolDurabilityLossUse();
+        return false;
     }
 
     public boolean isToolDurabilityLossUse() {
-        return durabilityLossUse;
+        return false;
     }
 
     @Deprecated
     public int getDurabilityLossPercentage() {
-        return getToolDurabilityLossPercentage();
+        return 0;
     }
 
     public int getToolDurabilityLossPercentage() {
-        return durabilityLossPercentage;
+        return 0;
     }
 
     public HashMap<CMIItemStack, String> getItemRenamingPreventMap() {
-        return ItemRenamingPreventMap;
+        return null;
     }
 
     public boolean isOnLimitedItemUseInform() {
-        return OnLimitedItemUseInform;
+        return false;
     }
 
     @Deprecated
     public boolean isRepairShareProtectNormalRepair() {
-        return CMI.getInstance().getRepairManager().isRSProtectNormalRepair();
+        return false;
     }
 
     @Deprecated
     public int getRepairShareDurability() {
-        return CMI.getInstance().getRepairManager().getRSDurability();
+        return 0;
     }
 
     @Deprecated
     public boolean isRepairShareAddLore() {
-        return CMI.getInstance().getRepairManager().isRSAddLore();
+        return false;
     }
 
     @Deprecated
     public boolean isRepairShareCancelEvent() {
-        return CMI.getInstance().getRepairManager().isRSCancelEvent();
+        return false;
     }
 
     @Deprecated
     public boolean isRepairShareInformWithMessage() {
-        return CMI.getInstance().getRepairManager().isRSInformWithMessage();
+        return false;
     }
 
     @Deprecated
     public boolean isRepairShareProtectCommandRepair() {
-        return CMI.getInstance().getRepairManager().isRSProtectCommandRepair();
+        return false;
     }
 
     @Deprecated
     public boolean isRepairShareBypassWithPerm() {
-        return CMI.getInstance().getRepairManager().isRSBypassWithPerm();
+        return false;
     }
 
     public int getMaxHp() {
-        return MaxHp;
+        return 0;
     }
 
     public boolean isNotesShowOnAlertEvent() {
-        return NotesShowOnAlertEvent;
+        return false;
     }
 
     public boolean isPreventExpPortals() {
-        return PreventExpPortals;
+        return false;
     }
 
     public ConfigReader getLocaleConfig() {
-        if (localeFile == null) {
-            File f = new File(plugin.getDataFolder(), "Translations" + File.separator + "Locale_" + this.Lang + ".yml");
-            try {
-                this.localeFile = new ConfigReader(f);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }
-        return localeFile;
+        return null;
     }
 
+    @Deprecated
     public boolean isDisableWorldChunkCheckInfo() {
-        return DisableWorldChunkCheckInfo;
+        return false;
     }
 
     public boolean isPreventEntityBoatEnterAnimals() {
-        return PreventEntityBoatEnterAnimals;
+        return false;
     }
 
     public boolean isPreventEntityBoatEnterMonsters() {
-        return PreventEntityBoatEnterMonsters;
+        return false;
     }
 
     public boolean isPreventBedExplosionNether() {
-        return PreventBedExplosionNether;
+        return false;
     }
 
     public boolean isPreventIronGolemRoses() {
-        return PreventIronGolemRoses;
+        return false;
     }
 
     public boolean isMulticraftDisableList() {
-        return MulticraftDisableList;
+        return false;
     }
 
     public boolean isPreventBedExplosionTheEnd() {
-        return PreventBedExplosionTheEnd;
+        return false;
     }
 
     public CMIItemStack getSelectionTool() {
-        return SelectionTool;
+        return null;
     }
 
     public boolean isNetherPortalPreventCreation() {
-        return NetherPortalPreventCreation;
+        return false;
     }
 
     public boolean isMaintenance() {
-        return maintenance;
+        return false;
     }
 
     public void setMaintenance(boolean maintenance) {
-        ChangeConfig("Optimizations.Maintenance", maintenance, false);
-        this.maintenance = maintenance;
     }
 
     public String getMaintenanceMessage() {
-        return maintenanceMessage;
+        return null;
     }
 
     public void setMaintenanceMessage(String maintenanceMessage) {
-        this.maintenanceMessage = maintenanceMessage;
     }
 
     public boolean isOverrideLoginMessage() {
-        return OverrideLoginMessage;
+        return false;
     }
 
     public CText getMotd() {
-        return Motd;
+        return null;
     }
 
     public boolean isPermisionOnError() {
-        return PermisionOnError;
+        return false;
     }
 
     public List<String> getFixWorldsToFix() {
-        return fixWorldsToFix;
+        return null;
     }
 
     public List<String> getCommandSpyBlackListed() {
-        return CommandSpyBlackListed;
+        return null;
     }
 
     public int getSpyDelayForTrigger() {
-        return SpyDelayForTrigger;
+        return 0;
     }
 
     public boolean isOptimizationsCommandSorting() {
-        return OptimizationsCommandSorting;
+        return false;
     }
 
     public boolean isPreventPlayersOnNetherRoof() {
-        return PreventPlayersOnNetherRoof;
+        return false;
     }
 
     public boolean isPreventPlayersBelowBedrock() {
-        return PreventPlayersBelowBedrock;
+        return false;
     }
 
     public boolean isBossBarHpBarEnabled() {
-        return BossBarHpBarEnabled;
+        return false;
     }
 
     public List<Material> getGroundCleanWhiteList() {
-        return GroundCleanWhiteList;
+        return null;
+    }
+
+    public List<EntityType> getGroundCleanEntityWhiteList() {
+        return null;
     }
 
     public boolean isPartialPlayerName() {
-        return PartialPlayerName;
+        return false;
     }
 
     public boolean isOptimizationsCommandRemoveLabel() {
-        return OptimizationsCommandRemoveLabel;
+        return false;
     }
 
+    @Deprecated
     public boolean isBlockedSpawnReason(String worldName, SpawnReason reason) {
-        List<SpawnReason> reaons = blockedSpawnReasons.get(worldName);
-        if (reaons == null)
-            return false;
-        return reaons.contains(reason);
+        return false;
     }
 
     public boolean isPreventHook() {
-        return PreventHook;
+        return false;
     }
 
     public CMIParticle getPointDefaultParticle() {
-        return PointDefaultParticle;
+        return null;
     }
 
     public boolean isPermisionInConsole() {
-        return PermisionInConsole;
+        return false;
     }
 
     public boolean isSellLog() {
-        return SellLog;
+        return false;
     }
 
     @Deprecated
     public boolean isSpawnersSupportDisabled() {
-        return plugin.getSpawnerChargesManager().isSpawnersSupportDisabled();
+        return false;
     }
 
     public String getBooksDefaultAuthor() {
-        return BooksDefaultAuthor;
+        return null;
     }
 
     @Deprecated
     public List<String> getCleanUpWhiteList() {
-        return plugin.getChatManager().getCleanUpWhiteList();
+        return null;
     }
 
     @Deprecated
     public boolean isChatReplyToLastMessenger() {
-        return plugin.getChatManager().isChatReplyToLastMessenger();
+        return false;
     }
 
     @Deprecated
     public int getLastMessengerTimeOut() {
-        return plugin.getChatManager().getLastMessengerTimeOut();
+        return 0;
     }
 
     @Deprecated
     public boolean isColorsMe() {
-        return plugin.getChatManager().isColorsMe();
+        return false;
     }
 
     @Deprecated
     public boolean isChatDynMapChat() {
-        return plugin.getChatManager().isChatDynMapChat();
+        return false;
     }
 
     @Deprecated
     public boolean isModifyChatFormat() {
-        return plugin.getChatManager().isModifyChatFormat();
+        return false;
     }
 
     @Deprecated
     public boolean isChatClickHoverMessages() {
-        return plugin.getChatManager().isChatClickHoverMessages();
+        return false;
     }
 
     @Deprecated
     public boolean isColorsPublicMessages() {
-        return plugin.getChatManager().isColorsPublicMessages();
+        return false;
     }
 
     @Deprecated
     public boolean isColorsPrivateMessage() {
-        return plugin.getChatManager().isColorsPrivateMessage();
+        return false;
     }
 
     @Deprecated
     public boolean isChatIgnorePublicMessage() {
-        return plugin.getChatManager().isChatIgnorePublicMessage();
+        return false;
     }
 
     public List<String> getCommandSpyCommandList() {
-        return CommandSpyCommandList;
+        return null;
     }
 
     public boolean isCMIPlayTimeTracking() {
-        return CMIPlayTimeTracking;
+        return false;
     }
 
     public void setCMIPlayTimeTracking(boolean cMIPlayTimeTracking) {
-        CMIPlayTimeTracking = cMIPlayTimeTracking;
     }
 
+    @Deprecated
     public int getPlayerMailAllDays() {
-        return PlayerMailAllDays;
+        return 0;
     }
 
+    @Deprecated
     public String getElevatorIndicator() {
-        return ElevatorIndicator;
+        return null;
+    }
+
+    public List<String> getElevatorIndicators() {
+        return null;
     }
 
     public String getElevatorStaticIndicator() {
-        return ElevatorStaticIndicator;
+        return null;
     }
 
     @Deprecated
     public boolean isSpawnersXpDrop() {
-        return plugin.getSpawnerChargesManager().isSpawnersXpDrop();
+        return false;
     }
 
+    @Deprecated
     public int getLogoutAutoHideFrom() {
-        return LogoutAutoHideFrom;
+        return 0;
     }
 
+    @Deprecated
     public int getLoginAutoHideFrom() {
-        return LoginAutoHideFrom;
+        return 0;
     }
 
     public boolean isAutoDownloadGeoIp() {
-        return AutoDownloadGeoIp;
+        return false;
     }
 
     public boolean isAutoDownloadGeoLiteCity() {
-        return AutoDownloadGeoLiteCity;
+        return false;
     }
 
     public boolean isPreloadTopPlaytime() {
-        return PreloadTopPlaytime;
+        return false;
     }
 
     @Deprecated
     public boolean isElytraPreventSelfDamage() {
-        return plugin.getElytraManager().isPreventSelfDamage();
+        return false;
     }
 
+    @Deprecated
     public boolean isFlyAboveRoof() {
-        return FlyAboveRoof;
+        return false;
     }
 
     public int getOptimizationsSimilarCommandChecker() {
-        return OptimizationsSimilarCommandChecker;
+        return 0;
     }
 
+    @Deprecated
     public HashMap<String, Integer> getFlyAboveRoofLimitationsMap() {
-        return FlyAboveRoofLimitationsMap;
+        return null;
     }
 
     public String getLongDateFormat() {
-        return LongDateFormat;
+        return null;
     }
 
     public String getShortDateFormat() {
-        return ShortDateFormat;
+        return null;
     }
 
     public boolean isAutoTimeSmooth() {
-        return AutoTimeSmooth;
+        return false;
     }
 
     public int getAutoTimeSmoothSpeed() {
-        return AutoTimeSmoothSpeed;
-    }
-
-    public boolean isBossBarCompassEnabled() {
-        return CompassBossBar;
+        return 0;
     }
 
     public List<EntityType> getHpBarBlackList() {
-        return HpBarBlackList;
-    }
-
-    public boolean isCompassRequireCompass() {
-        return CompassRequireCompass;
-    }
-
-    public int getCompassUpdateInterval() {
-        return CompassUpdateInterval;
+        return null;
     }
 
     @Deprecated
     public RandomTeleport getRandomTeleport(World w) {
-        return getRandomTeleport(w, false);
+        return null;
     }
 
     @Deprecated
     public RandomTeleport getRandomTeleport(World w, boolean includeDisabled) {
-        return plugin.getRandomTeleportationManager().getRandomTeleport(w, includeDisabled);
+        return null;
     }
 
     @Deprecated
     public HashMap<String, RandomTeleport> getRandomTeleports() {
-        return plugin.getRandomTeleportationManager().getRandomTeleports();
+        return null;
     }
 
     @Deprecated
     public int getRandomTeleportMaxTries() {
-        return plugin.getRandomTeleportationManager().getRandomTeleportMaxTries();
+        return 0;
     }
 
     @Deprecated
     public int getRandomTeleportCooldown() {
-        return plugin.getRandomTeleportationManager().getRandomTeleportCooldown();
+        return 0;
     }
 
     @Deprecated
-    public List<Biome> getRandomTeleportExcludedBiomes() {
-        return plugin.getRandomTeleportationManager().getRandomTeleportExcludedBiomes();
+    public List<String> getRandomTeleportExcludedBiomes() {
+        return null;
     }
 
     public List<Material> getItemLoreTypeBlackList() {
-        return ItemLoreTypeBlackList;
+        return null;
     }
 
     @Deprecated
     public boolean isDisableRiptide() {
-        return plugin.getElytraManager().isDisableRiptide();
+        return false;
     }
 
     public boolean isOptimizationsSimilarCommandPrevention() {
-        return OptimizationsSimilarCommandPrevention;
+        return false;
     }
 
+    @Deprecated
+    public boolean isBossBarCompassEnabled() {
+        return false;
+    }
+
+    @Deprecated
+    public boolean isCompassRequireCompass() {
+        return false;
+    }
+
+    @Deprecated
+    public int getCompassUpdateInterval() {
+        return 0;
+    }
+
+    @Deprecated
     public String getCompassShape() {
-        return CompassShape;
+        return null;
     }
 
+    @Deprecated
     public String getCompassColor() {
-        return CompassColor;
+        return null;
     }
 
+    @Deprecated
     public String getCompassHomeIcon() {
-        return CompassHomeIcon;
+        return null;
     }
 
+    @Deprecated
     public String getCompassSpawnIcon() {
-        return CompassSpawnIcon;
+        return null;
     }
 
+    @Deprecated
     public String getCompassDeathIcon() {
-        return CompassDeathIcon;
+        return null;
     }
 
+    @Deprecated
     public String getCompassTargetIcon() {
-        return CompassTargetIcon;
+        return null;
+    }
+
+    @Deprecated
+    public boolean isRecoveryRequireCompass() {
+        return false;
+    }
+
+    @Deprecated
+    public boolean isRecoveryAsRegularCompass() {
+        return false;
     }
 
     public boolean isPotionEffectsDeductWhileOffline() {
-        return PotionEffectsDeductWhileOffline;
+        return false;
     }
 
     public boolean isPreventEntityBoatEnterVillagers() {
-        return PreventEntityBoatEnterVillagers;
+        return false;
     }
 
     public int getArmorDurabilityLossPercentage() {
-        return armorDurabilityLossPercentage;
+        return 0;
     }
 
     public void setArmorDurabilityLossPercentage(int armorDurabilityLossPercentage) {
-        this.armorDurabilityLossPercentage = armorDurabilityLossPercentage;
     }
 
     public boolean isArmorDurabilityLossUse() {
-        return armorDurabilityLossUse;
+        return false;
     }
 
     public void setArmorDurabilityLossUse(boolean armorDurabilityLossUse) {
-        this.armorDurabilityLossUse = armorDurabilityLossUse;
     }
 
     public boolean isItemNameMarkChanged() {
-        return ItemNameMarkChanged;
+        return false;
     }
 
     public boolean isItemLoreMarkChanged() {
-        return ItemLoreMarkChanged;
+        return false;
     }
 
     public boolean isShowNewVersion() {
-        return ShowNewVersion;
+        return false;
     }
 
     public boolean isSignEditBlocked(String line) {
-        return signEditBlackList.contains(CMIChatColor.stripColor(line).toLowerCase());
-    }
-
-    public boolean isRecoveryRequireCompass() {
-        return recoveryRequireCompass;
-    }
-
-    public boolean isRecoveryAsRegularCompass() {
-        return recoveryAsRegularCompass;
+        return false;
     }
 
     public int getNetherRoofHeight() {
-        return netherRoofHeight;
+        return 0;
     }
 
     public boolean isInvDisableOffline() {
-        return InvDisableOffline;
+        return false;
     }
 
     public boolean isMirrorBreakDisabled() {
-        return MirrorBreakDisabled;
+        return false;
     }
 
     public boolean isExploitPatcherRiptide() {
-        return ExploitPatcherRiptide;
+        return false;
     }
 
+    @Deprecated
     public int getPlayerMailMax() {
-        return PlayerMailMax;
+        return 0;
     }
 
     @Deprecated
     public int getTeleportTpaMaxDistance() {
-        return plugin.getTeleportManager().getTpaMaxDistance();
+        return 0;
     }
 
     @Deprecated
     public int getTeleportTpaHereMaxDistance() {
-        return plugin.getTeleportManager().getTpaHereMaxDistance();
+        return 0;
     }
 
     @Deprecated
     public List<String> getBackBlackList() {
-        return plugin.getTeleportManager().getBackBlackList();
+        return null;
     }
 
     @Deprecated
     public int getBackMinDistance() {
-        return plugin.getTeleportManager().getBackMinDistance();
+        return 0;
     }
 
     @Deprecated
     public boolean isSafeLocationDownThenUp() {
-        return plugin.getTeleportManager().isSafeLocationDownThenUp();
+        return false;
     }
 
     @Deprecated
     public boolean isTpaCurrentLoc() {
-        return plugin.getTeleportManager().isTpaCurrentLoc();
+        return false;
     }
 
     @Deprecated
     public boolean isTpahereCurrentLoc() {
-        return plugin.getTeleportManager().isTpahereCurrentLoc();
+        return false;
     }
 
     @Deprecated
     public int getTeleportJumpDefault() {
-        return plugin.getTeleportManager().getJumpDefaultDistance();
+        return 0;
     }
 
     @Deprecated
     public HashMap<Material, Integer> getBlockedItems() {
-        return plugin.getTeleportManager().getBlockedItems();
+        return null;
     }
 
     @Deprecated
     public Boolean isBlackListedItemsEnabledFor(TpAction action) {
-        return plugin.getTeleportManager().isBlackListedItemsEnabledFor(action);
+        return null;
     }
 
     @Deprecated
     public boolean isTeleportSwitchPlaces() {
-        return plugin.getTeleportManager().isSwitchTeleportPlaces();
+        return false;
     }
 
     @Deprecated
     public int getTeleportTpaWarmup() {
-        return plugin.getTeleportManager().getTpaWarmupTime();
+        return 0;
     }
 
     @Deprecated
     public boolean isTeleportTpaMove() {
-        return plugin.getTeleportManager().isTpaMove();
+        return false;
     }
 
     public boolean isAllowRconCommands() {
-        return AllowRconCommands;
+        return false;
+    }
+
+    public boolean isCleanRconCommands() {
+        return false;
     }
 
     public boolean isPerformCommandsOnNewName() {
-        return PerformCommandsOnNewName;
+        return false;
     }
 
     public List<String> getOptimizationsNameChangeCommands() {
-        return OptimizationsNameChangeCommands;
+        return null;
     }
 
     public boolean isExploitPatcherCheckItem() {
-        return ExploitPatcherCheckItem;
+        return false;
+    }
+
+    public List<String> getCustomCommandSenders() {
+        return null;
     }
 }

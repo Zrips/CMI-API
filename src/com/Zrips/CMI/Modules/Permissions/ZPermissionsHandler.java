@@ -12,7 +12,6 @@ public class ZPermissionsHandler implements PermissionInterface {
     @Override
     public String getMainGroup(Player player) {
         return null;
-
     }
 
     @Override
@@ -44,5 +43,4 @@ public class ZPermissionsHandler implements PermissionInterface {
     public String getNameColor(Player player) {
         return null;
     }
-
 }

@@ -1,91 +1,85 @@
 package com.Zrips.CMI.Modules.Repair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.Zrips.CMI.CMI;
 
 public class RepairManager {
-    private boolean repairCostsMoney = false;
-    private double baseCost = 0D;
-    private boolean checkDurability = true;
-    private double worthPercentage = 10D;
-    private double enchantWorthPercentage = 10D;
-
-    private boolean RSProtectNormalRepair = false;
-    private boolean RSProtectCommandRepair = false;
-    private boolean RSBypassWithPerm = true;
-    private boolean RSAddLore = true;
-    private boolean RSCancelEvent = true;
-    private boolean RSInformWithMessage = true;
-    private int RSDurability = 1;
-
-    private boolean RepairConfirmation = true;
-    private List<Integer> BlockedCustomDataID = new ArrayList<Integer>();
+    private boolean repairCostsMoney;
+    private double baseCost;
+    private boolean checkDurability;
+    private double worthPercentage;
+    private double enchantWorthPercentage;
+    private boolean RSProtectNormalRepair;
+    private boolean RSProtectCommandRepair;
+    private boolean RSBypassWithPerm;
+    private boolean RSAddLore;
+    private boolean RSCancelEvent;
+    private boolean RSInformWithMessage;
+    private int RSDurability;
+    private boolean RepairConfirmation;
+    private List<Integer> BlockedCustomDataID;
     private CMI plugin;
 
     public RepairManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig() {
-
     }
 
     public double getBaseRepairCost() {
-        return baseCost;
+        return 0.0;
     }
 
     public boolean isCheckDurability() {
-        return checkDurability;
+        return false;
     }
 
     public double getWorthPercentage() {
-        return worthPercentage;
+        return 0.0;
     }
 
     public double getEnchantWorthPercentage() {
-        return enchantWorthPercentage;
+        return 0.0;
     }
 
     public boolean isRepairCostsMoney() {
-        return repairCostsMoney;
+        return false;
     }
 
     public boolean isRSProtectNormalRepair() {
-        return RSProtectNormalRepair;
+        return false;
     }
 
     public boolean isRSProtectCommandRepair() {
-        return RSProtectCommandRepair;
+        return false;
     }
 
     public boolean isRSBypassWithPerm() {
-        return RSBypassWithPerm;
+        return false;
     }
 
     public boolean isRSAddLore() {
-        return RSAddLore;
+        return false;
     }
 
     public boolean isRSCancelEvent() {
-        return RSCancelEvent;
+        return false;
     }
 
     public boolean isRSInformWithMessage() {
-        return RSInformWithMessage;
+        return false;
     }
 
     public int getRSDurability() {
-        return RSDurability;
+        return 0;
     }
 
     public boolean isRepairConfirmation() {
-        return RepairConfirmation;
+        return false;
     }
 
     public List<Integer> getBlockedCustomDataID() {
-        return BlockedCustomDataID;
+        return null;
     }
-
 }

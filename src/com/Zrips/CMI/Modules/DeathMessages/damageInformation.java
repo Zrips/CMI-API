@@ -10,15 +10,19 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
 public class damageInformation {
-
-    private static HashMap<UUID, TreeMap<Long, damageInformation>> cache = new HashMap<UUID, TreeMap<Long, damageInformation>>();
+    private static HashMap<UUID, TreeMap<Long, damageInformation>> cache;
+    private Entity ent;
+    private double damage;
+    private ItemStack item;
+    private DamageCause cause;
+    private long time;
+    private Block block;
 
     public static void cacheClear(UUID uuid) {
-        cache.remove(uuid);
     }
 
     public static TreeMap<Long, damageInformation> getLastDamage(UUID uuid) {
-        return cache.get(uuid);
+        return null;
     }
 
     public static TreeMap<Long, damageInformation> addLastDamage(UUID uuid, damageInformation lastDamage) {
@@ -26,76 +30,54 @@ public class damageInformation {
     }
 
     public static damageInformation getLastDamage(UUID uuid, damageInformation comparison) {
-
         return null;
     }
 
-    private Entity ent;
-    private double damage = 0;
-    private ItemStack item;
-    private DamageCause cause;
-    private long time;
-    private Block block;
-
     public void reset() {
-        ent = null;
-        damage = 0;
-        item = null;
-        cause = null;
-        time = 0;
     }
 
     public Entity getEnt() {
-        return ent;
+        return null;
     }
 
     public void setEnt(Entity ent) {
-        this.ent = ent;
     }
 
     public double getDamage() {
-        return damage;
+        return 0.0;
     }
 
     public void setDamage(double damage) {
-        this.damage = damage;
     }
 
     public ItemStack getItem() {
-        return item;
+        return null;
     }
 
     public void setItem(ItemStack item) {
-        this.item = item;
     }
 
     public DamageCause getCause() {
-        return cause;
+        return null;
     }
 
     public void setCause(DamageCause cause) {
-        this.cause = cause;
     }
 
     public Long getTime() {
-        if (time == 0)
-            time = System.currentTimeMillis();
-        return time;
+        return null;
     }
 
     public void setTime(Long time) {
-        this.time = time == null ? 0 : time;
     }
 
     public void setTime() {
-        this.time = System.currentTimeMillis();
     }
 
     public Block getBlock() {
-        return block;
+        return null;
     }
 
     public void setBlock(Block block) {
-        this.block = block;
     }
 }

@@ -3,48 +3,39 @@ package com.Zrips.CMI.Containers;
 import net.Zrips.CMILib.Time.timeState;
 
 public class CMITimeRate {
-
-    private int everyTicks = 1;
-    private int addAmount = 1;
-    private timeState state = timeState.day;
-    private boolean turnCycleOff = false;
+    private int everyTicks;
+    private int addAmount;
+    private timeState state;
+    private boolean turnCycleOff;
 
     public CMITimeRate(timeState state, int everyTicks, int addAmount) {
-	this.state = state;
-	this.everyTicks = everyTicks;
-	this.addAmount = addAmount;
     }
 
     public int getAddAmount() {
-	return addAmount;
+        return 0;
     }
 
     public void setAddAmount(int addAmount) {
-	this.addAmount = addAmount;
     }
 
     public int getEveryTicks() {
-	return everyTicks;
+        return 0;
     }
 
     public void setEveryTicks(int everyTicks) {
-	this.everyTicks = everyTicks;
     }
 
     public timeState getState() {
-	return state;
+        return null;
     }
 
     public void setState(timeState state) {
-	this.state = state;
     }
 
     public boolean isTurnCycleOff() {
-	return turnCycleOff;
+        return false;
     }
 
     public void setTurnCycleOff(boolean turnCycleOff) {
-	this.turnCycleOff = turnCycleOff;
     }
-
 }

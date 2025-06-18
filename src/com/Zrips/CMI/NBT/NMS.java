@@ -1,12 +1,10 @@
 package com.Zrips.CMI.NBT;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Chunk;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -24,11 +22,7 @@ import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Holograms.CMIDataWatcher;
 import com.Zrips.CMI.Modules.Packets.FakeInfo;
 
-import net.Zrips.CMILib.Effects.CMIEffect;
-import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
-
 public interface NMS {
-
     public void setMiscLocation(Player player, Location location);
 
     public void setMiscLocation(File file, Location location);
@@ -59,6 +53,7 @@ public interface NMS {
 
     boolean getGodMode(Player player);
 
+    @Deprecated
     ItemStack setNBTList(ItemStack item, String name, List<String> list);
 
     void updateExpBar(Player player);
@@ -81,18 +76,7 @@ public interface NMS {
 
     void unloadData(Player player);
 
-    @Deprecated
-    void playEffect(Player player, Location location, Effect effect, float offsetX, float offsetY, float offsetZ, float speed, int particleCount);
-
     ItemStack removeEnchantNbt(ItemStack item, Enchantment enchant);
-
-    @Deprecated
-    void playEffect(Player player, Location location, Effect effect, Color color);
-
-    void playEffect(Player player, Location location, CMIEffect ef);
-
-    @Deprecated
-    void playEffect(Player player, Location location, CMIParticle eff, float offsetX, float offsetY, float offsetZ, float speed, int particleCount);
 
     boolean forceTeleport(Player player, Location location);
 
@@ -111,5 +95,4 @@ public interface NMS {
     String getWorldName(File file);
 
     void setEntityTag(Entity entity, String path, Object value);
-
 }

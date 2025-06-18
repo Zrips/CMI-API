@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.FindBiome;
 
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.Region.WorldInfo;
@@ -8,131 +7,106 @@ import com.Zrips.CMI.Modules.Region.WorldInfo;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class FindBiomeInfo {
-
-    private CMITask task = null;
-
-    private long showedInfo = 0L;
-    private boolean showInfo = false;
-
-    private boolean messages = true;
-
+    private CMITask task;
+    private long showedInfo;
+    private boolean showInfo;
+    private boolean messages;
     private Player player;
-
-    private long startTime = 0L;
-
-    private int speed = 30000;
-
-    private boolean running = true;
-
+    private long startTime;
+    private int speed;
+    private boolean running;
     private WorldInfo RI;
+    private int currentId;
+    private String biome;
+    private int skipped;
 
-    private int currentId = -1;
-
-    private Biome biome;
-    private int skipped = 0;
-
-    public FindBiomeInfo(Player player, Biome biome) {
-	this.player = player;
-	this.biome = biome;
+    public FindBiomeInfo(Player player, String biome) {
     }
 
     public int getCurrentId() {
-	return this.currentId;
+        return 0;
     }
 
     public void setCurrentId(int id) {
-	this.currentId = id;
     }
 
     public void setScheduleTask(CMITask task) {
-	this.task = task;
     }
 
     public CMITask getScheduleTask() {
-	return this.task;
+        return null;
     }
 
     public void setShowInfo(long time) {
-	this.showedInfo = time;
     }
 
     public long getShowInfo() {
-	return this.showedInfo;
+        return 0;
     }
 
     public void setMessages(boolean messages) {
-	this.messages = messages;
     }
 
     public boolean isMessages() {
-	return this.messages;
+        return false;
     }
 
     public void setShowRegionInfo(boolean state) {
-	this.showInfo = state;
     }
 
     public boolean isShowRegionInfo() {
-	return this.showInfo;
+        return false;
     }
 
     public void setSpeed(int speed) {
-	this.speed = speed;
     }
 
     public int getSpeed() {
-	return this.speed;
+        return 0;
     }
 
     public void setRunning(boolean state) {
-	this.running = state;
     }
 
     public boolean isRunning() {
-	return this.running;
+        return false;
     }
 
     public void setStartTime() {
-	this.startTime = System.currentTimeMillis();
     }
 
     public long getStartTime() {
-	return this.startTime;
+        return 0;
     }
 
     public Player getPlayer() {
-	return this.player;
+        return null;
     }
 
     public void setPlayer(Player Player) {
-	this.player = Player;
     }
 
     public WorldInfo getRI() {
-	return RI;
+        return null;
     }
 
     public void setRI(WorldInfo RI) {
-	this.RI = RI;
     }
 
-    public Biome getBiome() {
-	return biome;
+    public String getBiome() {
+        return null;
     }
 
-    public void setBiome(Biome biome) {
-	this.biome = biome;
+    public void setBiome(String biome) {
     }
 
     public int getSkipped() {
-	return skipped;
+        return 0;
     }
 
     public void addSkipped() {
-	this.skipped++;
     }
 
     public void setSkipped(int skipped) {
-	this.skipped = skipped;
     }
 }

@@ -1,63 +1,52 @@
 package com.Zrips.CMI.Modules.Holograms;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CMIHologramPage {
-
-    private int page = -1;
-    private List<CMIHologramLine> lines = Collections.synchronizedList(new ArrayList<CMIHologramLine>());
-    private List<String> commands = Collections.synchronizedList(new ArrayList<String>());
-    private double height = 0D;
-    private int width = 0;
+    private int page;
+    private List<CMIHologramLine> lines;
+    private List<String> commands;
+    private double height;
+    private int width;
 
     public CMIHologramPage() {
     }
 
     public List<CMIHologramLine> getLines() {
-        return lines;
+        return null;
     }
 
     public void setLines(List<CMIHologramLine> lines) {
-        this.lines = lines;
-        calculateWidth();
     }
 
     public List<String> getCommands() {
-        return commands;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
-        this.commands = commands;
     }
 
     public int getPage() {
-        return page;
+        return 0;
     }
 
     public void setPage(int page) {
-        this.page = page;
     }
 
     public double getHeight() {
-        return height;
+        return 0.0;
     }
 
     public void setHeight(double height) {
-        this.height = height;
     }
 
     public int getWidth() {
-        return width;
+        return 0;
     }
 
     public void setWidth(int width) {
-        this.width = width;
     }
 
     public void calculateWidth() {
-
     }
-
 }

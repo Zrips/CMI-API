@@ -3,48 +3,43 @@ package com.Zrips.CMI.Modules.Afk;
 import org.bukkit.Location;
 
 public class checkInfo {
-    private Long time = 0L;
+    private Long time;
     private Location loc;
-    private double prevAngle = 0;
+    private double prevAngle;
 
     checkInfo(Location loc) {
-        this.loc = loc;
-        updateTime();
     }
 
     public void updateTime() {
-        time = System.currentTimeMillis();
     }
 
     public void updateLocation(Location loc) {
-        this.loc = loc.clone();
     }
 
     public boolean isSameDirection(Location loc) {
-        return this.loc.getPitch() == loc.getPitch() && this.loc.getYaw() == loc.getYaw();
+        return false;
     }
 
     public boolean isOnlyPitchChange(Location loc) {
-        return this.loc.getX() == loc.getX() && this.loc.getY() == loc.getY() && this.loc.getZ() == loc.getZ();
+        return false;
     }
 
     public boolean timeToCheck() {
-        return time + 400L < System.currentTimeMillis();
+        return false;
     }
 
     public Long getTime() {
-        return time;
+        return null;
     }
 
     public Location getLocation() {
-        return loc;
+        return null;
     }
 
     public double getPrevAngle() {
-        return prevAngle;
+        return 0.0;
     }
 
     public void setPrevAngle(double prevAngle) {
-        this.prevAngle = prevAngle;
     }
 }

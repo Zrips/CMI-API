@@ -8,82 +8,64 @@ import org.bukkit.enchantments.Enchantment;
 import com.Zrips.CMI.CMI;
 
 public class EnchantManager {
-
-    private Map<String, Object> maxValues = new HashMap<String, Object>();
-    private HashMap<String, Enchantment> disabled = new HashMap<String, Enchantment>();
-
+    private Map<String, Object> maxValues;
+    private HashMap<String, Enchantment> disabled;
     private CMI plugin;
     private boolean RequireSpecificPermission;
     private boolean EnforceValidEnchants;
     private boolean PermissionLevelLimit;
-    private boolean enchantLimitEnabled = false;
+    private boolean enchantLimitEnabled;
+    private String fileName;
 
     public EnchantManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig() {
-
     }
 
     public Integer getMaxLevel(Enchantment enchant) {
-        return 0;
+        return null;
     }
 
     public void reEnableEnchantsOnDisable() {
-
     }
 
     public void disableEnchantsOnLoad() {
-
     }
 
     public HashMap<String, Enchantment> getDisabled() {
-        return disabled;
+        return null;
     }
 
     public boolean isDisabled(Enchantment disabled) {
-        String name = disabled.getName();
-        if (name == null)
-            return false;
-        if (name.isEmpty())
-            return false;
-        if (name == " ")
-            return false;
-        return this.disabled.containsKey(disabled.getName());
+        return false;
     }
 
     public void addDisabled(Enchantment disabled) {
-
     }
 
     public void removeDisabled(Enchantment disabled) {
-
     }
 
-    private String fileName = "DisabledEnchants.yml";
-
     public void loadDisabledEnchants() {
-
     }
 
     public void updateConfig() {
-
     }
 
     public boolean isRequireSpecificPermission() {
-        return RequireSpecificPermission;
+        return false;
     }
 
     public boolean isPermissionLevelLimit() {
-        return PermissionLevelLimit;
+        return false;
     }
 
     public boolean isEnchantLimitEnabled() {
-        return enchantLimitEnabled;
+        return false;
     }
 
     public boolean isEnforceValidEnchants() {
-        return EnforceValidEnchants;
+        return false;
     }
 }

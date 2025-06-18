@@ -7,32 +7,36 @@ import org.bukkit.inventory.Inventory;
 public class SilentChest {
     private Player player;
     private Inventory inv;
+    private Inventory sourceInventory;
     private Location loc;
-    private boolean editing = true;
+    private boolean editing;
 
     public SilentChest(Player player, Inventory inv, Location loc) {
-	this.player = player;
-	this.inv = inv;
-	this.loc = loc;
     }
 
     public Player getPlayer() {
-	return this.player;
+        return null;
     }
 
     public Inventory getInv() {
-	return this.inv;
+        return null;
     }
 
     public Location getLocation() {
-	return this.loc;
+        return null;
     }
 
     public void setEditing(boolean state) {
-	this.editing = state;
     }
 
     public boolean isEditing() {
-	return this.editing;
+        return false;
+    }
+
+    public Inventory getSourceInventory() {
+        return null;
+    }
+
+    public void setSourceInventory(Inventory sourceInventory) {
     }
 }

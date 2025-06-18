@@ -12,225 +12,147 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
-import com.Zrips.CMI.CMI;
-import net.Zrips.CMILib.Version.Version;
-
-import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.NBT.CMINBT;
-
 public class CMISpawner {
-
     private Block block;
-    private CreatureSpawner spawner = null;
+    private CreatureSpawner spawner;
 
     public CMISpawner(Block block) {
-        this.block = block;
-        this.spawner = (CreatureSpawner) block.getState();
     }
 
     public Block getBlock() {
-        return block;
+        return null;
     }
 
     public BlockData getBlockData() {
-        return block.getBlockData();
+        return null;
     }
 
     public byte getLightLevel() {
-        return spawner.getLightLevel();
+        return 0;
     }
 
     public Location getLocation() {
-        return block.getLocation();
+        return null;
     }
 
     public Material getType() {
-        return block.getType();
+        return null;
     }
 
     public World getWorld() {
-        return block.getWorld();
+        return null;
     }
 
     public int getX() {
-        return block.getX();
+        return 0;
     }
 
     public int getY() {
-        return block.getY();
+        return 0;
     }
 
     public int getZ() {
-        return block.getZ();
+        return 0;
     }
 
     public void setBlockData(BlockData data) {
-        block.setBlockData(data);
     }
 
     public boolean update() {
-        return spawner.update();
+        return false;
     }
 
     public boolean update(boolean arg0) {
-        return spawner.update(arg0);
+        return false;
     }
 
     public boolean update(boolean arg0, boolean arg1) {
-        return spawner.update(arg0, arg1);
+        return false;
     }
 
     public List<MetadataValue> getMetadata(String arg0) {
-        return spawner.getMetadata(arg0);
+        return null;
     }
 
     public boolean hasMetadata(String arg0) {
-        return spawner.hasMetadata(arg0);
+        return false;
     }
 
     public void removeMetadata(String arg0, Plugin arg1) {
-        spawner.removeMetadata(arg0, arg1);
     }
 
     public void setMetadata(String arg0, MetadataValue arg1) {
-        spawner.setMetadata(arg0, arg1);
     }
 
     @Deprecated
     public String getCreatureTypeName() {
-        return spawner.getCreatureTypeName();
+        return null;
     }
 
     public int getDelay() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getDelay();
-        }
-        return getValue("Delay");
+        return 0;
     }
 
     public int getMaxNearbyEntities() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getMaxNearbyEntities();
-        }
-        return getValue("MaxNearbyEntities");
+        return 0;
     }
 
     public int getMaxSpawnDelay() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getMaxSpawnDelay();
-        }
-        return getValue("MaxSpawnDelay");
+        return 0;
     }
 
     public int getMinSpawnDelay() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getMinSpawnDelay();
-        }
-        return getValue("MinSpawnDelay");
+        return 0;
     }
 
     public int getRequiredPlayerRange() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getRequiredPlayerRange();
-        }
-        return getValue("RequiredPlayerRange");
+        return 0;
     }
 
     public int getSpawnCount() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getSpawnCount();
-        }
-        return getValue("SpawnCount");
+        return 0;
     }
 
     public int getSpawnRange() {
-        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-            return spawner.getSpawnRange();
-        }
-        return getValue("SpawnRange");
+        return 0;
     }
 
     private int getValue(String path) {
-        Object v = new CMINBT(block).getShort(path);
-        if (v instanceof Short)
-            return (Short) v;
         return 0;
     }
 
     public EntityType getSpawnedType() {
-        return spawner.getSpawnedType();
+        return null;
     }
 
     @Deprecated
     public void setCreatureTypeByName(String arg0) {
-        spawner.setCreatureTypeByName(arg0);
     }
 
     public void setDelay(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setDelay(arg0);
-            return;
-        }
-        updateValue("Delay", arg0);
     }
 
     public void setMaxNearbyEntities(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setMaxNearbyEntities(arg0);
-            return;
-        }
-        updateValue("MaxNearbyEntities", arg0);
-
     }
 
     public void setMaxSpawnDelay(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setMaxSpawnDelay(arg0);
-            return;
-        }
-        updateValue("MaxSpawnDelay", arg0);
     }
 
     public void setMinSpawnDelay(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setMinSpawnDelay(arg0);
-            return;
-        }
-        updateValue("MinSpawnDelay", arg0);
     }
 
     public void setRequiredPlayerRange(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setRequiredPlayerRange(arg0);
-            return;
-        }
-        updateValue("RequiredPlayerRange", arg0);
     }
 
     public void setSpawnCount(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setSpawnCount(arg0);
-            return;
-        }
-        updateValue("SpawnCount", arg0);
     }
 
     public void setSpawnRange(int arg0) {
-        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            spawner.setSpawnRange(arg0);
-            return;
-        }
-        updateValue("SpawnRange", arg0);
     }
 
     private void updateValue(String type, int val) {
-        Object tag = new CMINBT(block).setShort(type, (short) val);
-        CMILib.getInstance().getReflectionManager().updateTileEntity(this.getLocation(), tag);
-        spawner.update();
     }
 
     public void setSpawnedType(EntityType arg0) {
-        spawner.setSpawnedType(arg0);
     }
-
 }

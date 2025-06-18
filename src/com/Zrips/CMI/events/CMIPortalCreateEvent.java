@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.world.PortalCreateEvent.CreateReason;
 import org.bukkit.util.Vector;
 
-public final class CMIPortalCreateEvent extends CMIPlayerCancellableEvent {
+public class CMIPortalCreateEvent extends CMIPlayerCancellableEvent {
     private int height;
     private int width;
     private World world;
@@ -13,47 +13,41 @@ public final class CMIPortalCreateEvent extends CMIPlayerCancellableEvent {
     private CreateReason reason;
     private CMIPortalType type;
 
-    public enum CMIPortalType {
-        Nether, End;
-    }
-
     public CMIPortalCreateEvent(Player player, World world, CreateReason reason, int height, int width) {
         super(player);
-        this.height = height;
-        this.width = width;
-        this.world = world;
-        this.reason = reason;
     }
 
     public int getHeight() {
-        return this.height;
+        return 0;
     }
 
     public int getWidth() {
-        return this.width;
+        return 0;
     }
 
     public World getWorld() {
-        return world;
+        return null;
     }
 
     public CreateReason getReason() {
-        return reason;
+        return null;
     }
 
     public CMIPortalType getType() {
-        return type;
+        return null;
     }
 
     public void setType(CMIPortalType type) {
-        this.type = type;
     }
 
     public Vector getLowestPoint() {
-        return lowestPoint;
+        return null;
     }
 
     public void setLowestPoint(Vector lowestPoint) {
-        this.lowestPoint = lowestPoint;
+    }
+
+    public enum CMIPortalType {
+        Nether, End;
     }
 }

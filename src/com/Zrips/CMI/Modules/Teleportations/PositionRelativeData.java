@@ -2,36 +2,28 @@ package com.Zrips.CMI.Modules.Teleportations;
 
 import org.bukkit.Location;
 
-import net.Zrips.CMILib.Container.CMIWorld;
-
 public class PositionRelativeData {
-
-    private int localX = 0;
-    private int localZ = 0;
-
-    private int maxWorldY = 0;
-    private int minWorldY = 0;
+    private int localX;
+    private int localZ;
+    private int maxWorldY;
+    private int minWorldY;
 
     public PositionRelativeData(Location loc) {
-        localX = loc.getBlockX() & 0xF;
-        localZ = loc.getBlockZ() & 0xF;
-        maxWorldY = CMIWorld.getMaxHeight(loc.getWorld());
-        minWorldY = CMIWorld.getMinHeight(loc.getWorld());
     }
 
     public int getLocalX() {
-        return localX;
+        return 0;
     }
 
     public int getLocalZ() {
-        return localZ;
+        return 0;
     }
 
     public int getMaxWorldY() {
-        return maxWorldY;
+        return 0;
     }
 
     public int getMinWorldY() {
-        return minWorldY;
+        return 0;
     }
 }

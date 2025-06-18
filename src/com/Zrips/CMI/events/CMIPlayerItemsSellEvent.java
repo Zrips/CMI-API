@@ -8,45 +8,37 @@ import com.Zrips.CMI.Modules.Worth.WorthManager.worthType;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 
-public final class CMIPlayerItemsSellEvent extends CMIPlayerEvent {
-
-    private HashMap<CMIMaterial, Integer> amounts = new HashMap<CMIMaterial, Integer>();
-    private HashMap<CMIMaterial, Double> payments = new HashMap<CMIMaterial, Double>();
-
-    private worthType sellType = worthType.all;
-    private double totalPayment = 0D;
-    private int totalAmount = 0;
+public class CMIPlayerItemsSellEvent extends CMIPlayerEvent {
+    private HashMap<CMIMaterial, Integer> amounts;
+    private HashMap<CMIMaterial, Double> payments;
+    private worthType sellType;
+    private double totalPayment;
+    private int totalAmount;
 
     public CMIPlayerItemsSellEvent(Player player, worthType sellType, int totalAmount, double totalPayment, HashMap<CMIMaterial, Integer> amounts, HashMap<CMIMaterial, Double> payments) {
         super(player);
-        this.sellType = sellType;
-        this.totalAmount = totalAmount;
-        this.totalPayment = totalPayment;
-        this.amounts = amounts;
-        this.payments = payments;
     }
 
     public worthType getSellType() {
-        return sellType;
+        return null;
     }
 
     public double getTotalPayment() {
-        return totalPayment;
+        return 0.0;
     }
 
     public int getTotalAmount() {
-        return totalAmount;
+        return 0;
     }
 
     public HashMap<CMIMaterial, Integer> getAmounts() {
-        return amounts;
+        return null;
     }
 
     public HashMap<CMIMaterial, Double> getPayments() {
-        return payments;
+        return null;
     }
 
     public void setTotalPayment(double totalPayment) {
-        this.totalPayment = totalPayment;
     }
 }

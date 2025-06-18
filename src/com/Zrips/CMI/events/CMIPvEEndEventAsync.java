@@ -2,9 +2,8 @@ package com.Zrips.CMI.events;
 
 import org.bukkit.entity.Player;
 
-public final class CMIPvEEndEventAsync extends CMIPlayerEvent {
-
-    public CMIPvEEndEventAsync(final Player player) {
+public class CMIPvEEndEventAsync extends CMIPlayerEvent {
+    public CMIPvEEndEventAsync(Player player) {
         super(player, true);
     }
 }

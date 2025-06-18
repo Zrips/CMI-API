@@ -3,73 +3,60 @@ package com.Zrips.CMI.Modules.DeathMessages;
 import java.util.UUID;
 
 class CMIDeathMsgInfo {
-
-    private UUID uuid = null;
-    
+    private UUID uuid;
     private CMIKillerInfo killerInfo;
     private CMIKillerInfo PreviousDamageInfo;
-    private String prefixPath = null;
-    private String suffixPath = null;
-
-    private String basePath = null;
-    
-    private String message = "";
+    private String prefixPath;
+    private String suffixPath;
+    private String basePath;
+    private String message;
 
     public CMIDeathMsgInfo(UUID uuid, CMIKillerInfo killerInfo) {
-	this.uuid = uuid;
-	this.killerInfo = killerInfo;
     }
 
     public CMIKillerInfo getKillerInfo() {
-	return killerInfo;
+        return null;
     }
 
     public void setKillerInfo(CMIKillerInfo killerInfo) {
-	this.killerInfo = killerInfo;
     }
 
     public String getPrefixPath() {
-	return prefixPath;
+        return null;
     }
 
     public void setPrefixPath(String prefixPath) {
-	this.prefixPath = prefixPath;
     }
 
     public String getSuffixPath() {
-	return suffixPath;
+        return null;
     }
 
     public void setSuffixPath(String suffixPath) {
-	this.suffixPath = suffixPath;
     }
 
     public CMIKillerInfo getPreviousDamageInfo() {
-	return PreviousDamageInfo;
+        return null;
     }
 
     public void setPreviousDamageInfo(CMIKillerInfo previousDamageInfo) {
-	PreviousDamageInfo = previousDamageInfo;
     }
 
     public String getBasePath() {
-	return basePath;
+        return null;
     }
 
     public void setBasePath(String basePath) {
-	this.basePath = basePath;
     }
 
     public String getMessage() {
-	return message;
+        return null;
     }
 
     public void setMessage(String message) {
-	this.message = message;
     }
 
     public UUID getUniqueId() {
-	return uuid;
+        return null;
     }
-
 }

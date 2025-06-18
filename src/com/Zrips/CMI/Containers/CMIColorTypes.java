@@ -6,14 +6,12 @@ public enum CMIColorTypes {
     private boolean clean;
 
     CMIColorTypes(boolean clean) {
-        this.clean = clean;
     }
 
     public boolean isClean() {
-        return clean;
+        return false;
     }
 
     public void setClean(boolean clean) {
-        this.clean = clean;
     }
 }

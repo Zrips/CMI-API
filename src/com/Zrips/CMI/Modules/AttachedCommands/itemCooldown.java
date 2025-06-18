@@ -1,22 +1,20 @@
 package com.Zrips.CMI.Modules.AttachedCommands;
 
 public class itemCooldown {
-    private Long clickedOn = null;
-    private Integer id = null;
+    private Long clickedOn;
+    private Integer id;
 
     public Long getClickedOn() {
-	return clickedOn;
+        return null;
     }
 
     public void setClickedOn(Long clickedOn) {
-	this.clickedOn = clickedOn;
     }
 
     public Integer getId() {
-	return id;
+        return null;
     }
 
     public void setId(Integer id) {
-	this.id = id;
     }
 }

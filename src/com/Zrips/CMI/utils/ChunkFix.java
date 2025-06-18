@@ -7,20 +7,16 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.FixChunkInfo;
 
 public class ChunkFix {
-
-    public Pattern regionPattern = Pattern.compile("r\\.([0-9-]+)\\.([0-9-]+)\\.mca");
-    public ConcurrentHashMap<String, FixChunkInfo> ChunkFix = new ConcurrentHashMap<String, FixChunkInfo>();
+    public Pattern regionPattern;
+    public ConcurrentHashMap<String, FixChunkInfo> ChunkFix;
     private CMI plugin;
 
     public ChunkFix(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    public void loadRegionFile(final FixChunkInfo scan) {
-
+    public void loadRegionFile(FixChunkInfo scan) {
     }
 
-    private void loadChunk(final FixChunkInfo scan) {
-
+    private void loadChunk(FixChunkInfo scan) {
     }
 }

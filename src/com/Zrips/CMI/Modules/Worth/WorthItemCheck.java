@@ -2,56 +2,45 @@ package com.Zrips.CMI.Modules.Worth;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.Zrips.CMI.CMI;
-
 public class WorthItemCheck {
-
-    private WorthItem worth = null;
+    private WorthItem worth;
     private ItemStack item;
 
     public WorthItemCheck(ItemStack item) {
-        this.item = item.clone();
-        worth = CMI.getInstance().getWorthManager().getWorth(item);
     }
 
     public Double getSellPrice() {
-        return getSellPrice(true);
+        return null;
     }
 
     public Double getSellPrice(boolean includeEnchants) {
-        return getSellPrice(includeEnchants, true);
+        return null;
     }
 
     public Double getSellPrice(boolean includeEnchants, boolean includeDurability) {
-
-        if (item == null)
-            return worth.getSellPrice();
-        return worth.getPlayerSellPrice(item, includeEnchants, includeDurability);
+        return null;
     }
 
     public Double getEnchantSellPrice() {
-
         return null;
     }
 
     public ItemStack getItem() {
-        return item;
+        return null;
     }
 
     public Double getBuyPrice() {
-        return worth.getBuyPrice();
+        return null;
     }
 
     public boolean isBuyPriceSet() {
-        return worth.getBuyPrice() != null;
+        return false;
     }
 
     public WorthItem getWorth() {
-        return worth;
+        return null;
     }
 
     public void setWorth(WorthItem worth) {
-        this.worth = worth;
     }
-
 }

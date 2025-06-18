@@ -5,40 +5,36 @@ import java.util.UUID;
 import com.Zrips.CMI.Modules.Jail.CMIJailCell;
 
 public class CMIUserJailData {
-    private long jailedForTime = 0;
+    private long jailedForTime;
     private String jailedReason;
-    private UUID jailedBy = null;
+    private UUID jailedBy;
     private CMIJailCell cell;
 
     public long getJailedForTime() {
-        return jailedForTime;
+        return 0;
     }
 
     public void setJailedForTime(long jailedForTime) {
-        this.jailedForTime = jailedForTime;
     }
 
     public String getJailedReason() {
-        return jailedReason;
+        return null;
     }
 
     public void setJailedReason(String jailedReason) {
-        this.jailedReason = jailedReason;
     }
 
     public UUID getJailedBy() {
-        return jailedBy;
+        return null;
     }
 
     public void setJailedBy(UUID jailedBy) {
-        this.jailedBy = jailedBy;
     }
 
     public CMIJailCell getCell() {
-        return cell;
+        return null;
     }
 
     public void setCell(CMIJailCell cell) {
-        this.cell = cell;
     }
 }

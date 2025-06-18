@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.PlayerCombat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +7,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -19,340 +19,295 @@ import com.Zrips.CMI.Containers.CMIUser;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class PlayerCombatManager {
-
-    private HashMap<CombatDamageType, Set<UUID>> combatMap = new HashMap<CombatDamageType, Set<UUID>>();
-
-    private HashMap<UUID, CMIPlayerCombat> playerCombatMap = new HashMap<UUID, CMIPlayerCombat>();
-
-    private HashMap<UUID, HashMap<UUID, PlayerKillCount>> playerKills = new HashMap<UUID, HashMap<UUID, PlayerKillCount>>();
-    private HashMap<UUID, HashMap<EntityType, EntityKillCount>> entityKills = new HashMap<UUID, HashMap<EntityType, EntityKillCount>>();
-
-    private HashMap<EntityType, EntityHeadDrop> entityHeadDropChance = new HashMap<EntityType, EntityHeadDrop>();
-    private HashMap<Integer, Double> lootMobBonus = new HashMap<Integer, Double>();
-    private HashMap<Integer, Double> lootPlayerBonus = new HashMap<Integer, Double>();
-
+    private HashMap<CombatDamageType, Set<UUID>> combatMap;
+    private HashMap<UUID, CMIPlayerCombat> playerCombatMap;
+    private HashMap<UUID, HashMap<UUID, PlayerKillCount>> playerKills;
+    private HashMap<UUID, HashMap<EntityType, EntityKillCount>> entityKills;
+    private HashMap<EntityType, EntityHeadDrop> entityHeadDropChance;
+    private HashMap<Integer, Double> lootMobBonus;
+    private HashMap<Integer, Double> lootPlayerBonus;
     private CMI plugin;
-    private boolean dropHead = false;
-    private boolean IncludeVictim = false;
-    private boolean PlayerShowBossBar = false;
-    private boolean PlayerShowDamageNumbers = false;
-    private String PlayerDamageNumbersFormat = "";
-    private boolean MobShowBossBar = false;
-    private boolean MobIncludeEnvironment = false;
-    private boolean MobShowDamageNumbers = false;
-    private String MobDamageNumbersFormat = "";
-    private boolean PDisableFlight = false;
-    private boolean PDisableFallDamage = false;
-    private boolean MDisableFallDamage = false;
-    private boolean MDisableFlight = false;
-    private boolean PlayerBlockCommands = false;
-    private List<String> playerWorlds = new ArrayList<String>();
-    private boolean MobBlockCommands = false;
-    private List<String> PlayerAllowedCommands = new ArrayList<String>();
-    private List<String> MobAllowedCommands = new ArrayList<String>();
-
-    private boolean PlayerMakeBlackList = false;
-    private boolean MobMakeBlackList = false;
-
-    private boolean pvpNoGodDamage = false;
-    private boolean pvpNoGodDamageInform = false;
-    private boolean pveNoGodDamage = false;
-    private boolean pveNoGodDamageInform = false;
-    private boolean safeZoneDamage = false;
-    private boolean dropEntityHead = false;
-    private double DropHeadPercentage = 1D;
-    private List<String> mobWorlds = new ArrayList<String>();
-    private double LowerChanceWithEachKill = 50D;
-    private int CombatTimer = 15;
-
-    private List<String> PlayerHeadLore = new ArrayList<String>();
-
-    Pattern lorePattern = Pattern.compile("(lore\\{(\"|'))(.+)((\"|')\\})");
+    private boolean dropHead;
+    private boolean pvpIncludeVictim;
+    private boolean pveIncludeVictim;
+    private boolean PlayerShowBossBar;
+    private boolean PlayerShowDamageNumbers;
+    private String PlayerDamageNumbersFormat;
+    private boolean MobShowBossBar;
+    private boolean MobIncludeEnvironment;
+    private boolean MobShowDamageNumbers;
+    private String MobDamageNumbersFormat;
+    private boolean PDisableFlight;
+    private boolean PDisableFallDamage;
+    private boolean MDisableFallDamage;
+    private boolean MDisableFlight;
+    private boolean PlayerBlockCommands;
+    private List<String> playerWorlds;
+    private boolean MobBlockCommands;
+    private List<String> PlayerAllowedCommands;
+    private List<String> MobAllowedCommands;
+    private boolean PlayerMakeBlackList;
+    private boolean MobMakeBlackList;
+    private boolean maintainName;
+    private boolean maintainLore;
+    private boolean maintainEnchants;
+    private boolean pvpNoGodDamage;
+    private boolean pvpNoGodDamageInform;
+    private boolean pveNoGodDamage;
+    private boolean pveNoGodDamageInform;
+    private boolean safeZoneDamage;
+    private boolean dropEntityHead;
+    private double DropHeadPercentage;
+    private List<String> mobWorlds;
+    private double LowerChanceWithEachKill;
+    private int CombatTimer;
+    private List<String> PlayerHeadLore;
+    Pattern lorePattern;
+    private CMITask sched;
+    ConfigurationSection tempSection;
+    private String fileName;
 
     public HashMap<UUID, PlayerKillCount> getKills(UUID uuid) {
-        return playerKills.computeIfAbsent(uuid, k -> new HashMap<UUID, PlayerKillCount>());
+        return null;
     }
 
     public HashMap<EntityType, EntityKillCount> getEntityKills(UUID uuid) {
-        return entityKills.computeIfAbsent(uuid, k -> new HashMap<EntityType, EntityKillCount>());
+        return null;
     }
 
     public PlayerCombatManager(CMI plugin) {
-        this.plugin = plugin; 
     }
 
     public void clearCache(UUID uuid) {
-       
     }
 
-    private CMITask sched = null;
-
     public void stop() {
-        if (sched != null) {
-            sched.cancel();
-            sched = null;
-        }
     }
 
     public void loadConfig() {
- 
     }
 
-    private String fileName = "CustomHeads.yml";
-
     public void loadHeads() {
-        
     }
 
     private Set<UUID> get(CombatDamageType type) {
-        return combatMap.get(type);
+        return null;
     }
 
     public void removePlayerFromCombat(CMIUser user) {
-      
     }
 
     public void addPlayerIntoCombat(CMIUser user) {
-        
     }
 
     public void addPlayerIntoMobCombat(CMIUser user) {
- 
     }
 
     private void tasker() {
-       
     }
 
     public Boolean isDropPlayerHead() {
-        return dropHead;
+        return null;
     }
 
     public Boolean isDropEntityHead() {
-        return dropEntityHead;
+        return null;
     }
 
     public double getLowerChanceWithEachKill() {
-        return LowerChanceWithEachKill;
+        return 0.0;
     }
 
     public double getPlayerDropHeadPercentage() {
-        return DropHeadPercentage;
+        return 0.0;
     }
 
     public double getEntityDropHeadPercentage(EntityType type) {
-        EntityHeadDrop c = entityHeadDropChance.get(type);
-        return c == null ? 0D : c.getBaseDropChance();
+        return 0.0;
     }
 
     public double getEntityHeadDropChanceLowering(EntityType type) {
-        EntityHeadDrop c = entityHeadDropChance.get(type);
-        return c == null ? 0D : c.getBaseLowerAmount();
+        return 0.0;
     }
 
     @Deprecated
     public ItemStack tryToGetEntityHead(EntityType type) {
-        EntityHeadDrop c = entityHeadDropChance.get(type);
-        return c == null ? null : c.getHead();
-    } 
+        return null;
+    }
 
     public ItemStack tryToGetEntityHead(Player player, Entity ent) {
-        EntityHeadDrop c = entityHeadDropChance.get(ent.getType());
-        return c == null ? null : c.getHead(player, ent);
+        return null;
     }
 
     public HashMap<EntityType, EntityHeadDrop> getEntityHeadDropChance() {
-        return entityHeadDropChance;
+        return null;
     }
 
     public int getCombatTimer() {
-        return CombatTimer;
+        return 0;
     }
 
     public void setCombatTimer(int combatTimer) {
-        CombatTimer = combatTimer;
     }
 
-    public Boolean isIncludeVictim() {
-        return IncludeVictim;
+    public boolean isPvPIncludeVictim() {
+        return false;
+    }
+
+    public boolean isPvEIncludeVictim() {
+        return false;
     }
 
     public HashMap<Integer, Double> getLootMobBonus() {
-        return lootMobBonus;
+        return null;
     }
 
     public HashMap<Integer, Double> getLootPlayerBonus() {
-        return lootPlayerBonus;
+        return null;
     }
 
     public Boolean isPVPNoGodDamage() {
-        return pvpNoGodDamage;
+        return null;
     }
 
     public Boolean isPVPNoGodDamageInform() {
-        return pvpNoGodDamageInform;
+        return null;
     }
 
     public Boolean isPVENoGodDamage() {
-        return pveNoGodDamage;
+        return null;
     }
 
     public Boolean isPVENoGodDamageInform() {
-        return pveNoGodDamageInform;
+        return null;
     }
 
     public Boolean isPDisableFlight() {
-        return PDisableFlight;
+        return null;
     }
 
     public Boolean isMDisableFlight() {
-        return MDisableFlight;
+        return null;
     }
 
     public boolean isAllowedPlayerCommand(String command) {
-        for (String one : PlayerAllowedCommands) {
-            if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
-                return !PlayerMakeBlackList;
-            }
-        }
-        return PlayerMakeBlackList;
+        return false;
     }
 
     public boolean isAllowedMobCommand(String command) {
-        for (String one : MobAllowedCommands) {
-            if (command.equalsIgnoreCase(one.toLowerCase()) || command.startsWith(one.toLowerCase() + " ")) {
-                return !MobMakeBlackList;
-            }
-        }
-        return MobMakeBlackList;
+        return false;
     }
 
     public boolean isPlayerShowBossBar() {
-        return PlayerShowBossBar;
+        return false;
     }
 
     public boolean isMobShowBossBar() {
-        return MobShowBossBar;
+        return false;
     }
 
     public boolean isPlayerBlockCommands() {
-        return PlayerBlockCommands;
+        return false;
     }
 
     public boolean isMobBlockCommands() {
-        return MobBlockCommands;
+        return false;
     }
 
     public boolean isPDisableFallDamage() {
-        return PDisableFallDamage;
+        return false;
     }
 
     public boolean isMDisableFallDamage() {
-        return MDisableFallDamage;
+        return false;
     }
 
     public List<String> getMobWorlds() {
-        return mobWorlds;
+        return null;
     }
 
     public List<String> getPlayerWorlds() {
-        return playerWorlds;
+        return null;
     }
 
     public boolean isSafeZoneDamage() {
-        return safeZoneDamage;
+        return false;
     }
 
     public List<String> getPlayerHeadLore() {
-        return new ArrayList<String>(PlayerHeadLore);
+        return null;
     }
 
     public void showDamageNumber(Player player, Double damage, Location loc, boolean isPlayer) {
- 
     }
 
     public void show(Player player, String text, Location loc) {
-       
     }
 
     public boolean isPlayerShowDamageNumbers() {
-        return PlayerShowDamageNumbers;
+        return false;
     }
 
     public boolean isMobShowDamageNumbers() {
-        return MobShowDamageNumbers;
+        return false;
     }
 
     public Long getGotLastDamageAt(UUID uuid) {
-        CMIPlayerCombat data = playerCombatMap.get(uuid);
-        return data == null ? null : data.getGotLastDamageAt();
+        return null;
     }
 
     private CMIPlayerCombat getCombatRecord(UUID uuid) {
-        return playerCombatMap.computeIfAbsent(uuid, k -> new CMIPlayerCombat());
+        return null;
     }
 
     public void setGotLastDamageAt(UUID uuid, Long gotLastDamageAt) {
-        getCombatRecord(uuid).setGotLastDamageAt(gotLastDamageAt);
     }
 
     public boolean isInCombatWithPlayer(UUID uuid) {
-        if (!playerCombatMap.containsKey(uuid))
-            return false;
-        return playerCombatMap.get(uuid).isInCombatWithPlayer();
+        return false;
     }
 
     public Long getGotLastDamageFromPlayer(UUID uuid) {
-        CMIPlayerCombat data = playerCombatMap.get(uuid);
-        return data == null ? 0L : data.getGotLastDamageFromPlayer();
+        return null;
     }
 
     public void setGotLastDamageFromPlayer(UUID uuid, Long gotLastDamageFromPlayer) {
-        if (!isInCombatWithPlayer(uuid))
-            addPlayerIntoCombat(CMIUser.getUser(uuid));
-        getCombatRecord(uuid).setGotLastDamageFromPlayer(gotLastDamageFromPlayer);
     }
 
     public void setDidLastDamageToPlayer(UUID uuid, Long didLastDamageToPlayer) {
-        if (!isInCombatWithPlayer(uuid))
-            addPlayerIntoCombat(CMIUser.getUser(uuid));
-        getCombatRecord(uuid).setDidLastDamageToPlayer(didLastDamageToPlayer);
     }
 
     public boolean isInCombatWithMob(UUID uuid) {
-        if (!playerCombatMap.containsKey(uuid))
-            return false;
-        return playerCombatMap.get(uuid).isInCombatWithMob();
+        return false;
     }
 
     public Long getGotLastDamageFromMob(UUID uuid) {
-        CMIPlayerCombat data = playerCombatMap.get(uuid);
-        return data == null ? 0L : data.getGotLastDamageFromMob();
+        return null;
     }
 
     public void setGotLastDamageFromMob(UUID uuid, Long gotLastDamageFromMob) {
-        if (!isInCombatWithMob(uuid))
-            CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(CMIUser.getUser(uuid));
-        getCombatRecord(uuid).setGotLastDamageFromMob(gotLastDamageFromMob);
     }
 
     public void setDidLastDamageToEntity(UUID uuid, Long didLastDamageToMob) {
-        if (!isInCombatWithMob(uuid)) {
-            CMI.getInstance().getPlayerCombatManager().addPlayerIntoMobCombat(CMIUser.getUser(uuid));
-        }
-        getCombatRecord(uuid).setDidLastDamageToMob(didLastDamageToMob);
     }
 
     public long getLeftCombatTime(UUID uuid) {
-        if (!playerCombatMap.containsKey(uuid))
-            return 0L;
-        return playerCombatMap.get(uuid).getLeftCombatTime();
-    } 
-
-    public boolean isMobIncludeEnvironment() {
-        return MobIncludeEnvironment;
+        return 0;
     }
 
-//    }
+    public boolean isMobIncludeEnvironment() {
+        return false;
+    }
 
+    public boolean isMaintainName() {
+        return false;
+    }
+
+    public boolean isMaintainLore() {
+        return false;
+    }
+
+    public boolean isMaintainEnchants() {
+        return false;
+    }
 }

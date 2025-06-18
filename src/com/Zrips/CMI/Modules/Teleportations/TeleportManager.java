@@ -1,27 +1,26 @@
 package com.Zrips.CMI.Modules.Teleportations;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 
 public class TeleportManager {
-
     private CMI plugin;
-    private TreeMap<UUID, Set<TpInfo>> tpRequests = new TreeMap<UUID, Set<TpInfo>>();
-    private TreeMap<UUID, Set<TpInfo>> blockedRequests = new TreeMap<UUID, Set<TpInfo>>();
-
+    private TreeMap<UUID, Set<TpInfo>> tpRequests;
+    private TreeMap<UUID, Set<TpInfo>> blockedRequests;
     private boolean SafeLocationDownThenUp;
-    private int TeleportInvulnerability = 2;
-    private boolean TeleportToSpawnBefore;
+    private int defaultTeleportInvulnerability;
+    private HashMap<String, Integer> TeleportInvulnerability;
+    private boolean DisableInvOnBlockBreakPlace;
+    private boolean DisableInvOnInteraction;
     private boolean TeleportSwitchPlaces;
     private boolean TpaCurrentLoc;
     private boolean TpahereCurrentLoc;
@@ -34,82 +33,50 @@ public class TeleportManager {
     private int TeleportTpaMaxDistance;
     private int TeleportTpaHereMaxDistance;
     private int TeleportTpBypass;
-    private int BackMinDistance = 5;
-    private boolean BackWithWE = true;
-    private List<String> BackBlackList = new ArrayList<String>();
-
-    private HashMap<TpAction, Boolean> BlackListedItemsEnabledFor = new HashMap<TpAction, Boolean>();
-    private HashMap<Material, Integer> blockedItems = new HashMap<Material, Integer>();
-
-//    public int showFor = 60;
-//    public int blockFor = 6;
-
-    public enum TpAction {
-        tpa, tpahere, tpaall, tp, warp, home, spawn;
-
-        public static TpAction get(String name) {
-            for (TpAction one : TpAction.values()) {
-                if (one.toString().equalsIgnoreCase(name))
-                    return one;
-            }
-            return null;
-        }
-
-    }
+    private int BackMinDistance;
+    private boolean BackWithWE;
+    private List<String> BackBlackList;
+    private List<String> DBackBlackList;
+    private int BackExpiration;
+    private int DeathBackExpiration;
+    private HashMap<TpAction, Boolean> BlackListedItemsEnabledFor;
+    private HashMap<Material, Integer> blockedItems;
 
     public void loadConfig() {
-
     }
 
     public TeleportManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void clearRequests(Player player) {
-        tpRequests.remove(player.getUniqueId());
     }
 
     private void clearRequests() {
-
     }
 
     private void clearBlocks() {
-
     }
 
     public void addTpBlock(Player whoAccepts, TpInfo ti) {
-
     }
 
     public boolean isBlockedRequest(Player whoOffers, Player whoAccepts, TpAction action) {
-
         return false;
     }
 
     public long getBlockTime(Player whoOffers, Player whoAccepts, TpAction action) {
-
-        return 0L;
+        return 0;
     }
 
     public boolean addTpRequest(Player whoOffers, Player whoAccepts, TpAction action) {
-        return addTpRequest(whoOffers, whoAccepts, action, true);
+        return false;
     }
 
     public boolean addTpRequest(Player whoOffers, Player whoAccepts, TpAction action, boolean currentLoc) {
-
-        return true;
+        return false;
     }
 
     public boolean removeTpRequest(Player whoOffers, Player whoAccepts) {
-        Set<TpInfo> list = tpRequests.get(whoOffers.getUniqueId());
-        if (list == null)
-            return true;
-        for (TpInfo one : new HashSet<TpInfo>(list)) {
-            if (one.getWhoAccepts().equals(whoAccepts)) {
-                list.remove(one);
-                return true;
-            }
-        }
         return false;
     }
 
@@ -119,109 +86,137 @@ public class TeleportManager {
 
     @Deprecated
     public TpInfo getTeleportInfo(Player whoAccepts, Player whoOffers) {
-        return getTeleportInfo(whoAccepts, whoOffers, null);
+        return null;
     }
 
     public TpInfo getTeleportInfo(Player whoAccepts, Player whoOffers, TpAction action) {
-
         return null;
     }
 
     public TreeMap<UUID, Set<TpInfo>> getTeleportRequests() {
-        return tpRequests;
+        return null;
     }
 
     public Set<TpInfo> getTeleportRequests(UUID uuid) {
-        return tpRequests.get(uuid);
+        return null;
     }
 
     public TreeMap<UUID, Set<TpInfo>> getBlockedRequests() {
-        return blockedRequests;
+        return null;
     }
 
     public Set<TpInfo> getBlockedRequests(UUID uuid) {
-        return blockedRequests.get(uuid);
+        return null;
     }
 
     public HashMap<Material, Integer> getBlockedItems() {
-        return blockedItems;
+        return null;
     }
 
     public Boolean isBlackListedItemsEnabledFor(TpAction action) {
-        if (!BlackListedItemsEnabledFor.containsKey(action))
-            return false;
-        return BlackListedItemsEnabledFor.get(action);
+        return null;
     }
 
     public boolean isSwitchTeleportPlaces() {
-        return TeleportSwitchPlaces;
+        return false;
     }
 
     public int getTpaWarmupTime() {
-        return TeleportTpaWarmup;
+        return 0;
     }
 
     public boolean isTpaMove() {
-        return TeleportTpaMove;
+        return false;
     }
 
     public boolean isTpaCurrentLoc() {
-        return TpaCurrentLoc;
+        return false;
     }
 
     public boolean isTpahereCurrentLoc() {
-        return TpahereCurrentLoc;
+        return false;
     }
 
     public int getJumpDefaultDistance() {
-        return TeleportJumpDefault;
+        return 0;
     }
 
     public int getBackMinDistance() {
-        return BackMinDistance;
+        return 0;
     }
 
     public boolean isSafeLocationDownThenUp() {
-        return SafeLocationDownThenUp;
+        return false;
     }
 
     public void setSafeLocationDownThenUp(boolean safeLocationDownThenUp) {
-        SafeLocationDownThenUp = safeLocationDownThenUp;
     }
 
     public List<String> getBackBlackList() {
-        return BackBlackList;
+        return null;
+    }
+
+    public List<String> getDBackBlackList() {
+        return null;
     }
 
     public int getTpaMaxDistance() {
-        return TeleportTpaMaxDistance;
+        return 0;
     }
 
     public int getTpaHereMaxDistance() {
-        return TeleportTpaHereMaxDistance;
+        return 0;
     }
 
     public int getInvulnerabilityTime() {
-        return TeleportInvulnerability;
+        return 0;
     }
 
-    public boolean isToSpawnBeforeTeleporting() {
-        return TeleportToSpawnBefore;
+    public int getInvulnerabilityTime(World world) {
+        return 0;
+    }
+
+    public int getInvulnerabilityTime(String world) {
+        return 0;
+    }
+
+    public boolean isDisbleInvulnerabilityOnBlockBreakPlace() {
+        return false;
+    }
+
+    public boolean isDisbleInvulnerabilityOnInteract() {
+        return false;
     }
 
     public boolean isDenyConfirm() {
-        return TeleportDenyConfirm;
+        return false;
     }
 
     public int getTpBypassTime() {
-        return TeleportTpBypass;
+        return 0;
     }
 
     public boolean isBackWithWE() {
-        return BackWithWE;
+        return false;
     }
 
     public int getTpaTime() {
-        return TeleportTpaTime;
+        return 0;
+    }
+
+    public int getBackExpiration() {
+        return 0;
+    }
+
+    public int getDeathBackExpiration() {
+        return 0;
+    }
+
+    public enum TpAction {
+        tpa, tpahere, tpaall, tp, warp, home, spawn;
+
+        public static TpAction get(String name) {
+            return null;
+        }
     }
 }

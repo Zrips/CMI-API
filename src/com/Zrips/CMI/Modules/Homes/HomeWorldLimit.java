@@ -1,29 +1,22 @@
 package com.Zrips.CMI.Modules.Homes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeWorldLimit {
-
-    private List<String> worlds = new ArrayList<String>();
-    private int limit = 0;
+    private List<String> worlds;
+    private int limit;
 
     public List<String> getWorlds() {
-	return worlds;
+        return null;
     }
 
     public void setWorlds(List<String> worlds) {
-	this.worlds = worlds;
     }
 
     public int getLimit() {
-	return limit;
+        return 0;
     }
 
     public void setLimit(int limit) {
-	if (limit < -1)
-	    limit = -1;
-	this.limit = limit;
     }
-
 }

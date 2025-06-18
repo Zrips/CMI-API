@@ -3,19 +3,16 @@ package com.Zrips.CMI.events;
 import com.Zrips.CMI.Containers.CMIUser;
 
 public class CMIUserEvent extends CMIEvent {
-
-    private final CMIUser user;
+    private final CMIUser user = null;
 
     public CMIUserEvent(CMIUser user, boolean async) {
-	super(async);
-        this.user = user;
+        super(async);
     }
 
     public CMIUserEvent(CMIUser user) {
-        this(user, false);
     }
 
     public CMIUser getUser() {
-        return user;
+        return null;
     }
 }

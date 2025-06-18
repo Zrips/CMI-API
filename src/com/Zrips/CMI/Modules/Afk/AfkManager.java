@@ -1,12 +1,10 @@
 package com.Zrips.CMI.Modules.Afk;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.NavigableMap;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,125 +12,96 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Locale.CMILC;
 
-import net.Zrips.CMILib.TitleMessages.CMITitleMessage;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class AfkManager {
+    private HashMap<CMIUser, Long> lastAction;
+    private HashMap<UUID, AfkInfo> afkPlayersMap;
+    private final NavigableMap<Integer, Long> afkKickTimers = null;
+    private CMI plugin;
+    private CMITask sched;
+    private long awayTrigerTime;
+    private List<String> awayTrigerCommands;
+    private List<String> manualAwayTrigerCommands;
+    private List<String> manualLeaveCommands;
+    private List<String> autoLeaveCommands;
+    private long defaultKickTime;
+    private int AutoKickFromPlayerCount;
+    private long RepeatingAutoKickInterval;
+    private List<String> kickTrigerCommands;
+    private List<String> disabledWorlds;
+    private boolean AfkEnabled;
+    private boolean PreventJumping;
+    private boolean TitleMessage;
+    private boolean SubTitleMessage;
+    private boolean PreventDamage;
+    private boolean PreventMobDamage;
+    private boolean StopPlayTime;
+    private int interval;
+    private boolean disableOnPublicChat;
+    private boolean disableOnPrivateChat;
+    private boolean disableOnInteract;
+    private boolean SmartInteractCheck;
+    private boolean AntiAfkMachines;
+    private boolean DisableOnInventoryClick;
+    private boolean DisableOnitemDrop;
+    private boolean RepeatKickCommand;
+    private boolean disableOnCommand;
+    private boolean disableOnMove;
+    private boolean disableOnLookAround;
+    private boolean disableItemPickup;
+    private boolean disableFishing;
+    private boolean PreventMobSpawning;
+    private boolean PreventMobSpawningNatural;
+    private boolean PreventMobSpawningSpawners;
+    private boolean PreventMobVillageDefence;
+    private boolean PreventPushing;
+    private boolean PreventHook;
+    private boolean disableExpPickup;
+    int messageSize;
+    List<String> afkSubTitle;
+    private CMITask afkSched;
+    List<CMIUser> afkList;
 
-    private HashMap<CMIUser, Long> lastAction = new HashMap<CMIUser, Long>();
-//    private Set<CMIUser> afkPlayers = new HashSet<CMIUser>();
-
-    private HashMap<UUID, AfkInfo> afkPlayersMap = new HashMap<UUID, AfkInfo>();
+    public long getClosestKickTime() {
+        return 0;
+    }
 
     public boolean isAfk(UUID uuid) {
-        if (!afkPlayersMap.containsKey(uuid))
-            return false;
-        return getAfkInfo(uuid).getAfkFrom() > 0;
+        return false;
     }
 
     public AfkInfo getAfkInfo(UUID uuid) {
-        return afkPlayersMap.get(uuid);
-//        return afkPlayersMap.computeIfAbsent(uuid, k -> new AfkInfo());
+        return null;
     }
 
     public AfkInfo createAfkInfo(UUID uuid) {
-//        return afkPlayersMap.get(uuid);
-        return afkPlayersMap.computeIfAbsent(uuid, k -> new AfkInfo());
+        return null;
     }
 
     public void removeAfkInfo(UUID uuid) {
-        afkPlayersMap.remove(uuid);
     }
-
-    private CMI plugin;
 
     public AfkManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    private CMITask sched = null;
-    private long awayTrigerTime = 3000;
-    private List<String> awayTrigerCommands = new ArrayList<String>();
-    private List<String> manualAwayTrigerCommands = new ArrayList<String>();
-    private List<String> leaveTrigerCommands = new ArrayList<String>();
-    private long kickTrigerTime = 5000;
-    private long RepeatingAutoKickInterval = 5000;
-    private List<String> kickTrigerCommands = new ArrayList<String>();
-    private List<String> disabledWorlds = new ArrayList<String>();
-
-    private boolean AfkEnabled = true;
-    private boolean PreventJumping = true;
-    private boolean TitleMessage = true;
-    private boolean SubTitleMessage = true;
-    private boolean PreventDamage = true;
-    private boolean StopPlayTime = false;
-    private int interval = 1;
-
-    private boolean disableOnPublicChat = true;
-    private boolean disableOnPrivateChat = true;
-    private boolean disableOnInteract = true;
-    private boolean SmartInteractCheck = true;
-    private boolean AntiAfkMachines = true;
-    private boolean DisableOnInventoryClick = true;
-    private boolean DisableOnitemDrop = true;
-    private boolean RepeatKickCommand = false;
-    private boolean disableOnCommand = true;
-    private boolean disableOnMove = true;
-    private boolean disableOnLookAround = true;
-    private boolean disableItemPickup = false;
-    private boolean disableFishing = true;
-    private boolean PreventMobSpawning = false;
-    private boolean PreventMobSpawningNatural = false;
-    private boolean PreventMobSpawningSpawners = true;
-    private boolean PreventMobVillageDefence = true;
-
-    private boolean PreventPushing = true;
-    private boolean PreventHook = true;
-
-    private boolean disableExpPickup = false;
-
     public void stop() {
-        if (sched != null) {
-            sched.cancel();
-            sched = null;
-        }
-        if (afkSched != null) {
-            afkSched.cancel();
-            afkSched = null;
-        }
     }
 
     public void loadConfig() {
-
     }
 
     private void loadAfk() {
-        afkSubTitle = CMILC.getIML("afk", "afkSubTitle");
-        messageSize = afkSubTitle.size();
     }
 
-    int messageSize = -1;
-    List<String> afkSubTitle = new ArrayList<String>();
-
     private void tasker() {
-
     }
 
     public void showTitle(CMIUser user, boolean fade) {
-        if (!TitleMessage || !user.isAfk() || !user.isOnline())
-            return;
-
-        CMITitleMessage.send(user.getPlayer(), getTitle(user), getSubtitle(user), fade ? 20 : 0, (interval * 20) + 3, 0);
-
     }
 
     public void hideTitle(CMIUser user) {
-        if (!TitleMessage || !user.isOnline())
-            return;
-
-        CMITitleMessage.send(user.getPlayer(), getTitle(user), getSubtitle(user), 0, 0, 20);
     }
 
     private String getTitle(CMIUser user) {
@@ -140,229 +109,202 @@ public class AfkManager {
     }
 
     private String getSubtitle(CMIUser user) {
-
         return null;
     }
 
     public void setUserToAfk(CMIUser user, List<String> cmds) {
-
     }
 
     public void removeUserFromAfk(CMIUser user, List<String> cmds) {
-
     }
 
     public void removeUser(CMIUser user) {
-        this.lastAction.remove(user);
-//        afkPlayers.remove(user);
-        if (lastAction.isEmpty() && sched != null) {
-            sched.cancel();
-            sched = null;
-        }
     }
 
     public void updateUser(CMIUser user) {
-
     }
 
     public void setLastAction(CMIUser user, long time) {
-        if (this.sched == null) {
-            this.tasker();
-        }
-        this.lastAction.put(user, time);
     }
 
     public Long getLastAction(CMIUser user) {
-        Long action = this.lastAction.get(user);
-        return action;
+        return null;
     }
 
     public boolean isAfkEnabled() {
-        return AfkEnabled;
+        return false;
     }
 
     public boolean isDisableOnMove() {
-        return disableOnMove;
+        return false;
     }
 
     public boolean isDisableOnFishing() {
-        return disableFishing;
+        return false;
     }
 
     public boolean isDisableOnInteract() {
-        return disableOnInteract;
+        return false;
     }
 
     public boolean isDisableOnInventoryClick() {
-        return DisableOnInventoryClick;
+        return false;
     }
 
     public boolean isDisableOnCommand() {
-        return disableOnCommand;
+        return false;
     }
 
     public boolean isDisableItemPickup() {
-        return disableItemPickup;
+        return false;
     }
 
     public boolean isDisableOnPublicChat() {
-        return disableOnPublicChat;
+        return false;
     }
 
     public boolean isDisableOnPrivateChat() {
-        return disableOnPrivateChat;
+        return false;
     }
 
     public List<String> getAwayTrigerCommands() {
-        return awayTrigerCommands;
+        return null;
     }
 
     public void setAwayTrigerCommands(List<String> awayTrigerCommands) {
-        this.awayTrigerCommands = awayTrigerCommands;
     }
 
     public boolean isPreventDamage() {
-        return PreventDamage;
+        return false;
+    }
+
+    public boolean isPreventMobDamage() {
+        return false;
     }
 
     public boolean isPreventJumping() {
-        return PreventJumping;
+        return false;
     }
 
+    @Deprecated
     public List<String> getLeaveTrigerCommands() {
-        return leaveTrigerCommands;
+        return null;
     }
 
-    public void setLeaveTrigerCommands(List<String> leaveTrigerCommands) {
-        this.leaveTrigerCommands = leaveTrigerCommands;
+    public List<String> getManualLeaveCommands() {
+        return null;
+    }
+
+    public void setManualLeaveCommands(List<String> manualLeaveCommands) {
+    }
+
+    public List<String> getAutoLeaveCommands() {
+        return null;
+    }
+
+    public void setAutoLeaveCommands(List<String> autoLeaveCommands) {
     }
 
     public boolean isSmartInteractCheck() {
-        return SmartInteractCheck;
+        return false;
     }
 
     public boolean isAntiAfkMachines() {
-        return AntiAfkMachines;
+        return false;
     }
 
     public int getCheckInterval() {
-        return interval;
+        return 0;
     }
 
     public boolean isStopPlayTime() {
-        return StopPlayTime;
+        return false;
     }
 
     public void setStopPlayTime(boolean stopPlayTime) {
-        StopPlayTime = stopPlayTime;
     }
 
-    private CMITask afkSched = null;
-
-    List<CMIUser> afkList = new ArrayList<CMIUser>();
-
     public void removeFromAfkTimePreventer(CMIUser user) {
-        afkList.remove(user);
     }
 
     public void AddToAfkTimePreventer(CMIUser user) {
-//	if (user.isOnline() && this.isDisabledWorld(user.getLocation().getWorld())) {
-//	    return;
-//	}
-        afkList.add(user);
-        AfkTimePreventer();
     }
 
-    @SuppressWarnings("deprecation")
     private void AfkTimePreventer() {
-
     }
 
     public List<String> getManualAwayTrigerCommands() {
-        return manualAwayTrigerCommands;
+        return null;
     }
 
     public void setManualAwayTrigerCommands(List<String> manualAwayTrigerCommands) {
-        this.manualAwayTrigerCommands = manualAwayTrigerCommands;
     }
 
     public long getAwayTrigerTime() {
-        return awayTrigerTime;
+        return 0;
     }
 
     public boolean nearActivePlayer(Location loc, SpawnReason reason) {
-
-        return true;
+        return false;
     }
 
     public static Boolean isNear(Location loc1, Location loc2) {
-
-        return true;
+        return null;
     }
 
     public boolean isDisableExpPickup() {
-        return disableExpPickup;
+        return false;
     }
 
     public boolean isDisableOnItemDrop() {
-        return DisableOnitemDrop;
+        return false;
     }
 
     public boolean isDisabledWorld(World world) {
-        if (world == null)
-            return false;
-        return isDisabledWorld(world.getName());
+        return false;
     }
 
     public boolean isDisabledWorld(String name) {
-        if (name == null)
-            return false;
-        return this.disabledWorlds.contains(name.toLowerCase());
+        return false;
     }
 
     public boolean isPreventMobSpawning() {
-        return PreventMobSpawning;
+        return false;
     }
 
     public boolean isPreventMobSpawningNatural() {
-        return PreventMobSpawningNatural;
+        return false;
     }
 
     public boolean isPreventMobSpawningSpawners() {
-        return PreventMobSpawningSpawners;
+        return false;
     }
 
     public boolean isPreventMobVillageDefence() {
-        return PreventMobVillageDefence;
+        return false;
     }
 
     public boolean isPreventPushing() {
-        return PreventPushing;
+        return false;
     }
 
     public Set<CMIUser> getAfkPlayers() {
-        return afkPlayersMap
-            .keySet()
-            .stream()
-            .map(CMIUser::getUser)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+        return null;
     }
 
     public HashMap<UUID, AfkInfo> getAfkPlayersMap() {
-        return afkPlayersMap;
+        return null;
     }
 
     public int getAfkPlayerCount() {
-        return afkPlayersMap.size();
+        return 0;
     }
 
     public boolean isDisableOnLookAround() {
-        return disableOnLookAround;
+        return false;
     }
 
     public boolean isPreventHook() {
-        return PreventHook;
+        return false;
     }
-
 }

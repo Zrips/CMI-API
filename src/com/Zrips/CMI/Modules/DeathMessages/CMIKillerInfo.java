@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.DeathMessages;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -10,61 +9,51 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 
 class CMIKillerInfo {
     private damageInformation damage;
-
-    private Entity killer = null;
-    private Block killerBlock = null;
-
-    private CMIDeathType type = CMIDeathType.Custom;
-
-    private CMIItemStack killerItem = null;
-    private List<CMIDeathType> path = new ArrayList<CMIDeathType>();
+    private Entity killer;
+    private Block killerBlock;
+    private CMIDeathType type;
+    private CMIItemStack killerItem;
+    private List<CMIDeathType> path;
 
     public CMIKillerInfo(damageInformation lastDamage) {
-	damage = lastDamage;
     }
 
     public Entity getKiller() {
-	return killer;
+        return null;
     }
 
     public void setKiller(Entity killer) {
-	this.killer = killer;
     }
 
     public List<CMIDeathType> getPath() {
-	return path;
+        return null;
     }
 
     public void setPath(List<CMIDeathType> path) {
-	this.path = path;
     }
 
     public damageInformation getDamage() {
-	return damage;
+        return null;
     }
 
     public Block getKillerBlock() {
-	return killerBlock;
+        return null;
     }
 
     public void setKillerBlock(Block killerBlock) {
-	this.killerBlock = killerBlock;
     }
 
     public CMIItemStack getKillerItem() {
-	return killerItem;
+        return null;
     }
 
     public void setKillerItem(CMIItemStack killerItem) {
-	this.killerItem = killerItem;
     }
 
     public CMIDeathType getType() {
-	return type;
+        return null;
     }
 
     public void setType(CMIDeathType type) {
-	this.type = type;
     }
-
 }

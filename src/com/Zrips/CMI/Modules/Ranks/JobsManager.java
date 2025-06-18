@@ -3,7 +3,6 @@ package com.Zrips.CMI.Modules.Ranks;
 import org.bukkit.entity.Player;
 
 public class JobsManager {
-
     public JobsManager() {
     }
 

@@ -2,15 +2,13 @@ package com.Zrips.CMI.events;
 
 import org.bukkit.command.CommandSender;
 
-public final class CMIConfigReloadEvent extends CMIEvent {
-
-    private CommandSender sender;
+public class CMIConfigReloadEvent extends CMIEvent {
+    private final CommandSender sender = null;
 
     public CMIConfigReloadEvent(CommandSender sender) {
-        this.sender = sender;
     }
 
     public CommandSender getSender() {
-        return sender;
+        return null;
     }
 }

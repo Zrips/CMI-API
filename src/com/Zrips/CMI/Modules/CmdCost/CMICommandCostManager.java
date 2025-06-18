@@ -7,46 +7,37 @@ import org.bukkit.command.CommandSender;
 import com.Zrips.CMI.CMI;
 
 public class CMICommandCostManager {
-    private HashMap<String, CMICommandCost> costs = new HashMap<String, CMICommandCost>();
-
+    private HashMap<String, CMICommandCost> costs;
     CMI plugin;
+    private String fileName;
 
     public CMICommandCostManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public int getCommandCostCount() {
-        return costs.size();
+        return 0;
     }
 
     public void addCost(String cmd, double cost) {
-        costs.put(cmd.toLowerCase(), new CMICommandCost(cmd, cost));
     }
 
     public CMICommandCost getCost(String cmd) {
-
         return null;
     }
 
     public CMICommandCostUsage canUseCmd(CommandSender sender, String cmd) {
-
         return null;
     }
 
     public boolean isContinueCommand(CommandSender sender, String cmd) {
-
-        return true;
+        return false;
     }
 
-    private String fileName = "CommandCost.yml";
-
     public boolean loadConfig(boolean isReload) {
-
-        return true;
+        return false;
     }
 
     private static CMICommandCost get(String line) {
-
         return null;
     }
 }

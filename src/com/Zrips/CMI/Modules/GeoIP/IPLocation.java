@@ -8,42 +8,37 @@ public class IPLocation {
     private String postalCode;
 
     public String getCountryCode() {
-	return countryCode;
+        return null;
     }
 
     public void setCountryCode(String countryCode) {
-	this.countryCode = countryCode;
     }
 
     public String getCountryName() {
-	return countryName;
+        return null;
     }
 
     public void setCountryName(String countryName) {
-	this.countryName = countryName;
     }
 
     public String getRegion() {
-	return region;
+        return null;
     }
 
     public void setRegion(String region) {
-	this.region = region;
     }
 
     public String getCity() {
-	return city == null ? "" : city;
+        return null;
     }
 
     public void setCity(String city) {
-	this.city = city;
     }
 
     public String getPostalCode() {
-	return postalCode;
+        return null;
     }
 
     public void setPostalCode(String postalCode) {
-	this.postalCode = postalCode;
     }
 }

@@ -1,76 +1,88 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
-import com.Zrips.CMI.CMI;
-
 public class FlightCharge {
-
-    private double charge = 0;
-    private double lastChange = 0;
-    private boolean enabled = false;
-    private boolean autoRecharge = false;
-    private boolean moneyRecharge = false;
-    private boolean expRecharge = false;
+    private double charge;
+    private double lastChange;
+    private boolean enabled;
+    private boolean autoRecharge;
+    private boolean moneyRecharge;
+    private boolean expRecharge;
+    private boolean informedMissingExp;
+    private boolean informedMissingMoney;
 
     public FlightCharge() {
     }
 
     public Double getCharge() {
-        return charge;
+        return null;
     }
 
     public Double getSafeCharge() {
-        return charge;
+        return null;
     }
 
     public void setCharge(Double charge) {
-
     }
 
     public void addCharge(Double charge) {
-
     }
 
     public void takeCharge(Double charge) {
-
     }
 
     public Integer getMax() {
-        return CMI.getInstance().getFlightChargeManager().getMaxChargeLevel();
+        return null;
     }
 
     public Double getLastChange() {
-        return lastChange;
+        return null;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Boolean isAutoRecharge() {
-        return autoRecharge;
+        return null;
     }
 
     public void setAutoRecharge(Boolean autoRecharge) {
-        this.autoRecharge = autoRecharge == null ? false : autoRecharge;
+    }
+
+    public void setAutoMoneyRecharge(boolean moneyRecharge) {
     }
 
     public void setAutoMoneyRecharge() {
-        moneyRecharge = true;
+    }
+
+    public void setAutoExpRecharge(boolean expRecharge) {
     }
 
     public void setAutoExpRecharge() {
-        expRecharge = true;
     }
 
     public boolean isMoneyAutoRecharge() {
-        return moneyRecharge;
+        return false;
     }
 
     public boolean isExpAutoRecharge() {
-        return expRecharge;
+        return false;
+    }
+
+    public boolean isInformedMissingExp() {
+        return false;
+    }
+
+    public void setInformedMissingExp(boolean informedMissingExp) {
+    }
+
+    public boolean isInformedMissingMoney() {
+        return false;
+    }
+
+    public void setInformedMissingMoney(boolean informedMissingMoney) {
     }
 }

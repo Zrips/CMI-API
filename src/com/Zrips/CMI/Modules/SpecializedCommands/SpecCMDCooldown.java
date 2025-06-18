@@ -1,46 +1,40 @@
 package com.Zrips.CMI.Modules.SpecializedCommands;
 
 public class SpecCMDCooldown {
-    private double cooldown = 0L;
+    private double cooldown;
     private String cmd;
 
     @Deprecated
     public long getCooldown() {
-        return (long) cooldown;
+        return 0;
     }
 
     public double getCD() {
-        return cooldown;
+        return 0.0;
     }
 
     @Deprecated
     public SpecCMDCooldown setCooldown(long seconds) {
-        this.cooldown = seconds;
-        return this;
+        return null;
     }
 
     public SpecCMDCooldown setCooldown(double seconds) {
-        this.cooldown = seconds;
-        return this;
+        return null;
     }
 
     public String getCmd() {
-        return cmd;
+        return null;
     }
 
     public String getBaseCmd() {
-        return cmd.contains(" ") ? cmd.split(" ")[0] : cmd;
+        return null;
     }
 
     public SpecCMDCooldown setCmd(String cmd) {
-        if (cmd.startsWith("/"))
-            cmd = cmd.substring(1);
-        this.cmd = cmd;
-        return this;
+        return null;
     }
 
     public long untilNextUse(Long usedOn) {
-        return (long) ((usedOn + (getCD() * 1000L)) - System.currentTimeMillis());
+        return 0;
     }
-
 }

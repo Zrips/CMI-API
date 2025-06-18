@@ -3,26 +3,22 @@ package com.Zrips.CMI.events;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.Modules.Kits.Kit;
 
-public final class CMIUserKitAcquireEvent extends CMIUserCancellableEvent {
-
+public class CMIUserKitAcquireEvent extends CMIUserCancellableEvent {
     private Kit kit;
     private boolean giveItems;
 
     public CMIUserKitAcquireEvent(CMIUser user, Kit kit, boolean giveItems) {
         super(user);
-        this.kit = kit;
-        this.giveItems = giveItems;
     }
 
     public Kit getKit() {
-        return kit;
+        return null;
     }
 
     public boolean isGiveItems() {
-        return giveItems;
+        return false;
     }
 
     public void setGiveItems(boolean giveItems) {
-        this.giveItems = giveItems;
     }
 }

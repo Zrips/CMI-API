@@ -1,8 +1,5 @@
 package com.Zrips.CMI.Modules.Holograms;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -15,203 +12,175 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIInteractType;
 import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Display.CMIItemDisplay;
 import com.Zrips.CMI.Modules.Display.CMITextAlignment;
 import com.Zrips.CMI.Modules.Display.CMITextDisplay;
 import com.Zrips.CMI.Modules.Packets.FakeInfo;
-import com.Zrips.CMI.Modules.Packets.PacketHandler;
+import com.Zrips.CMI.Modules.Portals.CMIPlane;
 import com.Zrips.CMI.Modules.Portals.CMIVector3D;
 import com.Zrips.CMI.Modules.Portals.CuboidArea;
-import com.google.common.collect.ConcurrentHashMultiset;
-import com.google.common.collect.Multiset;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
-import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class CMIHologram {
-
-    private String name = null;
-    private CMITask schedId = null;
-    private CMITask pageSchedId = null;
-    private CMITask lineOfSightSchedId = null;
-
-    private boolean enabled = true;
-    private boolean saveToFile = false;
-    private boolean showWhenNotPersistent = false;
-
-    private Player playerToShowFor = null;
-    private int selfDestructIn = 0;
-
-    private boolean sticky = false;
-//    private boolean checkLOS = false;
-
-    private boolean autoPagination = false;
-
+    private String name;
+    private CMITask schedId;
+    private CMITask pageSchedId;
+    private CMITask lineOfSightSchedId;
+    private CMITask hoverOverSchedId;
+    private boolean enabled;
+    private boolean saveToFile;
+    private boolean showWhenNotPersistent;
+    private Player playerToShowFor;
+    private int selfDestructIn;
+    private boolean sticky;
+    private boolean autoPagination;
+    private int autoPaginationOffset;
+    private String group;
     private CuboidArea area;
     private CuboidArea areaExtra;
-
-//    private String[] lines = new String[0];
-    private List<String> commands = new ArrayList<String>();
-
-    private double LOSupdateIntervalSec = 0;
-    private double followPlayer = 1;
-
-    private double updateIntervalSec = HologramManager.defaultUpdateInterval;
-    private double pageChangeIntervalSec = HologramManager.defaultpageChangeInterval;
-//    private Long lastUpdate = 0L;
-
-    private int updateRange = HologramManager.defaultUpdateRange;
-    private int showRange = HologramManager.defaultViewRange;
-    private double spacing = 0.24;
-    private double iconSpacing = 0.5D;
-
-    private boolean downOrder = HologramManager.defaultsPlaceUp;
-
+    private List<String> commands;
+    private double LOSupdateIntervalSec;
+    private double followPlayer;
+    private double updateIntervalSec;
+    private double pageChangeIntervalSec;
+    private int updateRange;
+    private int showRange;
+    private double spacing;
+    private double iconSpacing;
+    private boolean downOrder;
     private CMILocation loc;
-
-    private Vector centerLocation = null;
-
-    private boolean interactable = false;
-
-    private boolean bigButton = true;
-    private boolean showParticle = true;
-    private boolean requestPermission = false;
-
-    private static String left = "!leftclick!";
-    private static String right = "!rightclick!";
-    private static String shiftLeft = "!shiftleftclick!";
-    private static String shiftRight = "!shiftrightclick!";
-
-    static Pattern pagePatern = Pattern.compile("(?i)(!nextpage!)");
-
-    private List<String> lines = new ArrayList<String>();
-    private int lineCount = 0;
-    private List<String> oldLines = new ArrayList<String>();
-    private boolean changedLines = false;
-    private ConcurrentHashMap<UUID, Integer> inPage = new ConcurrentHashMap<UUID, Integer>();
-    private ConcurrentHashMap<UUID, Integer> hoveringLine = new ConcurrentHashMap<UUID, Integer>();
-    private ConcurrentHashMap<UUID, Boolean> hoveringSide = new ConcurrentHashMap<UUID, Boolean>();
-//    private ConcurrentHashMap<UUID, Integer> oldHoveringLine = new ConcurrentHashMap<UUID, Integer>();
-    private ConcurrentHashMap<Integer, CMIHologramPage> pages = new ConcurrentHashMap<Integer, CMIHologramPage>();
-    private ConcurrentHashMap<Integer, CMIHologramPage> oldPages = new ConcurrentHashMap<Integer, CMIHologramPage>();
-
-    private Multiset<UUID> lastHoloInRange = ConcurrentHashMultiset.create();
-    private Multiset<UUID> lastHoloInRangeExtra = ConcurrentHashMultiset.create();
-
-//    private Set<UUID> lastHoloInRange = Collections.synchronizedSet(new HashSet<UUID>());
-//    private Set<UUID> lastHoloInRangeExtra = Collections.synchronizedSet(new HashSet<UUID>());
-
-    private boolean uSync = true;
-
-    //Interaction area
-    private boolean newIneractionMethod = true;
-    private CMITask hoverOverSchedId = null;
-    private double extraInteractionHeight = 0D;
-    private double extraInteractionWidth = 0D;
-
-    // Display text approach
-    private boolean newDisplayMethod = false;
-    private CMIBillboard billboard = null;
-    private CMIBillboard iconBillboard = null;
-    private CMITextAlignment textAlignment = null;
-    private int yaw = 0;
-    private int pitch = 0;
-    private CMIChatColor backgroundColor = CMIChatColor.BLACK;
-    private int backgroundAlpha = 125;
-    private int textAlpha = 230;
-    private boolean doubleSided = false;
-    private boolean shadowed = true;
-    private double scaleW = 1;
-    private double scaleH = 1;
-    private boolean seeThrough = false;
-
-    private double iconScale = 1;
-    private int iconPitch = 0;
-    private int iconYaw = 0;
-
-    private int skyLevel = -1;
-    private int blockLevel = -1;
-
-    //Particles    
-    private short particlePosition = 0;
-    private double particleSpacing = 0D;
-    private int particleCount = 1;
-    private CMIEffect effect = new CMIEffect(CMIParticle.SMALL_SMOKE);
-
-    private boolean showHoverParticle = true;
-    private boolean stabilizedHoverParticles = false;
-    private double extraParticleHeight = 0D;
-    private double extraParticleWidth = 0D;
-
-    private double particleOffsetX = 0D;
-    private double particleOffsetY = 0D;
+    private Vector centerLocation;
+    private boolean interactable;
+    private boolean bigButton;
+    private boolean showParticle;
+    private boolean requestPermission;
+    private static String left;
+    private static String right;
+    private static String shiftLeft;
+    private static String shiftRight;
+    static Pattern pagePatern;
+    private List<String> lines;
+    private int lineCount;
+    private List<String> oldLines;
+    private boolean changedLines;
+    private ConcurrentHashMap<UUID, CMIHologramUserData> userData;
+    private ConcurrentHashMap<Integer, CMIHologramPage> pages;
+    private ConcurrentHashMap<Integer, CMIHologramPage> oldPages;
+    private Set<UUID> playersInHologramUpdateRange;
+    private Set<UUID> playersInHologramVisibilityRange;
+    ConcurrentHashMap<Integer, FakeInfo> clickableById;
+    ConcurrentHashMap<Integer, String> changed;
+    List<Integer> changedPages;
+    private boolean uSync;
+    private boolean newIneractionMethod;
+    private double extraInteractionHeight;
+    private double extraInteractionWidth;
+    private boolean newDisplayMethod;
+    private CMIBillboard billboard;
+    private CMIBillboard iconBillboard;
+    private CMITextAlignment textAlignment;
+    private int yaw;
+    private int pitch;
+    private CMIChatColor backgroundColor;
+    private int backgroundAlpha;
+    private int textAlpha;
+    private boolean doubleSided;
+    private boolean shadowed;
+    private double scaleW;
+    private double scaleH;
+    private boolean seeThrough;
+    private boolean fadeInAnimation;
+    private float iconOffsetX;
+    private double iconScale;
+    private int iconPitch;
+    private int iconYaw;
+    private int skyLevel;
+    private int blockLevel;
+    private short particlePosition;
+    private double particleSpacing;
+    private int particleCount;
+    private CMIEffect effect;
+    private boolean showHoverParticle;
+    private boolean stabilizedHoverParticles;
+    private double extraParticleHeight;
+    private double extraParticleWidth;
+    private double particleOffsetX;
+    private double particleOffsetY;
 
     public CMIHologram(String name, Location loc) {
-        this(name, new CMILocation(loc));
     }
 
     public CMIHologram(String name, Location loc, Player playerToShowFor) {
-
     }
 
     public CMIHologram(Location loc, Player playerToShowFor, List<String> lines) {
-
     }
 
     public CMIHologram(String name, CMILocation loc) {
-
     }
 
-    /**
-    * Triggered on player interaction with interactable hologram    * 
-    */
     public void onInteraction(Player player, CMIInteractType type) {
     }
 
     public List<String> getCommands() {
-        return commands;
+        return null;
     }
 
     public List<String> getCommands(Player player) {
-        return getCommands(player, null);
+        return null;
+    }
+
+    public synchronized CMIHologramUserData getData(Player player) {
+        return null;
+    }
+
+    public synchronized CMIHologramUserData getData(UUID uuid) {
+        return null;
+    }
+
+    private synchronized CMIHologramUserData removeData(Player player) {
+        return null;
+    }
+
+    private synchronized CMIHologramUserData removeData(UUID uuid) {
+        return null;
+    }
+
+    public void goToNextPage(Player player) {
     }
 
     public void goToNextPage(UUID uuid) {
-
     }
-
-    Set<UUID> skipPageChange = new HashSet<UUID>();
 
     private void goToNextPageAuto(UUID uuid) {
-
     }
 
+    @Deprecated
     public Integer getPlayerPage(UUID uuid) {
-        Integer page = inPage.get(uuid);
-        return page == null ? 1 : page;
+        return null;
+    }
+
+    public void goToPrevPage(Player player) {
     }
 
     public void goToPrevPage(UUID uuid) {
-
     }
 
     public void goToPage(UUID uuid, int page) {
-
     }
 
     private void checkPageChange(UUID uuid, Integer oldPage, Integer newPage) {
-
     }
 
     private double getLineHeight() {
-        return 0.25D * this.getScaleH();
+        return 0.0;
     }
 
     private List<String> getCommandsByPlayerPage(UUID uuid) {
@@ -219,859 +188,747 @@ public class CMIHologram {
     }
 
     private List<CMIHologramLine> getLinesByPlayerPage(Player player) {
-
         return null;
     }
 
     public void updatePages() {
-
     }
 
     public List<String> getCommands(Player player, CMIInteractType type) {
-
         return null;
     }
 
     public void setCommands(List<String> commands) {
-        if (this.commands == null)
-            this.commands = new ArrayList<String>();
-        this.commands.addAll(commands);
     }
 
     public World getWorld() {
-        return loc.getWorld();
+        return null;
     }
 
     @Deprecated
     public Location getLoc() {
-        return getLocation();
+        return null;
     }
 
     public CMILocation getLocation() {
-        return loc;
+        return null;
     }
 
     public void setLoc(Location loc) {
-
     }
 
-    public List<String> getLines() {
-        return lines;
+    public synchronized List<String> getLines() {
+        return null;
     }
 
     public String getLine(int place) {
-        return lines.size() - 1 < place || place < 0 ? "" : lines.get(place) == null ? "" : lines.get(place);
+        return null;
     }
 
-    public void setLines(List<String> l) {
-
+    public synchronized void setLines(List<String> l) {
     }
 
     public void addLine(String line) {
-
     }
 
     public void setLine(int place, String line) {
-
     }
 
     public void removeLine(int line) {
-
     }
 
     public boolean isChangedLine() {
-        return changedLines;
+        return false;
     }
 
     private void recheckLines() {
-
     }
 
     public CuboidArea getArea() {
-
         return null;
     }
 
     public CuboidArea getAreaExtra() {
-
         return null;
     }
 
     public void setArea(CuboidArea area) {
-        this.area = area;
     }
 
     public void setAreaExtra(CuboidArea area) {
-        this.areaExtra = area;
+    }
+
+    public void recheckPermissionAccess() {
     }
 
     public void update() {
-
     }
 
     @Deprecated
     public void hide(Player player) {
-        if (player == null)
-            return;
-        hide(player.getUniqueId());
     }
 
     public void refresh() {
-        this.hide();
-        this.updatePages();
-        this.update();
     }
 
     public void hide() {
-
     }
 
     public void hide(UUID uuid) {
-        if (uuid == null)
-            return;
-        removeFromCache(uuid);
     }
 
     public double getHeight() {
-        double offset = 0;
-
-        return offset;
+        return 0.0;
     }
 
     private double getHeight(List<CMIHologramLine> l) {
-        double offset = getSpacing() / 2;
-        return offset;
+        return 0.0;
     }
 
     public Vector getCenterVector() {
-        if (this.centerLocation != null)
-            return this.centerLocation.clone();
-        this.centerLocation = getCenterLocation().toVector();
-        return this.centerLocation.clone();
+        return null;
     }
 
     public Location getCenterLocation() {
         return null;
     }
 
-    ConcurrentHashMap<Integer, String> changed = new ConcurrentHashMap<Integer, String>();
-    List<Integer> changedPages = new ArrayList<Integer>();
-
-    private void recalcualteChangedLines() {
+    private synchronized void recalcualteChangedLines() {
     }
 
     @Deprecated
     private void recalcualteChangedPages() {
-        recalculateChangedPages();
     }
 
     private void recalculateChangedPages() {
-
     }
 
     public void moveTo(Location loc) {
-        setLoc(loc);
-        move(this.getLocation().clone().toVector(), loc, true);
-        if (this.isSaveToFile())
-            CMI.getInstance().getHologramManager().save();
     }
 
     public void superficialMoveTo(Location loc) {
-        move(this.getLocation().clone().toVector(), loc, false);
     }
 
-    private void move(Vector oldVector, Location moveToLoc, boolean update) {
-
+    private synchronized void move(Vector oldVector, Location moveToLoc, boolean update) {
     }
 
     private void moveHologramFor(UUID uuid, Location moveToLoc, double offset) {
-
     }
 
     private void moveHologramFor(UUID uuid, Location moveToLoc, Vector oldVector, boolean update) {
-
     }
 
-    public void update(final Player player) {
-        update(player, false);
+    public void update(Player player) {
     }
 
-    ConcurrentHashMap<UUID, Long> nextUpdate = new ConcurrentHashMap<UUID, Long>();
-    List<UUID> stillUpdating = Collections.synchronizedList(new ArrayList<>());
-
-    private List<CMIVector3D> getLocation(Player player, int parts) {
-
+    private List<CMIVector3D> getLocation(Player player, int parts, CMIPlane plane) {
         return null;
     }
 
     private int getLineCount(CMIHologramPage page) {
-        return this.isAutoPagination() ? page.getLines().size() + 1 : page.getLines().size();
+        return 0;
     }
 
     public void processPrevNextPageClick(Player player) {
-
     }
 
     public void checkHoverPosition(Player player) {
-
     }
-
-//    private boolean stillUpdating = false;
-
-//    private final static ExecutorService asyncService = Executors.newCachedThreadPool();
-
-    ConcurrentHashMap<UUID, CMIHologramBatch> playerDisplays = new ConcurrentHashMap<UUID, CMIHologramBatch>();
 
     private void modifyIcon(CMIItemDisplay display) {
     }
 
     private CMIVector3D getIconPositionOffset(int line) {
-
         return null;
     }
 
-    private void newUpdate(final Player player) {
+    private CompletableFuture<CMIItemDisplay> createIcon(Location loc, CMIVector3D vector, Player player, int i) {
+        return null;
+    }
+
+    private void updateItemDisplay(CMIHologramLine line, CMIItemDisplay display, Player player) {
+    }
+
+    private synchronized void newUpdate(Player player) {
     }
 
     private void addInteractionCheck(Player player) {
-
     }
 
-    CompletableFuture<Void> task = null;
-
-    private void oldUpdate(final Player player, final boolean oneTime) {
-
+    private void oldUpdate(Player player, boolean oneTime) {
     }
 
-    private CMITextDisplay createDisplay(List<String> finalLines, double offset, boolean frontSide) {
-
+    private CMITextDisplay createDisplay(CMIHologramUserData data, List<String> finalLines, double offset, boolean frontSide) {
         return null;
     }
 
-    private void updateDisplaySettings(CMITextDisplay display, boolean frontSide) {
-
+    private void updateAnimation(CMIHologramUserData data, CMITextDisplay display) {
     }
 
-    private void generalUpdate(final Player player, boolean oneTime) {
-
+    private void updateDisplaySettings(CMIHologramUserData data, CMITextDisplay display, boolean frontSide) {
     }
 
-    public void update(final Player player, boolean oneTime) {
-
+    void generalUpdate(Player player, boolean oneTime) {
     }
 
-    ConcurrentHashMap<UUID, List<CMIDataWatcher>> cache = new ConcurrentHashMap<UUID, List<CMIDataWatcher>>();
-    ConcurrentHashMap<Integer, FakeInfo> clickableById = new ConcurrentHashMap<Integer, FakeInfo>();
-    ConcurrentHashMap<UUID, FakeInfo> clickableByPlayer = new ConcurrentHashMap<UUID, FakeInfo>();
+    public void update(Player player, boolean oneTime) {
+    }
 
     public void removeFromCache(UUID uuid) {
+    }
 
+    public void removeFromCache(UUID uuid, boolean deleteData) {
     }
 
     public void clearFakeEntities() {
-        PacketHandler.clearFakeEntities();
+    }
+
+    private void clearIconLines(UUID uuid, CMIHologramPage newHPage) {
     }
 
     public void removeFromCache(UUID uuid, int size) {
+    }
 
+    private void updateCache(UUID uuid, int place, CMIDataWatcher w) {
+    }
+
+    private CMIDataWatcher getCache(UUID uuid, int place) {
+        return null;
     }
 
     public double getUpdateIntervalSec() {
-        return updateIntervalSec;
+        return 0.0;
     }
 
     public void setUpdateIntervalSec(double d) {
-        this.updateIntervalSec = Math.ceil((int) (d * 100D)) / 100D;
-        if (this.updateIntervalSec <= 0)
-            this.updateIntervalSec = 0;
     }
 
     public int getUpdateRange() {
-        updateRange = updateRange > this.showRange ? this.showRange : updateRange;
-        return updateRange;
+        return 0;
     }
 
     public void setUpdateRange(int activationRange) {
     }
 
     public String getName() {
-        return name;
+        return null;
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public int getShowRange() {
-        showRange = showRange < this.updateRange ? this.updateRange : showRange;
-        return showRange;
+        return 0;
     }
 
     public void setShowRange(int showRange) {
-        
     }
 
     public Double getIconSpacing() {
-        return iconSpacing;
+        return null;
     }
 
     public void setIconSpacing(Double iconSpacing) {
-        this.iconSpacing = iconSpacing;
-        updatePages();
     }
 
     public Double getSpacing() {
-        return spacing;
+        return null;
     }
 
     public void setSpacing(Double spacing) {
-        this.spacing = spacing;
-        updatePages();
     }
 
     public Boolean isDownOrder() {
-        return downOrder;
+        return null;
     }
 
     public void setDownOrder(Boolean downOrder) {
-        this.downOrder = downOrder;
     }
 
     public boolean isInteractable() {
-        return interactable;
+        return false;
     }
 
     public void setInteractable(boolean interactable) {
-        this.interactable = interactable;
     }
 
     public boolean isShowParticle() {
-        return showParticle;
+        return false;
     }
 
     public void setShowParticle(boolean showParticle) {
-        this.showParticle = showParticle;
     }
 
     public boolean isBigButton() {
-        return bigButton;
+        return false;
     }
 
     public void setBigButton(boolean bigButton) {
-        this.bigButton = bigButton;
     }
 
-    public CMITask getSched() {
-        return schedId;
+    public synchronized CMITask getSched() {
+        return null;
     }
 
-    public void setSched(CMITask schedId) {
-        this.schedId = schedId;
+    public synchronized void setSched(CMITask schedId) {
+    }
+
+    private synchronized CMITask getPageSched() {
+        return null;
+    }
+
+    private synchronized void setPageSched(CMITask schedId) {
+    }
+
+    private synchronized CMITask getSightSched() {
+        return null;
+    }
+
+    private synchronized void setSightSched(CMITask schedId) {
+    }
+
+    private synchronized CMITask getHoverSched() {
+        return null;
+    }
+
+    private synchronized void setHoverSched(CMITask schedId) {
     }
 
     public void stop() {
-
     }
 
     private void tasker() {
-
     }
 
-    @SuppressWarnings("deprecation")
-    private void lineOfSightTasker() {
+    private synchronized void resetScheduler() {
+    }
 
+    private synchronized void resetPageScheduler() {
+    }
+
+    private synchronized void resetSightScheduler() {
+    }
+
+    private synchronized void resetHoverScheduler() {
+    }
+
+    private void lineOfSightTasker() {
     }
 
     private void pageTasker() {
-
     }
 
     private void hoverOverTasker() {
-
     }
 
-    Set<UUID> skipPlayers = Collections.synchronizedSet(new HashSet<UUID>());
-
-    private void updateHolo() {
-
+    private synchronized void updateHolo() {
     }
 
-    public Set<UUID> getLastHoloInRange() {
-        return lastHoloInRange.elementSet();
+    public synchronized Set<UUID> getLastHoloInRange() {
+        return null;
     }
 
-    public void recheckTaskers() {
-        tasker();
-        lineOfSightTasker();
-        pageTasker();
-        hoverOverTasker();
+    public synchronized void recheckTaskers() {
     }
 
-    public void addLastHoloInRange(UUID uuid) {
-        this.lastHoloInRange.add(uuid);
-        recheckTaskers();
+    public synchronized void addLastHoloInRange(UUID uuid) {
     }
 
-    public void removeLastHoloInRange(UUID uuid) {
-        this.lastHoloInRange.remove(uuid);
-        recheckTaskers();
+    public synchronized void removeLastHoloInRange(UUID uuid) {
     }
 
-    public Set<UUID> getLastHoloInRangeExtra() {
-        return lastHoloInRangeExtra.elementSet();
+    public synchronized Set<UUID> getLastHoloInRangeExtra() {
+        return null;
     }
 
-    public void addLastHoloInRangeExtra(UUID uuid) {
-        this.lastHoloInRangeExtra.add(uuid);
-        recheckTaskers();
-//        lineOfSightTasker();
-//        update(CMIUser.getOnlinePlayer(uuid));
+    public synchronized void addLastHoloInRangeExtra(UUID uuid) {
     }
 
-    public void removeLastHoloInRangeExtra(UUID uuid) {
-        this.lastHoloInRangeExtra.remove(uuid);
-        recheckTaskers();
-//        lineOfSightTasker();
-        hide(uuid);
+    public synchronized void removeLastHoloInRangeExtra(UUID uuid) {
     }
 
     public boolean isuSync() {
-        return uSync;
+        return false;
     }
 
     public void setuSync(boolean uSync) {
-        this.uSync = uSync;
     }
 
     public void disable() {
-        enabled = false;
-        this.hide();
     }
 
     public void enable() {
-        enabled = true;
-        this.update();
     }
 
     public boolean isSaveToFile() {
-        return saveToFile;
+        return false;
     }
 
     public void setSaveToFile(boolean saveToFile) {
-        this.saveToFile = saveToFile;
     }
 
     public void makePersistent() {
-        this.saveToFile = true;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 
     public int getPageCount() {
-        return this.pages.size();
+        return 0;
     }
 
     public CMIHologramPage getPage(int page) {
-        return this.pages.get(page);
+        return null;
     }
 
     public boolean isRequiresPermission() {
-        return requestPermission;
+        return false;
     }
 
     public void setPermissionRequirement(boolean requestPermission) {
-        this.requestPermission = requestPermission;
     }
 
     public double getPageChangeIntervalSec() {
-        return pageChangeIntervalSec;
+        return 0.0;
     }
 
     public void setPageChangeIntervalSec(double pageChangeIntervalSec) {
-        boolean update = false;
-        if (this.pageChangeIntervalSec != pageChangeIntervalSec)
-            update = true;
-        this.pageChangeIntervalSec = Math.ceil((int) (pageChangeIntervalSec * 100D)) / 100D;
-        if (this.pageChangeIntervalSec <= 0)
-            this.pageChangeIntervalSec = 0;
-        if (update)
-            pageTasker();
     }
 
     public void remove() {
-        CMI.getInstance().getHologramManager().removeHolo(this);
     }
 
     public boolean isSticky() {
-        return sticky;
+        return false;
     }
 
     public void setSticky(boolean sticky) {
-        this.sticky = sticky;
     }
 
     public boolean isCheckLineOfSight() {
-        return LOSupdateIntervalSec > 0;
+        return false;
     }
 
     public void setLOSInterval(double LOSupdateIntervalSec) {
-        if (LOSupdateIntervalSec < 0)
-            LOSupdateIntervalSec = 0;
-        this.LOSupdateIntervalSec = Math.ceil((int) (LOSupdateIntervalSec * 100D)) / 100D;
     }
 
     public double getLOSupdateIntervalSec() {
-        return LOSupdateIntervalSec;
+        return 0.0;
     }
 
     public boolean isFollowPlayer() {
-        return LOSupdateIntervalSec > 0;
+        return false;
     }
 
     public void setFollowPlayer(double followPlayer) {
-        if (followPlayer < 0)
-            followPlayer = 0;
-        this.followPlayer = Math.ceil((int) (followPlayer * 100D)) / 100D;
     }
 
     public double getFollowPlayer() {
-        return followPlayer;
+        return 0.0;
     }
 
     public int getHoveringLine(UUID uuid) {
-        return hoveringLine.getOrDefault(uuid, 0);
+        return 0;
     }
 
     public boolean isShowHoverParticle() {
-        return showHoverParticle;
+        return false;
     }
 
     public void setShowHoverParticle(boolean showHoverParticle) {
-        this.showHoverParticle = showHoverParticle;
     }
 
     public boolean isNewIneractionMethod() {
-        return newIneractionMethod;
+        return false;
     }
 
     public void setNewIneractionMethod(boolean newIneractionMethod) {
-        this.newIneractionMethod = newIneractionMethod;
     }
 
     public int getParticleCount() {
-        return particleCount;
+        return 0;
     }
 
     public void setParticleCount(int particleCount) {
-        particleCount = Math.max(1, particleCount);
-        particleCount = Math.min(10, particleCount);
-
-        this.particleCount = particleCount;
     }
 
     public double getParticleSpacing() {
-        return particleSpacing;
+        return 0.0;
     }
 
     public void setParticleSpacing(double particleSpacing) {
-        particleSpacing = Math.max(0, particleSpacing);
-        particleSpacing = Math.min(1, particleSpacing);
-        this.particleSpacing = particleSpacing;
     }
 
     public double getExtraParticleHeight() {
-        return extraParticleHeight;
+        return 0.0;
     }
 
     public void setExtraParticleHeight(double extraParticleHeight) {
-
-        extraParticleHeight = Math.max(-this.getHeight() / 2, extraParticleHeight);
-        extraParticleHeight = Math.min(3, extraParticleHeight);
-
-        this.extraParticleHeight = extraParticleHeight;
     }
 
     public double getExtraParticleWidth() {
-        return extraParticleWidth;
+        return 0.0;
     }
 
     public void setExtraParticleWidth(double extraParticleWidth) {
-
-        extraParticleWidth = Math.max(-3, extraParticleWidth);
-        extraParticleWidth = Math.min(3, extraParticleWidth);
-
-        this.extraParticleWidth = extraParticleWidth;
     }
 
     public double getExtraInteractionHeight() {
-        return extraInteractionHeight;
+        return 0.0;
     }
 
     public void setExtraInteractionHeight(double extraInteractionHeight) {
-        this.extraInteractionHeight = extraInteractionHeight;
     }
 
     public double getExtraInteractionWidth() {
-        return extraInteractionWidth;
+        return 0.0;
     }
 
     public void setExtraInteractionWidth(double extraInteractionWidth) {
-        this.extraInteractionWidth = extraInteractionWidth;
     }
 
     public CMIEffect getHoverEffect() {
-        return effect;
+        return null;
     }
 
     public void setHoverEffect(CMIParticle effect) {
-        this.effect = new CMIEffect(effect);
-        this.effect.setAmount(0);
-        this.effect.setSpeed(1);
     }
 
     public double getParticleOffsetX() {
-        return particleOffsetX;
+        return 0.0;
     }
 
     public void setParticleOffsetX(double particleOffsetX) {
-        this.particleOffsetX = particleOffsetX;
     }
 
     public double getParticleOffsetY() {
-        return particleOffsetY;
+        return 0.0;
     }
 
     public void setParticleOffsetY(double particleOffsetY) {
-        this.particleOffsetY = particleOffsetY;
     }
 
     public boolean isStabilizedHoverParticles() {
-        return stabilizedHoverParticles;
+        return false;
     }
 
     public void setStabilizedHoverParticles(boolean stabilizedHoverParticles) {
-        this.stabilizedHoverParticles = stabilizedHoverParticles;
     }
 
     public boolean isShowWhenNotPersistent() {
-        return showWhenNotPersistent;
+        return false;
     }
 
     public void setShowWhenNotPersistent(boolean showWhenNotPersistent) {
-        this.showWhenNotPersistent = showWhenNotPersistent;
     }
 
     public boolean isNewDisplayMethod() {
-        return newDisplayMethod;
+        return false;
     }
 
     public CMIHologram setNewDisplayMethod(boolean newDisplayMethod) {
-        this.newDisplayMethod = newDisplayMethod;
-        return this;
+        return null;
     }
 
     public CMIBillboard getBillboard() {
-        if (billboard == null)
-            return CMIBillboard.VERTICAL;
-        return billboard;
+        return null;
     }
 
     public CMIHologram setBillboard(CMIBillboard billboard) {
-        this.billboard = billboard;
-        return this;
+        return null;
     }
 
     public CMIBillboard getIconBillboard() {
-        return iconBillboard;
+        return null;
     }
 
     public CMIHologram setIconBillboard(CMIBillboard billboard) {
-        this.iconBillboard = billboard;
-        return this;
+        return null;
     }
 
     public int getYaw() {
-        return yaw;
+        return 0;
     }
 
     public CMIHologram setYaw(int angle) {
-        this.yaw = angle;
-        return this;
+        return null;
     }
 
     public int getPitch() {
-        return pitch;
+        return 0;
     }
 
     public CMIHologram setPitch(int angle) {
-        this.pitch = CMINumber.clamp(angle, -180, 180);
-        return this;
+        return null;
     }
 
     public CMITextAlignment getTextAlignment() {
-        if (textAlignment == null)
-            return CMITextAlignment.CENTER;
-        return textAlignment;
+        return null;
     }
 
     public CMIHologram setTextAlignment(CMITextAlignment textAlignment) {
-        this.textAlignment = textAlignment;
-        return this;
+        return null;
     }
 
     public CMIChatColor getBackgroundColor() {
-        if (backgroundColor == null)
-            backgroundColor = CMIChatColor.BLACK;
-        return backgroundColor;
+        return null;
     }
 
     public CMIHologram setBackgroundColor(CMIChatColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
-        return this;
+        return null;
     }
 
     public int getBackgroundAlpha() {
-        return backgroundAlpha;
+        return 0;
     }
 
     public CMIHologram setBackgroundAlpha(int alpha) {
-        this.backgroundAlpha = CMINumber.clamp(alpha, 0, 255);
-        return this;
+        return null;
     }
 
     public int getTextAlpha() {
-        return textAlpha;
+        return 0;
     }
 
     public CMIHologram setTextAlpha(int alpha) {
-        this.textAlpha = CMINumber.clamp(alpha, 0, 255);
-        return this;
+        return null;
     }
 
     public boolean isDoubleSided() {
-        return doubleSided;
+        return false;
     }
 
     public CMIHologram setDoubleSided(boolean doubleSided) {
-        this.doubleSided = doubleSided;
-        return this;
+        return null;
     }
 
     public boolean isShadowed() {
-        return shadowed;
+        return false;
     }
 
     public CMIHologram setShadowed(boolean shadowed) {
-        this.shadowed = shadowed;
-        return this;
+        return null;
     }
 
     public double getScaleW() {
-        return scaleW;
+        return 0.0;
     }
 
     public CMIHologram setScaleW(double scale) {
-        scale = (int) (scale * 100) / 100D;
-        this.scaleW = CMINumber.clamp(scale, 0.001, 9999);
-        return this;
+        return null;
     }
 
     public double getScaleH() {
-        return scaleH;
+        return 0.0;
     }
 
     public CMIHologram setScaleH(double scale) {
-        scale = (int) (scale * 100) / 100D;
-        this.scaleH = CMINumber.clamp(scale, 0.001, 9999);
-        return this;
+        return null;
     }
 
     public double getIconScale() {
-        return iconScale;
+        return 0.0;
     }
 
     public CMIHologram setIconScale(double iconScale) {
-        this.iconScale = CMINumber.clamp(iconScale, 0.001, 9999);
-        return this;
+        return null;
     }
 
     public int getIconPitch() {
-        return iconPitch;
+        return 0;
     }
 
     public CMIHologram setIconPitch(int iconPitch) {
-        this.iconPitch = iconPitch;
-        return this;
+        return null;
     }
 
     public int getIconYaw() {
-        return iconYaw;
+        return 0;
     }
 
     public CMIHologram setIconYaw(int iconYaw) {
-        this.iconYaw = iconYaw;
-        return this;
+        return null;
     }
 
     public int getSkyLevel() {
-        return skyLevel;
+        return 0;
     }
 
     public CMIHologram setSkyLevel(int skyLevel) {
-        this.skyLevel = skyLevel;
-        return this;
+        return null;
     }
 
     public int getBlockLevel() {
-        return blockLevel;
+        return 0;
     }
 
     public CMIHologram setBlockLevel(int blockLevel) {
-        this.blockLevel = blockLevel;
-        return this;
+        return null;
     }
 
     public String getWorldName() {
-        return this.loc.getWorldName();
+        return null;
     }
 
     public Player getPlayerToShowFor() {
-        return playerToShowFor;
+        return null;
     }
 
     public CMIHologram setPlayerToShowFor(Player playerToShowFor) {
-        this.playerToShowFor = playerToShowFor;
-        return this;
+        return null;
     }
 
     public int getSelfDestructIn() {
-        return selfDestructIn;
+        return 0;
     }
 
     public CMIHologram setSelfDestructIn(int selfDestructIn) {
-        this.selfDestructIn = selfDestructIn;
-        return this;
+        return null;
     }
 
     public void showToPlayer() {
     }
 
     public boolean isAutoPagination() {
-        return autoPagination;
+        return false;
     }
 
     public void setAutoPagination(boolean autoPagination) {
-        this.autoPagination = autoPagination;
     }
 
     public boolean isSeeThrough() {
-        return seeThrough;
+        return false;
     }
 
     public void setSeeThrough(boolean seeThrough) {
-        this.seeThrough = seeThrough;
     }
 
+    public boolean isFadeInAnimation() {
+        return false;
+    }
+
+    public void setFadeInAnimation(boolean fadeInAnimation) {
+    }
+
+    public int getAutoPaginationOffset() {
+        return 0;
+    }
+
+    public void setAutoPaginationOffset(int autoPaginationOffset) {
+    }
+
+    public String getGroup() {
+        return null;
+    }
+
+    public void setGroup(String group) {
+    }
+
+    public float getIconOffsetX() {
+        return 0.0f;
+    }
+
+    public void setIconOffsetX(float iconOffsetX) {
+    }
 }

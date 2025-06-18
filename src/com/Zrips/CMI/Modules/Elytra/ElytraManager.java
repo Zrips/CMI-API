@@ -5,101 +5,96 @@ import com.Zrips.CMI.CMI;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ElytraManager {
-
-    private boolean BoostUseItems = false;
-    private double BoostMultyplier = 0.2D;
-    private double BoostSuperMultyplier = 0.6D;
-
-    private CMIMaterial BoostItem = CMIMaterial.FEATHER;
-    private CMIMaterial BoostItemConsume = CMIMaterial.STONE;
-    private CMIMaterial LaunchItem = CMIMaterial.FEATHER;
-    private int BoostAmount = 1;
-    private int BoostSuperAmount = 5;
-    private int BoostSpeedLimit = 1;
-    private boolean BoostSpeedLimitStop = false;
-    private boolean BoostRequiresItem = true;
-    private boolean BoostShowParticles = true;
-    private boolean PreventSelfDamage = true;
-    private boolean PreventRocketUsage = true;
-    private boolean BoostSpeedDecimals = true;
-    private double LaunchTime = 2;
-    private boolean disableRiptide = true;
-
+    private boolean BoostUseItems;
+    private double BoostMultyplier;
+    private double BoostSuperMultyplier;
+    private CMIMaterial BoostItem;
+    private CMIMaterial BoostItemConsume;
+    private CMIMaterial LaunchItem;
+    private int BoostAmount;
+    private int BoostSuperAmount;
+    private int BoostSpeedLimit;
+    private boolean BoostSpeedLimitStop;
+    private boolean BoostRequiresItem;
+    private boolean BoostShowParticles;
+    private boolean PreventSelfDamage;
+    private boolean PreventRocketUsage;
+    private boolean BoostSpeedDecimals;
+    private double LaunchTime;
+    private boolean disableRiptide;
     private CMI plugin;
 
     public ElytraManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig() {
-       
     }
 
     public boolean isBoostUseItems() {
-        return BoostUseItems;
+        return false;
     }
 
     public double getBoostMultyplier() {
-        return BoostMultyplier;
+        return 0.0;
     }
 
     public double getBoostSuperMultyplier() {
-        return BoostSuperMultyplier;
+        return 0.0;
     }
 
     public CMIMaterial getBoostItem() {
-        return BoostItem;
+        return null;
     }
 
     public CMIMaterial getBoostItemConsume() {
-        return BoostItemConsume;
+        return null;
     }
 
     public CMIMaterial getLaunchItem() {
-        return LaunchItem;
+        return null;
     }
 
     public int getBoostAmount() {
-        return BoostAmount;
+        return 0;
     }
 
     public int getBoostSuperAmount() {
-        return BoostSuperAmount;
+        return 0;
     }
 
     public int getBoostSpeedLimit() {
-        return BoostSpeedLimit;
+        return 0;
     }
 
     public boolean isBoostSpeedLimitStop() {
-        return BoostSpeedLimitStop;
+        return false;
     }
 
     public boolean isBoostRequiresItem() {
-        return BoostRequiresItem;
+        return false;
     }
 
     public boolean isBoostShowParticles() {
-        return BoostShowParticles;
+        return false;
     }
 
     public boolean isPreventSelfDamage() {
-        return PreventSelfDamage;
+        return false;
     }
 
     public boolean isPreventRocketUsage() {
-        return PreventRocketUsage;
+        return false;
     }
 
     public boolean isBoostSpeedDecimals() {
-        return BoostSpeedDecimals;
+        return false;
     }
 
     public double getLaunchTime() {
-        return LaunchTime;
+        return 0.0;
     }
 
     public boolean isDisableRiptide() {
-        return disableRiptide;
+        return false;
     }
 }

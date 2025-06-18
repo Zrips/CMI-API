@@ -8,51 +8,40 @@ public class CMIIpBanEntry {
     private String reason;
 
     public CMIIpBanEntry(String ip, Long banedAt, String bannedBy, Long bannedUntil, String reason) {
-	this.ip = ip;
-	this.banedAt = banedAt;
-	this.Source = bannedBy;
-	this.bannedUntil = bannedUntil;
-	this.reason = reason;
     }
 
     public String getKey() {
-	return ip;
+        return null;
     }
 
     public void setKey(String ip) {
-	this.ip = ip;
     }
 
     public Long getBanedAt() {
-	return banedAt;
+        return null;
     }
 
     public void setBanedAt(Long banedAt) {
-	this.banedAt = banedAt;
     }
 
     public String getSource() {
-	return Source;
+        return null;
     }
 
     public void setSource(String bannedBy) {
-	this.Source = bannedBy;
     }
 
     public Long getExpires() {
-	return bannedUntil;
+        return null;
     }
 
     public void setExpires(Long bannedUntil) {
-	this.bannedUntil = bannedUntil;
     }
 
     public String getReason() {
-	return reason;
+        return null;
     }
 
     public void setReason(String reason) {
-	this.reason = reason;
     }
-
 }

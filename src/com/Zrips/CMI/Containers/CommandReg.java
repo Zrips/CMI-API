@@ -9,26 +9,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.command.defaults.BukkitCommand;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.commands.CMICommand;
-
 public abstract class CommandReg implements CommandExecutor, TabExecutor {
-
-    protected final String command;
+    protected final String command = null;
     protected static CommandMap cmap;
     private CommandAlias alias;
 
     public CommandReg(String command, CommandAlias alias) {
-        this.alias = alias;
-        this.command = command.toLowerCase();
     }
 
     public boolean register() {
-        return register(null);
+        return false;
+    }
+
+    private static void unRegisterBukkitCommand(Command cmd) {
     }
 
     public boolean register(String permission) {
-        return true;
+        return false;
     }
 
     final static CommandMap getCommandMap() {
@@ -37,13 +34,7 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-        CMICommand cm = CMI.getInstance().getCommandManager().getCommands().get(label);
-
-        if (cm != null) {
-            return cm.getCmdClass().perform(CMI.getInstance(), sender, args);
-        }
-        return true;
+        return false;
     }
 
     @Override
@@ -52,15 +43,11 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
     }
 
     private final class ReflectCommand extends BukkitCommand {
-        private CommandReg exe = null;
+        private CommandReg exe;
         private CommandAlias alias;
 
         protected ReflectCommand(String command, String permission, CommandAlias alias) {
             super(command);
-            this.alias = alias;
-            if (permission != null) {
-                this.setPermission(permission);
-            }
         }
 
         @Deprecated
@@ -69,24 +56,15 @@ public abstract class CommandReg implements CommandExecutor, TabExecutor {
         }
 
         public void setExecutor(CommandReg exe) {
-            this.exe = exe;
         }
 
         @Override
         public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-
-            return true;
+            return false;
         }
 
         @Override
         public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
-            if (alias.getType() == CommandAliasType.subbase)
-                return null;
-
-            if (exe != null) {
-                return exe.onTabComplete(sender, this, alais, args);
-            }
-
             return null;
         }
     }

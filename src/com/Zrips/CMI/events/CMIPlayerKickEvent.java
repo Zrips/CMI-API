@@ -4,27 +4,23 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 
-public final class CMIPlayerKickEvent extends CMICancellableEvent {
-
+public class CMIPlayerKickEvent extends CMICancellableEvent {
     private String reason;
     private CommandSender by;
     private UUID banned;
 
-    public CMIPlayerKickEvent(CommandSender by, final UUID banned, String reason) {
-        this.banned = banned;
-        this.by = by;
-        this.reason = reason;
+    public CMIPlayerKickEvent(CommandSender by, UUID banned, String reason) {
     }
 
     public String getReason() {
-        return reason;
+        return null;
     }
 
     public CommandSender getBannedBy() {
-        return by;
+        return null;
     }
 
     public UUID getBanned() {
-        return banned;
+        return null;
     }
 }

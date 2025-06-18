@@ -1,7 +1,5 @@
 package com.Zrips.CMI.Modules.ChatFilter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,126 +7,93 @@ import java.util.regex.Pattern;
 import net.Zrips.CMILib.Chat.ChatFilterBlockType;
 
 public class ChatFilterRule {
-
     private String replaceWith;
     private ChatFilterBlockType blockType;
     private String ruleName;
-    private List<Pattern> pattern = new ArrayList<Pattern>();
+    private List<Pattern> pattern;
     private String messageToStaff;
-    private List<String> commands = new ArrayList<String>();
+    private List<String> commands;
     private String group;
-    private boolean informConsole = false;
-    private boolean applyToPrivateMessages = true;
-    
+    private boolean informConsole;
+    private boolean applyToPrivateMessages;
 
     public ChatFilterRule(String ruleName, String group, List<String> list, String replaceWith, ChatFilterBlockType blockType, String messageToStaff, List<String> commands) {
-	this.group = group;
-	this.ruleName = ruleName;
-	this.commands = commands;
-	setPattern(list);
-	this.messageToStaff = messageToStaff;
-	this.replaceWith = replaceWith;
-	this.blockType = blockType;
     }
 
     public ChatFilterRule(String ruleName, List<String> list) {
-	this.ruleName = ruleName;
-	setPattern(list);
-	this.blockType = ChatFilterBlockType.None;
     }
 
     public ChatFilterRule() {
     }
 
     public List<Pattern> getPattern() {
-	return pattern;
+        return null;
     }
 
     public ChatFilterRule setPattern(String list) {
-	setPattern(Arrays.asList(list));
-	return this;
+        return null;
     }
 
     public void setPattern(List<String> list) {
-	pattern.clear();
-	for (String one : list) {	    
-	    pattern.add(Pattern.compile(one, Pattern.UNICODE_CASE));
-	}
     }
 
     public String getReplaceWith() {
-	return replaceWith;
+        return null;
     }
 
     public void setReplaceWith(String replaceWith) {
-	this.replaceWith = replaceWith;
     }
 
     public ChatFilterBlockType getBlockType() {
-	return blockType;
+        return null;
     }
 
     public void setBlockType(ChatFilterBlockType blockType) {
-	this.blockType = blockType;
     }
 
     public String getRuleName() {
-	return ruleName;
+        return null;
     }
 
     public void setRuleName(String ruleName) {
-	this.ruleName = ruleName;
     }
 
     public Matcher getMatcher(String msg) {
-	Matcher matcher = null;
-	for (Pattern one : pattern) {
-	    if (one.matcher(msg).find()) { 
-		matcher = one.matcher(msg);
-		break;
-	    }
-	}
-	return matcher;
+        return null;
     }
 
     public String getMessageToStaff() {
-	return messageToStaff;
+        return null;
     }
 
     public void setMessageToStaff(String messageToStaff) {
-	this.messageToStaff = messageToStaff;
     }
 
     public List<String> getCommands() {
-	return commands;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
-	this.commands = commands;
     }
 
     public String getGroup() {
-	return group;
+        return null;
     }
 
     public void setGroup(String group) {
-	this.group = group;
     }
 
     public boolean isInformConsole() {
-	return informConsole;
+        return false;
     }
 
     public void setInformConsole(boolean informConsole) {
-	this.informConsole = informConsole;
     }
 
     public boolean isApplyToPrivateMessages() {
-	return applyToPrivateMessages;
+        return false;
     }
 
     public void setApplyToPrivateMessages(boolean applyToPrivateMessages) {
-	this.applyToPrivateMessages = applyToPrivateMessages;
     }
-
 }

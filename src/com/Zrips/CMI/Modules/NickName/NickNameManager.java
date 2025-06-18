@@ -8,42 +8,9 @@ import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
-
 public class NickNameManager {
-
     private CMI plugin;
-
-    private HashMap<String, UUID> NickMap = new HashMap<String, UUID>();
-    private HashMap<String, UUID> NameMap = new HashMap<String, UUID>();
-
-    public NickNameManager(CMI plugin) {
-        this.plugin = plugin;
-    }
-
-    public void removeNickName(String nick) {
-        NickMap.remove(CMIChatColor.stripColor(nick).toLowerCase());
-    }
-
-    public void addNewNickName(String nick, UUID uuid) {
-        NickMap.put(CMIChatColor.stripColor(nick).toLowerCase(), uuid);
-    }
-
-    public void addNewName(String nick, UUID uuid) {
-        NameMap.put(nick.toLowerCase(), uuid);
-    }
-
-    public UUID whoUsesName(String nick) {
-        UUID uuid = NickMap.get(nick.toLowerCase());
-        if (uuid == null)
-            uuid = NameMap.get(nick.toLowerCase());
-        return uuid;
-    }
-
-    public List<String> getNickNamesStartingWith(Player player, String nick) {
-        return null;
-    }
-
+    private HashMap<String, UUID> NickMap;
     private String NickNameFormat;
     private boolean DisplayNameChange;
     private String ValidNickNameRegex;
@@ -55,60 +22,74 @@ public class NickNameManager {
     private Boolean IncludeInTabComplete;
     private Boolean IncludeRealName;
 
+    public NickNameManager(CMI plugin) {
+    }
+
+    public void removeNickName(String nick) {
+    }
+
+    public void addNewNickName(String nick, UUID uuid) {
+    }
+
+    public UUID whoUsesName(String nick) {
+        return null;
+    }
+
+    public List<String> getNickNamesStartingWith(Player player, String nick) {
+        return null;
+    }
+
     public void load() {
- 
     }
 
     public String getNickNameFormat() {
-        return NickNameFormat;
+        return null;
     }
 
     public List<String> getNickNameBlackList() {
-        return NickNameBlackList;
+        return null;
     }
 
     public int getNickNameLengthMax() {
-        return NickNameLengthMax;
+        return 0;
     }
 
     public int getNickNameLengthMin() {
-        return NickNameLengthMin;
+        return 0;
     }
 
     @Deprecated
     public Boolean isColorsNickName() {
-        return plugin.getChatManager().isColorsNickName();
+        return null;
     }
 
     public String getNickNamePrefix() {
-        return NickNamePrefix;
+        return null;
     }
 
     public void setNickNamePrefix(String nickNamePrefix) {
-        NickNamePrefix = nickNamePrefix;
     }
 
     public Boolean isPrefixWhenDifferent() {
-        return PrefixWhenDifferent;
+        return null;
     }
 
     public void setPrefixWhenDifferent(Boolean prefixWhenDifferent) {
-        PrefixWhenDifferent = prefixWhenDifferent;
     }
 
     public String getValidNickNameRegex() {
-        return ValidNickNameRegex;
+        return null;
     }
 
     public boolean isDisplayNameChange() {
-        return DisplayNameChange;
+        return false;
     }
 
     public boolean isIncludeNickNameInTabComplete() {
-        return IncludeInTabComplete;
+        return false;
     }
 
     public Boolean isIncludeRealNameInTabComplete() {
-        return IncludeRealName;
+        return null;
     }
 }

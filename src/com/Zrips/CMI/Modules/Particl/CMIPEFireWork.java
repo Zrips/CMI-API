@@ -10,78 +10,62 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class CMIPEFireWork extends CMIPEAnimation {
-
-    private static Method world_getHandle = null;
-    private static Method nms_world_broadcastEntityEffect = null;
-    private static Method firework_getHandle = null;
-
-    private Color fadeFrom = null;
-    private Color fadeTo = null;
-    private Type type = null;
-    private Boolean flicker = null;
-    private Boolean trail = null;
+    private static Method world_getHandle;
+    private static Method nms_world_broadcastEntityEffect;
+    private static Method firework_getHandle;
+    private Color fadeFrom;
+    private Color fadeTo;
+    private Type type;
+    private Boolean flicker;
+    private Boolean trail;
 
     public CMIPEFireWork() {
-        this.setDuration(0);
     }
 
     @Override
     public boolean render(List<Player> players) {
-
-        return true;
+        return false;
     }
 
     private static void ShotFirework(Location loc, FireworkEffect fe) throws Exception {
-
     }
 
     private static Method getMethod(Class<?> cl, String method) {
-        for (Method m : cl.getMethods()) {
-            if (m.getName().equals(method)) {
-                return m;
-            }
-        }
         return null;
     }
 
     public Color getFadeFrom() {
-        return fadeFrom;
+        return null;
     }
 
     public void setFadeFrom(Color fadeFrom) {
-        this.fadeFrom = fadeFrom;
     }
 
     public Color getFadeTo() {
-        return fadeTo;
+        return null;
     }
 
     public void setFadeTo(Color fadeTo) {
-        this.fadeTo = fadeTo;
     }
 
     public Type getType() {
-        return type;
+        return null;
     }
 
     public void setType(Type type) {
-        this.type = type;
     }
 
     public Boolean getFlicker() {
-        return flicker;
+        return null;
     }
 
     public void setFlicker(Boolean flicker) {
-        this.flicker = flicker;
     }
 
     public Boolean getTrail() {
-        return trail;
+        return null;
     }
 
     public void setTrail(Boolean trail) {
-        this.trail = trail;
     }
-
 }

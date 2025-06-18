@@ -4,33 +4,28 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 
-public final class CMIPlayerBanEvent extends CMIEvent {
-
+public class CMIPlayerBanEvent extends CMIEvent {
     private String reason;
     private Long until;
     private CommandSender by;
     private UUID banned;
 
-    public CMIPlayerBanEvent(CommandSender by, final UUID banned, String reason, Long until) {
-        this.banned = banned;
-        this.by = by;
-        this.reason = reason;
-        this.until = until;
+    public CMIPlayerBanEvent(CommandSender by, UUID banned, String reason, Long until) {
     }
 
     public String getReason() {
-	return reason;
+        return null;
     }
 
     public Long getUntil() {
-        return until;
+        return null;
     }
 
     public CommandSender getBannedBy() {
-        return by;
+        return null;
     }
 
     public UUID getBanned() {
-        return banned;
+        return null;
     }
 }

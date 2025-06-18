@@ -1,93 +1,67 @@
 package com.Zrips.CMI.Modules.Holograms;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.Zrips.CMI.CMI;
 import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class CMIDataWatcher {
-
     private Integer id;
-    private Integer secId = null;
+    private Integer secId;
     private Object stand;
     private Location loc;
     private CMIItemStack item;
     private CMIHoloLineType type;
-
-    private boolean updatingHead = false;
-
-//    @Deprecated
-//    public CMIDataWatcher(Integer id, Object stand) {
-//	this.stand = stand;
-//	this.id = id;
-//    }
+    private boolean updatingHead;
 
     public CMIDataWatcher(Integer id, Object stand, CMIHoloLineType type) {
-	this.stand = stand;
-	this.id = id;
-	this.type = type;
     }
 
     public CMIDataWatcher(Integer id, Integer secid, Object stand, CMIHoloLineType type) {
-	this.stand = stand;
-	this.id = id;
-	this.secId = secid;
-	this.type = type;
     }
 
     public Object getStand() {
-	return stand;
+        return null;
     }
 
     public void setStand(Object watcher) {
-	this.stand = watcher;
     }
 
     public Integer getId() {
-	return id;
+        return null;
     }
 
     public void setId(Integer id) {
-	this.id = id;
     }
 
     public void remove(Player player) {
-	CMI.getInstance().getNMS().removeHologram(player, id);
-	if (secId != null)
-	    CMI.getInstance().getNMS().removeHologram(player, secId);
     }
 
     public Location getLoc() {
-	return loc;
+        return null;
     }
 
     public void setLoc(Location loc) {
-	this.loc = loc;
     }
 
     public CMIHoloLineType getType() {
-	return type;
+        return null;
     }
 
     public void setType(CMIHoloLineType type) {
-	this.type = type;
     }
 
     public CMIItemStack getItem() {
-	return item;
+        return null;
     }
 
     public void setItem(CMIItemStack item) {
-	this.item = item;
     }
 
     public boolean isUpdatingHead() {
-	return updatingHead;
+        return false;
     }
 
     public void setUpdatingHead(boolean updatingHead) {
-	this.updatingHead = updatingHead;
     }
 }

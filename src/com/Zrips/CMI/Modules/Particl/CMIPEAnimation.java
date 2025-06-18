@@ -12,148 +12,127 @@ import net.Zrips.CMILib.Effects.CMIEffect;
 import net.Zrips.CMILib.Effects.CMIEffectManager.CMIParticle;
 
 public class CMIPEAnimation implements CMIPEAnimationInterface {
-
     protected Location center;
-    protected boolean fixedLocation = false;
-
-    protected CMIEffect effect = new CMIEffect(CMIParticle.COLOURED_DUST);
-    protected Vector offset = new Vector(0, 0, 0);
-
-    protected int updateTimes = 0;
-    protected double duration = 5;
+    protected boolean fixedLocation;
+    protected CMIEffect effect;
+    protected Vector offset;
+    protected int updateTimes;
+    protected double duration;
     private Player playerMove;
-    private boolean hideWithVanish = false;
-    private int interval = 1;
+    private boolean hideWithVanish;
+    private int interval;
 
     public CMIPEAnimation() {
     }
 
     @Override
     public Player getPlayerMove() {
-	return playerMove;
+        return null;
     }
 
     public void setPlayerMove(Player playerMove) {
-	this.playerMove = playerMove;
     }
 
     public CMIPEAnimation(CMIEffect effect) {
-	this.effect = effect;
     }
 
     public CMIPEAnimation(CMIParticle effect) {
-	this.effect.setParticle(effect);
     }
 
     @Override
     public boolean render(List<Player> players) {
-	return true;
+        return false;
     }
 
     @Override
     public Location getCenter() {
-	return center;
+        return null;
     }
 
     @Override
     public void setCenter(Location center) {
-	this.center = center;
     }
 
     public Vector getOffset() {
-	return offset;
+        return null;
     }
 
     public void setOffset(Vector offset) {
-	this.offset = offset;
     }
 
     public CMIEffect getCMIEffect() {
-	return effect;
+        return null;
     }
 
     public void setCMIEffect(CMIEffect effect) {
-	this.effect = effect;
     }
 
     @Deprecated
     public CMIParticle getEffect() {
-	return getParticle();
+        return null;
     }
 
     @Deprecated
     public void setEffect(CMIParticle particle) {
-	setParticle(particle);
     }
 
     public CMIParticle getParticle() {
-	return this.effect.getParticle();
+        return null;
     }
 
     public void setParticle(CMIParticle particle) {
-	this.effect.setParticle(particle);
     }
 
     public org.bukkit.Color getColor() {
-	return this.effect.getColor();
+        return null;
     }
 
     @Override
     public void setColor(Color color) {
-	this.effect.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
     }
 
     @Override
     public void setColor(org.bukkit.Color color) {
-	this.effect.setColor(color);
     }
 
     @Override
     public void setColor(CMIChatColor color) {
-	this.effect.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
     }
 
     @Override
     public void setDuration(double d) {
-	this.duration = d;
     }
 
     @Override
     public double getDuration() {
-	return this.duration;
+        return 0.0;
     }
 
     @Override
     public boolean isFixedLocation() {
-	return fixedLocation;
+        return false;
     }
 
     public void setFixedLocation(boolean fixedLocation) {
-	this.fixedLocation = fixedLocation;
     }
 
     @Override
     public void show() {
-	CMIVisualEffect spir = new CMIVisualEffect(center, this);
-	spir.setUntil(System.currentTimeMillis() + (int) (1000L * duration));
-	spir.show();
     }
 
     @Override
     public int getInterval() {
-	return interval;
+        return 0;
     }
 
     public void setInterval(int interval) {
-	this.interval = interval;
     }
 
     @Override
     public boolean isHideWithVanish() {
-	return hideWithVanish;
+        return false;
     }
 
     public void setHideWithVanish(boolean hideWithVanish) {
-	this.hideWithVanish = hideWithVanish;
     }
 }

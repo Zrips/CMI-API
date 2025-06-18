@@ -3,10 +3,8 @@ package com.Zrips.CMI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,452 +26,406 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class PlayerManager {
-
-    private int realUserCount = 0;
-
-    private Map<UUID, CMIUser> users = Collections.synchronizedMap(new HashMap<UUID, CMIUser>());
-    private Map<String, CMIUser> usersName = Collections.synchronizedMap(new HashMap<String, CMIUser>());
-    private Map<Integer, CMIUser> usersIds = Collections.synchronizedMap(new HashMap<Integer, CMIUser>());
-
-    private Map<String, List<CMIUser>> duplicateUserNames = Collections.synchronizedMap(new HashMap<String, List<CMIUser>>());
-
-    private Set<UUID> cuffed = new HashSet<UUID>();
-    private Set<UUID> socialSpy = new HashSet<UUID>();
-    private Set<UUID> commandSpy = new HashSet<UUID>();
-    private Set<UUID> signSpy = new HashSet<UUID>();
-
-//    private Set<UUID> alerts = new HashSet<UUID>();
-
-    private HashMap<UUID, CMIUserAlert> userAlerts = new HashMap<UUID, CMIUserAlert>();
-
-    protected Player fakeOperator = null;
-
-    private final UUID emptyUserUUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff");
-    public static final UUID oldFakeUserUUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff0");
-    private final UUID fakeUserUUID = UUID.fromString("000003e8-223f-21ee-a700-2eb5a363657c");
-    private static final String fakeUserName = "CMI-Fake-Operator";
-
+    private int realUserCount;
+    private Map<UUID, CMIUser> users;
+    private Map<String, CMIUser> usersName;
+    private Map<Integer, CMIUser> usersIds;
+    private Map<String, List<CMIUser>> duplicateUserNames;
+    private Set<UUID> cuffed;
+    private Set<UUID> socialSpy;
+    private Set<UUID> commandSpy;
+    private Set<UUID> signSpy;
+    private HashMap<UUID, CMIUserAlert> userAlerts;
+    protected Player fakeOperator;
+    private final UUID emptyUserUUID = null;
+    public static final UUID oldFakeUserUUID = null;
+    private final UUID fakeUserUUID = null;
+    private static final String fakeUserName = null;
     private CMI plugin;
+    public static HashMap<UserTablesFields, Long> timer;
+    public static int timesProcessed;
+    public static final String mapKeySeparator = null;
+    private static final String mapKeySeparatorForsave = null;
+    private static final String sectionSeparator = null;
+    private static final String sectionSeparatorForSave = null;
+    public static final String lineSeparator = null;
+    private static final String lineSeparatorForSave = null;
+    public static final String multiSeparator = null;
+    private static Pattern kitPattern;
+    List<String> duplicates;
+    static DecimalFormat decimalFormat;
+    HashMap<UUID, CMITask> delaySSTrigger;
+    HashMap<UUID, CMITask> delayCSTrigger;
+    HashMap<UUID, CMITask> delaySignSTrigger;
+    private static List<String> hardBlackList;
 
     public PlayerManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
+    @Deprecated
     public void updateUserName(CMIUser user, String newName) {
     }
 
-    public void clearData() {
-        users.clear();
-        usersName.clear();
-        duplicateUserNames.clear();
-        cuffed.clear();
+    public void updateUserName(CMIUser user, String oldname, String newName) {
     }
 
-    public Map<UUID, CMIUser> getAllUsers() {
-        return users;
+    public void clearData() {
+    }
+
+    public synchronized Map<UUID, CMIUser> getAllUsers() {
+        return null;
     }
 
     public boolean isDuplicatedUserName(String name) {
-        return duplicateUserNames.containsKey(name.toLowerCase());
+        return false;
     }
 
     public Map<String, List<CMIUser>> getDuplicatedUsers() {
-        return duplicateUserNames;
+        return null;
     }
 
     public CMIUser getDuplicatedUser(String name) {
-        if (!duplicateUserNames.containsKey(name.toLowerCase()))
-            return null;
-
-        CMIUser newest = null;
-
-        return newest;
+        return null;
     }
 
     public boolean switchPlayerData(UUID source, UUID target) {
-        return true;
+        return false;
     }
 
     public boolean switchPlayerData(CMIUser source, CMIUser target) {
-
-        return true;
+        return false;
     }
 
     public boolean addDuplicatedUser(CMIUser user) {
-       
-        return true;
+        return false;
     }
 
     public int getTotalUserCount() {
-        return realUserCount;
+        return 0;
     }
 
     public CMIUser softRemoveUser(UUID uuid) {
-        return softRemoveUser(this.getUser(uuid));
+        return null;
     }
 
     public CMIUser softRemoveUser(UUID uuid, boolean fromDataBse) {
-        return softRemoveUser(this.getUser(uuid), fromDataBse);
+        return null;
     }
 
     public CMIUser softRemoveUser(CMIUser user) {
-        return softRemoveUser(user, true);
+        return null;
     }
 
     public CMIUser softRemoveUser(CMIUser user, boolean fromDataBse) {
-            return null;
+        return null;
     }
 
     public void removeUser(CMIUser user) {
-
     }
 
-
-    private CMIUser getByName(String name) {
-        if (name == null)
-            return null;
-        return usersName.get(name.toLowerCase());
+    public CMIUser getByName(String name) {
+        return null;
     }
 
     public void addUser(CMIUser user) {
-      
     }
 
     public CMIUser getUser(Integer id) {
-        return usersIds.get(id);
+        return null;
     }
 
     public void addUser(CMIUser user, Integer id) {
-        if (id > 0)
-            usersIds.put(id, user);
     }
 
     public CMIUser getUserByAproxName(String name) {
-        return getUser(name, true, false, false, false, true);
+        return null;
     }
 
     public CMIUser getUser(String name) {
-        return getUser(name, true, false, false, true, true);
+        return null;
     }
 
     public CMIUser getUser(String name, boolean includeDuplicate) {
-        return getUser(name, includeDuplicate, false, false, true, true);
+        return null;
     }
 
     @Deprecated
     public CMIUser getUser(String name, boolean includeDuplicate, boolean checkOflline) {
-        return getUser(name, includeDuplicate, checkOflline, false, true, true);
-    }
-
-    public CMIUser getUser(String name, boolean includeDuplicate, @Deprecated boolean checkOflline, boolean createFake, boolean exactName) {
-        return getUser(name, includeDuplicate, checkOflline, createFake, exactName, true);
-    }
-
-    public CMIUser getUser(String name, boolean includeDuplicate, @Deprecated boolean checkOflline, boolean createFake, boolean exactName, boolean checkNickName) {
-     
         return null;
+    }
 
+    public CMIUser getUser(String name, boolean includeDuplicate, boolean checkOflline, boolean createFake, boolean exactName) {
+        return null;
+    }
+
+    public CMIUser getUser(String name, boolean includeDuplicate, boolean checkOflline, boolean createFake, boolean exactName, boolean checkNickName) {
+        return null;
     }
 
     public boolean isUserExist(UUID uuid) {
-        return users.containsKey(uuid);
+        return false;
     }
 
     public CMIUser getUser(OfflinePlayer player) {
-        return getUser(player, true);
+        return null;
     }
 
     public CMIUser getUser(OfflinePlayer player, boolean createNew) {
-      
         return null;
     }
 
     public CMIUser getUser(Player player) {
-      
         return null;
     }
 
     public CMIUser getUser(UUID uuid) {
-       
         return null;
     }
 
     public void loadData() {
-
     }
 
     public boolean checkForExistingSimilarUser(CMIUser user, boolean inform) {
-       
-        return true;
+        return false;
     }
 
     public Map<String, Object> convertLoc(Location loc) {
-        Map<String, Object> map = new HashMap<String, Object>();
-       
-        return map;
+        return null;
     }
 
     public String convertLocToString(Location loc) {
-        String map = "";
-       
-        return map.replace(",", ".");
+        return null;
     }
 
     public String convertLocToString(CMILocation loc) {
-        String map = "";
-       
-        return map.replace(",", ".");
+        return null;
     }
 
     public String convertBlockLocToString(Location loc) {
-        String map = "";
-       
-        return map.replace(",", ".");
+        return null;
     }
 
     public String convertLocToStringShort(CMILocation loc) {
-        String map = "";
-      
-        return map.replace(",", ".");
+        return null;
     }
 
     public String convertLocToStringShortBlock(CMILocation loc) {
-        String map = "";
-       
-        return map.replace(",", ".");
+        return null;
     }
 
     public String convertLocToStringShort(Location loc) {
-        String map = "";
-        
-        return map.replace(",", ".");
+        return null;
     }
 
     public CMILocation convertStringToLocation(String map, boolean includeSpawnPoints) {
-        CMILocation loc = convertStringToLocation(map);
-
-        return loc;
+        return null;
     }
 
     public CMILocation convertStringToLocation(String map) {
-     
         return null;
     }
 
     public CMILocation getLoc(YamlConfiguration conf, String path) {
-       
         return null;
     }
 
     public void saveUser(CMIUser user) {
-        save(user);
     }
-
 
     private void save(CMIUser user) {
-       
     }
 
-    public static HashMap<UserTablesFields, Long> timer = new HashMap<UserTablesFields, Long>();
-    public static int timesProcessed = 0;
-
     public PreparedStatement savePlayerToDB(CMIUser user, PreparedStatement prest, boolean addId) throws Throwable {
-     
         return null;
     }
 
-    public static final String mapKeySeparator = "%%";
-    private static final String mapKeySeparatorForsave = "T9C";
-    private static final String sectionSeparator = ":";
-    private static final String sectionSeparatorForSave = "T8C";
-    public static final String lineSeparator = ";";
-    private static final String lineSeparatorForSave = "T7C";
-    public static final String multiSeparator = "-X-";
-
-    private static Pattern kitPattern = Pattern.compile("(\\S+)(" + multiSeparator + ")(\\d)");
-
     private static String filterOutForLoad(String message) {
-        return message.replace(mapKeySeparatorForsave, mapKeySeparator).replace(sectionSeparatorForSave, sectionSeparator).replace(lineSeparatorForSave, lineSeparator);
+        return null;
     }
 
     private static String filterOutForSave(String message) {
-        return message.replace(mapKeySeparator, mapKeySeparatorForsave).replace(sectionSeparator, sectionSeparatorForSave).replace(lineSeparator, lineSeparatorForSave);
+        return null;
     }
 
     private static PreparedStatement proccessForSaveField(PreparedStatement prest, int place, Object value, UserTablesFields field) throws Throwable {
-      
         return null;
     }
 
     public void loadUserFromDb(ResultSet res) {
-      
     }
 
-    List<String> duplicates = new ArrayList<String>();
-
-    public Object getValueFromDb(ResultSet res, TablesFieldsType fieldType, String column) {
-      
+    private static CMILocation invertLoc(Object loc) {
         return null;
     }
 
-    static DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    public Object getValueFromDb(ResultSet res, TablesFieldsType fieldType, String column) {
+        return null;
+    }
+
+    private static List<String> getStringListFromString(String string) {
+        return null;
+    }
+
+    private static HashMap<String, Long> getStringLongMapFromString(String string) {
+        return null;
+    }
+
+    private static HashMap<String, Double> getStringDoubleMapFromString(String string) {
+        return null;
+    }
+
+    private static HashMap<String, String> getStringStringMapFromString(String string) {
+        return null;
+    }
+
+    private static HashMap<String, Integer> getStringIntMapFromString(String string) {
+        return null;
+    }
+
+    private static String convertLocationToString(CMILocation loc) {
+        return null;
+    }
+
+    private static String locationToString(CMILocation loc) {
+        return null;
+    }
+
+    private static String convertLocationToString(Location loc) {
+        return null;
+    }
+
+    private static Double fNumber(float amount) {
+        return null;
+    }
+
+    private static Double fNumber(Double amount) {
+        return null;
+    }
+
+    private static LinkedHashMap<String, CMILocation> getLocationMapFromString(String string) {
+        return null;
+    }
+
+    private static CMILocation getLocationFromString(String string) {
+        return null;
+    }
 
     public void addCuffed(UUID uuid) {
-        if (uuid == null)
-            return;
-        this.cuffed.add(uuid);
     }
 
     public void removeCuffed(Player player) {
-        removeCuffed(player.getUniqueId());
     }
 
     public void removeCuffed(UUID uuid) {
-        if (uuid == null)
-            return;
-        this.cuffed.remove(uuid);
     }
 
     public boolean isCuffed(Player player) {
-        return isCuffed(player.getUniqueId());
+        return false;
     }
 
     public boolean isCuffed(UUID uuid) {
-        if (uuid == null)
-            return false;
-        return this.cuffed.contains(uuid);
+        return false;
     }
-
-    HashMap<UUID, CMITask> delaySSTrigger = new HashMap<UUID, CMITask>();
 
     public void removeSocialSpyDelayed(UUID uuid) {
     }
 
-    public void addSocialSpyDelayed(final UUID uuid) {
+    public void addSocialSpyDelayed(UUID uuid) {
     }
 
     public void addSocialSpy(UUID uuid) {
-        this.socialSpy.add(uuid);
     }
 
     public void removeSocialSpy(UUID uuid) {
-        this.socialSpy.remove(uuid);
     }
 
     public boolean isSocialSpy(UUID uuid) {
-        return this.socialSpy.contains(uuid);
+        return false;
     }
 
     public void sendMessageToSpies(CommandSender sender, String senderName, Player receiver, String msg) {
-       
     }
 
     public void sendChatRoomMessageToSpies(CommandSender sender, String receiver, String msg) {
-       
     }
-
-    HashMap<UUID, CMITask> delayCSTrigger = new HashMap<UUID, CMITask>();
-    HashMap<UUID, CMITask> delaySignSTrigger = new HashMap<UUID, CMITask>();
 
     public void removeCommandSpyDelayed(UUID uuid) {
-      
     }
 
-    public void addCommandSpyDelayed(final UUID uuid) {
-       
+    public void addCommandSpyDelayed(UUID uuid) {
     }
 
     public void addCommandSpy(UUID uuid) {
-        this.commandSpy.add(uuid);
     }
 
     public void removeCommandSpy(UUID uuid) {
-        this.commandSpy.remove(uuid);
     }
 
     public boolean isCommandSpy(UUID uuid) {
-        return this.commandSpy.contains(uuid);
-    }
-
-    private static List<String> hardBlackList = new ArrayList<String>();
-    static {
-        hardBlackList.add("/l");
-        hardBlackList.add("/login");
-        hardBlackList.add("/register");
+        return false;
     }
 
     public void sendMessageToCommandSpies(Player sender, String msg) {
-       
     }
 
-    public void addSignSpyDelayed(final UUID uuid) {
-      
+    public void addSignSpyDelayed(UUID uuid) {
     }
 
     public void addSignSpy(UUID uuid) {
-        this.signSpy.add(uuid);
     }
 
     public void removeSignSpy(UUID uuid) {
-        this.signSpy.remove(uuid);
     }
 
     public boolean isSignSpy(UUID uuid) {
-        return this.signSpy.contains(uuid);
+        return false;
     }
 
     public void sendMessageToSignSpies(Player sender, String msg, Location loc) {
-    
     }
 
     public UUID getEmptyUserUUID() {
-        return emptyUserUUID;
+        return null;
     }
 
     public void forceSaveAllUsersIntoDataBase() {
     }
 
     public Player getFakeOperator() {
-      
         return null;
     }
 
     public Player getFakeOperatorRaw() {
-        return fakeOperator;
+        return null;
     }
 
     public String getFakeUserName() {
-        return fakeUserName;
+        return null;
     }
 
     public UUID getFakeUserUUID() {
-        return fakeUserUUID;
+        return null;
     }
 
     public boolean openMailGui(Player player, int page) {
-
-
-        return true;
+        return false;
     }
 
     public Set<UUID> getAlerts() {
-        return userAlerts.keySet();
+        return null;
     }
 
     @Deprecated
     public void addAlert(UUID uuid) {
-        this.userAlerts.put(uuid, new CMIUserAlert(System.currentTimeMillis() + (60L * 60L * 24L)));
     }
 
     public CMIUserAlert getAlert(UUID uuid) {
-        return this.userAlerts.get(uuid);
+        return null;
     }
 
     public void addAlert(UUID uuid, long until, String reason) {
-        this.userAlerts.put(uuid, new CMIUserAlert(until, reason));
     }
 
     public void removeAlert(UUID uuid) {
-        this.userAlerts.remove(uuid);
     }
 }

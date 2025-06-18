@@ -3,45 +3,39 @@ package com.Zrips.CMI.Modules.Packets;
 import org.bukkit.entity.Player;
 
 public class FakeInfo {
-
-    private int id = -1;
+    private int id;
     private Player player;
     private Object obj;
     private Object entity;
 
     public Player getPlayer() {
-	return player;
+        return null;
     }
 
     public FakeInfo setPlayer(Player player) {
-	this.player = player;
-	return this;
+        return null;
     }
 
     public Object getObj() {
-	return obj;
+        return null;
     }
 
     public FakeInfo setObj(Object obj) {
-	this.obj = obj;
-	return this;
+        return null;
     }
 
     public int getId() {
-	return id;
+        return 0;
     }
 
     public FakeInfo setId(int id) {
-	this.id = id;
-	return this;
+        return null;
     }
 
     public Object getEntity() {
-	return entity;
+        return null;
     }
 
     public void setEntity(Object entity) {
-	this.entity = entity;
     }
-
 }

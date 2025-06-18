@@ -3,44 +3,37 @@ package com.Zrips.CMI.Modules.InteractiveCommand;
 import java.util.UUID;
 
 public class CMINPC {
-
-    private UUID uuid = null;
-    private Integer id = null;
-    private UUID secondaryUuid = null;
+    private UUID uuid;
+    private Integer id;
+    private UUID secondaryUuid;
 
     public CMINPC(int id) {
-        this.id = id;
     }
 
     public CMINPC(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public UUID getUuid() {
-        return uuid;
+        return null;
     }
 
     public CMINPC setUuid(UUID uuid) {
-        this.uuid = uuid;
-        return this;
+        return null;
     }
 
     public Integer getId() {
-        return id;
+        return null;
     }
 
     public CMINPC setId(Integer id) {
-        this.id = id;
-        return this;
+        return null;
     }
 
     public UUID getSecondaryUUID() {
-        return secondaryUuid;
+        return null;
     }
 
     public CMINPC setSecondaryUUID(UUID secondaryUuid) {
-        this.secondaryUuid = secondaryUuid;
-        return this;
+        return null;
     }
-
 }

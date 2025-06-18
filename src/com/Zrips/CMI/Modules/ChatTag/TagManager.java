@@ -1,61 +1,58 @@
 package com.Zrips.CMI.Modules.ChatTag;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class TagManager {
-
     private CMI plugin;
-
-    public TagManager(CMI plugin) {
-        this.plugin = plugin;
-    }
-
     private boolean ChatTagEnabled;
     private boolean HardCoreMode;
     private boolean OnlyWhenAfk;
     private String ChatTagColor;
     private boolean ChatTagRemoveEta;
-    List<String> commands = new ArrayList<String>();
+    List<String> commands;
+
+    public TagManager(CMI plugin) {
+    }
 
     public void load(ConfigReader cfg) {
-
     }
 
     @Deprecated
     public String tag(Player player, String msg, String format) {
-        return tag(player, msg, format, true);
+        return null;
     }
 
     public String tag(Player player, String msg, String format, boolean performCmds) {
+        return null;
+    }
 
+    public String tag(CMIUser senderUser, String msg, String format, boolean performCmds) {
         return null;
     }
 
     public String getChatTagColor() {
-        return CMIChatColor.translate(ChatTagColor);
+        return null;
     }
 
     public boolean isChatTagRemoveEta() {
-        return ChatTagRemoveEta;
+        return false;
     }
 
     public boolean isChatTagEnabled() {
-        return ChatTagEnabled;
+        return false;
     }
 
     public boolean isHardCoreMode() {
-        return HardCoreMode;
+        return false;
     }
 
     public void setHardCoreMode(boolean hardCoreMode) {
-        HardCoreMode = hardCoreMode;
     }
 }

@@ -1,23 +1,17 @@
 package com.Zrips.CMI.Modules.Search;
 
 public enum SearchType {
-    ID("Id"),
-    NAME("Name"),
-    LORE("Lore"),
-    GM("Gm"),
-    GOD("God"),
-    ENCHANT("Enchant"),
-    MAXHP("MaxHp"),
-    POTION("Potion"),
-    FLY("Fly"),
-    OVERSIZE("Oversize");
-    
+    ITEM, GM, GOD, MAXHP, FLY;
+
     private String name;
+
     private SearchType(String name) {
-        this.name = name;
     }
-    
+
+    private SearchType() {
+    }
+
     public String getName() {
-        return name;
+        return null;
     }
 }

@@ -4,65 +4,40 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 public class ServerListPing {
-
     private InetSocketAddress host;
-    private int timeout = 7000;
-    private Gson gson = new Gson();
+    private int timeout;
+    private Gson gson;
 
     public ServerListPing(String ip, int port) {
-        this.host = new InetSocketAddress(ip, port);
     }
 
     public ServerListPing(InetSocketAddress host) {
-        this.host = host;
     }
 
     public InetSocketAddress getAddress() {
-        return this.host;
+        return null;
     }
 
     void setTimeout(int timeout) {
-        this.timeout = timeout;
     }
 
     int getTimeout() {
-        return this.timeout;
+        return 0;
     }
 
     public int readVarInt(DataInputStream in) throws IOException {
-        int i = 0;
-        int j = 0;
-        while (true) {
-            int k = in.readByte();
-            i |= (k & 0x7F) << j++ * 7;
-            if (j > 5)
-                throw new RuntimeException("VarInt too big");
-            if ((k & 0x80) != 128)
-                break;
-        }
-        return i;
+        return 0;
     }
 
     public void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
-        while (true) {
-            if ((paramInt & 0xFFFFFF80) == 0) {
-                out.writeByte(paramInt);
-                return;
-            }
-
-            out.writeByte(paramInt & 0x7F | 0x80);
-            paramInt >>>= 7;
-        }
     }
 
     public StatusResponse fetchData() throws IOException {
-
         return null;
     }
 
@@ -70,7 +45,7 @@ public class ServerListPing {
         private String text;
 
         public String getText() {
-            return text;
+            return null;
         }
     }
 
@@ -78,7 +53,7 @@ public class ServerListPing {
         private Gson text;
 
         public Gson getText() {
-            return text;
+            return null;
         }
     }
 
@@ -90,43 +65,38 @@ public class ServerListPing {
         private int time;
 
         public String getDescription() {
-            return description;
+            return null;
         }
 
         public Players getPlayers() {
-            return players;
+            return null;
         }
 
         public Version getVersion() {
-            return version;
+            return null;
         }
 
         public String getFavicon() {
-            return favicon;
+            return null;
         }
 
         public int getTime() {
-            return time;
+            return 0;
         }
 
         public void setTime(int time) {
-            this.time = time;
         }
 
         public void setDescription(String description) {
-            this.description = description;
         }
 
         public void setPlayers(Players players) {
-            this.players = players;
         }
 
         public void setVersion(Version version) {
-            this.version = version;
         }
 
         public void setFavicon(String favicon) {
-            this.favicon = favicon;
         }
     }
 
@@ -138,27 +108,26 @@ public class ServerListPing {
         private int time;
 
         public Description getDescription() {
-            return description;
+            return null;
         }
 
         public Players getPlayers() {
-            return players;
+            return null;
         }
 
         public Version getVersion() {
-            return version;
+            return null;
         }
 
         public String getFavicon() {
-            return favicon;
+            return null;
         }
 
         public int getTime() {
-            return time;
+            return 0;
         }
 
         public void setTime(int time) {
-            this.time = time;
         }
     }
 
@@ -170,45 +139,44 @@ public class ServerListPing {
         private int time;
 
         public Description116 getDescription() {
-            return description;
+            return null;
         }
 
         public Players getPlayers() {
-            return players;
+            return null;
         }
 
         public Version getVersion() {
-            return version;
+            return null;
         }
 
         public String getFavicon() {
-            return favicon;
+            return null;
         }
 
         public int getTime() {
-            return time;
+            return 0;
         }
 
         public void setTime(int time) {
-            this.time = time;
         }
     }
 
     public class Players {
-        private int max = 0;
-        private int online = 0;
-        private List<Player> sample = null;
+        private int max;
+        private int online;
+        private List<Player> sample;
 
         public int getMax() {
-            return max;
+            return 0;
         }
 
         public int getOnline() {
-            return online;
+            return 0;
         }
 
         public List<Player> getSample() {
-            return sample == null ? new ArrayList<Player>() : sample;
+            return null;
         }
     }
 
@@ -217,13 +185,12 @@ public class ServerListPing {
         private String id;
 
         public String getName() {
-            return name;
+            return null;
         }
 
         public String getId() {
-            return id;
+            return null;
         }
-
     }
 
     public class Version {
@@ -231,11 +198,11 @@ public class ServerListPing {
         private String protocol;
 
         public String getName() {
-            return name;
+            return null;
         }
 
         public String getProtocol() {
-            return protocol;
+            return null;
         }
     }
 }

@@ -1,8 +1,7 @@
 package com.Zrips.CMI.utils;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,122 +12,88 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMISunMover;
 import com.Zrips.CMI.Containers.CMITimeRate;
 
-import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Time.TimeInfo;
 import net.Zrips.CMILib.Time.timeState;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class TimeManager {
-
-    double tPHour = 1000d;
-    double tPMin = 1000d / 60d;
-    double tPSec = 1000d / 60d / 60d;
-    private HashMap<World, CMITask> daySchedID = new HashMap<World, CMITask>();
-
-    private HashMap<World, HashMap<timeState, CMITimeRate>> dayTimeDurations = new HashMap<World, HashMap<timeState, CMITimeRate>>();
-
-    private Set<World> froozenWorlds = new HashSet<World>();
-
+    double tPHour;
+    double tPMin;
+    double tPSec;
+    private HashMap<String, CMITask> daySchedID;
+    private HashMap<String, HashMap<timeState, CMITimeRate>> dayTimeDurations;
+    private Set<World> froozenWorlds;
     private CMI plugin;
-
-    static int dayTime = 600;
-    static int sunriseTime = 90;
-    static int sunsetTime = 90;
-    static int nightTime = 420;
-
-    private List<String> worlds = new ArrayList<String>();
+    static int dayTime;
+    static int sunriseTime;
+    static int sunsetTime;
+    static int nightTime;
+    private List<String> worlds;
+    private static SimpleDateFormat dateFormat;
+    public static HashMap<World, CMISunMover> movingmap;
+    private static long showTimer;
 
     public TimeManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public List<String> getWorlds() {
-        return worlds;
+        return null;
     }
 
     public void runTimer() {
     }
 
     public void loadConfig() {
-
     }
 
     public void stopDayTimer(World world) {
-        if (world == null)
-            return;
-        CMITask task = daySchedID.remove(world);
-        if (task != null) {
-            task.cancel();
-        }
     }
-//    Long time = System.currentTimeMillis();
+
+    public void stopDayTimer(String worldName) {
+    }
 
     private void runDayTimer(World world) {
+    }
 
+    private void runDayTimer(String worldName) {
     }
 
     public long setTime(World world, String time, boolean smooth) {
-        TimeInfo tInfo = CMITimeManager.stringToTimeInfo(time);
-        return setTime(world, tInfo, smooth);
+        return 0;
     }
 
     public long setPTime(Player player, String time, boolean smooth) {
-        TimeInfo tInfo = CMITimeManager.stringToTimeInfo(time);
-        return setPTime(player, tInfo, smooth);
+        return 0;
     }
 
-    public static HashMap<World, CMISunMover> movingmap = new HashMap<World, CMISunMover>();
-
-    public void cancelSunMove(final World world) {
-        cancelSunMove(world, true);
+    public void cancelSunMove(World world) {
     }
 
-    public void cancelSunMove(final World world, boolean changeCycle) {
-
+    public void cancelSunMove(World world, boolean changeCycle) {
     }
 
-    private static long showTimer = 0L;
-
-    public void moveSun(final World world, final int interval, final int updateInterval, int u, final boolean boosBar) {
-
+    public void moveSun(World world, int interval, int updateInterval, int u, boolean boosBar) {
     }
 
     public long setTime(World world, TimeInfo tInfo, boolean smooth) {
-        return -1L;
-
+        return 0;
     }
 
     public long setPTime(Player player, TimeInfo tInfo, boolean smooth) {
-        return -1L;
+        return 0;
     }
 
     public boolean isFroozenWorld(World world) {
-
-        if (world.getGameRuleValue("doDaylightCycle").equalsIgnoreCase("true")) {
-            return false;
-        }
-
-        return froozenWorlds.contains(world);
+        return false;
     }
 
     public void addFroozenWorlds(World world) {
-        this.froozenWorlds.add(world);
-        CMISunMover mover = movingmap.get(world);
-        if (mover != null) {
-            mover.setMoving("false");
-        }
     }
 
     public void removeFroozenWorlds(World world) {
-        this.froozenWorlds.add(world);
-        CMISunMover mover = movingmap.get(world);
-        if (mover != null) {
-            mover.setMoving("true");
-        }
     }
 
     public static String to24hourAproximateShort(Long ticks, boolean trim) {
-
         return null;
     }
 }

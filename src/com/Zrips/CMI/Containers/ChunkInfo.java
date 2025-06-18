@@ -3,29 +3,25 @@ package com.Zrips.CMI.Containers;
 import org.bukkit.World;
 
 public class ChunkInfo {
-
     private int x;
     private int z;
     private World w;
 
     public ChunkInfo(int x, int z) {
-	this.x = x;
-	this.z = z;
     }
 
     public int getX() {
-	return x;
+        return 0;
     }
 
     public int getZ() {
-	return z;
+        return 0;
     }
 
     public World getW() {
-	return w;
+        return null;
     }
 
     public void setW(World w) {
-	this.w = w;
     }
 }

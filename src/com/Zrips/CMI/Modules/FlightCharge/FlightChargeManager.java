@@ -1,7 +1,7 @@
 package com.Zrips.CMI.Modules.FlightCharge;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
 
@@ -12,159 +12,139 @@ import com.Zrips.CMI.Modules.SpawnerCharge.PlayerCharge;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class FlightChargeManager {
-
     CMI plugin;
+    private boolean FlightChargeEnabledByDefault;
+    private boolean FlightChargeAutoSwitch;
+    private boolean bossbar;
+    private double ExpRechargeCost;
+    private double MoneyRechargeCost;
+    private int MaxChargeLevel;
+    private int DeductOnFallMulti;
+    private double DeductOnIdling;
+    private double DeductOnlyForTime;
+    private boolean DamageOnFall;
+    private boolean DamageOnToggle;
+    private boolean KillOnFall;
+    private CMIChatColor GlowColor;
+    private double autoRechargeFrom;
+    private double autoRechargeAmount;
+    private ConcurrentHashMap<UUID, FlightCharge> flightCharges;
+    public static final String flightChargeBossBar = null;
 
     public FlightChargeManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
-//    private boolean Enabled = false;
-    private boolean FlightChargeEnabledByDefault = true;
-    private boolean FlightChargeAutoSwitch = true;
-    private boolean bossbar = true;
-    private double ExpRechargeCost = 0;
-    private double MoneyRechargeCost = 0D;
-    private int MaxChargeLevel = 0;
-    private int DeductOnFallMulti = 0;
-    private double DeductOnIdling = 0;
-    private double DeductOnlyForTime = 0;
-    private boolean DamageOnFall = true;
-    private boolean DamageOnToggle = true;
-    private boolean KillOnFall = true;
-    private CMIChatColor GlowColor = null;
-
-    private double autoRechargeFrom = 0;
-    private double autoRechargeAmount = 0;
-
-    private HashMap<UUID, FlightCharge> flightCharges = new HashMap<UUID, FlightCharge>();
-
     public FlightCharge getFlightCharge(UUID uuid) {
-        return flightCharges.computeIfAbsent(uuid, k -> new FlightCharge());
+        return null;
     }
 
     @Deprecated
     public PlayerCharge getPCharge(UUID uuid) {
-        return getPCharge(uuid, true);
+        return null;
     }
 
     @Deprecated
     public PlayerCharge getPCharge(UUID uuid, boolean update) {
-        return plugin.getSpawnerChargesManager().getPCharge(CMIUser.getUser(uuid), update);
+        return null;
     }
 
     public void load() {
-
     }
 
     public void process(Player player, Integer take) {
-
     }
 
     public void process(traveledDistance dinfo, Integer take) {
-
     }
 
-    private void autorecharge(CMIUser user) {
-
+    public void autorecharge(CMIUser user) {
     }
-
-    public static final String flightChargeBossBar = "CMIFlightChargeBossBar";
 
     public void updateBossBar(CMIUser user) {
+    }
 
+    private void updateBossBar(traveledDistance dinfo) {
     }
 
     public double getExpRechargeCost() {
-        return ExpRechargeCost;
+        return 0.0;
     }
 
     public void setExpRechargeCost(double expRechargeCost) {
-        ExpRechargeCost = expRechargeCost;
     }
 
     public double getMoneyRechargeCost() {
-        return MoneyRechargeCost;
+        return 0.0;
     }
 
     public void setMoneyRechargeCost(double moneyRechargeCost) {
-        MoneyRechargeCost = moneyRechargeCost;
     }
 
     public int getMaxChargeLevel() {
-        return MaxChargeLevel;
+        return 0;
     }
 
     public void setMaxChargeLevel(int maxChargeLevel) {
-        MaxChargeLevel = maxChargeLevel;
     }
 
     public int getDeductOnFallMulti() {
-        return DeductOnFallMulti;
+        return 0;
     }
 
     public void setDeductOnFallMulti(int deductOnFallMulti) {
-        DeductOnFallMulti = deductOnFallMulti;
     }
 
     public boolean isDamageOnFall() {
-        return DamageOnFall;
+        return false;
     }
 
     public void setDamageOnFall(boolean damageOnFall) {
-        DamageOnFall = damageOnFall;
     }
 
     public boolean isDamageOnToggle() {
-        return DamageOnToggle;
+        return false;
     }
 
     public void setDamageOnToggle(boolean damageOnToggle) {
-        DamageOnToggle = damageOnToggle;
     }
 
     public boolean isKillOnFall() {
-        return KillOnFall;
+        return false;
     }
 
     public void setKillOnFall(boolean killOnFall) {
-        KillOnFall = killOnFall;
     }
 
     public double getDeductOnIdling() {
-        return DeductOnIdling;
+        return 0.0;
     }
 
     public void setDeductOnIdling(int deductOnIdling) {
-        DeductOnIdling = deductOnIdling;
     }
 
     public boolean isFlightChargeEnabledByDefault() {
-        return FlightChargeEnabledByDefault;
+        return false;
     }
 
     public void setFlightChargeEnabledByDefault(boolean flightChargeEnabledByDefault) {
-        FlightChargeEnabledByDefault = flightChargeEnabledByDefault;
     }
 
     public boolean isFlightChargeAutoSwitch() {
-        return FlightChargeAutoSwitch;
+        return false;
     }
 
     public CMIChatColor getGlowColor() {
-        return GlowColor;
+        return null;
     }
 
     public void setGlowColor(CMIChatColor glowColor) {
-        GlowColor = glowColor;
     }
 
     public double getAutoRechargeFrom() {
-        return autoRechargeFrom;
+        return 0.0;
     }
 
     public double getAutoRechargeAmount() {
-        return autoRechargeAmount;
+        return 0.0;
     }
-
 }

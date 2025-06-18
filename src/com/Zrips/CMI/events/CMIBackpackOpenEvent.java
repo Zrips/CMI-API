@@ -5,39 +5,34 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.Modules.ShulkerBoxInventory.ShulkerInv;
 
-public final class CMIBackpackOpenEvent extends CMIPlayerCancellableEvent {
-
+public class CMIBackpackOpenEvent extends CMIPlayerCancellableEvent {
     private ShulkerInv shulkerbackpack;
-    private double costToOpen = 0D;
+    private double costToOpen;
 
     public CMIBackpackOpenEvent(ShulkerInv shulkerbackpack) {
         super(shulkerbackpack.getPlayer());
-        this.shulkerbackpack = shulkerbackpack;
     }
 
     public CMIBackpackOpenEvent(ShulkerInv shulkerbackpack, double costToOpen) {
         super(shulkerbackpack.getPlayer());
-        this.shulkerbackpack = shulkerbackpack;
-        this.costToOpen = costToOpen;
     }
 
     public ItemStack getShulkerBox() {
-        return shulkerbackpack.getShulkerBox();
+        return null;
     }
 
     public Inventory getGuiInv() {
-        return shulkerbackpack.getCustomInv();
+        return null;
     }
 
     public ShulkerInv getShulkerbackpack() {
-        return shulkerbackpack;
+        return null;
     }
 
     public double getCostToOpen() {
-        return costToOpen;
+        return 0.0;
     }
 
     public void setCostToOpen(double costToOpen) {
-        this.costToOpen = costToOpen;
     }
 }

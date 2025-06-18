@@ -8,77 +8,77 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class CMITeleportLocation {
     private World world;
-    private Vector position = null;
-    private float yaw = 0;
-    private float pitch = 0;
-    private CMITeleportCondition condition = CMITeleportCondition.Good;
-    private int fallDistance = 0;
-    private CMIMaterial floor = null;
+    private Vector position;
+    private float yaw;
+    private float pitch;
+    private CMITeleportCondition condition;
+    private double fallDistance;
+    private CMIMaterial floor;
+    private CMITeleportType type;
 
     public CMITeleportLocation(World world) {
-        this.world = world;
     }
 
     public Vector getPosition() {
-        return position;
+        return null;
     }
 
     public CMITeleportLocation setPosition(Vector position) {
-        this.position = position;
-        return this;
+        return null;
     }
 
     public World getWorld() {
-        return world;
+        return null;
     }
 
     public Location getLocation() {
-        return new Location(world, position.getX(), position.getY(), position.getZ(), yaw, pitch);
+        return null;
     }
 
     public float getYaw() {
-        return yaw;
+        return 0.0f;
     }
 
     public CMITeleportLocation setYaw(float yaw) {
-        this.yaw = yaw;
-        return this;
+        return null;
     }
 
     public float getPitch() {
-        return pitch;
+        return 0.0f;
     }
 
     public CMITeleportLocation setPitch(float pitch) {
-        this.pitch = pitch;
-        return this;
+        return null;
     }
 
     public CMITeleportCondition getCondition() {
-        return condition;
+        return null;
     }
 
     public CMITeleportLocation setCondition(CMITeleportCondition condition) {
-        this.condition = condition;
-        return this;
+        return null;
     }
 
-    public int getFallDistance() {
-        return fallDistance;
+    public double getFallDistance() {
+        return 0.0;
     }
 
-    public CMITeleportLocation setFallDistance(int fallDistance) {
-        this.fallDistance = fallDistance;
-        return this;
+    public CMITeleportLocation setFallDistance(double fallDistance) {
+        return null;
     }
 
     public CMIMaterial getFloor() {
-        return floor;
+        return null;
     }
 
     public CMITeleportLocation setFloor(CMIMaterial floor) {
-        this.floor = floor;
-        return this;
+        return null;
     }
 
+    public CMITeleportType getType() {
+        return null;
+    }
+
+    public void setType(CMITeleportType type) {
+    }
 }

@@ -11,19 +11,16 @@ import org.bukkit.inventory.ItemStack;
 import com.Zrips.CMI.CMI;
 
 public class ShulkerBoxManager {
-
-    HashMap<UUID, ShulkerInv> map = new HashMap<UUID, ShulkerInv>();
-
+    HashMap<UUID, ShulkerInv> map;
     private CMI plugin;
+    public static final String identifier = null;
+    private boolean PreventInCombat;
+    private double CostToOpen;
 
     public ShulkerBoxManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    public final static String identifier = "CMIBackPack";
-
     public boolean stillHaveItem(Player player) {
-
         return false;
     }
 
@@ -31,50 +28,36 @@ public class ShulkerBoxManager {
     }
 
     public boolean isEditing(Player player) {
-        if (map.isEmpty())
-            return false;
-        return map.containsKey(player.getUniqueId());
+        return false;
     }
 
     private Inventory getExisting(Player player) {
-
         return null;
     }
-
-    private boolean PreventInCombat = true;
-    private double CostToOpen = 0;
 
     public void loadConfig() {
     }
 
     public void openShulkerBox(Player player, ItemStack item) {
-
     }
 
     public void updateShulkerItem(Player player) {
-
     }
 
     public void remove(Player player) {
-        map.remove(player.getUniqueId());
     }
 
     public boolean isShulkerBox(ItemStack OneItem) {
-
-        return true;
+        return false;
     }
 
     public List<ItemStack> getShulkerBoxContents(ItemStack OneItem) {
-
         return null;
     }
 
     public void updateEntireShulkerInv(Player player, ItemStack[] cont) {
-
     }
 
     public void setShulkerInv(ItemStack shulkerBox, ItemStack[] cont) {
-
     }
-
 }

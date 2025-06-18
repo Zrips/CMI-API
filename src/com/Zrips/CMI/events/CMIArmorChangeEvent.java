@@ -5,52 +5,39 @@ import org.bukkit.inventory.ItemStack;
 
 import net.Zrips.CMILib.Items.ArmorTypes;
 
-public final class CMIArmorChangeEvent extends CMIPlayerCancellableEvent {
+public class CMIArmorChangeEvent extends CMIPlayerCancellableEvent {
+    private final EquipMethod equipType = null;
+    private final ArmorTypes type = null;
+    private ItemStack oldArmorPiece;
+    private ItemStack newArmorPiece;
 
-    private final EquipMethod equipType;
-    private final ArmorTypes type;
-    private ItemStack oldArmorPiece, newArmorPiece;
-
-    public CMIArmorChangeEvent(final Player player, final EquipMethod equipType, ArmorTypes type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece) {
-	super(player);
-	this.equipType = equipType;
-	this.type = type;
-	this.oldArmorPiece = oldArmorPiece;
-	this.newArmorPiece = newArmorPiece;
+    public CMIArmorChangeEvent(Player player, EquipMethod equipType, ArmorTypes type, ItemStack oldArmorPiece, ItemStack newArmorPiece) {
+        super(player);
     }
 
-
     public final ArmorTypes getType() {
-	return type;
+        return null;
     }
 
     public final ItemStack getOldArmorPiece() {
-	return oldArmorPiece;
+        return null;
     }
 
-    public final void setOldArmorPiece(final ItemStack oldArmorPiece) {
-	this.oldArmorPiece = oldArmorPiece;
+    public final void setOldArmorPiece(ItemStack oldArmorPiece) {
     }
 
     public final ItemStack getNewArmorPiece() {
-	return newArmorPiece;
+        return null;
     }
 
-    public final void setNewArmorPiece(final ItemStack newArmorPiece) {
-	this.newArmorPiece = newArmorPiece;
+    public final void setNewArmorPiece(ItemStack newArmorPiece) {
     }
 
     public EquipMethod getMethod() {
-	return equipType;
+        return null;
     }
 
     public enum EquipMethod {
-	SHIFT_CLICK,
-        DRAG,
-        HOTBAR,
-	HOTBAR_SWAP,
-	DISPENSER,
-	BROKE,
-	DEATH;
+        SHIFT_CLICK, DRAG, HOTBAR, HOTBAR_SWAP, DISPENSER, BROKE, DEATH;
     }
 }

@@ -8,33 +8,26 @@ public class CMIPlane {
     private CMIVector2D sizeMax;
 
     public CMIPlane(Vector center, CMIVector2D sizeMin, CMIVector2D sizeMax) {
-	this.center = center;
-	this.sizeMin = sizeMin;
-	this.sizeMax = sizeMax;
     }
 
     public Vector getCenter() {
-	return center;
+        return null;
     }
 
     public void setCenter(Vector center) {
-	this.center = center;
     }
 
     public CMIVector2D getSizeMin() {
-	return sizeMin;
+        return null;
     }
 
     public void setSizeMin(CMIVector2D sizeMin) {
-	this.sizeMin = sizeMin;
     }
 
     public CMIVector2D getSizeMax() {
-	return sizeMax;
+        return null;
     }
 
     public void setSizeMax(CMIVector2D sizeMax) {
-	this.sizeMax = sizeMax;
     }
-
 }

@@ -1,61 +1,51 @@
 package com.Zrips.CMI.Modules.TabList;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
 public class TabListCache {
-
-    private List<String> header = Arrays.asList("");
-    private List<String> footer = Arrays.asList("");
-    private String playerNameFormat = "";
+    private List<String> header;
+    private List<String> footer;
+    private String playerNameFormat;
     private Player player;
     private TabList tl;
-    
+
     public TabListCache(Player player, TabList tl) {
-	this.player = player;
-	this.tl = tl;
     }
 
     public List<String> getHeader() {
-	return header;
+        return null;
     }
 
     public void setHeader(List<String> header) {
-	this.header = header;
     }
 
     public String getPlayerNameFormat() {
-	return playerNameFormat;
+        return null;
     }
 
     public void setPlayerNameFormat(String playerNameFormat) {
-	this.playerNameFormat = playerNameFormat;
     }
 
     public List<String> getFooter() {
-	return footer;
+        return null;
     }
 
     public void setFooter(List<String> footer) {
-	this.footer = footer;
     }
 
     public Player getPlayer() {
-	return player;
+        return null;
     }
 
     public void setPlayer(Player player) {
-	this.player = player;
     }
 
     public TabList getTl() {
-	return tl;
+        return null;
     }
 
     public void setTl(TabList tl) {
-	this.tl = tl;
     }
-
 }

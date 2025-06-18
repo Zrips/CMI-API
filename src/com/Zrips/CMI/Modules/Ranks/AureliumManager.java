@@ -4,9 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AureliumManager {
-
     public static boolean isSkillCorrect(String name) {
-        return true;
+        return false;
     }
 
     public static String getRealSkillName(CommandSender sender, String name) {
@@ -16,5 +15,4 @@ public class AureliumManager {
     public static int getSkillLevel(Player player, String skill) {
         return 0;
     }
-
 }

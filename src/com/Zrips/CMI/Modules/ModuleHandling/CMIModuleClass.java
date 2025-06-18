@@ -4,32 +4,27 @@ import net.Zrips.CMILib.Version.Version;
 
 public class CMIModuleClass {
     private Class<?> listener;
-    private Version from = null;
-    private Version to = null;
+    private Version from;
+    private Version to;
 
     public CMIModuleClass(Class<?> listener) {
-	this(listener, null, null);
     }
 
     public CMIModuleClass(Class<?> listener, Version from) {
-	this(listener, from, null);
     }
 
     public CMIModuleClass(Class<?> listener, Version from, Version to) {
-	this.listener = listener;
-	this.from = from;
-	this.to = to;
     }
 
     public Version getFrom() {
-	return from;
+        return null;
     }
 
     public Version getTo() {
-	return to;
+        return null;
     }
 
     public Class<?> getListener() {
-	return listener;
+        return null;
     }
 }

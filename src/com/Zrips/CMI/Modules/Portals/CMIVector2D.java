@@ -7,53 +7,47 @@ public class CMIVector2D {
     private double y;
 
     public CMIVector2D(Vector v) {
-	this.x = v.getX();
-	this.y = v.getY();
     }
 
     public CMIVector2D(double x, double y) {
-	this.x = x;
-	this.y = y;
     }
 
     public CMIVector2D plus(CMIVector2D v) {
-	return new CMIVector2D(x + v.x, y + v.y);
+        return null;
     }
 
     public CMIVector2D minus(CMIVector2D v) {
-	return new CMIVector2D(x - v.x, y - v.y);
+        return null;
     }
 
     public CMIVector2D minus(Vector v) {
-	return new CMIVector2D(x - v.getX(), y - v.getY());
+        return null;
     }
 
     public CMIVector2D times(double s) {
-	return new CMIVector2D(s * x, s * y);
+        return null;
     }
 
     public double dot(CMIVector2D v) {
-	return x * v.x + y * v.y;
+        return 0.0;
     }
 
     @Override
     public String toString() {
-	return String.format("(%f, %f)", x, y);
+        return null;
     }
 
     public double getX() {
-	return x;
+        return 0.0;
     }
 
     public void setX(double x) {
-	this.x = x;
     }
 
     public double getY() {
-	return y;
+        return 0.0;
     }
 
     public void setY(double y) {
-	this.y = y;
     }
 }

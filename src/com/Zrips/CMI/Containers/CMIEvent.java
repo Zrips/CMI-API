@@ -4,13 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-
-import net.Zrips.CMILib.Version.Version;
 
 public class CMIEvent {
-
     public static BlockPlaceEvent createSignEvent(Block block, Sign sign, Player player) {
         return null;
     }

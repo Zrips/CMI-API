@@ -1,204 +1,160 @@
 package com.Zrips.CMI.Modules.Sheduler;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Random;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Modules.Permissions.PermissionsManager.CMIPerm;
-
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Logs.CMIDebug;
-import net.Zrips.CMILib.Messages.CMIMessages;
-
 public class Schedule {
-
-    private boolean enabled = false;
+    private boolean enabled;
     private String name;
-    private long performOn = 0L;
-    private boolean performed = false;
-    private List<String> commands = new ArrayList<String>();
-    private List<String> tempCommands = new ArrayList<String>();
-    private List<String> minPlayerCommands = new ArrayList<String>();
-    private boolean repeatable = false;
-    private boolean randomize = false;
-    private boolean duplicateRandomize = false;
-    private boolean singleLinear = false;
-    private long delay = 0L;
-    private long lastPerformedOn = 0L;
-    private List<SchedTime> time = new ArrayList<SchedTime>();
-    private int MinPlayer = 0;
-    private int MaxPlayer = 0;
-    private boolean playerAmountFeedback = true;
-    private double commandDelay = 0D;
-
-    private boolean dontTranslatePlaceholders = true;
-
-    private boolean randomPlayer = false;
+    private long performOn;
+    private boolean performed;
+    private List<String> commands;
+    private List<String> tempCommands;
+    private List<String> minPlayerCommands;
+    private boolean repeatable;
+    private boolean randomize;
+    private boolean duplicateRandomize;
+    private boolean singleLinear;
+    private long delay;
+    private long lastPerformedOn;
+    private List<SchedTime> time;
+    private int MinPlayer;
+    private int MaxPlayer;
+    private boolean playerAmountFeedback;
+    private double commandDelay;
+    private boolean dontTranslatePlaceholders;
+    private boolean randomPlayer;
+    Pattern placeholderKeepPatern;
 
     public Schedule(String name) {
-        this.name = name;
     }
 
     public void reset() {
     }
 
     public String getDuplicatedRandomCommand() {
-
         return null;
-
     }
 
     public String getRandomCommand() {
-
         return null;
     }
 
     public String getSingleLinearCommand() {
-
         return null;
     }
 
     public List<String> getCommands() {
-        return commands;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
-
     }
 
     public boolean isPerformed() {
-        return performed;
+        return false;
     }
 
     public void setPerformed(boolean performed) {
-        this.performed = performed;
     }
 
     public boolean isPlayerAmountOk() {
-        return isPlayerMinOk() && isPlayerMaxOk();
+        return false;
     }
 
     public boolean isPlayerMinOk() {
-        return this.getMinPlayer() == 0 || Bukkit.getOnlinePlayers().size() >= this.getMinPlayer();
+        return false;
     }
 
     public boolean isPlayerMaxOk() {
-        return this.getMaxPlayer() == 0 || Bukkit.getOnlinePlayers().size() <= this.getMaxPlayer();
+        return false;
     }
 
     public boolean itsTimeToPerform() {
-
         return false;
     }
 
     public void recalculateNext() {
-
     }
 
     public Long getPerformOn() {
-
-        this.recalculateNext();
-
-        return performOn;
+        return null;
     }
 
-//    public void setPerformOn(Long performOn) {
-//	this.performOn = performOn;
-//    }
-
     public String getName() {
-        return name;
+        return null;
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isRepeatable() {
-        return repeatable;
+        return false;
     }
 
     public void setRepeatable(boolean repeatable) {
-        this.repeatable = repeatable;
     }
 
     public long getDelay() {
-        return delay;
+        return 0;
     }
 
     public void setDelay(long delay) {
-        this.delay = delay;
     }
 
     public Long getLastPerformedOn() {
-        return lastPerformedOn;
+        return null;
     }
 
     public void setLastPerformedOn() {
-        if (this.time.isEmpty())
-            setLastPerformedOn(System.currentTimeMillis());
-        else {
-            recalculateNext();
-        }
     }
 
     public void setLastPerformedOn(Long lastPerformedOn) {
-        this.lastPerformedOn = lastPerformedOn;
-        updateNextPerform();
     }
 
     private void updateNextPerform() {
-        performOn = (lastPerformedOn == 0L ? System.currentTimeMillis() : lastPerformedOn) + (delay * 1000);
     }
 
     public List<SchedTime> getTime() {
-        return time;
+        return null;
     }
 
     public void setTime(List<SchedTime> time) {
-        this.time = time;
     }
 
     public Integer getMinPlayer() {
-        return MinPlayer;
+        return null;
     }
 
     public void setMinPlayer(Integer minPlayer) {
-        MinPlayer = minPlayer;
     }
 
     public Integer getMaxPlayer() {
-        return MaxPlayer;
+        return null;
     }
 
     public void setMaxPlayer(Integer maxPlayer) {
-        MaxPlayer = maxPlayer;
     }
 
     public boolean isRandomize() {
-        return randomize;
+        return false;
     }
 
     public void setRandomize(boolean randomize) {
-        this.randomize = randomize;
     }
 
     public void safePerform() {
-
     }
 
-    Pattern placeholderKeepPatern = Pattern.compile("(\\{\\%)([^\\\"^\\%^ ]+)(\\%\\})(\\B)");
-
     public void perform() {
+    }
 
+    private void processCmd(String cmd, Player player) {
+    }
+
+    private void performCmd(List<String> cmds, Player player) {
     }
 
     public List<String> updateSchedCmds(List<String> cmds, Player player) {
@@ -210,55 +166,48 @@ public class Schedule {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Boolean isPlayerAmountFeedback() {
-        return playerAmountFeedback;
+        return null;
     }
 
     public void setPlayerAmountFeedback(Boolean playerAmountFeedback) {
-        this.playerAmountFeedback = playerAmountFeedback;
     }
 
     public Double getTotalCommandDelay() {
-        return commandDelay;
+        return null;
     }
 
     public boolean isSingleLinear() {
-        return singleLinear;
+        return false;
     }
 
     public void setSingleLinear(boolean singleLinear) {
-        this.singleLinear = singleLinear;
     }
 
     public boolean isDuplicateRandomize() {
-        return duplicateRandomize;
+        return false;
     }
 
     public void setDuplicateRandomize(boolean duplicateRandomize) {
-        this.duplicateRandomize = duplicateRandomize;
     }
 
     public List<String> getMinPlayerCommands() {
-        return minPlayerCommands;
+        return null;
     }
 
     public void setMinPlayerCommands(List<String> minPlayerCommands) {
-        this.minPlayerCommands = minPlayerCommands;
     }
 
     public boolean isDontTranslatePlaceholders() {
-        return dontTranslatePlaceholders;
+        return false;
     }
 
     public void setDontTranslatePlaceholders(boolean dontTranslatePlaceholders) {
-        this.dontTranslatePlaceholders = dontTranslatePlaceholders;
     }
-
 }

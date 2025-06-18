@@ -1,141 +1,132 @@
 package com.Zrips.CMI.Modules.Chat;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIEventPriority;
 
 public class ChatManager {
-
     private CMI plugin;
-
-    private boolean ModifyChatFormat = false;
-    private boolean ChatClickHoverMessages = false;
-    private boolean ChatDiscordSRV = false;
-    private String ChatDiscordSRVGlobalChannel = "global";
-    private String DiscordSRVLabel = "";
-    private String DiscordSRVUnlinkedLabel = "";
-    private boolean DiscordSRVRanged = true;
-    private boolean ChatDynMapChat = false;
-    private boolean ChatReplyToLastMessenger = false;
-    private int LastMessengerTimeOut = 120;
-    private boolean PrivateMessagesGroups = false;
-    private boolean ColorsPublicMessages = false;
-    private boolean ColorsPrivateMessage = false;
-    private boolean ChatIgnorePublicMessage = false;
-    private boolean ColorsMe = false;
-
+    private boolean ModifyChatFormat;
+    private boolean ChatClickHoverMessages;
+    private boolean ChatDiscordSRV;
+    private String ChatDiscordSRVGlobalChannel;
+    private String DiscordSRVLabel;
+    private String DiscordSRVUnlinkedLabel;
+    private boolean DiscordSRVRanged;
+    private boolean ChatDynMapChat;
+    private boolean ChatReplyToLastMessenger;
+    private int LastMessengerTimeOut;
+    private boolean PrivateMessagesGroups;
+    private boolean ColorsPublicMessages;
+    private CMIEventPriority ColorsPublicMessagesPriority;
+    private CMIEventPriority formatPublicMessagesPriority;
+    private boolean ColorsPrivateMessage;
+    private boolean ChatIgnorePublicMessage;
+    private boolean ColorsMe;
     private boolean ColorsNickName;
-
     private List<String> cleanUpWhiteList;
-
-    private Set<CMIPlayerMessageColor> chatColors = new LinkedHashSet<CMIPlayerMessageColor>();
-
-    private Map<UUID, CMIPlayerMessageColor> messageColorCache = Collections.synchronizedMap(new HashMap<UUID, CMIPlayerMessageColor>());
+    private Set<CMIPlayerMessageColor> chatColors;
+    private Map<UUID, CMIPlayerMessageColor> messageColorCache;
+    public static String fileName;
 
     public void addToCache(UUID uuid, CMIPlayerMessageColor color) {
-        synchronized (messageColorCache) {
-            messageColorCache.put(uuid, color);
-        }
     }
 
     public void removeFromCache(UUID uuid) {
-        synchronized (messageColorCache) {
-            messageColorCache.remove(uuid);
-        }
     }
 
     public CMIPlayerMessageColor getColorFromCache(UUID uuid) {
-        synchronized (messageColorCache) {
-            return messageColorCache.get(uuid);
-        }
+        return null;
     }
 
     public ChatManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
-    public static String fileName = "Chat.yml";
-
     public boolean loadConfig(boolean isReload) {
-      
-        return true;
+        return false;
     }
 
     public boolean isModifyChatFormat() {
-        return ModifyChatFormat;
+        return false;
     }
 
     public boolean isChatClickHoverMessages() {
-        return ChatClickHoverMessages;
+        return false;
     }
 
     public boolean isColorsPublicMessages() {
-        return ColorsPublicMessages;
+        return false;
     }
 
     public boolean isColorsPrivateMessage() {
-        return ColorsPrivateMessage;
+        return false;
     }
 
     public boolean isChatIgnorePublicMessage() {
-        return ChatIgnorePublicMessage;
+        return false;
     }
 
     public List<String> getCleanUpWhiteList() {
-        return cleanUpWhiteList;
+        return null;
     }
 
     public boolean isChatReplyToLastMessenger() {
-        return ChatReplyToLastMessenger;
+        return false;
     }
 
     public int getLastMessengerTimeOut() {
-        return LastMessengerTimeOut;
+        return 0;
     }
 
     public boolean isColorsMe() {
-        return ColorsMe;
+        return false;
     }
 
     public boolean isChatDynMapChat() {
-        return ChatDynMapChat;
+        return false;
     }
 
     public boolean isPrivateMessagesGroups() {
-        return PrivateMessagesGroups;
+        return false;
     }
 
     public boolean isChatDiscordSRV() {
-        return ChatDiscordSRV;
+        return false;
     }
 
     public String getChatDiscordSRVGlobalChannel() {
-        return ChatDiscordSRVGlobalChannel;
+        return null;
     }
 
     public String getDiscordSRVLabel() {
-        return DiscordSRVLabel;
+        return null;
     }
 
     public String getDiscordSRVUnlinkedLabel() {
-        return DiscordSRVUnlinkedLabel;
+        return null;
     }
 
     public boolean isDiscordSRVRanged() {
-        return DiscordSRVRanged;
+        return false;
     }
 
     public boolean isColorsNickName() {
-        return ColorsNickName;
+        return false;
     }
 
     public Set<CMIPlayerMessageColor> getChatColors() {
-        return chatColors;
+        return null;
+    }
+
+    public CMIEventPriority getColorsPublicMessagesPriority() {
+        return null;
+    }
+
+    public CMIEventPriority getFormatPublicMessagesPriority() {
+        return null;
     }
 }

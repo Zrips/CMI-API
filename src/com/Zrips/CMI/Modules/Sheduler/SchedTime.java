@@ -1,94 +1,80 @@
 package com.Zrips.CMI.Modules.Sheduler;
 
 public class SchedTime {
-
-    private Integer year = null;
-    private Integer month = null;
-    private Integer day = null;
-    private Integer dayOfWeek = null;
-    private Integer hour = null;
-    private Integer minute = null;
-    private Integer second = null;
-    private boolean done = false;
+    private Integer year;
+    private Integer month;
+    private Integer day;
+    private Integer dayOfWeek;
+    private Integer hour;
+    private Integer minute;
+    private Integer second;
+    private boolean done;
+    Long next;
 
     public SchedTime() {
     }
 
     public Integer getYear() {
-        return year;
+        return null;
     }
 
     public void setYear(Integer year) {
-        if (year < 100)
-            year += 2000;
-        this.year = year;
     }
 
     public Integer getMonth() {
-        return month;
+        return null;
     }
 
     public void setMonth(Integer month) {
-        this.month = month;
     }
 
     public Integer getDay() {
-        return day;
+        return null;
     }
 
     public void setDay(Integer day) {
-        this.day = day;
     }
 
     public Integer getHour() {
-        return hour;
+        return null;
     }
 
     public void setHour(Integer hour) {
-        this.hour = hour;
     }
 
     public Integer getMinute() {
-        return minute;
+        return null;
     }
 
     public void setMinute(Integer minute) {
-        this.minute = minute;
     }
 
     public Integer getSecond() {
-        return second;
+        return null;
     }
 
     public void setSecond(Integer second) {
-        this.second = second;
     }
 
     public boolean isNow() {
-
-        return true;
+        return false;
     }
-
-    Long next = 0L;
 
     public long getNextMili() {
         return 0;
     }
 
     public boolean isDone() {
-        return done;
+        return false;
     }
 
     public void setDone(boolean done) {
-        this.done = done;
     }
 
     public Integer getDayOfWeek() {
-        return dayOfWeek;
+        return null;
     }
 
     public void setDayOfWeek(Integer dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
     }
-
 }

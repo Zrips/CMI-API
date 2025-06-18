@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.Scavenger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,24 +9,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 public class CMIScavengeItem {
-
     private ItemStack item;
     private Player player;
-    private Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
-    int maxDurability = 1;
-    int durability = 1;
-    private int recipeResultAmount = 1;
-    Recipe recipe = null;
+    private Map<Enchantment, Integer> enchants;
+    int maxDurability;
+    int durability;
+    private int recipeResultAmount;
+    Recipe recipe;
 
     CMIScavengeItem(ItemStack item) {
-        this(item, null);
     }
 
     CMIScavengeItem(ItemStack item, Player player) {
     }
 
     public boolean canScavenge() {
-        return true;
+        return false;
     }
 
     public boolean isBlackListedItem() {
@@ -35,98 +32,77 @@ public class CMIScavengeItem {
     }
 
     public ItemStack getItem() {
-        return item;
+        return null;
     }
 
     public Player getPlayer() {
-        return player;
+        return null;
     }
 
     public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public Map<Enchantment, Integer> getEnchants() {
-        return enchants;
+        return null;
     }
 
     public double getEnchantExtractionFailChance(Enchantment enchant) {
-        Integer level = this.enchants.get(enchant);
-        if (level == null)
-            level = 1;
-        Double chance = ScavengeManager.baseEnchantFailPercentage;
-        int max = enchant.getMaxLevel();
-        chance += (level * ScavengeManager.levelEnchantFailPercentage) / max;
-        chance = chance > ScavengeManager.levelEnchantFailMaxChance ? ScavengeManager.levelEnchantFailMaxChance : chance;
-        return format(chance);
+        return 0.0;
     }
 
     private double format(double number) {
-        return (int) (number * 100) / 100D;
+        return 0.0;
     }
 
     public double getExtractionCost() {
-        return 0D;
+        return 0.0;
     }
 
     public double getIngredientReturnChance() {
-
-        double chance = ScavengeManager.IngredientReturnBase;
-
-        return format(chance);
+        return 0.0;
     }
 
     public double getEnchantLevelLowerChance(Enchantment enchant) {
-        return 0;
+        return 0.0;
     }
 
     public double getItemBreakChance() {
-        return 100D;
+        return 0.0;
     }
 
     public double getBreakChanceByItemDurability() {
-        if (ScavengeManager.ItemBreakDurabilityChange > 0 && this.maxDurability != this.durability) {
-            return format(ScavengeManager.ItemBreakDurabilityChange - (Math.ceil((getLeftDurabilityPercentage() * ScavengeManager.ItemBreakDurabilityChange) / 100D)));
-        }
-        return 0D;
+        return 0.0;
     }
 
     public List<ItemStack> getIngredients() {
-        return getIngredients(ScavengeManager.ItemMaterialDurabilityCheck, false);
+        return null;
     }
 
     public List<ItemStack> getIngredients(boolean checkDurability) {
-        return getIngredients(checkDurability, false);
+        return null;
     }
 
     public List<ItemStack> getIngredients(boolean checkDurability, boolean considerEndResultAmount) {
-
         return null;
-
     }
 
     public double getLeftDurabilityPercentage() {
-        return format(durability * 100 / maxDurability);
+        return 0.0;
     }
 
     public List<ItemStack> enchantsToBooks() {
-
         return null;
     }
 
     public ItemStack createBook(Enchantment enchant) {
-        Integer level = this.enchants.get(enchant);
-        if (level == null)
-            level = 1;
-        return createBook(enchant, level);
+        return null;
     }
 
     public ItemStack createBook(Enchantment enchant, int level) {
-
         return null;
     }
 
     public int getRecipeResultAmount() {
-        return recipeResultAmount;
+        return 0;
     }
 }

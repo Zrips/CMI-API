@@ -7,16 +7,12 @@ import org.bukkit.entity.Entity;
 import com.Zrips.CMI.CMI;
 
 public class CitizensManager {
-
     private CMI plugin;
 
     public CitizensManager(CMI plugin) {
-        this.plugin = plugin;
-
     }
 
     public boolean isCitizen(Entity ent) {
-
         return false;
     }
 
@@ -29,7 +25,6 @@ public class CitizensManager {
     }
 
     public Integer getEntityId(UUID uuid) {
-
         return null;
     }
 

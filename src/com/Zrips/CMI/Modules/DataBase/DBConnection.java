@@ -10,51 +10,38 @@ public class DBConnection {
     private Connection conn;
 
     public DBConnection(Connection conn) {
-	this.conn = conn;
     }
 
     public synchronized boolean isClosed() {
-	try {
-	    return conn.isClosed();
-	} catch (SQLException e) {
-	    // Assume it's closed
-	    return true;
-	}
+        return false;
     }
 
     public synchronized boolean isValid(int timeout) throws SQLException {
-	try {
-	    return conn.isValid(timeout);
-	} catch (AbstractMethodError e) {
-	    return true;
-	}
+        return false;
     }
 
     public synchronized void closeConnection() throws SQLException {
-	conn.close();
     }
 
     public synchronized Statement createStatement() throws SQLException {
-	return conn.createStatement();
+        return null;
     }
 
     public synchronized PreparedStatement prepareStatement(String sql) throws SQLException {
-	return conn.prepareStatement(sql);
+        return null;
     }
 
     public synchronized PreparedStatement prepareStatement(String sql, int returnGeneratedKeys) throws SQLException {
-	return conn.prepareStatement(sql, returnGeneratedKeys);
+        return null;
     }
 
     public synchronized void setAutoCommit(Boolean mode) throws SQLException {
-	conn.setAutoCommit(mode);
     }
 
     public synchronized void commit() throws SQLException {
-	conn.commit();
     }
 
     public synchronized DatabaseMetaData getMetaData() throws SQLException {
-	return conn.getMetaData();
+        return null;
     }
 }

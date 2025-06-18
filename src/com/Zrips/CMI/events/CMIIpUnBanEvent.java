@@ -2,21 +2,18 @@ package com.Zrips.CMI.events;
 
 import org.bukkit.command.CommandSender;
 
-public final class CMIIpUnBanEvent extends CMICancellableEvent {
-
+public class CMIIpUnBanEvent extends CMICancellableEvent {
     private CommandSender by;
     private String ip;
 
     public CMIIpUnBanEvent(CommandSender by, String ip) {
-        this.by = by;
-        this.ip = ip;
     }
 
     public CommandSender getBannedBy() {
-        return by;
+        return null;
     }
 
     public String getIp() {
-        return ip;
+        return null;
     }
 }

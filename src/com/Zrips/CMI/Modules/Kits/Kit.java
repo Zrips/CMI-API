@@ -1,401 +1,293 @@
 package com.Zrips.CMI.Modules.Kits;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.Zrips.CMI.Containers.CMIPlayerInventory.CMIInventorySlot;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Items.CMIMaterial;
-
 public class Kit {
-
-    private List<ItemStack> item = new ArrayList<ItemStack>();
-    private List<String> commands = new ArrayList<String>();
-    private List<String> conditions = new ArrayList<String>();
-    private List<String> Description = new ArrayList<String>();
-
-    private HashMap<CMIInventorySlot, ItemStack> extraItems = new HashMap<CMIInventorySlot, ItemStack>();
-
-    private ItemStack Icon = null;
-    private ItemStack IconOff = null;
-    private double cost = 0D;
-    private int expCost = 0;
-    private Long delay = -1L;
-    private String name = null;
-    private String displayName = null;
-    private String group = null;
-    
-    private String fileName = "Kits";
-    
-    private boolean enabled = true;
-    private int weight = 0;
-    private String cmdName = null;
-
-    private Integer slot = null;
-    private Integer page = null;
-
-    private int maxUsages = -1;
-    private boolean showDespiteUsage = false;
-    private boolean showDespiteWeight = false;
-
-    private boolean dropItems = true;
- 
+    private List<ItemStack> item;
+    private List<String> commands;
+    private List<String> conditions;
+    private List<String> Description;
+    private HashMap<CMIInventorySlot, ItemStack> extraItems;
+    private ItemStack Icon;
+    private ItemStack IconOff;
+    private double cost;
+    private int expCost;
+    private Long delay;
+    private String name;
+    private String displayName;
+    private String group;
+    private String fileName;
+    private boolean enabled;
+    private int weight;
+    private String cmdName;
+    private Integer slot;
+    private Integer page;
+    private int maxUsages;
+    private boolean showDespiteUsage;
+    private boolean showDespiteWeight;
+    private boolean dropItems;
 
     public Kit(String name) {
-	this.name = CMIChatColor.stripColor(name);
-	reset();
     }
 
     public void reset() {
-	item = new ArrayList<ItemStack>();
-	for (int i = 0; i < 36; i++) {
-	    item.add(null);
-	}
-	commands = new ArrayList<String>();
-	conditions = new ArrayList<String>();
-	Description = new ArrayList<String>();
-	cost = 0D;
-	expCost = 0;
-	delay = -1L;
-	group = null;
     }
 
     public ItemStack getFirstNotNullItem() {
-	for (ItemStack one : item) {
-	    checkBook(one);
-	    if (one != null && one.getType() != Material.AIR)
-		return one;
-	}
-	return null;
-    }
-
-    public List<ItemStack> getItems() {
-	for (ItemStack one : item) {
-	    checkBook(one);
-	}
-	return item;
-    }
-
-    public List<ItemStack> getItems(Player player) {
-	
         return null;
     }
 
+    public List<ItemStack> getItems() {
+        return null;
+    }
+
+    public List<ItemStack> getItems(Player player) {
+        return null;
+    }
+
+    public boolean enoughFreeSpace(Player player) {
+        return false;
+    }
+
     private ItemStack checkBook(ItemStack book) {
-	
         return null;
     }
 
     public void setItem(List<ItemStack> item) {
-	 
     }
 
     public void setItem(int slot, ItemStack item) {
-	 
     }
 
     public void addItem(ItemStack item) {
-	checkBook(item);
-	if (item == null || item.getType().equals(Material.AIR)) {
-	    this.item.add(null);
-	    return;
-	}
-	this.item.add(item);
     }
 
     public List<String> getCommands(Player player) {
-
         return null;
     }
 
     public List<String> getCommands() {
-	return commands;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
-	this.commands = commands;
     }
 
     public double getCost() {
-	return cost;
+        return 0.0;
     }
 
     public void setCost(double cost) {
-	this.cost = cost;
     }
 
     public int getExpCost() {
-	return expCost;
+        return 0;
     }
 
     public void setExpCost(int expCost) {
-	this.expCost = expCost;
     }
 
     public long getDelay() {
-	return delay;
+        return 0;
     }
 
     public void setDelay(long delay) {
-	this.delay = delay;
     }
 
-//    public boolean isOneTimeUse() {
-//	return this.delay <= -1;
-//    }
-
     public List<String> getConditions() {
-	return conditions;
+        return null;
     }
 
     public void setConditions(List<String> conditions) {
-	this.conditions = conditions;
     }
 
     public String getConfigName() {
-	return name;
+        return null;
     }
 
     public void setName(String name) {
-	this.name = CMIChatColor.stripColor(name);
     }
 
     public List<String> getDescription(Player player) {
-
         return null;
     }
 
     public List<String> getDescription() {
-	return Description;
+        return null;
     }
 
     public void setDescription(List<String> description) {
-	Description = description;
     }
 
     public String getGroup() {
-	return group;
+        return null;
     }
 
     public void setGroup(String group) {
-	if (group.equalsIgnoreCase("na") || group.equalsIgnoreCase("none"))
-	    this.group = null;
-	else
-	    this.group = group;
     }
 
     public boolean isEnabled() {
-	return enabled;
+        return false;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
     }
 
     public int getWeight() {
-	return weight;
+        return 0;
     }
 
     public void setWeight(int weight) {
-	this.weight = weight;
     }
 
     public String getCommandName() {
-	if (cmdName == null)
-	    cmdName = this.getConfigName();
-	return cmdName;
+        return null;
     }
 
     public void setCommandName(String CommandName) {
-	this.cmdName = CommandName;
     }
 
     public ItemStack getExtraItem(CMIInventorySlot slot) {
-
-	return extraItems.get(slot);
+        return null;
     }
 
     public ItemStack getExtraItem(Player player, CMIInventorySlot slot) {
-
-
         return null;
     }
 
     public void setExtraItem(CMIInventorySlot slot, ItemStack item) {
-	if (item != null)
-	    extraItems.put(slot, item.clone());
-	else
-	    extraItems.put(slot, null);
     }
 
     @Deprecated
     public ItemStack getHelmet() {
-	return extraItems.get(CMIInventorySlot.Helmet);
+        return null;
     }
 
     @Deprecated
     public void setHelmet(ItemStack helmet) {
-	if (helmet != null)
-	    extraItems.put(CMIInventorySlot.Helmet, helmet.clone());
     }
 
     @Deprecated
     public ItemStack getChest() {
-	return extraItems.get(CMIInventorySlot.ChestPlate);
+        return null;
     }
 
     @Deprecated
     public void setChest(ItemStack chest) {
-	if (chest != null)
-	    extraItems.put(CMIInventorySlot.ChestPlate, chest.clone());
     }
 
     @Deprecated
     public ItemStack getLegs() {
-	return extraItems.get(CMIInventorySlot.Pants);
+        return null;
     }
 
     @Deprecated
     public void setLegs(ItemStack legs) {
-	if (legs != null)
-	    extraItems.put(CMIInventorySlot.Pants, legs.clone());
     }
 
     @Deprecated
     public ItemStack getBoots() {
-	return extraItems.get(CMIInventorySlot.Boots);
+        return null;
     }
 
     @Deprecated
     public void setBoots(ItemStack boots) {
-	if (boots != null)
-	    extraItems.put(CMIInventorySlot.Boots, boots.clone());
     }
 
     @Deprecated
     public ItemStack getOffHand() {
-	return extraItems.get(CMIInventorySlot.OffHand);
+        return null;
     }
 
     @Deprecated
     public void setOffHand(ItemStack offHand) {
-	if (offHand != null)
-	    extraItems.put(CMIInventorySlot.OffHand, offHand.clone());
     }
 
     public Integer getSlot() {
-	return slot;
+        return null;
     }
 
     public void setSlot(Integer slot) {
- 
     }
 
     public ItemStack getSafeIcon() {
-	if (Icon != null)
-	    return Icon.clone();
-	return this.item.isEmpty() ? CMIMaterial.WHITE_WOOL.newItemStack() : getFirstNotNullItem() != null ? getFirstNotNullItem() : CMIMaterial.WHITE_WOOL.newItemStack();
+        return null;
     }
 
     public ItemStack getIcon() {
-	if (Icon != null)
-	    return Icon.clone();
-	return Icon;
+        return null;
     }
 
     public void setIcon(ItemStack icon) {
-	Icon = icon;
     }
 
     public ItemStack getSafeIconOff() {
-	if (IconOff != null)
-	    return IconOff.clone();
-	return getSafeIcon();
+        return null;
     }
 
     public ItemStack getIconOff() {
-	if (IconOff != null)
-	    return IconOff.clone();
-	return getIcon();
+        return null;
     }
 
     public void setIconOff(ItemStack iconOff) {
-	IconOff = iconOff;
     }
 
     public int getMaxUsages() {
-	return maxUsages;
+        return 0;
     }
 
     public void setMaxUsages(int maxUsages) {
-	this.maxUsages = maxUsages;
     }
 
     public boolean isLimitedUse() {
-	return this.maxUsages > 0;
+        return false;
     }
 
     public boolean isShowDespiteWeight() {
-	return showDespiteWeight;
+        return false;
     }
 
     public void setShowDespiteWeight(boolean showDespiteWeight) {
-	this.showDespiteWeight = showDespiteWeight;
     }
 
     public boolean isDropItems() {
-	return dropItems;
+        return false;
     }
 
     public void setDropItems(boolean dropItems) {
-	this.dropItems = dropItems;
     }
 
     public String getDisplayName() {
-	return displayName == null ? getCommandName() : displayName;
+        return null;
     }
 
     public void setDisplayName(String displayName) {
-	this.displayName = displayName;
     }
 
     public boolean isShowDespiteUsage() {
-	return showDespiteUsage;
+        return false;
     }
 
     public void setShowDespiteUsage(boolean showDespiteUsage) {
-	this.showDespiteUsage = showDespiteUsage;
     }
 
     public Integer getPage() {
-	return page;
+        return null;
     }
 
     public void setPage(Integer page) {
-
-	if (page == null) {
-	    this.page = page;
-	    return;
-	}
-
-	if (page < 1)
-	    this.page = null;
-	else
-	    this.page = page;
     }
 
     public String getFileName() {
-        return fileName;
+        return null;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
-
 }

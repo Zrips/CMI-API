@@ -1,102 +1,85 @@
 package com.Zrips.CMI.Modules.Permissions;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class PermissionInfo {
-
     private String permission;
-    private boolean enabled = false;
-    private Long delay = 1000L;
-    private Long lastChecked = null;
-    private Double maxValue = null;
-    private Double minValue = null;
-
-    private Set<String> values = new HashSet<String>();
+    private boolean enabled;
+    private Long delay;
+    private Long lastChecked;
+    private Double maxValue;
+    private Double minValue;
+    private Set<String> values;
 
     public PermissionInfo(String permission, Long delay) {
-	this.permission = permission;
-	if (delay != null)
-	    this.delay = delay;
     }
 
     public boolean isTimeToRecalculate() {
-
-	return lastChecked == null || delay + lastChecked < System.currentTimeMillis();
+        return false;
     }
 
     public String getPermission() {
-	return permission;
+        return null;
     }
 
     public void setPermission(String permission) {
-	this.permission = permission;
     }
 
     public Long getDelay() {
-	return delay;
+        return null;
     }
 
     public void setDelay(long delay) {
-	this.delay = delay;
     }
 
     public Long getLastChecked() {
-	if (lastChecked == null)
-	    lastChecked = System.currentTimeMillis();
-	return lastChecked;
+        return null;
     }
 
     public void setLastChecked(long lastChecked) {
-	this.lastChecked = lastChecked;
     }
 
     public Double getMaxValue() {
-	return maxValue;
+        return null;
     }
 
     public Double getMaxValue(double defaultV) {
-	return maxValue == null ? defaultV : maxValue > defaultV ? maxValue : defaultV;
+        return null;
     }
 
     public int getMaxValue(int defaultV) {
-	return maxValue == null ? defaultV : maxValue > defaultV ? maxValue.intValue() : defaultV;
+        return 0;
     }
 
     public void setMaxValue(Double maxValue) {
-	this.maxValue = maxValue;
     }
 
     public Double getMinValue() {
-	return minValue;
+        return null;
     }
 
     public Double getMinValue(double defaultV) {
-	return minValue == null ? defaultV : minValue < defaultV ? minValue : defaultV;
+        return null;
     }
 
     public int getMinValue(int defaultV) {
-	return minValue == null ? defaultV : minValue < defaultV ? minValue.intValue() : defaultV;
+        return 0;
     }
 
     public void setMinValue(Double minValue) {
-	this.minValue = minValue;
     }
 
     public boolean isEnabled() {
-	return enabled;
+        return false;
     }
 
     public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
     }
 
     public Set<String> getValues() {
-	return values;
+        return null;
     }
 
     public void addValue(String value) {
-	this.values.add(value);
     }
-
 }

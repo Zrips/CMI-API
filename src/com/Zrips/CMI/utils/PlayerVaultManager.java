@@ -6,34 +6,27 @@ import java.util.UUID;
 import org.bukkit.inventory.Inventory;
 
 public class PlayerVaultManager {
+    static Method vaultExistsMeth;
+    static Method loadOtherVaultMeth;
+    static Class<?> c;
 
     public PlayerVaultManager() {
     }
 
-    static Method vaultExistsMeth = null;
-    static Method loadOtherVaultMeth = null;
-    static Class<?> c = null;
-
     private static void setVaultExistsMeth() {
-
     }
 
     private static void setLoadOtherVaultMeth() {
-
     }
 
     private static void setClass() {
-
     }
 
     public static boolean vaultExists(UUID uuid, int id) {
-
-        return true;
+        return false;
     }
 
     public static Inventory loadOtherVault(UUID uuid, int i, int y) {
-
         return null;
     }
-
 }

@@ -1,27 +1,23 @@
 package com.Zrips.CMI.Modules.PlayTimeRewards;
 
 public class PTRRepeat extends PlayTimeReward {
-
-    private boolean stackRewards = true;
+    private boolean stackRewards;
 
     public PTRRepeat(String name) {
-	super(name);
+        super(name);
     }
 
     public Long getPayEvery() {
-	return getRange();
+        return null;
     }
 
     public void setPayEvery(Long payEvery) {
-	setRange(payEvery * 1000);
     }
 
     public boolean isStackRewards() {
-	return stackRewards;
+        return false;
     }
 
     public void setStackRewards(boolean stackRewards) {
-	this.stackRewards = stackRewards;
     }
-
 }

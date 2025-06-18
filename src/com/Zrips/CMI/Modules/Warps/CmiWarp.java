@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.Warps;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,106 +8,82 @@ import org.bukkit.inventory.ItemStack;
 import net.Zrips.CMILib.Container.CMILocation;
 
 public class CmiWarp {
-
     private CMILocation loc;
-    private List<CMILocation> locations = null;
+    private List<CMILocation> locations;
     private String name;
-    private String displayName = null;
+    private String displayName;
     private ItemStack item;
     private ItemStack offItem;
     private Integer slot;
-    private Integer page = 1;
-    private Boolean reqPerm = false;
-    private Boolean showUnavailable = false;
-    private Boolean autoLore = true;
-    private boolean randomizeYaw = false;
-    private boolean repeatingLocation = false;
-    private String group = null;
-    private boolean hidden = false;
-
-    private UUID creator = null;
-
-    private List<CMILocation> temp = null;
+    private Integer page;
+    private Boolean reqPerm;
+    private Boolean showUnavailable;
+    private Boolean autoLore;
+    private boolean randomizeYaw;
+    private boolean repeatingLocation;
+    private String group;
+    private boolean hidden;
+    private UUID creator;
+    private List<CMILocation> temp;
 
     public CmiWarp(String name) {
-        this.name = name;
     }
 
     public void reset() {
-        loc = null;
-        item = null;
     }
 
     public CmiWarp(String name, CMILocation loc) {
-        this.name = name;
-        this.loc = loc;
     }
 
     public CMILocation getLoc() {
-        loc.recheck();
-        return loc;
+        return null;
     }
 
     public void resetQueue() {
-        temp = null;
     }
 
     public CMILocation getLocIncRand() {
-
         return null;
     }
 
     public String getName() {
-        return name;
+        return null;
     }
 
     public ItemStack getItem() {
-        return item;
+        return null;
     }
 
     public ItemStack getIcon() {
-
         return null;
     }
 
     public ItemStack getOffIcon() {
-
         return null;
     }
 
     public void setItem(ItemStack item) {
-        this.item = item;
     }
 
     public void setLoc(CMILocation loc) {
-        this.loc = loc;
     }
 
     public boolean isReqPerm() {
-        return reqPerm;
+        return false;
     }
 
     public void setReqPerm(boolean reqPerm) {
-        this.reqPerm = reqPerm;
     }
 
     public Integer getSlot() {
-        return slot;
+        return null;
     }
 
     public void setSlot(Integer slot) {
-        if (slot != null) {
-            if (slot > 27) {
-                slot = 27;
-            }
-            if (slot < 0)
-                slot = null;
-        }
-        this.slot = slot;
     }
 
     public UUID getCreator() {
-        return creator;
+        return null;
     }
 
     public String getCreatorName() {
@@ -116,110 +91,93 @@ public class CmiWarp {
     }
 
     public void setCreator(UUID creator) {
-        this.creator = creator;
     }
 
     public Boolean isAutoLore() {
-        return autoLore;
+        return null;
     }
 
     public void setAutoLore(Boolean autoLore) {
-        this.autoLore = autoLore;
     }
 
     public ItemStack getOffItem() {
-        return offItem;
+        return null;
     }
 
     public void setOffItem(ItemStack offItem) {
-        this.offItem = offItem;
     }
 
     public Boolean isShowUnavailable() {
-        return showUnavailable;
+        return null;
     }
 
     public void setShowUnavailable(Boolean showUnavailable) {
-        this.showUnavailable = showUnavailable;
     }
 
     public Integer getPage() {
-        return page;
+        return null;
     }
 
     public void setPage(int p) {
-        if (p < 1)
-            p = 1;
-        this.page = p;
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isRandomizeYaw() {
-        return randomizeYaw;
+        return false;
     }
 
     public void setRandomizeYaw(boolean randomizeYaw) {
-        this.randomizeYaw = randomizeYaw;
     }
 
     public String getGroup() {
-        return group;
+        return null;
     }
 
     public void setGroup(String group) {
-        this.group = group;
     }
 
     public boolean sameGroup(String group) {
-        return this.group == null && group == null || this.group != null && group != null && this.group.equalsIgnoreCase(group);
+        return false;
     }
 
     public boolean isHidden() {
-        return hidden;
+        return false;
     }
 
     public void setHidden(boolean hidden) {
-        this.hidden = hidden;
     }
 
     public String getShownName() {
-        return displayName == null ? this.getName() : displayName;
+        return null;
     }
 
     public String getDisplayName() {
-        return displayName;
+        return null;
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     public boolean isRepeatingLocation() {
-        return repeatingLocation;
+        return false;
     }
 
     public void setRepeatingLocation(boolean repeatingLocation) {
-        this.repeatingLocation = repeatingLocation;
     }
 
     public boolean hasSecondaryLocations() {
-        return locations != null && !locations.isEmpty();
+        return false;
     }
 
     public List<CMILocation> getLocations() {
-        if (locations == null)
-            locations = new ArrayList<CMILocation>();
-        return locations;
+        return null;
     }
 
     public void setLocations(List<CMILocation> locations) {
-        this.locations = locations;
     }
 
     public void addLocation(CMILocation location) {
-        getLocations().add(location);
     }
 }

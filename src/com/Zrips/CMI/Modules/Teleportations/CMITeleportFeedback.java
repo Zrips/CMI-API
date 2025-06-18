@@ -7,65 +7,57 @@ import org.bukkit.entity.Player;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class CMITeleportFeedback {
-    private boolean success = true;
+    private boolean success;
     private Location location;
-    private CMITeleportCondition condition = CMITeleportCondition.Good;
-    private int fallDistance = 0;
-    private CMIMaterial floor = null;
+    private CMITeleportCondition condition;
+    private double fallDistance;
+    private CMIMaterial floor;
 
     public CMITeleportFeedback(Location location, boolean success) {
-        this.success = success;
-        this.location = location;
     }
 
     public boolean isSuccess() {
-        return success;
+        return false;
     }
 
     public CMITeleportFeedback setSuccess(boolean success) {
-        this.success = success;
-        return this;
+        return null;
     }
 
     public Location getLocation() {
-        return location;
+        return null;
     }
 
     public CMITeleportFeedback setLocation(Location location) {
-        this.location = location;
-        return this;
+        return null;
     }
 
     public void showFeedbackMessage(CommandSender sender, Player player) {
-
     }
 
     public CMITeleportCondition getCondition() {
-        return condition;
+        return null;
     }
 
     public boolean isGood() {
-        return getCondition().equals(CMITeleportCondition.Good);
+        return false;
     }
 
     public void setCondition(CMITeleportCondition condition) {
-        this.condition = condition;
     }
 
-    public int getFallDistance() {
-        return fallDistance;
+    public double getFallDistance() {
+        return 0.0;
     }
 
-    public void setFallDistance(int fallDistance) {
-        this.fallDistance = fallDistance;
+    public void setFallDistance(double fallDistance) {
     }
 
     public CMIMaterial getFloor() {
-        return floor;
+        return null;
     }
 
     public CMITeleportFeedback setFloor(CMIMaterial floor) {
-        this.floor = floor;
-        return this;
+        return null;
     }
 }

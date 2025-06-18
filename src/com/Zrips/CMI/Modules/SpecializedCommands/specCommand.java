@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.SpecializedCommands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.Zrips.CMI.Modules.SpecializedCommands.SpecializedCommandManager.specCommandAction;
@@ -8,35 +7,38 @@ import com.Zrips.CMI.Modules.SpecializedCommands.SpecializedCommandManager.speci
 
 public class specCommand {
     private String cmd;
-    private specialisedCommand action = null;
-    private List<specCommandAction> subactions = new ArrayList<specCommandAction>();
-    private List<specCommandAction> list = new ArrayList<specCommandAction>();
-    private List<specCommandAction> statements = new ArrayList<specCommandAction>();
+    private specialisedCommand action;
+    private List<specCommandAction> subactions;
+    private List<specCommandAction> list;
+    private List<specCommandAction> statements;
 
     public String getCmd() {
-        return cmd;
+        return null;
     }
 
     public void setCmd(String cmd) {
-        this.cmd = cmd;
     }
 
     public List<specCommandAction> getConditionList() {
-        return list;
+        return null;
     }
 
     public void add(specCommandAction l) {
     }
 
     public specialisedCommand getAction() {
-        return action;
+        return null;
     }
 
     public List<specCommandAction> getSubactions() {
-        return subactions;
+        return null;
     }
 
     public List<specCommandAction> getStatements() {
-        return statements;
+        return null;
+    }
+
+    public boolean containsSubaction(specialisedCommand cmd) {
+        return false;
     }
 }

@@ -1,20 +1,17 @@
 package com.Zrips.CMI.Modules.Kits;
 
 public class Clickery {
-
-    private long time = 0L;
-    private int times = 0;
-    private int speed = 1;
+    private long time;
+    private int times;
+    private int speed;
 
     public Clickery() {
-	this.time = System.currentTimeMillis();
     }
 
-    private void addClick() { 
+    private void addClick() {
     }
 
     public int getSpeed() {
-	addClick();
-	return speed;
+        return 0;
     }
 }

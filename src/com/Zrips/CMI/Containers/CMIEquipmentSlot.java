@@ -6,12 +6,13 @@ import org.bukkit.inventory.EquipmentSlot;
 
 public enum CMIEquipmentSlot {
     NONE, CHEST, FEET, HAND, HEAD, LEGS, OFF_HAND;
+
     public static CMIEquipmentSlot get(String name) {
         return null;
     }
 
     public static CMIEquipmentSlot get(EquipmentSlot slot) {
-	return get(slot.toString());
+        return null;
     }
 
     public static CMIEquipmentSlot get(PlayerInteractAtEntityEvent event) {

@@ -1,15 +1,8 @@
 package com.Zrips.CMI.Containers;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import com.Zrips.CMI.CMI;
-
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Snd {
     private Player sender;
@@ -25,182 +18,117 @@ public class Snd {
     private ConsoleCommandSender sourceConsole;
 
     public Snd() {
-
     }
 
     public Snd(Player sender, Player target) {
-        this.sender = sender;
-        if (sender != null)
-            senderName = sender.getName();
-        this.target = target;
-        if (target != null)
-            targetName = target.getName();
     }
 
     public Player getPlayerSender() {
-        return sender;
+        return null;
     }
 
     public ConsoleCommandSender getConsoleSender() {
-        return console;
+        return null;
     }
 
     public Snd setSender(Player sender) {
-        this.sender = sender;
-        if (sender != null) {
-            senderName = sender.getName();
-            if (senderUser == null)
-                senderUser = CMI.getInstance().getPlayerManager().getUser(sender);
-        }
-        return this;
+        return null;
     }
 
     public Snd setSender(CMIUser user) {
-        this.senderUser = user;
-        if (senderUser != null)
-            senderName = senderUser.getName();
-        return this;
+        return null;
     }
 
     public Snd setSender(CommandSender sender) {
-        if (sender instanceof Player) {
-            this.sender = (Player) sender;
-            senderName = sender.getName();
-        } else if (sender instanceof ConsoleCommandSender)
-            this.console = (ConsoleCommandSender) sender;
-        else if (sender instanceof BlockCommandSender)
-            this.console = Bukkit.getConsoleSender();
-        else if (sender instanceof RemoteConsoleCommandSender)
-            this.console = Bukkit.getConsoleSender();
-        return this;
+        return null;
     }
 
     public Snd setSender(ConsoleCommandSender console) {
-        this.console = console;
-        return this;
+        return null;
     }
 
     public Player getPlayerTarget() {
-        return target;
+        return null;
     }
 
     public ConsoleCommandSender getConsoleTarget() {
-        return targetConsole;
+        return null;
     }
 
     public Snd setTarget(Player sender) {
-        this.target = sender;
-        if (target != null) {
-            targetUser = CMI.getInstance().getPlayerManager().getUser(sender);
-            targetName = target.getName();
-        }
-        return this;
+        return null;
     }
 
     public Snd setTarget(CMIUser user) {
-        this.targetUser = user;
-        return this;
+        return null;
     }
 
     public Snd setTarget(CommandSender sender) {
-        if (sender instanceof Player) {
-            this.target = (Player) sender;
-            targetUser = CMI.getInstance().getPlayerManager().getUser(target);
-            targetName = target.getName();
-
-        } else if (sender instanceof ConsoleCommandSender) {
-            this.targetConsole = (ConsoleCommandSender) sender;
-        } else if (sender instanceof BlockCommandSender) {
-            this.targetConsole = Bukkit.getConsoleSender();
-        } else if (sender instanceof RemoteConsoleCommandSender) {
-            this.targetConsole = Bukkit.getConsoleSender();
-        }
-        return this;
+        return null;
     }
 
     public Snd setTarget(ConsoleCommandSender console) {
-        this.targetConsole = console;
-        return this;
+        return null;
     }
 
     public Player getPlayerSource() {
-        return source;
+        return null;
     }
 
     public ConsoleCommandSender getConsoleSource() {
-        return sourceConsole;
+        return null;
     }
 
     public Snd setSource(Player sender) {
-        this.source = sender;
-        if (source != null) {
-            if (sourceUser == null)
-                sourceUser = CMI.getInstance().getPlayerManager().getUser(sender);
-        }
-        return this;
+        return null;
     }
 
     public Snd setSource(CMIUser user) {
-        this.sourceUser = user;
-        return this;
+        return null;
     }
 
     public Snd setSource(CommandSender sender) {
-        if (sender instanceof Player)
-            this.source = (Player) sender;
-        else if (sender instanceof ConsoleCommandSender)
-            this.sourceConsole = (ConsoleCommandSender) sender;
-        else if (sender instanceof BlockCommandSender)
-            this.sourceConsole = Bukkit.getConsoleSender();
-        else if (sender instanceof RemoteConsoleCommandSender)
-            this.sourceConsole = Bukkit.getConsoleSender();
-        return this;
+        return null;
     }
 
     public Snd setSource(ConsoleCommandSender console) {
-        this.sourceConsole = console;
-        return this;
+        return null;
     }
 
     public CMIUser getSenderUser() {
-        return senderUser;
+        return null;
     }
 
     public void setSenderUser(CMIUser senderUser) {
-        this.senderUser = senderUser;
     }
 
     public CMIUser getTargetUser() {
-        return targetUser;
+        return null;
     }
 
     public void setTargetUser(CMIUser targetUser) {
-        this.targetUser = targetUser;
     }
 
     public CMIUser getSourceUser() {
-        return sourceUser;
+        return null;
     }
 
     public void setSourceUser(CMIUser sourceUser) {
-        this.sourceUser = sourceUser;
     }
 
     public String getSenderName() {
-        return senderName;
+        return null;
     }
 
     public Snd setSenderName(String senderName) {
-        this.senderName = senderName;
-        return this;
+        return null;
     }
 
     public String getTargetName() {
-        return targetName;
+        return null;
     }
 
     public Snd setTargetName(String targetName) {
-        this.targetName = targetName;
-        return this;
+        return null;
     }
 }

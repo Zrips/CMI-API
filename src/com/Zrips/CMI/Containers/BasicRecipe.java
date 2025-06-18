@@ -7,16 +7,13 @@ public class BasicRecipe {
     private ItemStack input;
 
     public BasicRecipe(ItemStack result, ItemStack input) {
-	this.result = result;
-	this.input = input;
     }
 
     public ItemStack getResult() {
-	return result.clone();
+        return null;
     }
 
     public ItemStack getInput() {
-	return input.clone();
+        return null;
     }
-
 }

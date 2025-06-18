@@ -2,8 +2,7 @@ package com.Zrips.CMI.events;
 
 import com.Zrips.CMI.Containers.CMIUser;
 
-public final class CMIUserBalanceChangeEvent extends CMIUserEvent {
-
+public class CMIUserBalanceChangeEvent extends CMIUserEvent {
     private CMIUser source;
     private double from;
     private double to;
@@ -11,42 +10,34 @@ public final class CMIUserBalanceChangeEvent extends CMIUserEvent {
 
     @Deprecated
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to) {
-        this(user, from, to, "Unknown");
+        super(user, true);
     }
 
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to, String actionType, CMIUser source) {
         super(user, true);
-        this.from = from;
-        this.to = to;
-        this.actionType = actionType;
-        this.source = source;
     }
 
     @Deprecated
     public CMIUserBalanceChangeEvent(CMIUser user, double from, double to, String actionType) {
-        this(user, from, to, actionType, null);
+        super(user, true);
     }
 
     public double getFrom() {
-        return from;
+        return 0.0;
     }
 
     public double getTo() {
-        return to;
+        return 0.0;
     }
 
     public String getActionType() {
-        return actionType;
+        return null;
     }
 
     public void setActionType(String actionType) {
-        this.actionType = actionType;
     }
 
-    /**
-    * Only indicates player from or to who money got transferred if possible
-    */
     public CMIUser getSource() {
-        return source;
+        return null;
     }
 }

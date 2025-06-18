@@ -3,7 +3,6 @@ package com.Zrips.CMI.Modules.Mirror;
 import org.bukkit.Material;
 
 public class Rotation {
-
     private Material mat;
     private short data;
 
@@ -11,23 +10,19 @@ public class Rotation {
     }
 
     public Rotation(Material mat, short data) {
-	this.mat = mat;
-	this.data = data;
     }
 
     public Material getMat() {
-	return mat;
+        return null;
     }
 
     public void setMat(Material mat) {
-	this.mat = mat;
     }
 
     public short getData() {
-	return data;
+        return 0;
     }
 
     public void setData(short data) {
-	this.data = data;
     }
 }

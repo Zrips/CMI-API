@@ -3,14 +3,12 @@ package com.Zrips.CMI.events;
 import com.Zrips.CMI.Containers.CMIUser;
 
 public class CMIUserCancellableEvent extends CMICancellableEvent {
-
-    private final CMIUser user;
+    private final CMIUser user = null;
 
     public CMIUserCancellableEvent(CMIUser user) {
-        this.user = user;
     }
 
     public CMIUser getUser() {
-        return user;
+        return null;
     }
 }

@@ -1,20 +1,15 @@
 package com.Zrips.CMI.Modules.Ranks;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
-import com.Zrips.CMI.Containers.Snd;
 import com.Zrips.CMI.Modules.Ranks.RankManager.rankupFailType;
 import com.Zrips.CMI.Modules.Statistics.StatsManager.CMIStatistic;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIItemStack;
 
 public class CMIRank {
-
     private String name;
     private String displayName;
     private boolean enabled;
@@ -30,92 +25,57 @@ public class CMIRank {
     private LinkedHashMap<String, CMIRankPlaceholder> placeholderRequirements;
     private LinkedHashMap<String, Integer> mcmmoRequirements;
     private LinkedHashMap<String, Integer> aureliumRequirements;
+    private LinkedHashMap<String, Integer> auraSkillsRequirements;
     private LinkedHashMap<String, Integer> JobsRequirements;
     private LinkedHashMap<CMIItemStack, Integer> ItemRequirements;
     private double moneyCost;
     private double expCost;
     private int votes;
-
-    private int weight = 0;
+    private int weight;
 
     public void reset() {
-        enabled = false;
-        defaultRank = false;
-        AutoRankup = false;
-        rankUpConfirmation = false;
-        nextRanks = new ArrayList<CMIRank>();
-        nextRanksT = new ArrayList<String>();
-        Commands = new ArrayList<String>();
-        CommandsOnRankDown = new ArrayList<String>();
-        statRequirements = new LinkedHashMap<CMIStatistic, LinkedHashMap<Object, Long>>();
-        permRequirements = new LinkedHashMap<String, String>();
-        placeholderRequirements = new LinkedHashMap<String, CMIRankPlaceholder>();
-        mcmmoRequirements = new LinkedHashMap<String, Integer>();
-        aureliumRequirements = new LinkedHashMap<String, Integer>();
-        JobsRequirements = new LinkedHashMap<String, Integer>();
-        ItemRequirements = new LinkedHashMap<CMIItemStack, Integer>();
-        moneyCost = 0D;
-        expCost = 0D;
-        votes = 0;
     }
 
     public CMIRank(String name) {
-        this.name = name;
-        reset();
     }
 
     public String getName() {
-        return name;
+        return null;
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public boolean isDefaultRank() {
-        return defaultRank;
+        return false;
     }
 
     public void setDefaultRank(boolean defaultRank) {
-        this.defaultRank = defaultRank;
     }
 
     public boolean isRankUpConfirmation() {
-        return rankUpConfirmation;
+        return false;
     }
 
     public void setRankUpConfirmation(boolean rankUpConfirmation) {
-        this.rankUpConfirmation = rankUpConfirmation;
     }
 
     public List<CMIRank> getNextRanks() {
-        return nextRanks;
+        return null;
     }
 
     public List<CMIRank> getNextValidRankUps(CMIUser user) {
-        List<CMIRank> r = new ArrayList<CMIRank>();
-
-        for (CMIRank oneR : getNextRanks()) {
-            if (oneR.canRankup(user) != rankupFailType.None)
-                continue;
-            r.add(oneR);
-        }
-        return r;
+        return null;
     }
 
     public boolean isOnSamePathWith(CMIRank rank2) {
-        if (checkPrevious(this, rank2))
-            return true;
-        if (checkNext(this, rank2))
-            return true;
         return false;
     }
 
@@ -140,41 +100,36 @@ public class CMIRank {
     }
 
     public rankupFailType canRankup(CMIUser user) {
-        if (user.getRank() == this)
-            return rankupFailType.SameRank;
-        return CMI.getInstance().getRankManager().canRankUp(user, this);
+        return null;
     }
 
     public double getMoneyCost() {
-        return moneyCost;
+        return 0.0;
     }
 
     public void setMoneyCost(double moneyCost) {
-        this.moneyCost = moneyCost;
     }
 
     public double getExpCost() {
-        return expCost;
+        return 0.0;
     }
 
     public void setExpCost(double expCost) {
-        this.expCost = expCost;
     }
 
     public List<String> getCommands() {
-        return Commands;
+        return null;
     }
 
     public void setCommands(List<String> commands) {
-        Commands = commands;
     }
 
     public LinkedHashMap<CMIStatistic, LinkedHashMap<Object, Long>> getStatRequirements() {
-        return statRequirements;
+        return null;
     }
 
     public LinkedHashMap<Object, Long> getStatRequirement(CMIStatistic stat) {
-        return statRequirements.get(stat);
+        return null;
     }
 
     public CMIRank addStatRequirement(CMIStatistic stat, String name, Long amount) {
@@ -182,32 +137,22 @@ public class CMIRank {
     }
 
     public void setStatRequirements(LinkedHashMap<CMIStatistic, LinkedHashMap<Object, Long>> statRequirements) {
-        this.statRequirements = statRequirements;
     }
 
     public boolean isAutoRankup() {
-        return AutoRankup;
+        return false;
     }
 
     public void setAutoRankup(boolean autoRankup) {
-        AutoRankup = autoRankup;
     }
 
     public void setNextRanksT(List<String> nextRanksT) {
-        this.nextRanksT = nextRanksT;
     }
 
     public void calculateNextRanks() {
-        nextRanks.clear();
-        for (String one : nextRanksT) {
-            CMIRank rank = CMI.getInstance().getRankManager().getRank(one);
-            if (rank != null)
-                nextRanks.add(rank);
-        }
     }
 
     public void finalizeRankup(CMIUser user) {
-        finalizeRankup(user, true, true);
     }
 
     public void finalizeRankup(CMIUser user, Boolean commands, Boolean cost) {
@@ -215,110 +160,95 @@ public class CMIRank {
 
     @Deprecated
     public void takeExp(CMIUser user) {
-
     }
 
     @Deprecated
     public void takeMoney(CMIUser user) {
-        if (this.getMoneyCost() <= 0)
-            return;
-        user.withdraw(this.getMoneyCost());
     }
 
     public void takeItems(CMIUser user) {
-        CMI.getInstance().getRankManager().removeContents(user.getPlayer(), this.getItemRequirements());
     }
 
     public void performCommands(CMIUser user) {
-        Snd snd = new Snd().setSender(user).setTarget(user);
-
-        List<String> cp = new ArrayList<String>(this.Commands);
-        cp = CMI.getInstance().getLM().updateSnd(snd, cp);
-        CMI.getInstance().getSpecializedCommandManager().processCmds(cp, user.isOnline() ? user.getPlayer() : null);
     }
 
     public void performCommandsOnRankDown(CMIUser user) {
     }
 
     public String getDisplayName() {
-        if (displayName == null)
-            return this.getName();
-        return CMIChatColor.translate(displayName);
+        return null;
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     public LinkedHashMap<String, String> getPermRequirements() {
-        return permRequirements;
+        return null;
     }
 
     public void setPermRequirements(LinkedHashMap<String, String> permRequirements) {
-        this.permRequirements = permRequirements;
     }
 
     public LinkedHashMap<String, Integer> getMcmmoRequirements() {
-        return mcmmoRequirements;
+        return null;
     }
 
     public void setMcmmoRequirements(LinkedHashMap<String, Integer> mcmmoRequirements) {
-        this.mcmmoRequirements = mcmmoRequirements;
     }
 
     public LinkedHashMap<String, Integer> getJobsRequirements() {
-        return JobsRequirements;
+        return null;
     }
 
     public void setJobsRequirements(LinkedHashMap<String, Integer> jobsRequirements) {
-        JobsRequirements = jobsRequirements;
     }
 
     public LinkedHashMap<CMIItemStack, Integer> getItemRequirements() {
-        return ItemRequirements;
+        return null;
     }
 
     public void setItemRequirements(LinkedHashMap<CMIItemStack, Integer> itemRequirements) {
-        ItemRequirements = itemRequirements;
     }
 
     public int getVotes() {
-        return votes;
+        return 0;
     }
 
     public void setVotes(int votes) {
-        this.votes = votes;
     }
 
     public List<String> getCommandsOnRankDown() {
-        return CommandsOnRankDown;
+        return null;
     }
 
     public void setCommandsOnRankDown(List<String> commandsOnRankDown) {
-        CommandsOnRankDown = commandsOnRankDown;
     }
 
     public int getWeight() {
-        return weight;
+        return 0;
     }
 
     public void setWeight(int weight) {
-        this.weight = weight;
     }
 
     public LinkedHashMap<String, Integer> getAureliumRequirements() {
-        return aureliumRequirements;
+        return null;
     }
 
     public void setAureliumRequirements(LinkedHashMap<String, Integer> aureliumRequirements) {
-        this.aureliumRequirements = aureliumRequirements;
+    }
+
+    public LinkedHashMap<String, Integer> getAuraSkillsRequirements() {
+        return null;
+    }
+
+    public void setAuraSkillsRequirements(LinkedHashMap<String, Integer> aureliumRequirements) {
     }
 
     public LinkedHashMap<String, CMIRankPlaceholder> getPlaceholderRequirements() {
-        return placeholderRequirements;
+        return null;
     }
 
     public void setPlaceholderRequirements(LinkedHashMap<String, CMIRankPlaceholder> placeholderRequirements) {
-        this.placeholderRequirements = placeholderRequirements;
     }
 }

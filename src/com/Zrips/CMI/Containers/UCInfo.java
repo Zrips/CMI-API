@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Containers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Chunk;
@@ -9,158 +8,132 @@ import org.bukkit.command.CommandSender;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class UCInfo {
-
-    private CMITask scheduleId = null;
-
-    private int currentId = 1;
-
-    private List<Chunk> chunks = new ArrayList<Chunk>();
-    private int chunksChecked = 0;
-    private int chunksCkeckedLast = 0;
-
-    private long showedInfo = 0L;
-    private boolean showInfo = false;
-
-    private boolean autoSpeed = true;
-    private boolean messages = true;
-
+    private CMITask scheduleId;
+    private int currentId;
+    private List<Chunk> chunks;
+    private int chunksChecked;
+    private int chunksCkeckedLast;
+    private long showedInfo;
+    private boolean showInfo;
+    private boolean autoSpeed;
+    private boolean messages;
     private CommandSender sender;
     private String sendername;
-    private int checked = 0;
-
-    private int found = 0;
-
-    private long startTime = 0L;
-
-    private int speed = 100;
-
-    private boolean running = false;
+    private int checked;
+    private int found;
+    private long startTime;
+    private int speed;
+    private boolean running;
 
     public UCInfo() {
     }
 
     public void setChunks(List<Chunk> chunks) {
-	this.chunks = chunks;
     }
 
     public List<Chunk> getChunks() {
-	return this.chunks;
+        return null;
     }
 
     public int getCurrentId() {
-	return this.currentId;
+        return 0;
     }
 
     public void setCurrentId(int id) {
-	this.currentId = id;
     }
 
     public void setChunksCkeckedLast(int chunksCkeckedLast) {
-	this.chunksCkeckedLast = chunksCkeckedLast;
     }
 
     public int getChunksCkeckedLast() {
-	return this.chunksCkeckedLast;
+        return 0;
     }
 
     public void setScheduleTask(CMITask task) {
-	this.scheduleId = task;
     }
 
     public CMITask getScheduleTask() {
-	return this.scheduleId;
+        return null;
     }
 
     public void setShowInfo(long time) {
-	this.showedInfo = time;
     }
 
     public long getShowInfo() {
-	return this.showedInfo;
+        return 0;
     }
 
     public void addChunkCkecked() {
-	this.chunksChecked++;
     }
 
     public int getChunkChecked() {
-	return this.chunksChecked;
+        return 0;
     }
 
     public void setAutoSpeed(boolean autoSpeed) {
-	this.autoSpeed = autoSpeed;
     }
 
     public boolean isAutoSpeed() {
-	return this.autoSpeed;
+        return false;
     }
 
     public void setMessages(boolean messages) {
-	this.messages = messages;
     }
 
     public boolean isMessages() {
-	return this.messages;
+        return false;
     }
 
     public void setShowRegionInfo(boolean state) {
-	this.showInfo = state;
     }
 
     public boolean isShowRegionInfo() {
-	return this.showInfo;
+        return false;
     }
 
     public void addFound() {
-	this.found++;
     }
 
     public int getFound() {
-	return this.found;
+        return 0;
     }
 
     public void setSpeed(int speed) {
-	this.speed = speed;
     }
 
     public int getSpeed() {
-	return this.speed;
+        return 0;
     }
 
     public void setRunning(boolean state) {
-	this.running = state;
     }
 
     public boolean isRunning() {
-	return this.running;
+        return false;
     }
 
     public void setStartTime() {
-	this.startTime = System.currentTimeMillis();
     }
 
     public long getStartTime() {
-	return this.startTime;
+        return 0;
     }
 
     public void addRegionChecked() {
-	this.checked++;
     }
 
     public int getRegionChecked() {
-	return this.checked;
+        return 0;
     }
 
     public String getPlayerName() {
-	return this.sendername;
+        return null;
     }
 
     public CommandSender getSender() {
-	return this.sender;
+        return null;
     }
 
     public void setSender(CommandSender sender) {
-	this.sendername = sender.getName();
-	this.sender = sender;
     }
 }

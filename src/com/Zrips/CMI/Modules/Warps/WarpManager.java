@@ -1,6 +1,5 @@
 package com.Zrips.CMI.Modules.Warps;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,114 +16,98 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class WarpManager {
-
     private CMI plugin;
-    LinkedHashMap<String, CmiWarp> warps = new LinkedHashMap<String, CmiWarp>();
-    HashMap<UUID, HashMap<String, CmiWarp>> userWarps = new HashMap<UUID, HashMap<String, CmiWarp>>();
+    LinkedHashMap<String, CmiWarp> warps;
+    HashMap<UUID, HashMap<String, CmiWarp>> userWarps;
+    private boolean warpGUI;
+    private boolean GUIOnCreation;
+    private boolean warpShowCreator;
+    private boolean warpRequirePerm;
+    private int warpPerPage;
+    private int MinLength;
+    private int MaxLength;
+    private Boolean guiCloseButton;
+    private int guiCloseButtonSlot;
+    private CMIItemStack guiCloseButtonItem;
+    private List<String> guiCloseButtonCommands;
+    private boolean guiInfoButton;
+    private int guiInfoButtonSlot;
+    private CMIItemStack guiInfoButtonItem;
+    private List<String> guiInfoButtonCommands;
+    private String fileName;
+    boolean saving;
+    private CMITask saveId;
 
     public WarpManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void onDisable() {
-        if (saveId != null) {
-            saveId.cancel();
-            saveId = null;
-            save();
-        }
     }
 
     public HashMap<String, CmiWarp> getWarps() {
-        return warps;
+        return null;
     }
 
     public int getWarpCount(Player player) {
-        return userWarps.get(player.getUniqueId()) == null ? 0 : userWarps.get(player.getUniqueId()).size();
+        return 0;
     }
 
     public int getMaxWarps(CommandSender sender) {
-        if (sender instanceof Player)
-            return getMaxWarps((Player) sender);
-        return 9999;
+        return 0;
     }
 
     public int getMaxWarps(Player player) {
-
-        return 9999;
-
+        return 0;
     }
 
     public List<CmiWarp> getWarps(Player player, String group) {
-        return getWarps(player, null, group, true, false);
+        return null;
     }
 
     public List<CmiWarp> getWarps(Player player) {
-        return getWarps(player, null, null, true, false);
+        return null;
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group) {
-        return getWarps(player, page, group, true, false);
+        return null;
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group, boolean includeHidden) {
-        return getWarps(player, page, group, includeHidden, false);
+        return null;
     }
 
     public List<CmiWarp> getWarps(Player player, Integer page, String group, boolean includeHidden, boolean onlyOwn) {
-
         return null;
+    }
+
+    private void process(Player player, HashMap<Integer, HashMap<Integer, CmiWarp>> w, LinkedHashMap<String, CmiWarp> copyWarps, List<CmiWarp> leftOver, String group, boolean admin, boolean includeHidden,
+        boolean onlyOwn, boolean first) {
     }
 
     public HashMap<Integer, HashMap<Integer, CmiWarp>> getPagedWarps(Player player, String group, boolean includeHidden, boolean onlyOwn) {
-
         return null;
     }
 
-    private enum warpEditorSlots {
-
-        icon(10), offIcon(19), randomYaw(20), autoLore(11), permission(13), reqPermission(22), hidden(32), group(25), displayName(34), iconSlot(14), page(23), back(8),
-        location(37), seclocation(38), repeat(39);
-
-        private int slot;
-
-        warpEditorSlots(int slot) {
-            this.slot = slot;
-        }
-
-        public int getSlot() {
-            return slot;
-        }
-
-        public void setSlot(int slot) {
-            this.slot = slot;
-        }
-    }
-
     public void openWarpEditor(Player player, String warp) {
-        openWarpEditor(player, this.getWarp(warp));
     }
 
-    public void openWarpEditor(final Player player, final CmiWarp warp) {
-
+    public void openWarpEditor(Player player, CmiWarp warp) {
     }
 
     public List<CmiWarp> getWarps(int page, String group) {
-        List<CmiWarp> ls = new ArrayList<CmiWarp>();
-        return ls;
+        return null;
     }
 
     public int getPageCountFrom(int page, String group) {
-        int i = page;
-        return i - page;
+        return 0;
     }
 
     public int getPageCount(Player player) {
-        return getPageCount(this.getWarps(player));
+        return 0;
     }
 
     public int getPageCount(List<CmiWarp> w) {
-        int pages = 1;
-        return pages;
+        return 0;
     }
 
     public List<CmiWarp> getWarps(int page, Integer slot, String group) {
@@ -132,7 +115,7 @@ public class WarpManager {
     }
 
     private static int slotToGUIrelativeSlot(int slot) {
-        return 9 + (((slot) / 7) * 2 + 1) + slot;
+        return 0;
     }
 
     public CMIGui openComplexGUI(Player player, int page, String group) {
@@ -140,25 +123,21 @@ public class WarpManager {
     }
 
     public CMIGui openComplexGUI(Player player, int page, HashMap<Integer, HashMap<Integer, CmiWarp>> warpMap) {
-
         return null;
     }
 
     public CMIGui openGUI(Player player, int page, String group) {
-        return openGUI(player, plugin.getWarpManager().getWarps(player, page, group, false), group);
+        return null;
     }
 
     public CMIGui openGUI(Player player, List<CmiWarp> warpList, String group) {
-
         return null;
     }
 
     public void remove(CmiWarp warp) {
-
     }
 
     public void addWarp(CmiWarp warp) {
-        addWarp(warp, true);
     }
 
     public void addWarp(CmiWarp warp, boolean save) {
@@ -169,47 +148,18 @@ public class WarpManager {
     }
 
     public CmiWarp getWarp(String name) {
-        if (name == null)
-            return null;
-        return warps.get(name.toLowerCase());
+        return null;
     }
 
-    private boolean warpGUI = true;
-    private boolean GUIOnCreation = true;
-//    private boolean warpSaveCreator = true;
-    private boolean warpShowCreator = true;
-    private boolean warpRequirePerm = false;
-    private int warpPerPage = 50;
-    private int MinLength = 4;
-    private int MaxLength = 16;
-
-    private Boolean guiCloseButton;
-    private int guiCloseButtonSlot;
-    private CMIItemStack guiCloseButtonItem;
-    private List<String> guiCloseButtonCommands;
-
-    private boolean guiInfoButton;
-    private int guiInfoButtonSlot;
-    private CMIItemStack guiInfoButtonItem;
-    private List<String> guiInfoButtonCommands;
-
     public void loadConfig(ConfigReader cfg) {
-
     }
 
     public boolean isWarpGUI() {
-        return warpGUI;
+        return false;
     }
-
-    private String fileName = "Warps.yml";
 
     public void load() {
-
     }
-
-    boolean saving = false;
-
-    private CMITask saveId = null;
 
     public void safeSave() {
     }
@@ -218,38 +168,52 @@ public class WarpManager {
     }
 
     public void save() {
-
     }
 
     public int getWarpPerPage() {
-        return warpPerPage;
+        return 0;
     }
 
     public boolean isWarpShowCreator() {
-        return warpShowCreator;
+        return false;
     }
 
     public boolean isGUIOnCreation() {
-        return GUIOnCreation;
+        return false;
     }
 
     public int getMinLength() {
-        return MinLength;
+        return 0;
     }
 
     public void setMinLenght(int minLenght) {
-        MinLength = minLenght;
     }
 
     public int getMaxLength() {
-        return MaxLength;
+        return 0;
     }
 
     public void setMaxLenght(int maxLenght) {
-        MaxLength = maxLenght;
     }
 
     public boolean isWarpRequirePerm() {
-        return warpRequirePerm;
+        return false;
+    }
+
+    private enum warpEditorSlots {
+        icon(10), offIcon(19), randomYaw(20), autoLore(11), permission(13), reqPermission(22), hidden(32), group(25), displayName(34), iconSlot(14), page(23), back(8), location(37), seclocation(38),
+        repeat(39);
+
+        private int slot;
+
+        warpEditorSlots(int slot) {
+        }
+
+        public int getSlot() {
+            return 0;
+        }
+
+        public void setSlot(int slot) {
+        }
     }
 }

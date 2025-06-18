@@ -2,33 +2,28 @@ package com.Zrips.CMI.events;
 
 import org.bukkit.command.CommandSender;
 
-public final class CMIIpBanEvent extends CMICancellableEvent {
-
+public class CMIIpBanEvent extends CMICancellableEvent {
     private CommandSender by;
     private String ip;
     private Long until;
     private String reason;
 
     public CMIIpBanEvent(CommandSender by, String ip, String reason, Long until) {
-        this.by = by;
-        this.ip = ip;
-        this.reason = reason;
-        this.until = until;
     }
 
     public CommandSender getBannedBy() {
-        return by;
+        return null;
     }
 
     public String getIp() {
-        return ip;
+        return null;
     }
 
     public Long getUntil() {
-        return until;
+        return null;
     }
 
     public String getReason() {
-        return reason;
+        return null;
     }
 }

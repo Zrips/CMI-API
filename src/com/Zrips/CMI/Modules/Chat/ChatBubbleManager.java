@@ -9,68 +9,70 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIEventPriority;
 
-import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class ChatBubbleManager {
-    private HashMap<UUID, CMIChatBubble> bubbles = new HashMap<UUID, CMIChatBubble>();
-
+    private HashMap<UUID, CMIChatBubble> bubbles;
     private CMI plugin;
-
-    private boolean publicMessages = true;
-
-    private double offset = 2.5D;
-    private double baseShowFor = 5;
-    private double maxShowFor = 8;
-    private double extraTime = 0.02;
-    private double scale = 0.5;
-    private boolean shadow = true;
-
-    private int range = 32;
+    private boolean publicMessages;
+    private CMIEventPriority priority;
+    private double offset;
+    private double baseShowFor;
+    private double maxShowFor;
+    private double extraTime;
+    private double scale;
+    private boolean shadow;
+    private int range;
     private Color backgroundColor;
-
-    private int LineWidth = 255;
+    private int LineWidth;
 
     public ChatBubbleManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig(ConfigReader cfg) {
+    }
 
+    public void clearCache(UUID uuid) {
+    }
+
+    public CMIChatBubble getBubble(UUID uuid) {
+        return null;
     }
 
     public void showBubble(Player sender, String text, Set<Player> receivers) {
-
     }
 
     public double getOffset() {
-        return offset;
+        return 0.0;
     }
 
     public double getShowFor(String text) {
-        double value = baseShowFor + (text.length() * extraTime);
-        return CMINumber.clamp(value, value, (int) maxShowFor);
+        return 0.0;
     }
 
     public boolean inRange(Location loc1, Location loc2) {
-
-        return true;
+        return false;
     }
 
     public double getScale() {
-        return scale;
+        return 0.0;
     }
 
     public int getLineWidth() {
-        return LineWidth;
+        return 0;
     }
 
     public Color getBackgroundColor() {
-        return backgroundColor;
+        return null;
     }
 
     public boolean isShadow() {
-        return shadow;
+        return false;
+    }
+
+    public CMIEventPriority getPriority() {
+        return null;
     }
 }

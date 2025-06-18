@@ -8,79 +8,66 @@ import net.Zrips.CMILib.BossBar.BossBarInfo;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class WarmUpInfo {
-
     private String cmd;
     private Location loc;
-    private boolean move = true;
-    private CMITask task = null;
+    private boolean move;
+    private CMITask task;
     private CMIVisualEffect effectAnimation;
-    private int leftCount = 0;
+    private int leftCount;
     private BossBarInfo bar;
 
     public WarmUpInfo(String cmd, boolean move) {
-        this.cmd = cmd;
-        this.move = move;
     }
 
     public WarmUpInfo(Location loc, boolean move) {
-        this.loc = loc;
-        this.move = move;
     }
 
     public String getCmd() {
-        return cmd;
+        return null;
     }
 
     public void setCmd(String cmd) {
-        this.cmd = cmd;
     }
 
     public boolean isMove() {
-        return move;
+        return false;
     }
 
     public void setMove(boolean move) {
-        this.move = move;
     }
 
     public Location getLoc() {
-        return loc;
+        return null;
     }
 
     public void setLoc(Location loc) {
-        this.loc = loc;
     }
 
     public CMIVisualEffect getEffectAnimation() {
-        return effectAnimation;
+        return null;
     }
 
     public void setEffectAnimation(CMIVisualEffect effectAnimation) {
-        this.effectAnimation = effectAnimation;
     }
 
     public int getLeftCount() {
-        return leftCount;
+        return 0;
     }
 
     public void setLeftCount(int leftCount) {
-        this.leftCount = leftCount;
     }
 
     public BossBarInfo getBar() {
-        return bar;
+        return null;
     }
 
     public void setBar(BossBarInfo bar) {
-        this.bar = bar;
     }
 
     public CMITask getTask() {
-        return task;
+        return null;
     }
 
     public void setTask(CMITask task) {
-        this.task = task;
     }
-
 }

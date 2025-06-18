@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public interface CMIPEAnimationInterface {
-
     public boolean render(List<Player> players);
 
     public void setCenter(Location location);
@@ -35,5 +34,4 @@ public interface CMIPEAnimationInterface {
     int getInterval();
 
     boolean isHideWithVanish();
-
 }

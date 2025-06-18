@@ -1,47 +1,40 @@
 package com.Zrips.CMI.Modules.Region;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.Zrips.CMI.CMI;
-
 public class WorldInfo {
-
-    private transient Map<String, List<Boolean>> regionChunks = Collections.synchronizedMap(new HashMap<String, List<Boolean>>());
+    private transient Map<String, List<Boolean>> regionChunks;
     private CMIRegion center;
-    private long totalChunks = 0;
-    private long lastChecked = -1;
+    private long totalChunks;
+    private long lastChecked;
     private World world;
-    private Integer range = null;
+    private int range;
 
     @Override
     public WorldInfo clone() {
-        WorldInfo wi = new WorldInfo(world, center);
-        wi.setRegion(new HashMap<String, List<Boolean>>(regionChunks));
-        wi.setTotalChunks(totalChunks);
-        return wi;
+        return null;
     }
 
     public WorldInfo(World world, CMIRegion center) {
-        this.world = world;
-        this.center = center;
+    }
+
+    public WorldInfo(Location center, int range) {
     }
 
     public void setRegion(Map<String, List<Boolean>> regionChunks) {
-        this.regionChunks = regionChunks;
     }
 
     public Map<String, List<Boolean>> getRegion() {
-        return regionChunks;
+        return null;
     }
 
     private static String toString(CMIRegion cord) {
-        return cord.getX() + ":" + cord.getZ();
+        return null;
     }
 
     public Boolean getRegionsChunk(CMIRegion region, int place) {
@@ -53,85 +46,73 @@ public class WorldInfo {
     }
 
     public WorldInfo setRegionPlaces(CMIRegion region, List<Boolean> places) {
-        regionChunks.put(toString(region), places);
-        return this;
+        return null;
     }
 
     public CMIRegion getNextChunkLoc(boolean exist) {
-        return CMI.getInstance().getRegionManager().getNextChunkLocation(this, exist);
+        return null;
     }
 
     public Chunk getNextChunk(boolean exist) {
-        return CMI.getInstance().getRegionManager().getNextChunk(this, exist);
+        return null;
     }
 
     public void setRegionChunks(CMIRegion scord, List<Boolean> list) {
-        this.regionChunks.put(toString(scord), list);
     }
 
     public CMIRegion getCenter() {
-        if (center == null)
-            center = new CMIRegion(0, 0);
-        return center;
+        return null;
     }
 
     public void setCenter(CMIRegion center) {
-        this.center = center;
     }
 
     public long getTotalChunks() {
-        return totalChunks;
+        return 0;
     }
 
     public void setTotalChunks(long totalChunks) {
-        this.totalChunks = totalChunks;
     }
 
     public void addTotalChunks(int chunks) {
-        this.totalChunks += chunks;
     }
 
     public void addTotalChunks() {
-        this.totalChunks++;
     }
 
     public long getLastChecked() {
-        return lastChecked;
+        return 0;
     }
 
     public boolean allChecked() {
-        return lastChecked >= totalChunks;
+        return false;
     }
 
     public long getLeftToScan() {
-        return totalChunks - lastChecked < 0L ? 0L : totalChunks - lastChecked;
+        return 0;
     }
 
     public long getNextPlace() {
-        return lastChecked + 1;
+        return 0;
     }
 
     public void setLastChecked(long lastChecked) {
-        this.lastChecked = lastChecked;
     }
 
     public void addLastChecked() {
-        this.lastChecked++;
     }
 
     public World getWorld() {
-        return world;
+        return null;
     }
 
     public void setWorld(World world) {
-        this.world = world;
     }
 
     public Integer getRange() {
-        return range;
+        return null;
     }
 
     public void setRange(Integer range) {
-        this.range = range;
     }
 }

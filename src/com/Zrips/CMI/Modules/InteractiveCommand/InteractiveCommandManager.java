@@ -1,8 +1,6 @@
-
 package com.Zrips.CMI.Modules.InteractiveCommand;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,19 +16,18 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class InteractiveCommandManager {
-
     CMI plugin;
-    private boolean checkCitizens = false;
+    private boolean checkCitizens;
+    HashMap<String, Map<ChunkRef, Set<CMIInteractiveCommand>>> map;
+    HashMap<UUID, CMIInteractiveCommand> entMap;
+    HashMap<Integer, CMIInteractiveCommand> citiznesMap;
+    LinkedHashMap<String, CMIInteractiveCommand> nameMap;
+    private CMITask saveTask;
+    boolean saving;
+    private String fileName;
 
     public InteractiveCommandManager(CMI plugin) {
-        this.plugin = plugin;
     }
-
-    HashMap<String, Map<ChunkRef, Set<CMIInteractiveCommand>>> map = new HashMap<String, Map<ChunkRef, Set<CMIInteractiveCommand>>>();
-
-    HashMap<UUID, CMIInteractiveCommand> entMap = new HashMap<UUID, CMIInteractiveCommand>();
-    HashMap<Integer, CMIInteractiveCommand> citiznesMap = new HashMap<Integer, CMIInteractiveCommand>();
-    LinkedHashMap<String, CMIInteractiveCommand> nameMap = new LinkedHashMap<String, CMIInteractiveCommand>();
 
     public Entity getEntityByUUID(UUID uuid) {
         return null;
@@ -46,83 +43,63 @@ public class InteractiveCommandManager {
     }
 
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib) {
-        return addInteractiveCommand(cmib, true);
+        return null;
     }
 
     @Deprecated
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save) {
-        return addInteractiveCommand(cmib, save, null);
+        return null;
     }
 
     public CMIInteractiveCommand addInteractiveCommand(CMIInteractiveCommand cmib, boolean save, Location addedLocation) {
-
         return null;
     }
 
     public Set<CMIInteractiveCommand> getFullList() {
-        return new HashSet<CMIInteractiveCommand>(nameMap.values());
+        return null;
     }
 
     public Set<CMIInteractiveCommand> getSortedByDistance(Location loc) {
-
         return null;
     }
 
     public CMIInteractiveCommand getByUUID(UUID uuid) {
-        if (this.checkCitizens) {
-            checkCitizens();
-            this.checkCitizens = false;
-        }
-        return entMap.get(uuid);
+        return null;
     }
 
     public CMIInteractiveCommand getByCitizensId(Integer id) {
-
         return null;
     }
 
     private void checkCitizens() {
-
     }
 
     public CMIInteractiveCommand getByName(String name) {
-        return nameMap.get(name.toLowerCase());
+        return null;
     }
 
     public CMIInteractiveCommand removeLoc(CMILocation loc) {
-
         return null;
     }
 
     public CMIInteractiveCommand removeEntity(UUID uuid) {
-
         return null;
     }
 
     public CMIInteractiveCommand getByLoc(Location loc) {
-
         return null;
     }
 
-    private CMITask saveTask = null;
-
     public void save() {
-
     }
-
-    boolean saving = false;
 
     public void forceSave() {
-
     }
 
-    private String fileName = "InteractiveCommands.yml";
-
     public void load() {
-
     }
 
     public CMITask getSaveTask() {
-        return saveTask;
+        return null;
     }
 }

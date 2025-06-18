@@ -3,70 +3,55 @@ package com.Zrips.CMI.Modules.CmdCost;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.Zrips.CMI.commands.CommandsHandler;
-
 public class CMICommandCost {
-
-    private String command = "";
-    private double cost = 0D;
-    private boolean informOnCharge = true;
-    private boolean requiresConfirmation = true;
-
-    ConcurrentHashMap<UUID, String> confirmations = new ConcurrentHashMap<UUID, String>();
+    private String command;
+    private double cost;
+    private boolean informOnCharge;
+    private boolean requiresConfirmation;
+    ConcurrentHashMap<UUID, String> confirmations;
 
     public CMICommandCost(String cmd, double cost) {
-	this.command = cmd;
-	this.cost = cost > 0D ? cost : 0D;
     }
 
     public String getCommand() {
-	return command;
+        return null;
     }
 
     public void setCommand(String command) {
-	this.command = command;
     }
 
     public double getCost() {
-	return cost;
+        return 0.0;
     }
 
     public String getSubCommand() {
-	return command.startsWith(CommandsHandler.getLabel() + " ") ? command.substring(CommandsHandler.getLabel().length() + 1) : command;
+        return null;
     }
 
     public void setCost(double cost) {
-	this.cost = cost;
     }
 
     public boolean isInformOnCharge() {
-	return informOnCharge;
+        return false;
     }
 
     public void setInformOnCharge(boolean informOnCharge) {
-	this.informOnCharge = informOnCharge;
     }
 
     public boolean isRequiresConfirmation() {
-	return requiresConfirmation;
+        return false;
     }
 
     public void setRequiresConfirmation(boolean requiresConfirmation) {
-	this.requiresConfirmation = requiresConfirmation;
     }
 
     public void addConfirmation(UUID uuid, String cmd) {
-	confirmations.put(uuid, cmd);
     }
 
     public boolean isConfirmation(UUID uuid, String cmd) {
-	String old = confirmations.get(uuid);
-	if (old == null)
-	    return false;
-	return old.equals(cmd);
+        return false;
     }
 
     public void removeConfirmation(UUID uuid) {
-	confirmations.remove(uuid);
     }
 }

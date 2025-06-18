@@ -3,43 +3,47 @@ package com.Zrips.CMI.Containers;
 import com.Zrips.CMI.Modules.Kits.Kit;
 
 public class CMIKitUsage {
-
-    Kit kit;
-    private long lastUsage = 0;
-    private int usedTimes = 0;
+    private String kitName;
+    private long lastUsage;
+    private int usedTimes;
 
     public CMIKitUsage(Kit kit) {
-	this(kit, System.currentTimeMillis(), 0);
+    }
+
+    public CMIKitUsage(String kitConfigName, Long lastUsage) {
     }
 
     public CMIKitUsage(Kit kit, Long lastUsage) {
-	this(kit, lastUsage, 0);
     }
 
     public CMIKitUsage(Kit kit, Long lastUsage, int usedTimes) {
-	this.kit = kit;
-	this.lastUsage = lastUsage == null ? 0 : lastUsage;
-	this.usedTimes = usedTimes;
+    }
+
+    public CMIKitUsage(String kitConfigName, Long lastUsage, int usedTimes) {
     }
 
     public Long getLastUsage() {
-	return lastUsage;
+        return null;
     }
 
     public void setLastUsage(Long lastUsage) {
-	this.lastUsage = lastUsage == null ? 0 : lastUsage;
     }
 
     public void addUsedTimes() {
-	usedTimes++;
     }
 
     public int getUsedTimes() {
-	return usedTimes;
+        return 0;
     }
 
     public void setUsedTimes(int usedTimes) {
-	this.usedTimes = usedTimes;
     }
 
+    public String getKitName() {
+        return null;
+    }
+
+    public Kit getKit() {
+        return null;
+    }
 }

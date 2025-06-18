@@ -43,5 +43,4 @@ public class LuckPermsHandler5 implements PermissionInterface {
     public String getSufix(UUID uuid) {
         return null;
     }
-
 }

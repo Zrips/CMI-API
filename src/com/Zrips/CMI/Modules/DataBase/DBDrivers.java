@@ -1,21 +1,3 @@
-/**
- * Jobs Plugin for Bukkit
- * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.Zrips.CMI.Modules.DataBase;
 
 import java.sql.Connection;
@@ -30,41 +12,40 @@ public class DBDrivers implements Driver {
     private Driver driver;
 
     public DBDrivers(Driver driver) {
-	this.driver = driver;
     }
 
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
-	return driver.connect(url, info);
+        return null;
     }
 
     @Override
     public boolean acceptsURL(String url) throws SQLException {
-	return driver.acceptsURL(url);
+        return false;
     }
 
     @Override
     public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-	return driver.getPropertyInfo(url, info);
+        return null;
     }
 
     @Override
     public int getMajorVersion() {
-	return driver.getMajorVersion();
+        return 0;
     }
 
     @Override
     public int getMinorVersion() {
-	return driver.getMinorVersion();
+        return 0;
     }
 
     @Override
     public boolean jdbcCompliant() {
-	return driver.jdbcCompliant();
+        return false;
     }
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-	return driver.getParentLogger();
+        return null;
     }
 }

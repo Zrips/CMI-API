@@ -10,7 +10,7 @@ public interface PermissionInterface {
     String getPrefix(Player player);
 
     String getSufix(Player player);
-    
+
     String getNameColor(Player player);
 
     String getMainGroup(String world, UUID uuid);

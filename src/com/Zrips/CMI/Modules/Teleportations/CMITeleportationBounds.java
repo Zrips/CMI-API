@@ -2,11 +2,9 @@ package com.Zrips.CMI.Modules.Teleportations;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.Modules.Portals.CMIVector3D;
-
-import net.Zrips.CMILib.Container.CMINumber;
-import net.Zrips.CMILib.Container.CMIWorld;
 
 public class CMITeleportationBounds {
     private World world;
@@ -15,113 +13,109 @@ public class CMITeleportationBounds {
     private int minY;
     private float yaw;
     private float pitch;
-    private boolean imortal = false;
-    private boolean canFly = false;
-    private boolean flying = false;
+    private boolean imortal;
+    private boolean canFly;
+    private boolean flying;
+    private Player player;
+    private boolean ignoreYLimits;
 
     CMITeleportationBounds(Location loc) {
-        this.world = loc.getWorld();
-        this.yaw = loc.getYaw();
-        this.pitch = loc.getPitch();
-        this.position = new CMIVector3D(loc.getX(), loc.getY(), loc.getZ());
-        this.maxY = loc.getBlockY();
-        this.minY = loc.getBlockY() - 2;
     }
 
     public World getWorld() {
-        return world;
+        return null;
     }
 
-    public CMITeleportationBounds setUpRange(double range) {                
-        this.maxY = CMINumber.clamp((int) (position.getY() + range), CMIWorld.getMinHeight(world), CMIWorld.getMaxHeight(world));        
-        return this;
+    public CMITeleportationBounds setUpRange(double range) {
+        return null;
     }
 
     public CMITeleportationBounds setDownRange(double range) {
-        this.minY = CMINumber.clamp((int) (position.getY() - range), CMIWorld.getMinHeight(world), CMIWorld.getMaxHeight(world));
-        return this;
+        return null;
     }
 
     public CMITeleportationBounds setRange(double range) {
-        setUpRange(range);
-        setDownRange(range);
-        return this;
+        return null;
     }
 
     public CMITeleportationBounds setWorld(World world) {
-        this.world = world;
-        return this;
+        return null;
     }
 
     public int getMaxY() {
-        return maxY;
+        return 0;
     }
 
     public CMITeleportationBounds setMaxY(int maxY) {
-        this.maxY = maxY;
-        return this;
+        return null;
     }
 
     public int getMinY() {
-        return minY;
+        return 0;
     }
 
     public CMITeleportationBounds setMinY(int minY) {
-        this.minY = minY;
-        return this;
+        return null;
     }
 
     public CMIVector3D getPosition() {
-        return position;
+        return null;
     }
 
     public CMITeleportationBounds setPosition(CMIVector3D position) {
-        this.position = position;
-        return this;
+        return null;
     }
 
     public float getYaw() {
-        return yaw;
+        return 0.0f;
     }
 
     public CMITeleportationBounds setYaw(float yaw) {
-        this.yaw = yaw;
-        return this;
+        return null;
     }
 
     public float getPitch() {
-        return pitch;
+        return 0.0f;
     }
 
     public CMITeleportationBounds setPitch(float pitch) {
-        this.pitch = pitch;
-        return this;
+        return null;
     }
 
     public boolean isCanFly() {
-        return canFly;
+        return false;
     }
 
     public CMITeleportationBounds setCanFly(boolean canFly) {
-        this.canFly = canFly;
-        return this;
+        return null;
     }
 
     public boolean isFlying() {
-        return flying;
+        return false;
     }
 
     public void setFlying(boolean flying) {
-        this.flying = flying;
     }
 
     public boolean isImortal() {
-        return imortal;
+        return false;
     }
 
     public CMITeleportationBounds setImortal(boolean imortal) {
-        this.imortal = imortal;
-        return this;
+        return null;
     }
 
+    public Player getPlayer() {
+        return null;
+    }
+
+    public void setPlayer(Player player) {
+    }
+
+    public boolean isIgnoreYLimits() {
+        return false;
+    }
+
+    public void setIgnoreYLimits(boolean ignoreYLimits) {
+    }
 }

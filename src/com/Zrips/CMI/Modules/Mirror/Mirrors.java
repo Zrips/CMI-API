@@ -4,72 +4,55 @@ import java.util.HashMap;
 
 import org.bukkit.Location;
 
-import com.Zrips.CMI.Modules.Mirror.MirrorManager.MirrorAction;
-
 public class Mirrors {
-
-    private HashMap<MirrorManager.MirrorAction, Boolean> map = new HashMap<MirrorManager.MirrorAction, Boolean>();
-    private Location loc = null;
-    private boolean paused = false;
-    private long lastAction = 0L;
+    private HashMap<MirrorManager.MirrorAction, Boolean> map;
+    private Location loc;
+    private boolean paused;
+    private long lastAction;
 
     public Mirrors(Location loc) {
-	this.loc = loc;
-	reset();
     }
 
     public Mirrors() {
-	reset();
     }
 
     public Mirrors reset() {
-	for (MirrorAction one : MirrorManager.MirrorAction.values()) {
-	    map.put(one, false);
-	}
-	return this;
+        return null;
     }
 
     public boolean is(MirrorManager.MirrorAction action) {
-	return map.get(action);
+        return false;
     }
 
     public Mirrors set(MirrorManager.MirrorAction action, Boolean state) {
-	map.put(action, state);
-	return this;
+        return null;
     }
 
     public Location getCenter() {
-	return loc;
+        return null;
     }
 
     public Mirrors setCenter(Location loc) {
-	this.loc = loc.clone().add(0, -1, 0);
-	return this;
+        return null;
     }
 
     public boolean isPaused() {
-	return paused;
+        return false;
     }
 
     public Mirrors setPaused(boolean paused) {
-	this.paused = paused;
-	return this;
+        return null;
     }
 
     @Override
     public Mirrors clone() {
-	Mirrors m = new Mirrors();
-	m.map = map;
-	m.loc = loc;
-	m.paused = paused;
-	return m;
+        return null;
     }
 
     public long getLastAction() {
-	return lastAction;
+        return 0;
     }
 
     public void setLastAction(long lastAction) {
-	this.lastAction = lastAction;
     }
 }

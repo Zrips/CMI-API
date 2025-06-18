@@ -5,48 +5,39 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class ShulkerInv {
-
     private Player player;
     private ItemStack shulkerBox;
     private Inventory customInv;
-
-    private Integer sourceId = null;
+    private Integer sourceId;
 
     public ShulkerInv(Player player, Inventory customInv) {
-	this.player = player;
-	this.customInv = customInv;
     }
 
     public Player getPlayer() {
-	return player;
+        return null;
     }
 
     public void setPlayer(Player player) {
-	this.player = player;
     }
 
     public Inventory getCustomInv() {
-	return customInv;
+        return null;
     }
 
     public void setCustomInv(Inventory customInv) {
-	this.customInv = customInv;
     }
 
     public Integer getSourceId() {
-	return sourceId;
+        return null;
     }
 
     public void setSourceId(Integer sourceId) {
-	this.sourceId = sourceId;
     }
 
     public ItemStack getShulkerBox() {
-	return shulkerBox;
+        return null;
     }
 
     public void setShulkerBox(ItemStack shulkerBox) {
-	this.shulkerBox = shulkerBox;
     }
-
 }

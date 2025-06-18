@@ -5,272 +5,225 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
 
-import com.Zrips.CMI.CMI;
-
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class FixChunkInfo {
-
-    private CMITask scheduleTask = null;
-
-    private int currentId = 1;
-
-    private List<File> regionFiles = new ArrayList<File>();
-    private RegionFiles currentRegion = null;
-
+    private CMITask scheduleTask;
+    private int currentId;
+    private List<File> regionFiles;
+    private RegionFiles currentRegion;
     private Vector center;
-    private ArrayList<ChunkInfo> chunks = new ArrayList<ChunkInfo>();
-    private boolean onlyChunks = false;
-    private double chunksChecked = 0;
-
-    private double chunksCkeckedLast = 0;
-
-    private long showedInfo = 0L;
-    private boolean showInfo = false;
-
-    private boolean autoSpeed = true;
-    private boolean messages = true;
-
+    private ArrayList<ChunkInfo> chunks;
+    private boolean onlyChunks;
+    private double chunksChecked;
+    private double chunksCkeckedLast;
+    private long showedInfo;
+    private boolean showInfo;
+    private boolean autoSpeed;
+    private boolean messages;
     private UUID sender;
-    private double checked = 0;
+    private double checked;
     private World world;
-
     private int mcaX;
     private int mcaZ;
-
-    private int loaded = 0;
-    private double total = 0;
-
-    private int found = 0;
-
-    private long startTime = 0L;
-
-    private int speed = 1;
-    private int range = -1;
-
-    private boolean running = false;
-
-    private ArrayList<ChunkInfo> chunksResult = new ArrayList<ChunkInfo>();
+    private int loaded;
+    private double total;
+    private int found;
+    private long startTime;
+    private int speed;
+    private int range;
+    private boolean running;
+    private ArrayList<ChunkInfo> chunksResult;
 
     public FixChunkInfo() {
     }
 
     public List<ChunkInfo> getChunksResult() {
-        return this.chunksResult;
+        return null;
     }
 
     public void addChunkResult(ChunkInfo c) {
-        chunksResult.add(c);
     }
 
     public int getCurrentId() {
-        return this.currentId;
+        return 0;
     }
 
     public void setCurrentId(int id) {
-        this.currentId = id;
     }
 
     public void setChunksCkeckedLast(double checked2) {
-        this.chunksCkeckedLast = checked2;
     }
 
     public double getChunksCkeckedLast() {
-        return this.chunksCkeckedLast;
+        return 0.0;
     }
 
     public void setRange(int range) {
-        this.range = range;
     }
 
     public int getRange() {
-        return this.range;
+        return 0;
     }
 
     public void setScheduleTask(CMITask task) {
-        this.scheduleTask = task;
     }
 
     public CMITask getScheduleTask() {
-        return this.scheduleTask;
+        return null;
     }
 
     public void setShowInfo(long time) {
-        this.showedInfo = time;
     }
 
     public long getShowInfo() {
-        return this.showedInfo;
+        return 0;
     }
 
     public void addChunkCkecked() {
-        this.chunksChecked++;
     }
 
     public double getChunkChecked() {
-        return this.chunksChecked;
+        return 0.0;
     }
 
     public void setAutoSpeed(boolean autoSpeed) {
-        this.autoSpeed = autoSpeed;
     }
 
     public boolean isAutoSpeed() {
-        return this.autoSpeed;
+        return false;
     }
 
     public void setMessages(boolean messages) {
-        this.messages = messages;
     }
 
     public boolean isMessages() {
-        return this.messages;
+        return false;
     }
 
     public void setShowRegionInfo(boolean state) {
-        this.showInfo = state;
     }
 
     public boolean isShowRegionInfo() {
-        return this.showInfo;
+        return false;
     }
 
     public void setOnlyChunks(boolean state) {
-        this.onlyChunks = state;
     }
 
     public boolean isOnlyChunks() {
-        return this.onlyChunks;
+        return false;
     }
 
     public void addChunks(ArrayList<ChunkInfo> chunks) {
-        this.chunks = chunks;
     }
 
     public void addChunk(ChunkInfo chunk) {
-        this.chunks.add(chunk);
     }
 
     public ArrayList<ChunkInfo> getChunks() {
-        return this.chunks;
+        return null;
     }
 
     public void addFound() {
-        this.found++;
     }
 
     public int getFound() {
-        return this.found;
+        return 0;
     }
 
     public void setSpeed(int speed) {
-        this.speed = speed;
     }
 
     public int getSpeed() {
-        return this.speed;
+        return 0;
     }
 
     public void setRunning(boolean state) {
-        this.running = state;
     }
 
     public boolean isRunning() {
-        return this.running;
+        return false;
     }
 
     public void setStartTime() {
-        this.startTime = System.currentTimeMillis();
     }
 
     public long getStartTime() {
-        return this.startTime;
+        return 0;
     }
 
     public void addLoaded() {
-        this.loaded++;
     }
 
     public int getloaded() {
-        return this.loaded;
+        return 0;
     }
 
     public void setX(int mcaX) {
-        this.mcaX = mcaX;
     }
 
     public int getX() {
-        return this.mcaX;
+        return 0;
     }
 
     public void setZ(int mcaZ) {
-        this.mcaZ = mcaZ;
     }
 
     public int getZ() {
-        return this.mcaZ;
+        return 0;
     }
 
     public void addRegionChecked() {
-        this.checked++;
     }
 
     public double getRegionChecked() {
-        return this.checked;
+        return 0.0;
     }
 
     public void setWorld(World world) {
-        this.world = world;
     }
 
     public World getWorld() {
-        return this.world;
+        return null;
     }
 
     public void setRegionFiles(List<File> regionFiles2) {
-        this.regionFiles = regionFiles2;
     }
 
     public List<File> getRegionFiles() {
-        return this.regionFiles;
+        return null;
     }
 
     public CommandSender getSender() {
-        if (this.sender.equals(CMI.getInstance().getServerUUID()))
-            return Bukkit.getConsoleSender();
-        return CMIUser.getOnlinePlayer(this.sender);
+        return null;
     }
 
     public void setSender(UUID sender) {
-        this.sender = sender;
     }
 
     public double getTotal() {
-        return total;
+        return 0.0;
     }
 
     public void setTotal(double total) {
-        this.total = total;
     }
 
     public Vector getCenter() {
-        return center;
+        return null;
     }
 
     public void setCenter(Vector center) {
-        this.center = center;
     }
 
     public RegionFiles getCurrentRegion() {
-        return currentRegion;
+        return null;
     }
 
     public void setCurrentRegion(RegionFiles currentRegion) {
-        this.currentRegion = currentRegion;
     }
 }

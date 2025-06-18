@@ -1,7 +1,5 @@
 package com.Zrips.CMI.Modules.Scavenger;
 
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
@@ -14,71 +12,55 @@ import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ScavengeManager {
-
     private CMI plugin;
+    public static double baseBreakPercentage;
+    public static double eachBreakPercentage;
+    public static double eachBreakPercentageLevel;
+    public static double baseEnchantFailPercentage;
+    public static double levelEnchantFailPercentage;
+    public static double levelEnchantFailMaxChance;
+    public static double LowerLevelChanceBase;
+    public static double LowerLevelForEachLevel;
+    public static double LowerLevelMaxChance;
+    public static double itemBreakMaxBreakChance;
+    public static double EnchantBaseCost;
+    public static double EnchantBaseCostExtra;
+    public static double IngredientReturnBase;
+    public static boolean ItemMaterialDurabilityCheck;
+    public static boolean InvertBlackList;
+    public static boolean AllowItemPickups;
+    public static boolean ResetRepairCost;
+    public static boolean WithoutIngredients;
+    public static double ItemBreakDurabilityChange;
+    public static Set<CMIMaterial> blackList;
+    private static final int slotOfItem = 0;
 
     public ScavengeManager(CMI cmi) {
-        this.plugin = cmi;
     }
-
-    public static Double baseBreakPercentage = 0D;
-    public static Double eachBreakPercentage = 0D;
-    public static Double eachBreakPercentageLevel = 0D;
-    public static Double baseEnchantFailPercentage = 0D;
-    public static Double levelEnchantFailPercentage = 0D;
-    public static Double levelEnchantFailMaxChance = 100D;
-    public static Double LowerLevelChanceBase = 100D;
-    public static Double LowerLevelForEachLevel = 100D;
-    public static Double LowerLevelMaxChance = 100D;
-    public static Double itemBreakMaxBreakChance = 100D;
-    public static Double EnchantBaseCost = 0D;
-    public static Double EnchantBaseCostExtra = 0D;
-    public static Double IngredientReturnBase = 0D;
-    public static boolean ItemMaterialDurabilityCheck = true;
-    public static boolean InvertBlackList = false;
-    public static boolean AllowItemPickups = false;
-    public static boolean ResetRepairCost = true;
-    public static Double ItemBreakDurabilityChange = 0D;
-
-    public static Set<CMIMaterial> blackList = new HashSet<CMIMaterial>();
 
     public void loadConfig() {
-
     }
 
-    private static final int slotOfItem = 13;
-
     public void openExtractor(Player player) {
-
     }
 
     private void processClick(CMIGuiButton button) {
-        updateExtractor(button.getGui(), null);
     }
 
     private void processClick(CMIGuiButton button, GUIClickType type) {
-        updateExtractor(button.getGui(), type);
     }
 
     private void updateExtractor(CMIGui gui) {
-        updateExtractor(gui, null);
     }
 
     private void updateExtractor(CMIGui gui, GUIClickType type) {
-
     }
 
     private double format(double number) {
-        return (int) (number * 100) / 100D;
+        return 0.0;
     }
 
     private boolean isFailed(double failChance) {
-        if (failChance >= 100)
-            return true;
-
-        Random random = new Random();
-        double c = random.nextDouble() * 100;
-
-        return c < failChance;
+        return false;
     }
 }

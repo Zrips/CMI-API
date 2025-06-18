@@ -2,85 +2,62 @@ package com.Zrips.CMI.Containers;
 
 import org.bukkit.BanEntry;
 
-import com.Zrips.CMI.Locale.CMILC;
-
-import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Time.CMITimeManager;
-
 public class CMIBanEntry {
-
-    long createdOn = 0;
-    long banUntil = 0;
-    String reason = null;
-    CMIUser bannedBy = null;
-    CMIUser banned = null;
+    long createdOn;
+    long banUntil;
+    String reason;
+    CMIUser bannedBy;
+    CMIUser banned;
 
     public CMIBanEntry(CMIUser baned) {
-	this.banned = baned;
-	createdOn = System.currentTimeMillis();
     }
 
     public Long getCreated() {
-	return createdOn;
+        return null;
     }
 
     public Long getExpiration() {
-	return banUntil;
+        return null;
     }
 
     public String getReason() {
-	return reason;
+        return null;
     }
 
     public String getSource() {
-	if (bannedBy == null)
-	    return LC.info_Console.getLocale();
-	return bannedBy.getName();
+        return null;
     }
 
     public CMIUser getSourceUser() {
-	return bannedBy;
+        return null;
     }
 
     public String getTarget() {
-	return banned.getName();
+        return null;
     }
 
     public CMIUser getTargetUser() {
-	return banned;
+        return null;
     }
 
     public void setCreated(Long date) {
-	createdOn = date == null ? 0 : date;
     }
 
     public void setExpiration(Long date) {
-	if (date != null)
-	    banUntil = date;
-	else
-	    banUntil = -1L;
     }
 
     public void setReason(String reason) {
-	this.reason = reason;
     }
 
     public void setSource(CMIUser user) {
-	bannedBy = user;
     }
 
     public boolean isPermanent() {
-	if (banUntil >= 0)
-	    return false;
-	return banUntil == -1L;
+        return false;
     }
 
     public Long getLeftTime() {
-	if (banUntil <= 0)
-	    return 0L;
-	if (banUntil < System.currentTimeMillis())
-	    return 0L;
-	return banUntil - System.currentTimeMillis();
+        return null;
     }
 
     public static String getBanMessage(BanEntry banEntry) {

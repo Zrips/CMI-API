@@ -1,63 +1,63 @@
 package com.Zrips.CMI.Modules.Totems;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 
 public class TotemManager {
-
-    private HashMap<UUID, TotemBossBar> totem = new HashMap<UUID, TotemBossBar>();
+    private HashMap<UUID, TotemBossBar> totem;
     CMI plugin;
-
-    private boolean TotemRemoveFromInventory = false;
-    private boolean TotemCooldownUse = false;
-    private boolean TotemWarmupUse = false;
-    private boolean TotemProtectFromVoid = false;
-    private int TotemCooldownTime = -1;
-    private int TotemWarmupTime = -1;
-
-    private int TotemEffectRegeneration = -1;
-    private int TotemEffectFireResistance = -1;
-    private int TotemEffectAbsorbtion = -1;
-
-    public enum BossBarType {
-        Cooldown, Warmup
-    }
+    private boolean TotemRemoveFromInventory;
+    private boolean TotemRequirePermission;
+    private boolean TotemCooldownUse;
+    private boolean TotemWarmupUse;
+    private boolean TotemProtectFromVoid;
+    private int TotemCooldownTime;
+    private int TotemWarmupTime;
+    private int TotemEffectRegeneration;
+    private int TotemEffectFireResistance;
+    private int TotemEffectAbsorbtion;
+    private List<String> blackListedWorlds;
+    private List<String> fullDisableInWorlds;
 
     public TotemManager(CMI plugin) {
-        this.plugin = plugin;
     }
 
     public void loadConfig() {
-
     }
 
     public boolean isTotemRemoveFromInventory() {
-        return TotemRemoveFromInventory;
+        return false;
+    }
+
+    public boolean isTotemRequirePermission() {
+        return false;
     }
 
     public boolean isTotemCooldownUse() {
-        return TotemCooldownUse;
+        return false;
     }
 
     public boolean isTotemWarmupUse() {
-        return TotemWarmupUse;
+        return false;
     }
 
     public int getTotemCooldownTime() {
-        return TotemCooldownTime;
+        return 0;
     }
 
     public int getTotemWarmupTime() {
-        return TotemWarmupTime;
+        return 0;
     }
 
     public boolean isTotemProtectFromVoid() {
-        return TotemProtectFromVoid;
+        return false;
     }
 
     public void hideAllBars() {
@@ -68,10 +68,7 @@ public class TotemManager {
     }
 
     public boolean isOnWarmup(Player player) {
-        TotemBossBar tbar = totem.get(player.getUniqueId());
-        if (tbar == null)
-            return false;
-        return tbar.getType() == BossBarType.Warmup;
+        return false;
     }
 
     public TotemBossBar getBossBar(Player player) {
@@ -80,7 +77,7 @@ public class TotemManager {
 
     @Deprecated
     public TotemBossBar getBossBar(Player player, BossBarType type) {
-        return getBossBar(player.getUniqueId(), type);
+        return null;
     }
 
     public TotemBossBar getBossBar(UUID uuid, BossBarType type) {
@@ -105,14 +102,13 @@ public class TotemManager {
     }
 
     public boolean toggleBar(CMIUser user, Boolean state) {
-        return true;
+        return false;
     }
 
     public void removePlayer(Player player, BossBarType type) {
     }
 
     public synchronized void ShowTotemWarmup(Player player) {
-
     }
 
     @Deprecated
@@ -120,45 +116,60 @@ public class TotemManager {
     }
 
     public synchronized void ShowTotemCooldown(CMIUser user) {
-
     }
 
     public Long getLeftCd(Player player, int cd) {
-        CMIUser user = plugin.getPlayerManager().getUser(player);
-        if (user == null)
-            return 0L;
-        Long usedOn = user.getTotemCooldown();
-        return getLeftCd(usedOn, cd);
+        return null;
     }
 
     private Long getLeftCd(Long usedOn, int cd) {
-        long t = (((cd * 1000) + usedOn) - System.currentTimeMillis());
-        if (t < 0)
-            t = 0L;
-        return t;
+        return null;
     }
 
     private static double getLeftCdPercentage(Long usedOn, int cd) {
-        double t = (((cd * 1000D) + usedOn) - System.currentTimeMillis()) / (cd * 1000D);
-        if (t < 0D)
-            t = 0D;
-        if (t > 1D)
-            t = 1D;
-        return t;
+        return 0.0;
     }
 
     public void checkAllForTotemCd() {
     }
 
     public int getRegenerationDuration() {
-        return TotemEffectRegeneration;
+        return 0;
     }
 
     public int getFireResistanceDuration() {
-        return TotemEffectFireResistance;
+        return 0;
     }
 
     public int getAbsorbtionDuration() {
-        return TotemEffectAbsorbtion;
+        return 0;
+    }
+
+    public List<String> getBlackListedWorlds() {
+        return null;
+    }
+
+    public boolean isBlackListedWorld(World world) {
+        return false;
+    }
+
+    public boolean isBlackListedWorld(String worldName) {
+        return false;
+    }
+
+    public List<String> getFullDisableInWorlds() {
+        return null;
+    }
+
+    public boolean isFullDisableInWorlds(World world) {
+        return false;
+    }
+
+    public boolean isFullDisableInWorlds(String worldName) {
+        return false;
+    }
+
+    public enum BossBarType {
+        Cooldown, Warmup;
     }
 }
