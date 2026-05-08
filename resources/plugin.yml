@@ -3,7 +3,7 @@ main: com.Zrips.CMI.CMI
 version: ${project.version}
 website: https://www.spigotmc.org/resources/content-management-interface.3742/
 author: Zrips
-description: Powerfull server management tool
+description: Powerful server management tool
 softdepend: [Essentials, ProtocolLib, LWC, Vault, mcMMO, PlayerVaults, PermissionsEx, bPermissions, GroupManagerX, zPermissions, LuckPerms, PlaceholderAPI, Multiverse-Core]
 commands:
   cmi:

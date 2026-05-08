@@ -85,7 +85,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<!-- Make a Jar -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.14.0</version>
